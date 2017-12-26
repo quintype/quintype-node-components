@@ -174,6 +174,35 @@ const { SearchBox } = require("@quintype/components");
 <SearchBox className="foobar" placeholder="search" inputClassName="foobar-box" inputId="stg" inputRef={(x) => this.foo = x} onEscape={() => this.closeDialog()}/>
 ```
 
+### SocialShare
+This component renders social share component to front end app.
+
+```javascript
+const { SocialShare } = require("@quintype/components");
+
+class CustomComponent extends React.Component {
+
+  getSocialCardsTemplate({fbUrl, twitterUrl, gplusUrl, linkedinUrl}) {
+    return <ul className="social-share-icons">
+        <li className="social-share-icon">
+          <a href={fbUrl} target="_blank">
+            <img src={fbIcon} alt="fb icon"/>
+          </a>
+        </li>
+      </ul>
+  }
+
+  render() {
+    return <div className="story-byline__social-share">
+              <SocialShare url={storyShareSlug}
+                title='Headline of the story'
+                template={this.getSocialCardsTemplate}
+                hashtags='news,india,press' />
+           </div>
+  }
+}
+```
+
 ### StoryElement
 This component renders different types of story elements
 
