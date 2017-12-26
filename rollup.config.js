@@ -12,5 +12,5 @@ export default {
       presets: ["react"]
     })
   ],
-  external: ["react","redux","react-redux","react-soundcloud-widget","superagent-bluebird-promise","lodash","url","prop-types","quintype-js","classnames","get-youtube-id","react-youtube"]
+  external: ["react","redux","react-redux","react-soundcloud-widget","superagent-bluebird-promise","lodash","url","prop-types","quintype-js","classnames","get-youtube-id","react-youtube","papaparse", "react-table"]
 };

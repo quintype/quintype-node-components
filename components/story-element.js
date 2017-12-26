@@ -6,6 +6,7 @@ import SoundCloudPlayer from 'react-soundcloud-widget';
 import JSEmbed from './story-elements/jsembed';
 import { ResponsiveImage } from "./responsive-image";
 import Polltype from './story-elements/polltype';
+import Table from './story-elements/table';
 
 function storyElementText(storyElement) {
   return React.createElement("div", {dangerouslySetInnerHTML: {__html: storyElement.text}});
@@ -54,6 +55,10 @@ function storyElementPolltype(storyElement) {
   );
 }
 
+function storyElementTable(storyElement) {
+  return React.createElement(Table, { id: storyElement.id, data: storyElement.data, hasHeader: storyElement.metadata['has-header']});
+}
+
 // FIXME MISSING: composite
 // TODO: Can also support various subtypes (though not needed potentially)
 const DEFAULT_TEMPLATES = {
@@ -63,7 +68,8 @@ const DEFAULT_TEMPLATES = {
   "youtube-video": {render: storyElementYoutube},
   "soundcloud-audio": {render: storyElementSoundCloud},
   "jsembed": {render: storyElementJsembed},
-  "polltype": {render: storyElementPolltype}
+  "polltype": {render: storyElementPolltype},
+  "table": {render: storyElementTable}
 };
 
 class StoryElementBase extends React.Component {
