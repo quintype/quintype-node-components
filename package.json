@@ -30,7 +30,9 @@
     "react-youtube": "^7.5.0",
     "redux": "^3.7.2",
     "superagent-bluebird-promise": "^4.2.0",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "papaparse": "^4.3.6",
+    "react-table": "^6.7.6"
   },
   "devDependencies": {
     "atob": "^2.0.3",
@@ -39,8 +41,6 @@
     "babel-preset-es2015-tree-shaking": "^1.0.1",
     "babel-preset-react": "^6.24.1",
     "bluebird": "^3.5.1",
-    "papaparse": "^4.3.6",
-    "react-table": "^6.7.6",
     "rollup": "^0.52.0",
     "rollup-plugin-babel": "^3.0.2",
     "superagent": "^3.8.2"
