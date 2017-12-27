@@ -40,7 +40,6 @@
     "babel-preset-react": "^6.24.1",
     "bluebird": "^3.5.1",
     "papaparse": "^4.3.6",
-    "react-soundcloud-widget": "git://github.com/gja/react-soundcloud-widget.git",
     "react-table": "^6.7.6",
     "rollup": "^0.52.0",
     "rollup-plugin-babel": "^3.0.2",
