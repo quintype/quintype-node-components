@@ -26,11 +26,14 @@ class Table extends React.Component {
       return null;
     }
 
-
     const columns = _.chain(this.state.tableData)
                       .first()
                       .keys()
-                      .map(header => ({ Header: header, accessor: header}))
+                      .map(header => ({
+                         Header: header,
+                         accessor: header,
+                         headerStyle: !this.props.hasHeader ? { display: 'none' } : {}
+                        }))
                       .value();
 
     const className = `story-element-table-${this.props.id}`;
