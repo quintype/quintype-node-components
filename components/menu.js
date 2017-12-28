@@ -8,10 +8,10 @@ function MenuBase({children, className, itemClassName, items, currentUrl, slice}
   return (
     <ul className={className}>
       {children}
-      {items.map((item) => <MenuItem key={item['section-slug']}
-                                     item={item}
-                                     className={itemClassName}
-                                     currentUrl={currentUrl}/>)}
+      {items.map((item, ix) => <MenuItem key={ix}
+                                         item={item}
+                                         className={itemClassName}
+                                         currentUrl={currentUrl}/>)}
     </ul>
   );
 }

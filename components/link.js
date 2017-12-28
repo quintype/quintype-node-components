@@ -6,11 +6,15 @@ function LinkBase(props) {
   return React.createElement("a", _(props)
     .omit("navigateTo")
     .merge({onClick: (e) => {
-      if (!global.disableAjaxLinks) {
-        e.preventDefault(); 
-        e.stopPropagation(); 
-        props.navigateTo(props.href)
-      }
+      if(global.disableAjaxLinks)
+        return;
+
+      if(e.ctrlKey || e.metaKey || e.shiftKey)
+        return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      props.navigateTo(props.href)
     }})
     .value()
   );

@@ -7,8 +7,18 @@ This component will automatically fetch breaking news every 30 seconds, and rend
 
 ```javascript
 import { renderBreakingNews } from '@quintype/framework/client/start';
-const BreakingNewsView = (props) => <ul>{props.breakingNews.map((news) => <li key={news.id}>{news.headline}</li>)}</ul>
+const BreakingNewsView = (props) => <ul>{props.breakingNews.map((item, index) => <li key={index}><BreakingNewsItem item={item} /></li>)}</ul>
 renderBreakingNews('breaking-news-container', store, BreakingNewsView);
+```
+
+### BreakingNewsItem
+
+This component can be used to render a BreakingNewsItem.
+
+```javascript
+import {BreakingNewsItem} from '@quintype/components'
+
+<BreakingNewsItem item={item} className="breaking-news__headline"/>
 ```
 
 ### ClientSideOnly
@@ -19,6 +29,32 @@ const { ClientSideOnly } = require("@quintype/components");
 <ClientSideOnly>
   This will be shown only on the client side
 </ClientSideOnly>
+```
+
+### DfpAds
+This is a higher order component which can be used to manage ad units in a single place. A component must be created, and used with the `adtype` parameter
+
+```javascript
+import { createDfpAdComponent } from '@quintype/components';
+
+export const CONFIG = {
+  "homepage-2": { adUnit: "HP_728x90-3", sizes: [[728, 90], [320, 50]] },
+  "homepage-3": { adUnit: "HP_728x90-3", sizes: [[728, 90], [320, 50]] },
+}
+
+export const DfpAd = createDfpAdComponent({
+  defaultNetworkID: "123456789",
+  config: CONFIG,
+  targeting: function(state) {
+    const params = {};
+
+    // if(storyIsSponsored) params['sponsor'] = storySponsor
+
+    return params;
+  }
+});
+
+<DfpAd adtype="homepage-2" />
 ```
 
 ### HamburgerButton
@@ -93,6 +129,26 @@ export function SectionPage(props) {
                               {...props}
                               params={{"section-id": props.data.section.id}}/>
 }
+```
+
+### LoadMoreCollectionStories
+
+This component is very similar to the LoadMoreBase component but fetches the stroies from a `collection`. The api call `/api/v1/collections/{collectionSlug}` is made with the passed collection slug value. The component accepts the `params` prop and a requires a Collection Slug from which to fetch the stories and returns a set of stories only.
+
+```javascript
+import { LoadMoreCollectionStories } from '@quintype/components';
+
+function MoreCollectionStories({stories, loading, onLoadMore, noMoreStories}) {
+  return <div/>;
+}
+
+export function HomePage(props) {
+  return <LoadMoreCollectionStories template={MoreCollectionStories}
+                                    collectionSlug={props.data.collectionSLug}
+                                    {...props}
+                                    params={{"collectionSlug": props.data.collectionSlug}}/>
+}
+
 ```
 
 ### LoadingIndicator
@@ -214,3 +270,13 @@ function StoryCard(props){
   </div>
 }
 ```
+
+## Recommended Components that are not included
+
+### Sliders
+
+For a slider, we recomment `react-slick`. It pulls in JQuery, which will add 90kb to your bundle, but is the most malleable slider out there
+
+### Marquee for Breaking News
+
+Our Marquee recommendation is `react-malarquee`. Just remember to mark all items as `display: inline`, and remove any floats. It supports `pauseOnHover`.

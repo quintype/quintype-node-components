@@ -1,5 +1,6 @@
 export * from './components/breaking-news';
 export * from './components/client-side-only';
+export * from './components/dfp-ad';
 export * from './components/hamburger-button';
 export * from './components/infinite-scroll';
 export * from './components/infinite-story-base';
