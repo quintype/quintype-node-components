@@ -4,9 +4,9 @@ import {get} from 'lodash';
 import { LoadMoreStoriesManager } from './load-more-stories-base'
 
 export class SearchPageBase extends React.Component {
-  search(pageNumber) {
+  search(offset) {
     return superagent.get("/api/v1/search", Object.assign(this.props.params, {
-      offset: (this.props.storiesPerPage || 20) * pageNumber,
+      offset: offset,
       fields: this.props.fields
     })).then(response => get(response.body, ["results", "stories"], []));
   }
@@ -14,7 +14,7 @@ export class SearchPageBase extends React.Component {
   render() {
     return React.createElement(LoadMoreStoriesManager, Object.assign({}, this.props.data, {
       template: this.props.template,
-      loadStories: (pageNumber) => this.search(pageNumber)
+      loadStories: (offset) => this.search(offset)
     }));
   }
 }
