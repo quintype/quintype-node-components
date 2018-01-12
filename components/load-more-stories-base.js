@@ -2,16 +2,17 @@ import React from 'react';
 
 import { removeDuplicateStories } from '../utils';
 import {get} from 'lodash';
+import { DEFAULT_STORIES_LIMIT } from '../constants';
 
 export class LoadMoreStoriesManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      offset: props.offset || 0,
+      offset: props.offset || props.storiesPerPage || DEFAULT_STORIES_LIMIT,
       pageNumber: 1,
       moreStories: [],
-      noMoreStories: props.stories.length < props.storiesPerPage
+      noMoreStories: props.stories.length < (props.offset || props.storiesPerPage || DEFAULT_STORIES_LIMIT)
     };
   }
 
@@ -25,15 +26,14 @@ export class LoadMoreStoriesManager extends React.Component {
       return;
 
     const pageNumber = this.state.pageNumber;
-    const offset = this.state.offset + this.props.storiesPerPage;
     this.setState({loading: true, pageNumber: pageNumber + 1}, () => {
-      this.props.loadStories(offset)
+      this.props.loadStories(this.state.offset)
         .then(stories => {
           this.setState({
-            offset: offset,
+            offset: this.state.offset + (this.props.storiesPerPage || DEFAULT_STORIES_LIMIT),
             loading: false,
             moreStories: this.state.moreStories.concat(removeDuplicateStories(this.stories(), stories)),
-            noMoreStories: stories.length < this.props.storiesPerPage
+            noMoreStories: stories.length < (this.props.storiesPerPage || DEFAULT_STORIES_LIMIT)
           })
       })
     })
@@ -60,7 +60,7 @@ export class LoadMoreStoriesBase extends React.Component {
   render() {
     return React.createElement(LoadMoreStoriesManager, Object.assign({}, this.props.data, {
       template: this.props.template,
-      storiesPerPage: this.props.storiesPerPage || 20,
+      storiesPerPage: this.props.storiesPerPage || DEFAULT_STORIES_LIMIT,
       offset: this.props.offset || 0,
       loadStories: (offset) => this.loadMoreStories(offset)
     }));
