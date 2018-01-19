@@ -1,6 +1,5 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const atob = require('atob');
+import React from 'react';
+import atob from 'atob';
 
 function cloneScriptNode(node){
   var script  = document.createElement("script");

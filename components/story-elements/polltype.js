@@ -1,5 +1,5 @@
-const React = require('react');
-const { connect } = require('react-redux');
+import React from 'react';
+import { connect } from 'react-redux';
 
 const defaultPolltypeHost = 'https://www.polltype.com';
 

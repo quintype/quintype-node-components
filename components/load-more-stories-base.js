@@ -10,7 +10,7 @@ export class LoadMoreStoriesManager extends React.Component {
       loading: false,
       pageNumber: 1,
       moreStories: [],
-      noMoreStories: false
+      noMoreStories: this.props.stories.length < this.props.storiesPerPage
     };
   }
 
@@ -56,6 +56,7 @@ export class LoadMoreStoriesBase extends React.Component {
   render() {
     return React.createElement(LoadMoreStoriesManager, Object.assign({}, this.props.data, {
       template: this.props.template,
+      storiesPerPage: this.props.storiesPerPage || 20,
       loadStories: (pageNumber) => this.loadMoreStories(pageNumber)
     }));
   }

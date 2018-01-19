@@ -1,6 +1,7 @@
 import React from 'react';
 import {AdSlot, DFPSlotsProvider} from 'react-dfp';
 import {connect} from 'react-redux';
+import {withError} from './with-error';
 
 function DfpAdBase({defaultNetworkID, config, collapseEmptyDivs, targetingArguments, adtype}) {
   const adConfig = config[adtype];
@@ -18,5 +19,5 @@ export function createDfpAdComponent({defaultNetworkID, config, targeting, colla
     defaultNetworkID: defaultNetworkID,
     config: config,
     collapseEmptyDivs: collapseEmptyDivs
-  }), () => ({}))(DfpAdBase);
+  }), () => ({}))(withError(DfpAdBase));
 }

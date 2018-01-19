@@ -25,7 +25,7 @@ import {BreakingNewsItem} from '@quintype/components'
 This component will be loaded by client, and bypassed when doing server side rendering.
 
 ```javascript
-const { ClientSideOnly } = require("@quintype/components");
+import { ClientSideOnly } from '@quintype/components';
 <ClientSideOnly>
   This will be shown only on the client side
 </ClientSideOnly>
@@ -61,7 +61,7 @@ export const DfpAd = createDfpAdComponent({
 This component can be used to trigger an action openening the Hamburger menu. The state can be accessed via state.hamburgerOpened
 
 ```javascript
-const { HamburgerButton } = require("@quintype/components");
+import { HamburgerButton } from '@quintype/components';
 <HamburgerButton>
   <img src="/path/to/hamburger.png"/>
 </HamburgerButton>
@@ -78,8 +78,8 @@ This component can be used to implement InfiniteScroll on the story page. You wi
 ```javascript
 const React = require("react");
 
-const { BlankStory } = require("../story-templates/blank.jsx");
-const { InfiniteStoryBase } = require("@quintype/components");
+import { BlankStory } = requirfrom '@quintype/components';
+import { InfiniteStoryBase } from '@quintype/components';
 
 function StoryPageBase({index, story, otherProp}) {
   // Can switch to a different template based story-template, or only show a spoiler if index > 0
@@ -108,7 +108,7 @@ exports.StoryPage = StoryPage;
 This component generates an anchor tag. Instead of doing a browser page load, it will go to the next page via AJAX. Analytics scripts will be fired correctly (and if not, it's a bug)
 
 ```javascript
-const { Link } = require("@quintype/components");
+import { Link } from '@quintype/components';
 <Link href="/section/story-slug" otherLinkAttribute="value">Text here</Link>
 ```
 
@@ -155,7 +155,7 @@ export function HomePage(props) {
 This component renders it's children when the app is moving between pages. It can be used to show a spinner. It always has the class "loading-indicator", and also "loading-indicator-loading" when loading.
 
 ```javascript
-const { LoadingIndicator } = require("@quintype/components");
+import { LoadingIndicator } from '@quintype/components';
 
 <LoadingIndicator>
   <div className="spinner">Please Wait</div>
@@ -170,7 +170,7 @@ Items will automatically be pulled from `config`, please remember to expose the 
 Children are prepended to the list of items. Slice can be passed to extract a set of menu items.
 
 ```javascript
-const { Menu } = require("@quintype/components");
+import { Menu } from '@quintype/components';
 
 <Menu className="menu-class" itemClassName="item-class" slice={[0, 10]}>
   <li>
@@ -184,7 +184,7 @@ const { Menu } = require("@quintype/components");
 This is a base component which *must* be subclassed, providing a navigateTo function.
 
 ```javascript
-const { NavigationComponentBase } = require("quintype/components");
+import { NavigationComponentBase }from '@quintype/components';
 
 class SearchComponent extends NavigationComponentBase {
   render() { return <a href="#" onClick={() => this.navigateTo("/some-page-here")}>Link</a>}
@@ -195,7 +195,7 @@ class SearchComponent extends NavigationComponentBase {
 This component takes an image, and resizes it to the correct aspect ratio using imgix or thumbor.
 
 ```javascript
-const { ResponsiveImage } = require("@quintype/components");
+import { ResponsiveImage } from '@quintype/components';
 <figure className="story-grid-item-image qt-image-16x9">
   <ResponsiveImage slug={props.story["hero-image-s3-key"]} metadata={props.story["hero-image-metadata"]}
     aspectRatio={[16,9]}
@@ -225,7 +225,7 @@ This component provides a form with a search text box. On submit, the user is re
 A template function can also be passed in, to do custom rendering. The template prop will be called with childen having the child text box. See [madrid](https://github.com/quintype/madrid/blob/master/app/isomorphic/components/basic/search.js) as an example
 
 ```javascript
-const { SearchBox } = require("@quintype/components");
+import { SearchBox } from '@quintype/components';
 
 <SearchBox className="foobar" placeholder="search" inputClassName="foobar-box" inputId="stg" inputRef={(x) => this.foo = x} onEscape={() => this.closeDialog()}/>
 ```
@@ -234,7 +234,7 @@ const { SearchBox } = require("@quintype/components");
 This component renders social share component to front end app.
 
 ```javascript
-const { SocialShare } = require("@quintype/components");
+import { SocialShare } from '@quintype/components';
 
 class CustomComponent extends React.Component {
 
@@ -263,12 +263,26 @@ class CustomComponent extends React.Component {
 This component renders different types of story elements
 
 ```javascript
-const { StoryElement } = require("@quintype/components");
+import { StoryElement } from '@quintype/components';
 function StoryCard(props){
   return <div>
     {props.card['story-elements'].map((element, index) => <StoryElement element={element} key={index} story={props.story}></StoryElement>)}
   </div>
 }
+```
+
+### WithError
+This function can be used to generate a wrapper component that implements `componentDidCatch()`.
+
+```javascript
+
+import { withError } from '@quintype/components';
+
+function optionalErrorFn(props) {
+  return <span />;
+}
+
+const MyStoryElement = withError(ClassThatMayCrash, optionalErrorFn)
 ```
 
 ## Recommended Components that are not included

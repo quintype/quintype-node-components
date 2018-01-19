@@ -1,5 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
+import {withError} from './with-error';
 
 function SocialShareBase(props) {
   const fullUrl = `${props.publisherUrl}/${props.url}`;
@@ -21,4 +22,4 @@ function mapStateToProps(state) {
 }
 
 
-export const SocialShare = connect(mapStateToProps, {})(SocialShareBase);
+export const SocialShare = connect(mapStateToProps, {})(withError(SocialShareBase));
