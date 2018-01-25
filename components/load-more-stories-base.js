@@ -2,15 +2,17 @@ import React from 'react';
 
 import { removeDuplicateStories } from '../utils';
 import {get} from 'lodash';
+import { DEFAULT_STORIES_LIMIT } from '../constants';
 
 export class LoadMoreStoriesManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
+      offset: props.offset || props.storiesPerPage || DEFAULT_STORIES_LIMIT,
       pageNumber: 1,
       moreStories: [],
-      noMoreStories: this.props.stories.length < this.props.storiesPerPage
+      noMoreStories: props.stories.length < (props.offset || props.storiesPerPage || DEFAULT_STORIES_LIMIT)
     };
   }
 
@@ -22,14 +24,16 @@ export class LoadMoreStoriesManager extends React.Component {
     e.preventDefault();
     if(this.state.loading)
       return;
+
     const pageNumber = this.state.pageNumber;
     this.setState({loading: true, pageNumber: pageNumber + 1}, () => {
-      this.props.loadStories(pageNumber)
+      this.props.loadStories(this.state.offset)
         .then(stories => {
           this.setState({
+            offset: this.state.offset + (this.props.storiesPerPage || DEFAULT_STORIES_LIMIT),
             loading: false,
             moreStories: this.state.moreStories.concat(removeDuplicateStories(this.stories(), stories)),
-            noMoreStories: stories.length == 0
+            noMoreStories: stories.length < (this.props.storiesPerPage || DEFAULT_STORIES_LIMIT)
           })
       })
     })
@@ -46,9 +50,9 @@ export class LoadMoreStoriesManager extends React.Component {
 }
 
 export class LoadMoreStoriesBase extends React.Component {
-  loadMoreStories(pageNumber) {
+  loadMoreStories(offset) {
     return superagent.get("/api/v1/stories", Object.assign(this.props.params, {
-      offset: (this.props.storiesPerPage || 20) * pageNumber,
+      offset: offset,
       fields: this.props.fields
     })).then(response => get(response.body, ["stories"], []));
   }
@@ -56,16 +60,17 @@ export class LoadMoreStoriesBase extends React.Component {
   render() {
     return React.createElement(LoadMoreStoriesManager, Object.assign({}, this.props.data, {
       template: this.props.template,
-      storiesPerPage: this.props.storiesPerPage || 20,
-      loadStories: (pageNumber) => this.loadMoreStories(pageNumber)
+      storiesPerPage: this.props.storiesPerPage || DEFAULT_STORIES_LIMIT,
+      offset: this.props.offset || 0,
+      loadStories: (offset) => this.loadMoreStories(offset)
     }));
   }
 }
 
 export class LoadMoreCollectionStories extends React.Component {
-  loadMoreStories(pageNumber) {
+  loadMoreStories(offset) {
     return superagent.get(`/api/v1/collections/${this.props.collectionSlug}`, Object.assign(this.props.params, {
-      offset: (this.props.storiesPerPage || 20) * pageNumber
+      offset: offset
     })).then(function(response){
       var stories = _.map(response.body.items, function(collectionItem){
         return (collectionItem.story);
@@ -77,7 +82,7 @@ export class LoadMoreCollectionStories extends React.Component {
   render() {
     return React.createElement(LoadMoreStoriesManager, Object.assign({}, this.props.data, {
       template: this.props.template,
-      loadStories: (pageNumber) => this.loadMoreStories(pageNumber)
+      loadStories: (offset) => this.loadMoreStories(offset)
     }));
   }
 }

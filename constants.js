@@ -1,0 +1,1 @@
+export const DEFAULT_STORIES_LIMIT = 20;
