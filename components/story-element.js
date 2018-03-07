@@ -6,9 +6,22 @@ import JSEmbed from './story-elements/jsembed';
 import { ResponsiveImage } from "./responsive-image";
 import Polltype from './story-elements/polltype';
 import {Table} from './story-elements/table';
+import { Link } from './link';
 
 function storyElementText(storyElement) {
   return React.createElement("div", {dangerouslySetInnerHTML: {__html: storyElement.text}});
+}
+
+function storyElementAlsoRead(storyElement, props) {
+  const storyUrl = props.story['linked-stories'] && '/' + props.story['linked-stories'][storyElement.metadata['linked-story-id']]['slug'];
+  const linkProps = { className: "story-element-text-also-read__link",
+                      href: storyUrl,
+                      dangerouslySetInnerHTML: {__html: storyElement.text}
+                    };
+  return React.createElement("h3", {},
+    React.createElement("span", { className: "story-element-text-also-read__label" }, "Also read: "),
+    React.createElement(Link, linkProps)
+  );
 }
 
 function storyElementImage(storyElement) {
@@ -68,7 +81,8 @@ const DEFAULT_TEMPLATES = {
   "soundcloud-audio": {render: storyElementSoundCloud},
   "jsembed": {render: storyElementJsembed},
   "polltype": {render: storyElementPolltype},
-  "table": {render: storyElementTable}
+  "table": {render: storyElementTable},
+  "also-read": {render: storyElementAlsoRead}
 };
 
 class StoryElementBase extends React.Component {
