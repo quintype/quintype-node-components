@@ -15,12 +15,11 @@ function storyElementText(storyElement) {
 function storyElementAlsoRead(storyElement, props) {
   const storyUrl = props.story['linked-stories'] && '/' + props.story['linked-stories'][storyElement.metadata['linked-story-id']]['slug'];
   const linkProps = { className: "story-element-text-also-read__link",
-                      href: storyUrl,
-                      dangerouslySetInnerHTML: {__html: storyElement.text}
+                      href: storyUrl
                     };
   return React.createElement("h3", {},
     React.createElement("span", { className: "story-element-text-also-read__label" }, "Also read: "),
-    React.createElement(Link, linkProps)
+    React.createElement(Link, linkProps, storyElement.text)
   );
 }
 
