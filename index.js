@@ -17,3 +17,4 @@ export * from './components/social-share';
 export * from './components/with-error';
 
 export * from './utils';
+export * from "./components/review-rating";
