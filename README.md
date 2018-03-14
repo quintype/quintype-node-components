@@ -306,6 +306,17 @@ function optionalErrorFn(props) {
 const MyStoryElement = withError(ClassThatMayCrash, optionalErrorFn)
 ```
 
+### Review Rating
+
+This component takes in the value for rating and renders star for the value passed in. This comopent is generally used for story review type. 
+
+```javascript 
+import { ReviewRating } from '@quintype/components';
+
+<ReviewRating value="3" />
+```
+The component supports additional props which allows more customization, you can pass in props like size, color, count of stars or even change the render from star to a custom svg component. Refer to component src to know exact details of what is supported.
+
 ## Recommended Components that are not included
 
 ### Sliders
