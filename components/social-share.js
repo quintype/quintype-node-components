@@ -4,11 +4,11 @@ import {withError} from './with-error';
 
 function SocialShareBase(props) {
   const fullUrl = `${props.publisherUrl}/${props.url}`;
-  const slicedTitle = props.title.length > 60 ? props.title.substr(0, 57) + '...' : props.title;
+  const hashtags = props.hashtags ? props.hashtags : '';
 
   return React.createElement(props.template, Object.assign({
     fbUrl: `https://www.facebook.com/sharer.php?u=${fullUrl}`,
-    twitterUrl: `https://twitter.com/intent/tweet?url=${fullUrl}&text=${slicedTitle}&hashtags=${props.hashtags}`,
+    twitterUrl: `https://twitter.com/intent/tweet?url=${fullUrl}&text=${props.title}&hashtags=${hashtags}`,
     gplusUrl: `https://plus.google.com/share?url=${fullUrl}`,
     linkedinUrl: `https://www.linkedin.com/shareArticle?url=${fullUrl}&title=${props.title}`,
     whatsappUrl: `https://api.whatsapp.com/send?text=${fullUrl}`
