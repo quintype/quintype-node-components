@@ -90,7 +90,7 @@ class StoryElementBase extends React.Component {
   constructor(props) {
     super(props);
     this.observer = {};
-    this.madeCall = false;
+    this.analyticsCallMade = false;
   }
 
   componentDidMount() {
@@ -98,11 +98,13 @@ class StoryElementBase extends React.Component {
   }
 
   engageObserver() {
-    this.observer = new IntersectionObserver((entries, observer) => this.handleObserver(entries, observer), {
+    const observerOptions = {
       root: null,
       rootMargin: '0px',
       threshold: 0.5
-    });
+    };
+
+    this.observer = new IntersectionObserver((entries, observer) => this.handleObserver(entries, observer), observerOptions);
     this.observer.observe(this.myStoryElement);
   }
 
@@ -140,11 +142,11 @@ class StoryElementBase extends React.Component {
 
   handleObserver(entries = [], observer) {
     const [entry = {}] = [...entries];
-    if(entry.isIntersecting &&!this.madeCall) {
-      this.madeCall = true;
+    if(entry.isIntersecting &&!this.analyticsCallMade) {
+      this.analyticsCallMade = true;
       global.qlitics('track', 'story-element-view', this.generateAnalyticsData());
     } else {
-      this.madeCall = false;
+      this.analyticsCallMade = false;
     }
   }
 
