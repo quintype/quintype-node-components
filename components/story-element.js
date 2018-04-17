@@ -15,8 +15,8 @@ function StoryElementText({element}) {
 function StoryElementAlsoRead({element, story}) {
   const storyUrl = story['linked-stories'] && '/' + story['linked-stories'][element.metadata['linked-story-id']]['slug'];
   const linkProps = { className: "story-element-text-also-read__link",
-                      href: storyUrl
-                    };
+    href: storyUrl
+  };
   return React.createElement("h3", {},
     React.createElement("span", { className: "story-element-text-also-read__label" }, "Also read: "),
     React.createElement(Link, linkProps, element.text)
@@ -86,6 +86,37 @@ const DEFAULT_TEMPLATES = {
 };
 
 class StoryElementBase extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.observer = {};
+    this.madeCall = false;
+  }
+
+  componentDidMount() {
+    this.engageObserver();
+  }
+
+  engageObserver() {
+    this.observer = new IntersectionObserver((entries, observer) => this.handleObserver(entries, observer), {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5
+    });
+    this.observer.observe(this.myStoryElement);
+  }
+
+  handleObserver(entries = [], observer) {
+    const [entry = {}] = [...entries];
+    if(entry.isIntersecting && !this.madeCall) {
+      console.log('CALLBACK INTERSECTING', entry.isIntersecting);
+      this.madeCall = true;
+    } else {
+      console.log('CALLBACK NOT INTERSECTING', entry.isIntersecting);
+      this.madeCall = false;
+    }
+  }
+
   template() {
     const storyElement = this.props.element;
     const templates = Object.assign({}, DEFAULT_TEMPLATES, this.props.templates);
@@ -107,16 +138,17 @@ class StoryElementBase extends React.Component {
     const renderTemplate = renderTemplates[storyElement.subtype] || renderTemplates[storyElement.type];
 
     return React.createElement("div", {
-      className: classNames({
-        "story-element": true,
-        [typeClassName]: true,
-        [subtypeClassName]: !!storyElement.subtype
-      })
-    }, (renderTemplate?
+        className: classNames({
+          "story-element": true,
+          [typeClassName]: true,
+          [subtypeClassName]: !!storyElement.subtype
+        }),
+        ref: node => this.myStoryElement = node
+      }, (renderTemplate?
       React.createElement(
         renderTemplate,
         Object.assign({}, {element: storyElement}),
-        React.createElement(storyElementTemplate, Object.assign({}, elementProps))
+        React.createElement(storyElementTemplate, Object.assign({}, elementProps, {ref: node => this.myStoryElement = node}))
       ) : React.createElement(storyElementTemplate, Object.assign({}, elementProps)))
     )
   }
