@@ -106,13 +106,44 @@ class StoryElementBase extends React.Component {
     this.observer.observe(this.myStoryElement);
   }
 
+  generateAnalyticsData() {
+
+    if(!this.props.story || !this.props.element){
+      return {};
+    }
+
+    const {
+      'story-content-id': storyContentId,
+      'story-version-id': storyVersionId,
+    } = this.props.story;
+
+    const {
+      id: storyElementId,
+      type: storyElementType,
+    } = this.props.element;
+
+    const {
+      'content-id': cardContentId,
+      'content-version-id': cardContentVersionId,
+    } = this.props.story.cards.find(card => card['story-elements'].some(ele => storyElementId === ele.id)) || {};
+
+    return {
+      'story-content-id': storyContentId,
+      'story-version-id': storyVersionId,
+      'card-content-id': cardContentId,
+      'card-version-id': cardContentVersionId,
+      'story-element-id': storyElementId,
+      'story-element-type': storyElementType,
+    };
+
+  }
+
   handleObserver(entries = [], observer) {
     const [entry = {}] = [...entries];
-    if(entry.isIntersecting && !this.madeCall) {
-      console.log('CALLBACK INTERSECTING', entry.isIntersecting);
+    if(entry.isIntersecting &&!this.madeCall) {
       this.madeCall = true;
+      global.qlitics('track', 'story-element-view', this.generateAnalyticsData());
     } else {
-      console.log('CALLBACK NOT INTERSECTING', entry.isIntersecting);
       this.madeCall = false;
     }
   }
