@@ -144,7 +144,7 @@ class StoryElementBase extends React.Component {
     const [entry = {}] = [...entries];
     if(entry.isIntersecting &&!this.analyticsCallMade) {
       this.analyticsCallMade = true;
-      global.qlitics('track', 'story-element-view', this.generateAnalyticsData());
+      if(global.qlitics) global.qlitics('track', 'story-element-view', this.generateAnalyticsData());
     } else {
       this.analyticsCallMade = false;
     }
