@@ -23,18 +23,42 @@ function StoryElementAlsoRead({element, story}) {
   );
 }
 
+export function Image({imageElement, aspectRatio, defaultWidth, widths, imgParams}) {
+  return React.createElement(ResponsiveImage, {
+    slug: imageElement["image-s3-key"],
+    metadata: imageElement["metadata"],
+    aspectRatio,
+    defaultWidth,
+    widths,
+    imgParams
+  });
+}
+
+export function ImageTitleCaption({imageElement}) {
+  return imageElement.title ? React.createElement("figcaption", {
+    dangerouslySetInnerHTML: {__html: imageElement.title},
+    className: "story-element-image-title"
+  }) : undefined;
+}
+
+export function ImageAttributeCaption({imageElement}) {
+  return imageElement['image-attribution'] ? React.createElement("figcaption", {
+    dangerouslySetInnerHTML: {__html: imageElement['image-attribution']},
+    className: "story-element-image-attribution"}
+  ) : undefined;
+}
+
 function StoryElementImage({element}) {
   return React.createElement("figure", {},
-    React.createElement(ResponsiveImage, {
-      slug: element["image-s3-key"],
-      metadata: element["metadata"],
+    React.createElement(Image, {
+      imageElement: element,
       aspectRatio: null,
       defaultWidth: 480,
       widths: [250,480,640],
       imgParams: {auto:['format', 'compress']}
     }),
-    element.title ? React.createElement("figcaption", {dangerouslySetInnerHTML: {__html: element.title}, className: "story-element-image-title"}) : undefined,
-    element['image-attribution'] ? React.createElement("figcaption", {dangerouslySetInnerHTML: {__html: element['image-attribution']}, className: "story-element-image-attribution"}) : undefined
+    React.createElement(ImageTitleCaption, {imageElement: element}),
+    React.createElement(ImageAttributeCaption, {imageElement: element})
   );
 }
 
@@ -73,7 +97,7 @@ function StoryElementTable({element}) {
 // FIXME MISSING: composite
 // TODO: Can also support various subtypes (though not needed potentially)
 
-const DEFAULT_TEMPLATES = {
+export const DEFAULT_TEMPLATES = {
   "text": StoryElementText,
   "image": StoryElementImage,
   "title": StoryElementTitle,
@@ -144,5 +168,3 @@ export class StoryElement extends React.Component {
     }
   }
 }
-
-export const STORY_ELEMENT_TEMPLATES = DEFAULT_TEMPLATES;
