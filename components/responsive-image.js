@@ -37,6 +37,10 @@ function responsiveProps(props) {
 
 export class ResponsiveImageBase extends React.Component {
   constructor(props, context) {
+    if(process.env.NODE_ENV == 'development' && !props.alt) {
+      global.console && global.console.warn(`Image Found without an alt attribute: ${responsiveProps(props).src}`);
+    }
+
     super(props, context);
     this.state = {
       showImage: !context.lazyLoadObserveImage
