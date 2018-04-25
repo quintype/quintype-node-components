@@ -5,7 +5,7 @@ import {func} from 'prop-types';
 import omit from 'lodash/omit';
 import emptyWebGif from 'empty-web-gif';
 
-const USED_PARAMS = ["imageCDN","defaultWidth","widths","imgParams","slug","metadata","aspectRatio"];
+const USED_PARAMS = ["imageCDN","defaultWidth","widths","imgParams","slug","metadata","aspectRatio", "story"];
 
 // Add the following CSS somewhere: img.qt-image { width: 100%; object-fit: cover; }
 
@@ -44,15 +44,27 @@ export class ResponsiveImageBase extends React.Component {
     super(props, context);
     this.state = {
       showImage: !context.lazyLoadObserveImage
-    }
+    };
   }
 
   render() {
     const imageProps = this.state.showImage ? responsiveProps(this.props) : {src: emptyWebGif};
     return React.createElement("img", Object.assign(imageProps, omit(this.props, USED_PARAMS), {
       ref: dom => this.dom = dom,
-      className: this.props.className ? `qt-image ${this.props.className}` : 'qt-image'
+      className: this.props.className ? `qt-image ${this.props.className}` : 'qt-image',
+      alt: this.addAltText()
     }));
+  }
+
+
+  addAltText() {
+    const { story = {} } = this.props;
+    const { caption, description, headline = '' } = story;
+
+    if(this.props.alt) return this.props.alt;
+
+    return caption || description || headline || '';
+
   }
 
   componentDidMount() {
