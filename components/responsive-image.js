@@ -52,19 +52,8 @@ export class ResponsiveImageBase extends React.Component {
     return React.createElement("img", Object.assign(imageProps, omit(this.props, USED_PARAMS), {
       ref: dom => this.dom = dom,
       className: this.props.className ? `qt-image ${this.props.className}` : 'qt-image',
-      alt: this.addAltText()
+      alt: this.props.alt
     }));
-  }
-
-
-  addAltText() {
-    const { story = {} } = this.props;
-    const { caption, description, headline = '' } = story;
-
-    if(this.props.alt) return this.props.alt;
-
-    return caption || description || headline || '';
-
   }
 
   componentDidMount() {
