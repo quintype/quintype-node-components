@@ -5,7 +5,7 @@ import {func} from 'prop-types';
 import omit from 'lodash/omit';
 import emptyWebGif from 'empty-web-gif';
 
-const USED_PARAMS = ["imageCDN","defaultWidth","widths","imgParams","slug","metadata","aspectRatio", "story"];
+const USED_PARAMS = ["imageCDN","defaultWidth","widths","imgParams","slug","metadata","aspectRatio"];
 
 // Add the following CSS somewhere: img.qt-image { width: 100%; object-fit: cover; }
 
