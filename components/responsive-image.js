@@ -37,21 +37,22 @@ function responsiveProps(props) {
 
 export class ResponsiveImageBase extends React.Component {
   constructor(props, context) {
-    if(process.env.NODE_ENV == 'development' && !props.alt) {
+    if(process.env.NODE_ENV === 'development' && !props.alt) {
       global.console && global.console.warn(`Image Found without an alt attribute: ${responsiveProps(props).src}`);
     }
 
     super(props, context);
     this.state = {
       showImage: !context.lazyLoadObserveImage
-    }
+    };
   }
 
   render() {
     const imageProps = this.state.showImage ? responsiveProps(this.props) : {src: emptyWebGif};
     return React.createElement("img", Object.assign(imageProps, omit(this.props, USED_PARAMS), {
       ref: dom => this.dom = dom,
-      className: this.props.className ? `qt-image ${this.props.className}` : 'qt-image'
+      className: this.props.className ? `qt-image ${this.props.className}` : 'qt-image',
+      alt: this.props.alt
     }));
   }
 
