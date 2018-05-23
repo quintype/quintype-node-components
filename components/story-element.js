@@ -71,6 +71,13 @@ function StoryElementTable({element}) {
   return React.createElement(Table, { id: element.id, data: element.data, hasHeader: element.metadata['has-header']});
 }
 
+function StoryElementFile({element}) {
+  return <div className="attachment" key={element.id}>
+      <div className="attachment__title">{element["file-name"]}</div>
+      <a className="attachment__link" href={element.url} download>download</a>
+    </div>;
+}
+
 // FIXME MISSING: composite
 // TODO: Can also support various subtypes (though not needed potentially)
 
@@ -83,7 +90,8 @@ const DEFAULT_TEMPLATES = {
   "jsembed": StoryElementJsembed,
   "polltype": StoryElementPolltype,
   "table": StoryElementTable,
-  "also-read": StoryElementAlsoRead
+  "also-read": StoryElementAlsoRead,
+  "file": StoryElementFile,
 };
 
 class StoryElementBase extends React.Component {
