@@ -72,10 +72,9 @@ function StoryElementTable({element}) {
 }
 
 function StoryElementFile({element}) {
-  return <div className="attachment" key={element.id}>
-      <div className="attachment__title">{element["file-name"]}</div>
-      <a className="attachment__link" href={element.url} download>download</a>
-    </div>;
+  return React.createElement("div", {className: "attachment", key: element.id}, 
+            React.createElement("div", {className: "attachment__title"}, element["file-name"]),
+            React.createElement("a", {className: "attachment__link", href: element.url, download: true}, 'download'))
 }
 
 // FIXME MISSING: composite
