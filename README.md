@@ -107,6 +107,15 @@ import { HamburgerButton } from '@quintype/components';
 </HamburgerButton>
 ```
 
+### ImageGalleryElement
+This component can be used for adding image gallery on the story page. You can pass in props like ```className, imageAspectRatio, defaultWidth, element``` and ```widths```
+
+``` javascript
+import { ImageGalleryElement } from "@quintype/components";
+
+<ImageGalleryElement element={element} key={element.id} imageAspectRatio={[4,3]} />   
+```
+
 ### InfiniteScroll
 
 This component can be used to implement InfiniteScroll. This is an internal component.
