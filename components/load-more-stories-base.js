@@ -26,7 +26,7 @@ export class LoadMoreStoriesManager extends React.Component {
     this.setState({loading: true, pageNumber: pageNumber + 1}, () => {
       this.props.loadStories(pageNumber)
         .then(stories => {
-          const limit = 5;
+          const limit = 10;
           this.setState({
             loading: false,
             moreStories: this.state.moreStories.concat(removeDuplicateStories(this.stories(), stories)),
@@ -49,8 +49,8 @@ export class LoadMoreStoriesManager extends React.Component {
 export class LoadMoreStoriesBase extends React.Component {
   loadMoreStories(pageNumber) {
     return getRequest("/api/v1/stories", Object.assign({}, this.props.params, {
-      offset: 5 * (pageNumber - 1) + this.props.initialStoryShowCount,
-      limit: 5,
+      offset: 10 * (pageNumber - 1) + this.props.initialStoryShowCount,
+      limit: 10,
       fields: this.props.fields
     })).json(response => response.stories || []);
   }
@@ -58,7 +58,7 @@ export class LoadMoreStoriesBase extends React.Component {
   render() {
     return React.createElement(LoadMoreStoriesManager, Object.assign({}, this.props.data, {
       template: this.props.template,
-      storiesPerPage: this.props.storiesPerPage || 5,
+      storiesPerPage: this.props.storiesPerPage || 10,
       loadStories: (pageNumber) => this.loadMoreStories(pageNumber),
       languageDirection: this.props.languageDirection,
     }));
@@ -68,8 +68,8 @@ export class LoadMoreStoriesBase extends React.Component {
 export class LoadMoreCollectionStories extends React.Component {
   loadMoreStories(pageNumber) {
     return getRequest(`/api/v1/collections/${this.props.collectionSlug}`, Object.assign({}, this.props.params, {
-      offset: 5 * (pageNumber - 1) + this.props.initialStoryShowCount,
-      limit: 5,
+      offset: 10 * (pageNumber - 1) + this.props.initialStoryShowCount,
+      limit: 10,
     })).json(response => (response.items || []).map(item => item.story));
   }
 
