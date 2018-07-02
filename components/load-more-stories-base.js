@@ -10,7 +10,7 @@ export class LoadMoreStoriesManager extends React.Component {
       loading: false,
       pageNumber: 1,
       moreStories: [],
-      noMoreStories: this.props.noMoreStories || (this.props.stories.length < this.props.storiesPerPage)
+      noMoreStories: this.props.noMoreStories
     };
   }
 
@@ -26,11 +26,10 @@ export class LoadMoreStoriesManager extends React.Component {
     this.setState({loading: true, pageNumber: pageNumber + 1}, () => {
       this.props.loadStories(pageNumber)
         .then(stories => {
-          const limit = 10;
           this.setState({
             loading: false,
             moreStories: this.state.moreStories.concat(removeDuplicateStories(this.stories(), stories)),
-            noMoreStories: stories.length < limit
+            noMoreStories: stories.length < this.props.storiesOnClick
           })
       })
     })
@@ -49,8 +48,8 @@ export class LoadMoreStoriesManager extends React.Component {
 export class LoadMoreStoriesBase extends React.Component {
   loadMoreStories(pageNumber) {
     return getRequest("/api/v1/stories", Object.assign({}, this.props.params, {
-      offset: 10 * (pageNumber - 1) + this.props.initialStoryShowCount,
-      limit: 10,
+      offset: this.props.storiesOnClick * (pageNumber - 1) + this.props.initialStoryShowCount,
+      limit: this.props.storiesOnClick,
       fields: this.props.fields
     })).json(response => response.stories || []);
   }
@@ -58,9 +57,10 @@ export class LoadMoreStoriesBase extends React.Component {
   render() {
     return React.createElement(LoadMoreStoriesManager, Object.assign({}, this.props.data, {
       template: this.props.template,
-      storiesPerPage: this.props.storiesPerPage || 10,
+      storiesOnClick: this.props.storiesOnClick || 10,
       loadStories: (pageNumber) => this.loadMoreStories(pageNumber),
       languageDirection: this.props.languageDirection,
+      noMoreStories: this.props.data.stories.length <= this.props.initialStoryShowCount
     }));
   }
 }
@@ -68,8 +68,8 @@ export class LoadMoreStoriesBase extends React.Component {
 export class LoadMoreCollectionStories extends React.Component {
   loadMoreStories(pageNumber) {
     return getRequest(`/api/v1/collections/${this.props.collectionSlug}`, Object.assign({}, this.props.params, {
-      offset: 10 * (pageNumber - 1) + this.props.initialStoryShowCount,
-      limit: 10,
+      offset: this.props.storiesOnClick * (pageNumber - 1) + this.props.initialStoryShowCount,
+      limit: this.props.storiesOnClick,
     })).json(response => (response.items || []).map(item => item.story));
   }
 
@@ -79,7 +79,8 @@ export class LoadMoreCollectionStories extends React.Component {
       loadStories: (pageNumber) => this.loadMoreStories(pageNumber),
       languageDirection: this.props.languageDirection,
       stories: this.props.data.stories.slice(0, this.props.initialStoryShowCount),
-      noMoreStories: this.props.data.stories.length <= this.props.initialStoryShowCount
+      noMoreStories: this.props.data.stories.length <= this.props.initialStoryShowCount,
+      storiesOnClick: this.props.storiesOnClick
     }));
   }
 }
