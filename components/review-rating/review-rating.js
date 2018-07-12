@@ -15,7 +15,7 @@ const ReviewRating = ({
                         halfActiveSymbol=null
                       }) => {
 
-  if(value < 0.5) return null;
+  if(value < 0.1) return null;
 
   const activeComponent = index => activeSymbol ? React.cloneElement(activeSymbol, {size, activeColor, inActiveColor,className:`${className}-symbol active`, key: `review-${index}`}) : <StarIcon size={size} foregroundColor={activeColor} backgroundColor={activeColor} className={`${className}-symbol active`} key={`review-${index}`} />;
 
