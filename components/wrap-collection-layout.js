@@ -6,12 +6,14 @@ import { LoadMoreCollectionStories } from './load-more-stories-base';
 import { LazyLoadImages } from './responsive-image';
 import { ClientSideOnly } from './client-side-only';
 
-function addLoadMore(Component, data, load_more, slug) {
+function addLoadMore(Component, data, load_more, slug, initialStoryShowCount, storiesOnClick) {
   if(load_more) {
     return React.createElement(LoadMoreCollectionStories, {
       template: Component,
       collectionSlug: slug,
-      data: data
+      data: data,
+      initialStoryShowCount: initialStoryShowCount,
+      storiesOnClick: storiesOnClick       
     });
   }
   return React.createElement(Component, data);
@@ -45,8 +47,8 @@ function WrapCollectionComponent(Component) {
       associatedMetadata: associatedMetadata,
     });
 
-    const component = addLoadMore(Component, data, associatedMetadata.load_more, props.collection.slug, data);
-
+    const component = addLoadMore(Component, data, associatedMetadata.enable_load_more_button, props.collection.slug, associatedMetadata.limit_stories, associatedMetadata.load_more_stories_count);
+    
     return [addClientSide, addLazyLoad].reduce((c, f) => f(c, associatedMetadata), component);
   }
 }
