@@ -18,5 +18,6 @@ export * from './components/with-error';
 export * from "./components/review-rating";
 export * from "./components/collection";
 export * from "./components/image-gallery";
+export * from "./components/wrap-collection-layout";
 
 export * from './utils';

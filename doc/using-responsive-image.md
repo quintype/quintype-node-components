@@ -31,3 +31,9 @@ In order to do this, you can use the `sizes` parameter. Let us consider the foll
 ```
 
 This tells us that the image will be 98% of the screen width on mobile (upto 500px), 48% of the screen width on tablet, then 23% of the screen on desktop. The browser can calculate and make the call to fetch the appropriate image even before CSS is applied, based on the screen size.
+
+### Performance Tip
+
+Avoid bloating the site with heavy images. Use above `sizes` property to specify the required image dimensions for each resolution.
+
+Example: If the Design requires the container (image) to be of 400w, make sure you're requesting for image slightly more than or equal to 400w, but not something like 200w, which will degrade the quality of image and also not something like 1000w, which will increase the size of your page.

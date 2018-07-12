@@ -3,45 +3,47 @@ import { StarIcon } from "./star-icon";
 import PropTypes from "prop-types";
 
 const ReviewRating = ({
-    value, 
-    size=20,
-    activeColor="gold",
-    inActiveColor="gray",
-    count=5,
-    showHalfStar=true,
-    className="review-rating",
-    activeSymbol=null,
-    inActiveSymbol=null,
-    halfActiveSymbol=null
-  }) => {
+                        value,
+                        size=20,
+                        activeColor="gold",
+                        inActiveColor="gray",
+                        count=5,
+                        showHalfStar=true,
+                        className="review-rating",
+                        activeSymbol=null,
+                        inActiveSymbol=null,
+                        halfActiveSymbol=null
+                      }) => {
 
-    const activeComponent = activeSymbol ? React.cloneElement(activeSymbol, {size, activeColor, inActiveColor,className:`${className}-symbol active`}) : <StarIcon size={size} foregroundColor={activeColor} backgroundColor={activeColor} className={`${className}-symbol active`} />;
+  if(value < 0.1) return null;
 
-    const inActiveComponent = inActiveSymbol ? React.cloneElement(inActiveSymbol, {size, activeColor, inActiveColor, className:`${className}-symbol inactive`}) : <StarIcon size={size} foregroundColor={inActiveColor} backgroundColor={inActiveColor} className={`${className}-symbol inactive`} />;
+  const activeComponent = index => activeSymbol ? React.cloneElement(activeSymbol, {size, activeColor, inActiveColor,className:`${className}-symbol active`, key: `review-${index}`}) : <StarIcon size={size} foregroundColor={activeColor} backgroundColor={activeColor} className={`${className}-symbol active`} key={`review-${index}`} />;
 
-    const halfActiveComponent = halfActiveSymbol ? React.cloneElement(halfActiveSymbol, {size, activeColor, inActiveColor, className:`${className}-symbol half-active`}) : <StarIcon size={size} foregroundColor={activeColor} backgroundColor={inActiveColor} className={`${className}-symbol half-active`} />;
+  const inActiveComponent = index => inActiveSymbol ? React.cloneElement(inActiveSymbol, {size, activeColor, inActiveColor, className:`${className}-symbol inactive`, key: `review-${index}`}) : <StarIcon size={size} foregroundColor={inActiveColor} backgroundColor={inActiveColor} className={`${className}-symbol inactive`} key={`review-${index}`} />;
+
+  const halfActiveComponent = index => halfActiveSymbol ? React.cloneElement(halfActiveSymbol, {size, activeColor, inActiveColor, className:`${className}-symbol half-active`, key: `review-${index}`}) : <StarIcon size={size} foregroundColor={activeColor} backgroundColor={inActiveColor} className={`${className}-symbol half-active`} key={`review-${index}`} />;
 
 
-     let children = [];
-     for(let i = 1; i <= count; i++) {
+  let children = [];
+  for(let i = 1; i <= count; i++) {
 
-       if(i <= Math.floor(value)) {
-          children.push(activeComponent);
-       } 
-       else if(showHalfStar && ((value - Math.floor(value)) > 0) && (i === Math.round(value))) {
-          children.push(halfActiveComponent); 
-          }
-       else {
-        children.push(inActiveComponent);
-       } 
-     }
+    if(i <= Math.floor(value)) {
+      children.push(activeComponent(i));
+    }
+    else if(showHalfStar && ((value - Math.floor(value)) > 0) && (i === Math.round(value))) {
+      children.push(halfActiveComponent(i));
+    }
+    else {
+      children.push(inActiveComponent(i));
+    }
+  }
 
-    return (
-        <div className={className}>
-          {children}
-        </div>
-    );
-}
+  return (
+    <div className={className}>
+      {children}
+    </div>
+  );
+};
 
 export { ReviewRating };
 
