@@ -10,7 +10,7 @@ export class LoadMoreStoriesManager extends React.Component {
       loading: false,
       pageNumber: 1,
       moreStories: [],
-      noMoreStories: this.props.noMoreStories
+      noMoreStories: false
     };
   }
 
@@ -48,7 +48,7 @@ export class LoadMoreStoriesManager extends React.Component {
 export class LoadMoreStoriesBase extends React.Component {
   loadMoreStories(pageNumber) {
     return getRequest("/api/v1/stories", Object.assign({}, this.props.params, {
-      offset: this.props.storiesOnClick * (pageNumber - 1) + this.props.initialStoryShowCount,
+      offset: this.props.storiesOnClick * (pageNumber - 1) + this.props.data.stories.length,
       limit: this.props.storiesOnClick,
       fields: this.props.fields
     })).json(response => response.stories || []);
@@ -57,10 +57,9 @@ export class LoadMoreStoriesBase extends React.Component {
   render() {
     return React.createElement(LoadMoreStoriesManager, Object.assign({}, this.props.data, {
       template: this.props.template,
-      storiesOnClick: this.props.storiesOnClick || 10,
       loadStories: (pageNumber) => this.loadMoreStories(pageNumber),
       languageDirection: this.props.languageDirection,
-      noMoreStories: this.props.data.stories.length <= this.props.initialStoryShowCount
+      storiesOnClick: this.props.storiesOnClick || 10,
     }));
   }
 }
@@ -68,7 +67,7 @@ export class LoadMoreStoriesBase extends React.Component {
 export class LoadMoreCollectionStories extends React.Component {
   loadMoreStories(pageNumber) {
     return getRequest(`/api/v1/collections/${this.props.collectionSlug}`, Object.assign({}, this.props.params, {
-      offset: this.props.storiesOnClick * (pageNumber - 1) + this.props.initialStoryShowCount,
+      offset: this.props.storiesOnClick * (pageNumber - 1) + this.props.data.stories.length,
       limit: this.props.storiesOnClick,
     })).json(response => (response.items || []).map(item => item.story));
   }
@@ -78,8 +77,6 @@ export class LoadMoreCollectionStories extends React.Component {
       template: this.props.template,
       loadStories: (pageNumber) => this.loadMoreStories(pageNumber),
       languageDirection: this.props.languageDirection,
-      stories: this.props.data.stories.slice(0, this.props.initialStoryShowCount),
-      noMoreStories: this.props.data.stories.length <= this.props.initialStoryShowCount,
       storiesOnClick: this.props.storiesOnClick
     }));
   }
