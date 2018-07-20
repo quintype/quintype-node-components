@@ -30,7 +30,7 @@ export class LoadMoreStoriesManager extends React.Component {
           this.setState({
             loading: false,
             moreStories: this.state.moreStories.concat(removeDuplicateStories(this.stories(), stories)),
-            noMoreStories: stories.length < this.props.storiesOnClick
+            noMoreStories: stories.length < this.props.numStoriesToLoad
           })
       })
     })
@@ -50,8 +50,8 @@ export class LoadMoreStoriesBase extends React.Component {
   loadMoreStories(pageNumber) {
     const stories = get(this.props, ['data', 'stories'], []);
     return getRequest("/api/v1/stories", Object.assign({}, this.props.params, {
-      offset: this.props.storiesOnClick * (pageNumber - 1) + stories.length,
-      limit: this.props.storiesOnClick,
+      offset: this.props.numStoriesToLoad * (pageNumber - 1) + stories.length,
+      limit: this.props.numStoriesToLoad,
       fields: this.props.fields
     })).json(response => response.stories || []);
   }
@@ -61,7 +61,7 @@ export class LoadMoreStoriesBase extends React.Component {
       template: this.props.template,
       loadStories: (pageNumber) => this.loadMoreStories(pageNumber),
       languageDirection: this.props.languageDirection,
-      storiesOnClick: this.props.numStoriesToLoad || 10,
+      numStoriesToLoad: this.props.numStoriesToLoad || 10,
     }));
   }
 }
@@ -70,8 +70,8 @@ export class LoadMoreCollectionStories extends React.Component {
   loadMoreStories(pageNumber) {
     const stories = get(this.props, ['data', 'stories'], []);
     return getRequest(`/api/v1/collections/${this.props.collectionSlug}`, Object.assign({}, this.props.params, {
-      offset: this.props.storiesOnClick * (pageNumber - 1) + stories.length,
-      limit: this.props.storiesOnClick,
+      offset: this.props.numStoriesToLoad * (pageNumber - 1) + stories.length,
+      limit: this.props.numStoriesToLoad,
     })).json(response => (response.items || []).map(item => item.story));
   }
 
@@ -80,7 +80,7 @@ export class LoadMoreCollectionStories extends React.Component {
       template: this.props.template,
       loadStories: (pageNumber) => this.loadMoreStories(pageNumber),
       languageDirection: this.props.languageDirection,
-      storiesOnClick: this.props.numStoriesToLoad || 10
+      numStoriesToLoad: this.props.numStoriesToLoad || 10
     }));
   }
 }
