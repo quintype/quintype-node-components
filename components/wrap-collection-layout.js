@@ -36,7 +36,7 @@ function WrapCollectionComponent(Component) {
 
     const associatedMetadata = props.collection["associated-metadata"] || {};
     let stories = collectionToStories(props.collection);
-    stories = associatedMetadata.limit_stories ? stories.slice(0, associatedMetadata.limit_stories) : stories;
+    stories = associatedMetadata.initial_stories_load_count ? stories.slice(0, associatedMetadata.initial_stories_load_count) : stories;
 
     if(stories.length == 0) {
       return <div></div>
@@ -49,7 +49,7 @@ function WrapCollectionComponent(Component) {
 
     const maybeWrapLoadMore = (component, {enable_load_more_button = false}) => {
       return enable_load_more_button ? 
-        addLoadMore(component, data, props.collection.slug, associatedMetadata.load_more_stories_count) : 
+        addLoadMore(component, data, props.collection.slug, associatedMetadata.subsequent_stories_load_count) : 
         component;
     }
     
