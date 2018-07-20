@@ -6,13 +6,13 @@ import { LoadMoreCollectionStories } from './load-more-stories-base';
 import { LazyLoadImages } from './responsive-image';
 import { ClientSideOnly } from './client-side-only';
 
-function addLoadMore(Component, data, slug, storiesOnClick) {
+function addLoadMore(Component, data, slug, numStoriesToLoad) {
   return React.createElement(LoadMoreCollectionStories, {
     template: Component,
     collectionSlug: slug,
     params: { 'item-type': 'story' },
     data: data,
-    storiesOnClick: storiesOnClick       
+    numStoriesToLoad,       
   });
 }
 
