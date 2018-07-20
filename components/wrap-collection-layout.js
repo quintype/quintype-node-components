@@ -6,37 +6,36 @@ import { LoadMoreCollectionStories } from './load-more-stories-base';
 import { LazyLoadImages } from './responsive-image';
 import { ClientSideOnly } from './client-side-only';
 
-function addLoadMore(Component, data, load_more, slug, initialStoryShowCount, storiesOnClick) {
-  if(load_more) {
-    return React.createElement(LoadMoreCollectionStories, {
-      template: Component,
-      collectionSlug: slug,
-      data: data,
-      initialStoryShowCount: initialStoryShowCount,
-      storiesOnClick: storiesOnClick       
-    });
-  }
-  return React.createElement(Component, data);
+function addLoadMore(Component, data, slug, storiesOnClick) {
+  return React.createElement(LoadMoreCollectionStories, {
+    template: Component,
+    collectionSlug: slug,
+    data: data,
+    storiesOnClick: storiesOnClick       
+  });
 }
 
-function addLazyLoad(component, {lazy_load_images = false}) {
-  if(lazy_load_images) {
-    return React.createElement(LazyLoadImages, {}, component);
-  }
-  return component;
+function maybeWrapLazyLoad(component, {lazy_load_images = false}) {
+  return lazy_load_images ?
+    React.createElement(LazyLoadImages, {}, component) :
+    component;
 }
 
-function addClientSide(component, {client_side_only = false}) {
-  if(client_side_only) {
-    return React.createElement(ClientSideOnly, {}, component);
-  }
-  return component;
+function maybeWrapClientSide(component, {client_side_only = false}) {
+  return client_side_only ?
+    React.createElement(ClientSideOnly, {}, component) :
+    component;
 }
 
 function WrapCollectionComponent(Component) {
   return function(props) {
-    const stories = collectionToStories(props.collection)
+    if (!props.collection) {
+      return <div></div>
+    }
+
     const associatedMetadata = props.collection["associated-metadata"] || {};
+    let stories = collectionToStories(props.collection);
+    stories = associatedMetadata.limit_stories ? stories.slice(0, associatedMetadata.limit_stories) : stories;
 
     if(stories.length == 0) {
       return <div></div>
@@ -47,9 +46,13 @@ function WrapCollectionComponent(Component) {
       associatedMetadata: associatedMetadata,
     });
 
-    const component = addLoadMore(Component, data, associatedMetadata.enable_load_more_button, props.collection.slug, associatedMetadata.limit_stories, associatedMetadata.load_more_stories_count);
+    const maybeWrapLoadMore = (component, {enable_load_more_button = false}) => {
+      return enable_load_more_button ? 
+        addLoadMore(component, data, props.collection.slug, associatedMetadata.load_more_stories_count) : 
+        component;
+    }
     
-    return [addClientSide, addLazyLoad].reduce((c, f) => f(c, associatedMetadata), component);
+    return [maybeWrapLoadMore, maybeWrapClientSide, maybeWrapLazyLoad].reduce((c, f) => f(c, associatedMetadata), Component);
   }
 }
 

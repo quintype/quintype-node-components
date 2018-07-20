@@ -61,7 +61,7 @@ export class LoadMoreStoriesBase extends React.Component {
       template: this.props.template,
       loadStories: (pageNumber) => this.loadMoreStories(pageNumber),
       languageDirection: this.props.languageDirection,
-      storiesOnClick: this.props.storiesOnClick || 10,
+      storiesOnClick: this.props.numStoriesToLoad || 10,
     }));
   }
 }
@@ -80,7 +80,7 @@ export class LoadMoreCollectionStories extends React.Component {
       template: this.props.template,
       loadStories: (pageNumber) => this.loadMoreStories(pageNumber),
       languageDirection: this.props.languageDirection,
-      storiesOnClick: this.props.storiesOnClick || 10
+      storiesOnClick: this.props.numStoriesToLoad || 10
     }));
   }
 }
