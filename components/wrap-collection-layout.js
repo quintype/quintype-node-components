@@ -10,6 +10,7 @@ function addLoadMore(Component, data, slug, storiesOnClick) {
   return React.createElement(LoadMoreCollectionStories, {
     template: Component,
     collectionSlug: slug,
+    params: { 'item-type': 'story' },
     data: data,
     storiesOnClick: storiesOnClick       
   });
