@@ -17,15 +17,15 @@ function addLoadMore(Component, data, slug, numStoriesToLoad) {
 }
 
 function maybeWrapLazyLoad(component, {lazy_load_images = false}) {
-  return lazy_load_images ?
-    React.createElement(LazyLoadImages, {}, component) :
-    component;
+  return !lazy_load_images ?
+    component :
+    React.createElement(LazyLoadImages, {}, component);
 }
 
 function maybeWrapClientSide(component, {client_side_only = false}) {
-  return client_side_only ?
-    React.createElement(ClientSideOnly, {}, component) :
-    component;
+  return !client_side_only ?
+    component :
+    React.createElement(ClientSideOnly, {}, component);
 }
 
 function WrapCollectionComponent(Component) {
@@ -48,9 +48,9 @@ function WrapCollectionComponent(Component) {
     });
 
     const maybeWrapLoadMore = (component, {enable_load_more_button = false}) => {
-      return enable_load_more_button ? 
-        addLoadMore(component, data, props.collection.slug, associatedMetadata.subsequent_stories_load_count) : 
-        component;
+      return !enable_load_more_button ?
+        component :
+        addLoadMore(component, data, props.collection.slug, associatedMetadata.subsequent_stories_load_count);
     }
     
     return [maybeWrapLoadMore, maybeWrapClientSide, maybeWrapLazyLoad].reduce((c, f) => f(c, associatedMetadata), Component);
