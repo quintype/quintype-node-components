@@ -18,8 +18,10 @@ class ScrollItem extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.show == false && this.props.show == true) {
-      this.setState({minHeight: this.node.clientHeight})
+    if(nextProps.show && !this.props.show) {
+      this.setState({minHeight: this.props.minHeight});
+    } else if(!nextProps.show && this.props.show) {
+      this.setState({minHeight: this.node.clientHeight});
     }
   }
 
