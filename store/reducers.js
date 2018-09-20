@@ -6,7 +6,8 @@ import {
   NAVIGATE_TO_PAGE,
   PAGE_FINISHED_LOADING,
   HAMBURGER_CLICKED,
-  HAMBURGER_CLOSED
+  HAMBURGER_CLOSED,
+  MEMBER_UPDATED,
 } from './actions';
 
 function breakingNewsReducer(state = [], action) {
@@ -41,9 +42,17 @@ function hamburgerOpenedReducer(state = false, action) {
   }
 }
 
+function memberReducer(state = null, action) {
+  switch(action.type) {
+    case MEMBER_UPDATED: return action.member;
+    default: return state;
+  }
+}
+
 export const ComponentReducers = {
   breakingNews: breakingNewsReducer,
   clientSideRendered: clientSideRenderedReducer,
   pageLoading: pageLoadingReducer,
-  hamburgerOpened: hamburgerOpenedReducer
+  hamburgerOpened: hamburgerOpenedReducer,
+  member: memberReducer,
 };

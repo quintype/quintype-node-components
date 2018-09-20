@@ -21,5 +21,6 @@ export * from "./components/collection";
 export * from "./components/image-gallery";
 export * from "./components/wrap-collection-layout";
 export * from './components/load-more-button';
+export * from './components/with-member';
 
 export * from './utils';
