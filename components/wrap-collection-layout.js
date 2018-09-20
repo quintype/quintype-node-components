@@ -38,10 +38,11 @@ function WrapCollectionComponent(Component) {
 
     const associatedMetadata = props.collection["associated-metadata"] || {};
     let stories = collectionToStories(props.collection);
-    const initialStoriesLoadCount = associatedMetadata.initial_stories_load_count ? associatedMetadata.initial_stories_load_count : 6;
-    stories = stories.slice(0, initialStoriesLoadCount);
+    if (associatedMetadata.initial_stories_load_count) {
+      stories = stories.slice(0, associatedMetadata.initial_stories_load_count);
+    }
 
-    if(stories.length == 0) {
+    if(stories.length === 0) {
       return <div></div>
     }
 
@@ -62,7 +63,7 @@ export function wrapCollectionLayout(component) {
 
 export function collectionToStories(collection) {
   return collection.items
-                   .filter(item => item.type == 'story')
+                   .filter(item => item.type === 'story')
                    .map(item => replaceWithAlternates(item.story));
 }
 
