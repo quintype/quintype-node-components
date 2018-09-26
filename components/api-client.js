@@ -8,3 +8,9 @@ export function getRequest(url, params) {
     client = client.query(params);
   return client.get();
 }
+
+export function postRequest(url, body) {
+  return apiClient
+    .url(url)
+    .post(body);
+}
