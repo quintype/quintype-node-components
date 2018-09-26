@@ -14,8 +14,8 @@ function LinkBase(props) {
       e.preventDefault();
       e.stopPropagation();
 
-      if(props.externalLink === true) {
-        global.open(props.href, "_blank");
+      if(props.externalLink) {
+        global.open(props.externalLink, "_blank");
       }
       else {
         props.navigateTo(props.href);
