@@ -17,7 +17,7 @@ const ReviewRating = ({
 
   if(value < 0.1) return null;
 
-  const activeComponent = index => activeSymbol ? React.cloneElement(activeSymbol, {size, activeColor, inActiveColor,className:`${className}-symbol active`, key: `review-${index}`}) : <StarIcon size={size} foregroundColor={activeColor} backgroundColor={activeColor} className={`${className}-symbol active`} key={`review-${index}`} />;
+  const activeComponent = index => activeSymbol ? React.cloneElement(activeSymbol, {size, activeColor, inActiveColor,className:`${className}-symbol active`, key: `review-${index}`}) : <StarIcon size={size} foregroundColor={activeColor} backgroundColor={activeColor} className={`${className}-symbol active`} key={`review-${index}`} data-test-id = "star-icon"/>;
 
   const inActiveComponent = index => inActiveSymbol ? React.cloneElement(inActiveSymbol, {size, activeColor, inActiveColor, className:`${className}-symbol inactive`, key: `review-${index}`}) : <StarIcon size={size} foregroundColor={inActiveColor} backgroundColor={inActiveColor} className={`${className}-symbol inactive`} key={`review-${index}`} />;
 
