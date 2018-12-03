@@ -29,16 +29,18 @@ class IntersectionObserverWrapper {
     this.observer = new global.IntersectionObserver((entries) => this.onObservation(entries), {
       rootMargin: margin,
       threshold: 0,
-    })
+    });
     this.observedItems.forEach(([dom, component]) => this.observer.observe(dom));
   }
 
   onObservation(entries) {
     entries
-      .filter(entry => entry.isIntersecting)
+      .filter(entry => {
+        return (entry.isIntersecting === undefined || entry.isIntersecting)
+      })
       .map(entry => entry.target)
       .forEach(dom => {
-        const index = this.observedItems.findIndex(x => x[0] == dom);
+        const index = this.observedItems.findIndex(x => x[0] === dom);
         if(index > -1) {
           const component = this.observedItems[index][1];
           this.callback(component);
@@ -53,7 +55,7 @@ class IntersectionObserverWrapper {
   }
 
   unregister(dom, component) {
-    const index = this.observedItems.findIndex(x => x[0] == dom);
+    const index = this.observedItems.findIndex(x => x[0] === dom);
 
     if (index > -1) {
       this.observedItems.splice(index, 1);
@@ -110,4 +112,4 @@ export class LazyLoadImages extends React.Component {
 LazyLoadImages.childContextTypes = {
   lazyLoadObserveImage: func,
   lazyLoadUnobserveImage: func
-}
+};

@@ -1,6 +1,6 @@
 {
   "name": "@quintype/components",
-  "version": "1.43.0-beta.0",
+  "version": "1.43.0",
   "description": "Components to help build Quintype Node.js apps",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
@@ -51,7 +51,8 @@
     "react-dom": "^16.2.0",
     "rimraf": "^2.6.2",
     "rollup": "^0.65.2",
-    "rollup-plugin-babel": "^4.0.3"
+    "rollup-plugin-babel": "^4.0.3",
+    "standard-version": "^4.4.0"
   },
   "scripts": {
     "build:cjs": "npx rollup -c",
@@ -59,7 +60,7 @@
     "build": "npm run clean:dist && npm run build:cjs && npm run build:es",
     "clean:dist": "rimraf dist",
     "prepack": "npm run build",
-    "prepublishOnly": "npm install && git diff --quiet && git tag -m '' -a v$(cat package.json | grep version | head -n1  | cut -d \\\" -f 4) && git push --follow-tags origin",
+    "prepublishOnly": "npm install && git diff --quiet && npx standard-version && git push --follow-tags origin",
     "sync-files-to": "npx onchange --verbose --wait --await-write-finish 'src/**/*' -- ./bin-dev-scripts/sync-to.sh "
   }
 }
