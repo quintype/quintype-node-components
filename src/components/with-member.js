@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getRequest } from './api-client';
-import { MEMBER_UPDATED } from '../store/actions';
+import { MEMBER_UPDATED, MEMBER_BEING_LOADED } from '../store/actions';
 
 let loadedMember = false;
 
@@ -13,6 +13,7 @@ class WithMemberBase extends React.Component {
   }
 
   checkForMemberUpdated() {
+    this.props.memberBeingLoaded();
     return getRequest('/api/v1/members/me')
       .forbidden(() => this.props.memberUpdated(null))
       .unauthorized(() => this.props.memberUpdated(null))
@@ -41,12 +42,13 @@ export const WithMember = connect(mapStateToProps, mapDispatchToProps)(WithMembe
 function mapStateToProps(state) {
   return {
     member: state.member || null,
-    isLoading: state.member === false,
+    isLoading: state.memberLoading,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    memberBeingLoaded: () => dispatch({ type: MEMBER_BEING_LOADED }),
     memberUpdated: member => dispatch({ type: MEMBER_UPDATED, member }),
     logout: () => getRequest('/api/logout').res(() => dispatch({ type: MEMBER_UPDATED, member: null }))
   };

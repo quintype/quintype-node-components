@@ -457,6 +457,8 @@ The render will also be passed a function to call for logging out, and another t
 
 On initial load, the `isLoading` prop will be set, which will become false when the user is loaded. Use this field to avoid showing a Login Button while fetch is happening.
 
+In order to update the current member, call `checkForMemberUpdated`.
+
 ```javascript
 import { WithMember } from '@quintype/components';
 
