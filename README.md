@@ -473,6 +473,28 @@ function MyView({ member, logout, checkForMemberUpdated }) {
 </WithMember>
 ```
 
+### WithPreview
+
+This higher order component can be used for the home or story page preview
+
+```javascript
+import { WithPreview } from '@quintype/components';
+import { StoryPage } from '../pages/story';
+import { HomePage, replaceAllStoriesInCollection } from '../pages/home';
+
+function storyPageData(data, story) {
+  return {...data, story, relatedStories: Array(5).fill(story)};
+}
+
+// Remember to update load-data.js for the initial data
+function homePageData(data, story) {
+  return {...data, collection: replaceAllStoriesInCollection(data.collection, story)};
+}
+
+export const StoryPreview = WithPreview(StoryPage, storyPageData);
+export const HomePreview = WithPreview(HomePage, homePageData)
+```
+
 ### WithSocialLogin
 This is a render props component for logging in. The component adds two items to scope: `serverSideLoginPath` for redirecting to server side, and `login` for doing a client side login. Calling `login()` returns a promise which can be used to handle success and failure cases.
 
