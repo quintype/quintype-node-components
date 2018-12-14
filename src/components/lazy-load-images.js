@@ -109,7 +109,20 @@ export class LazyLoadImages extends React.Component {
   }
 }
 
-LazyLoadImages.childContextTypes = {
+export class EagerLoadImages extends React.Component {
+  getChildContext() {
+    return {
+      lazyLoadObserveImage: null,
+      lazyLoadUnobserveImage: null
+    }
+  }
+
+  render() {
+    return this.props.children;
+  }
+}
+
+EagerLoadImages.childContextTypes = LazyLoadImages.childContextTypes = {
   lazyLoadObserveImage: func,
   lazyLoadUnobserveImage: func
 };
