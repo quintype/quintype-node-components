@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.50.1"></a>
+## [1.50.1](https://github.com/quintype/quintype-node-components/compare/v1.50.0...v1.50.1) (2018-12-21)
+
+
+
+<a name="1.50.0"></a>
+# [1.50.0](https://github.com/quintype/quintype-node-components/compare/v1.49.0...v1.50.0) (2018-12-21)
+
+
+### Bug Fixes
+
+* **package-lock:** package lock update ([d8b7b08](https://github.com/quintype/quintype-node-components/commit/d8b7b08))
+
+
+### Features
+
+* **build:** upgrade to Babel 7 ([#55](https://github.com/quintype/quintype-node-components/issues/55)) ([799514f](https://github.com/quintype/quintype-node-components/commit/799514f))
+
+
+
 <a name="1.49.0"></a>
 # [1.49.0](https://github.com/quintype/quintype-node-components/compare/v1.48.0...v1.49.0) (2018-12-14)
 
