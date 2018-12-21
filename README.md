@@ -32,6 +32,7 @@ This is a set of components that is to be used to build a Quintype Node App. Thi
          * [WithPreview](#withpreview)
          * [WithSocialLogin](#withsociallogin)
          * [Review Rating](#review-rating)
+         * [UpdateOnInterval](#UpdateOnInterval)
       * [Recommended Components that are not included](#recommended-components-that-are-not-included)
          * [Sliders](#sliders)
          * [Marquee for Breaking News](#marquee-for-breaking-news)
@@ -359,11 +360,12 @@ import { ResponsiveImage } from '@quintype/components';
 This component is used in more advanced usages if the aspect ratio is expected to change between screens
 
 ```javascript
+
 import { ResponsiveSource } from '@quintype/components';
 
 <figure className="story-grid-item-image">
   <picture>
-    // Desktop Version
+    <!--Desktop Version-->
     <ResponsiveSource media="(min-width: 1024px)"
       slug={props.story["hero-image-s3-key"]}
       metadata={props.story["hero-image-metadata"]}
@@ -372,7 +374,7 @@ import { ResponsiveSource } from '@quintype/components';
       sizes="(max-width: 500px) 98vw, (max-width: 768px) 48vw, 23vw"
       imgParams={{auto:['format', 'compress']}}/>
 
-    // Mobile Version
+    <!--Mobile Version-->
     <ResponsiveImage
       slug={props.story["hero-image-s3-key"]}
       metadata={props.story["hero-image-metadata"]}
@@ -383,6 +385,7 @@ import { ResponsiveSource } from '@quintype/components';
       imgParams={{auto:['format', 'compress']}}/>
   </picture>
 </figure>
+
 ```
 
 ### SearchPageBase
@@ -561,6 +564,46 @@ import { ReviewRating } from '@quintype/components';
 <ReviewRating value="3" />
 ```
 The component supports additional props which allows more customization, you can pass in props like size, color, count of stars or even change the render from star to a custom svg component. Refer to component src to know exact details of what is supported.
+
+
+### UpdateOnInterval
+
+Serves as a wrapper used to update it's children via props while executing data loaders sent as props to the component.
+
+Note : Dataloaders are made to be at an app level to keep the component generic, the return of Dataloaders are sent as props to its children.
+
+```javascript
+import {UpdateOnInterval} from '@quintype/components';
+
+<UpdateOnInterval>
+    <!--Components to be refreshed at an interval-->
+</UpdateOnInterval>
+```
+
+Props | Type | Description | Optional
+--- | --- | --- | ---
+`interval`| `number`(ms) | Sets the time, defaults to 30s | True
+`dataLoader`| `func` | Executes the dataloader, the return of which will be the data to the components children. The return should be an `object` | False
+`dataDecorator`| `func` | Sends the data from `dataLoader` to be customized, return of this this will be passed to the children. (`dataKey` is neglected if set)  | False
+`dataKey`|`string`|The data returned from dataLoader will be decorated with this key, if not set dataLoader sends back data as returned | False
+
+Example :
+```javascript
+function getData() {
+    return fetch('/url/something')//...
+}
+
+function prepareTime(data){
+    return {time: data.eventTime};
+}
+```
+ 
+```javascript
+<UpdateOnInterval interval={3000} dataLoader={() => getData()} dataDecorator={(data) => prepareTime(data)} >
+    <SomeComponent>{this.props.time}</SomeComponent>
+</UpdateOnInterval>
+```
+
 
 ## Recommended Components that are not included
 
