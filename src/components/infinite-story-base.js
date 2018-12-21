@@ -35,8 +35,10 @@ export class InfiniteStoryBase extends React.Component {
     if(this.state.loading)
       return;
     const pageNumber = this.state.pageNumber;
+    const story = get(this.props.data, ['story'], {});
+
     this.setState({loading: true, pageNumber: pageNumber + 1}, () => {
-      this.props.loadItems(pageNumber).then((items) => {
+      this.props.loadItems(pageNumber, story, this.props.config).then((items) => {
         this.setState({
           loading: false,
           moreItems: this.state.moreItems.concat(removeDuplicateStories(this.allItems(), items, item => item.story.id))

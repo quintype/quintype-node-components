@@ -5,7 +5,7 @@ import {func} from 'prop-types';
 import omit from 'lodash/omit';
 import emptyWebGif from 'empty-web-gif';
 
-const USED_PARAMS = ["imageCDN","defaultWidth","widths","imgParams","slug","metadata","aspectRatio", "reactTag"];
+const USED_PARAMS = ["imageCDN","defaultWidth","widths","imgParams","slug","metadata","aspectRatio", "reactTag", "eager"];
 
 // Add the following CSS somewhere: img.qt-image { width: 100%; object-fit: cover; }
 
@@ -43,8 +43,21 @@ export class ResponsiveImageBase extends React.Component {
 
     super(props, context);
     this.state = {
-      showImage: !context.lazyLoadObserveImage
+      showImage: !this.shouldLazyLoad()
     }
+  }
+
+  shouldLazyLoad() {
+    if (this.props.eager === true) {
+      return false;
+    }
+    if (this.context.lazyLoadEagerPredicate && this.context.lazyLoadEagerPredicate(this.props.eager)) {
+      return false;
+    }
+    if (this.context.lazyLoadObserveImage && this.context.lazyLoadUnobserveImage) {
+      return true;
+    }
+    return false;
   }
 
   render() {
@@ -56,11 +69,11 @@ export class ResponsiveImageBase extends React.Component {
   }
 
   componentDidMount() {
-    this.context.lazyLoadObserveImage && this.context.lazyLoadObserveImage(this.dom, this);
+    this.shouldLazyLoad() && this.context.lazyLoadObserveImage(this.dom, this);
   }
 
   componentWillUnmount() {
-    this.context.lazyLoadUnobserveImage && this.context.lazyLoadUnobserveImage(this.dom, this);
+    this.shouldLazyLoad() && this.context.lazyLoadUnobserveImage(this.dom, this);
   }
 
   showImage() {
@@ -76,7 +89,8 @@ function mapStateToProps(state) {
 
 ResponsiveImageBase.contextTypes = {
   lazyLoadObserveImage: func,
-  lazyLoadUnobserveImage: func
+  lazyLoadUnobserveImage: func,
+  lazyLoadEagerPredicate: func
 }
 
 export const ResponsiveImage = connect(mapStateToProps, {})(ResponsiveImageBase);

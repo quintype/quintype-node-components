@@ -7,6 +7,7 @@ import {
   HAMBURGER_CLICKED,
   HAMBURGER_CLOSED,
   MEMBER_UPDATED,
+  MEMBER_BEING_LOADED,
 } from './actions';
 
 function breakingNewsReducer(state = [], action) {
@@ -41,11 +42,17 @@ function hamburgerOpenedReducer(state = false, action) {
   }
 }
 
-// member is set to false when loading, then it is either
-// null or a member object
-function memberReducer(state = false, action) {
+function memberReducer(state = null, action) {
   switch(action.type) {
     case MEMBER_UPDATED: return action.member;
+    default: return state;
+  }
+}
+
+function memberLoadingReducer(state = true, action) {
+  switch (action.type) {
+    case MEMBER_BEING_LOADED: return true;
+    case MEMBER_UPDATED: return false;
     default: return state;
   }
 }
@@ -56,4 +63,5 @@ export const ComponentReducers = {
   pageLoading: pageLoadingReducer,
   hamburgerOpened: hamburgerOpenedReducer,
   member: memberReducer,
+  memberLoading: memberLoadingReducer,
 };

@@ -16,6 +16,7 @@ function renderCollectionItem(collectionItem, index, collectionTemplates, storyT
     case "collection":
       return React.createElement(collectionTemplates(getAssociatedTemplate(collectionItem), index), {
         key: `${index}-${collectionItem.id}`,
+        index: index,
         collection: collectionItem,
         metadata: collectionItem["associated-metadata"] || {}
       });
@@ -23,6 +24,7 @@ function renderCollectionItem(collectionItem, index, collectionTemplates, storyT
     case "story":
       return React.createElement(storyTemplates(index), {
         key: `${index}-${collectionItem.id}`,
+        index: index,
         story: collectionItem.story,
         metadata: collectionItem["associated-metadata"] || {}
       });
