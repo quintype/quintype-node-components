@@ -2,32 +2,40 @@
 
 This is a set of components that is to be used to build a Quintype Node App. This README servers as documentation of the components. Please see [malibu](https://github.com/quintype/malibu) for a reference application using this architecture.
 
-- [Breaking News](#breakingnews)
-- [BreakingNewsItem](#breakingnewsitem)
-- [Collection](#collection)
-- [ClientSideOnly](#clientsideonly)
-- [DfpAds](#dfpads)
-- [HamburgerButton](#hamburgerbutton)
-- [ImageGalleryElement](#imagegalleryelement)
-- [InfiniteScroll](#infinitescroll)
-- [InfiniteStoryBase](#infinitestorybase)
-- [LazyCollection](#lazycollection)
-- [LazyLoadImages](#lazyloadimages)
-- [Link](#link)
-- [LoadMoreBase](#loadmorebase)
-- [LoadMoreCollectionStories](#loadmorecollectionstories)
-- [LoadingIndicator](#loadingindicator)
-- [Menu](#menu)
-- [NavigationComponentBase](#navigationcomponentbase)
-- [ResponsiveHeroImage](#responsiveheroimage)
-- [ResponsiveImage](#responsiveimage)
-- [SearchPageBase](#searchpagebase)
-- [Search Box](#search-box)
-- [SocialShare](#socialshare)
-- [StoryElement](#storyelement)
-- [WithError](#witherror)
-- [WithMember](#withmember)
-- [Review Rating](#review-rating)
+   * [Quintype Components](#quintype-components)
+         * [BreakingNews](#breakingnews)
+         * [BreakingNewsItem](#breakingnewsitem)
+         * [Collection](#collection)
+         * [ClientSideOnly](#clientsideonly)
+         * [DfpAds](#dfpads)
+         * [HamburgerButton](#hamburgerbutton)
+         * [ImageGalleryElement](#imagegalleryelement)
+         * [InfiniteScroll](#infinitescroll)
+         * [InfiniteStoryBase](#infinitestorybase)
+         * [LazyCollection](#lazycollection)
+         * [LazyLoadImages](#lazyloadimages)
+         * [Link](#link)
+         * [LoadMoreBase](#loadmorebase)
+         * [LoadMoreCollectionStories](#loadmorecollectionstories)
+         * [LoadingIndicator](#loadingindicator)
+         * [Menu](#menu)
+         * [NavigationComponentBase](#navigationcomponentbase)
+         * [ResponsiveHeroImage](#responsiveheroimage)
+         * [ResponsiveImage](#responsiveimage)
+         * [Responsive Source](#responsive-source)
+         * [SearchPageBase](#searchpagebase)
+         * [Search box](#search-box)
+         * [SocialShare](#socialshare)
+         * [StoryElement](#storyelement)
+         * [WithError](#witherror)
+         * [WithMember](#withmember)
+         * [WithPreview](#withpreview)
+         * [WithSocialLogin](#withsociallogin)
+         * [Review Rating](#review-rating)
+      * [Recommended Components that are not included](#recommended-components-that-are-not-included)
+         * [Sliders](#sliders)
+         * [Marquee for Breaking News](#marquee-for-breaking-news)
+         * [ReactTable for table story elements](#reacttable-for-table-story-elements)
 
 ### BreakingNews
 This component will automatically fetch breaking news every 30 seconds, and render the provided view.
@@ -57,7 +65,7 @@ import {Collection} from '@quintype/components'
 
 // collection = Collection.getCollectionBySlug(client, 'home', {}, {depth: 1})
 
-function TwoColLayout({collection, associatedMetadata}) {
+function TwoColLayout({collection, associatedMetadata, index}) {
   // for item in collection.item
   //   if item.type == story
   //     showStory
@@ -201,8 +209,10 @@ import { LazyCollection } from '@quintype/components'
 
 This component will ensure all [ResponsiveImages](#ResponsiveImage) that are in its descendent path will be loaded async. By default, the image is loaded with an empty gif, and the image becomes visible when the image scrolls 250 from the edge of the screen.
 
+You can use `EagerLoadImages` or `eager={true}` to force the image to be eager. If `EagerLoadImages` is passed a predicate, then images that pass a matching value to `eager` will be rendered eagerly.
+
 ```javascript
-import { LazyLoadImages } from '@quintype/components';
+import { LazyLoadImages, EagerLoadImages } from '@quintype/components';
 
 function LazyLoadSecondImage() {
   return <div>
@@ -210,7 +220,16 @@ function LazyLoadSecondImage() {
     <LazyLoadImages margin={50}>
       <div>
         <UnrelatedContent/>
-        <ResponsiveImage slug={props["lazy-image"]} />
+        <ResponsiveImage slug={props["lazy-image-1"]} />
+        <ResponsiveImage slug={props["lazy-image-forced-to-be-eager"]} eager/>
+        <ResponsiveImage slug={props["lazy-image-2"]} />
+        <EagerLoadImages>
+          <ResponsiveImage slug={props["lazy-image-forced-to-be-eager"]} />
+        </EagerLoadImages>
+        <EagerLoadImages predicate={(token) => token % 2 === 0}>
+          <ResponsiveImage slug={props["lazy-image"]} eager={1} />
+          <ResponsiveImage slug={props["eager-image"]} eager={2} />
+        </EagerLoadImages>
       </div>
     </LazyLoadImages>
     <ResponsiveImage slug={props["eager-image-2"]} />
@@ -471,6 +490,28 @@ function MyView({ member, logout, checkForMemberUpdated }) {
     <MyView member={member} logout={logout} isLoading={isLoading} />
   )}
 </WithMember>
+```
+
+### WithPreview
+
+This higher order component can be used for the home or story page preview
+
+```javascript
+import { WithPreview, replaceAllStoriesInCollection } from '@quintype/components';
+import { StoryPage } from '../pages/story';
+import { HomePage } from '../pages/home';
+
+function storyPageData(data, story) {
+  return {...data, story, relatedStories: Array(5).fill(story)};
+}
+
+// Remember to update load-data.js for the initial data
+function homePageData(data, story) {
+  return {...data, collection: replaceAllStoriesInCollection(data.collection, story)};
+}
+
+export const StoryPreview = WithPreview(StoryPage, storyPageData);
+export const HomePreview = WithPreview(HomePage, homePageData)
 ```
 
 ### WithSocialLogin

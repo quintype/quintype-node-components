@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.49.0"></a>
+# [1.49.0](https://github.com/quintype/quintype-node-components/compare/v1.48.0...v1.49.0) (2018-12-14)
+
+
+### Features
+
+* **LazyLoadImages:** EagerLoadImages now takes a predicate ([785a68d](https://github.com/quintype/quintype-node-components/commit/785a68d))
+
+
+
+<a name="1.48.0"></a>
+# [1.48.0](https://github.com/quintype/quintype-node-components/compare/v1.47.0...v1.48.0) (2018-12-14)
+
+
+### Features
+
+* **LazyLoad:** Eager Load Images ([#57](https://github.com/quintype/quintype-node-components/issues/57)) ([83cac37](https://github.com/quintype/quintype-node-components/commit/83cac37))
+
+
+
+<a name="1.47.0"></a>
+# [1.47.0](https://github.com/quintype/quintype-node-components/compare/v1.46.0...v1.47.0) (2018-12-14)
+
+
+### Features
+
+* **Collection:** Passing the index to collection template ([8dcec03](https://github.com/quintype/quintype-node-components/commit/8dcec03))
+* **LazyLoadImages:** Responsive image takes `eager=true` ([b4a14cb](https://github.com/quintype/quintype-node-components/commit/b4a14cb))
+
+
+
+<a name="1.46.0"></a>
+# [1.46.0](https://github.com/quintype/quintype-node-components/compare/v1.45.1...v1.46.0) (2018-12-14)
+
+
+### Features
+
+* **Preview:** Adding WithPreview component ([#56](https://github.com/quintype/quintype-node-components/issues/56)) ([adcebd0](https://github.com/quintype/quintype-node-components/commit/adcebd0))
+
+
+
 <a name="1.45.1"></a>
 ## [1.45.1](https://github.com/quintype/quintype-node-components/compare/v1.45.0...v1.45.1) (2018-12-06)
 
