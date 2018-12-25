@@ -29,6 +29,7 @@ function mapStateToProps(state) {
   return {
     config: state.qt.config || {},
     breakingNews: state.breakingNews || [],
+    breakingNewsLoaded: state.breakingNewsLoaded || false,
   }
 }
 

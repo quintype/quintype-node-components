@@ -10,6 +10,13 @@ import {
   MEMBER_BEING_LOADED,
 } from './actions';
 
+function setToTrueOnEvent() {
+  const events = Array.from(arguments);
+  return function(state = false, action) {
+    return state || events.includes(action.type);
+  }
+}
+
 function breakingNewsReducer(state = [], action) {
   switch (action.type) {
     case BREAKING_NEWS_UPDATED: return action.stories;
@@ -17,12 +24,8 @@ function breakingNewsReducer(state = [], action) {
   }
 }
 
-function clientSideRenderedReducer(state = false, action) {
-  switch (action.type) {
-    case CLIENT_SIDE_RENDERED: return true;
-    default: return state;
-  }
-}
+const breakingNewsLoadedReducer = setToTrueOnEvent(BREAKING_NEWS_UPDATED);
+const clientSideRenderedReducer = setToTrueOnEvent(CLIENT_SIDE_RENDERED);
 
 function pageLoadingReducer(state = false, action) {
   switch (action.type) {
@@ -59,6 +62,7 @@ function memberLoadingReducer(state = true, action) {
 
 export const ComponentReducers = {
   breakingNews: breakingNewsReducer,
+  breakingNewsLoaded: breakingNewsLoadedReducer,
   clientSideRendered: clientSideRenderedReducer,
   pageLoading: pageLoadingReducer,
   hamburgerOpened: hamburgerOpenedReducer,
