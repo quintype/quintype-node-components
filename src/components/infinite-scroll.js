@@ -101,7 +101,7 @@ class InfiniteScrollBase extends React.Component {
                     show={this.state.visibleComponents[index]}
                     render={this.props.render}
                     data={data}
-                    minHeight={this.props.minHeight || 50}/>)}
+                    minHeight={this.props.minHeight} />)}
       <ScrollLoadMore observers={[this.loadObserver]} />
     </div>;
   }
