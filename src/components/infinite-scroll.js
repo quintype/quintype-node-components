@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 
 // An item in the infinite scroll
 class ScrollItem extends React.Component {
@@ -10,9 +11,12 @@ class ScrollItem extends React.Component {
   }
 
   render() {
+    const items = get(this.props, ['data', 'items'], []);
+    const updatedMinHeight = items.length !== 0 ? this.state.minHeight : 0;
+
     return <div ref={node => this.node = node}
                 data-infinite-scroll={this.props.index}
-                style={{minHeight: this.state.minHeight}}>
+                style={{minHeight: updatedMinHeight}}>
       {this.props.show && this.props.render(Object.assign({index: this.props.index}, this.props.data))}
     </div>;
   }
@@ -101,7 +105,7 @@ class InfiniteScrollBase extends React.Component {
                     show={this.state.visibleComponents[index]}
                     render={this.props.render}
                     data={data}
-                    minHeight={this.props.minHeight} />)}
+                    minHeight={this.props.minHeight || 50} />)}
       <ScrollLoadMore observers={[this.loadObserver]} />
     </div>;
   }
