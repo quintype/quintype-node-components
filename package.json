@@ -60,7 +60,7 @@
     "build": "npm run clean:dist && npm run build:cjs && npm run build:es",
     "clean:dist": "rimraf dist",
     "prepack": "npm run build",
-    "prepublishOnly": "npm install && git diff --quiet && npx standard-version && git push --follow-tags origin",
+    "prepublishOnly": "./bin-dev-scripts/standard-version-release.sh",
     "sync-files-to": "npx onchange --verbose --wait --await-write-finish 'src/**/*' -- ./bin-dev-scripts/sync-to.sh "
   }
 }
