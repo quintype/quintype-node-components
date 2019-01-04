@@ -7,8 +7,16 @@ import Polltype from './story-elements/polltype';
 import {Table} from './story-elements/table';
 import { Link } from './link';
 
-function StoryElementText({element}) {
-  return React.createElement("div", {dangerouslySetInnerHTML: {__html: element.text}});
+
+function replaceAllAnchorTags(str,replacement) {
+  const regex=/<a/g;
+  return str.replace(regex,replacement);
+}
+function StoryElementText({element,externalLink=false}) {
+  if(externalLink){
+    const updatedElementText = replaceAllAnchorTags(element.text,"<a target='_blank'")
+  }
+  return React.createElement("div", {dangerouslySetInnerHTML: {__html: updatedElementText}});
 }
 
 function StoryElementAlsoRead({element, story}) {
