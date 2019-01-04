@@ -10,7 +10,7 @@ import { Link } from './link';
 function StoryElementText({element = {},externalLink}) {
   let text = element.text || '';
   if(externalLink){
-    text = element.text.replace(/<a/g,"<a target='_blank'");
+    text = element.text.replace(/<a/g,'<a target="_blank"');
   }
   return React.createElement("div", {dangerouslySetInnerHTML: {__html: text}});
 }
