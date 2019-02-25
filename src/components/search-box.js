@@ -44,7 +44,8 @@ export class SearchBox extends NavigationComponentBase {
                className={this.props.inputClassName}
                id={this.props.inputId}
                ref={(input) => this.textInput = input}
-               onKeyDown={(e) => this.keyPress(e)}/>
+               onKeyDown={(e) => this.keyPress(e)}
+               autofocus />
       </Render>
     </form>
   }
