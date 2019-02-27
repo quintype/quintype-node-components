@@ -5,7 +5,7 @@ export class SearchBox extends NavigationComponentBase {
   constructor(props) {
     super(props);
     this.state = {
-      query: ''
+      query: this.props.inputValue || ""
     };
   }
 
