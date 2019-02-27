@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import {NavigationComponentBase} from "./navigation-component-base";
 
 export class SearchBox extends NavigationComponentBase {
   constructor(props) {
     super(props);
     this.state = {
-      query: this.props.inputValue || ""
+      query: this.props.initValue || ""
     };
   }
 
@@ -49,4 +50,16 @@ export class SearchBox extends NavigationComponentBase {
     </form>
   }
 
+}
+
+SearchBox.protoTypes = {
+  initValue: PropTypes.string,
+  placeholder: PropTypes.string,
+  className: PropTypes.string,
+  formRef: PropTypes.any,
+  inputClassName: PropTypes.string,
+  inputId: PropTypes.string,
+  template: PropTypes.element,
+  onSubmitHandler: PropTypes.func,
+  onEscape: PropTypes.func
 }
