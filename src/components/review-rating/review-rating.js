@@ -53,6 +53,8 @@ export { ReviewRating };
 ReviewRating.propTypes = {
   // Rating value to be displayed
   value: PropTypes.number.isRequired,
+  // Can show Empty rating
+  canShowEmptyRating: PropTypes.bool,
   // Size of the icon (star)
   size: PropTypes.number,
   // Active color
