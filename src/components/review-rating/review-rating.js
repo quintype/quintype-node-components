@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 const ReviewRating = ({
                         value,
+                        canShowEmptyRating = false,
                         size=20,
                         activeColor="gold",
                         inActiveColor="gray",
@@ -15,7 +16,9 @@ const ReviewRating = ({
                         halfActiveSymbol=null
                       }) => {
 
-  if(value < 0.1) return null;
+
+  if(!canShowEmptyRating && value < 0.1) return null;
+  
 
   const activeComponent = index => activeSymbol ? React.cloneElement(activeSymbol, {size, activeColor, inActiveColor,className:`${className}-symbol active`, key: `review-${index}`}) : <StarIcon size={size} foregroundColor={activeColor} backgroundColor={activeColor} className={`${className}-symbol active`} key={`review-${index}`} data-test-id = "star-icon"/>;
 
