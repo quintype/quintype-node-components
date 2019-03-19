@@ -6,6 +6,7 @@ import { ResponsiveImage } from "./responsive-image";
 import Polltype from './story-elements/polltype';
 import {Table} from './story-elements/table';
 import { Link } from './link';
+import get from 'lodash/get';
 
 function StoryElementText({element = {},externalLink}) {
   let text = element.text || '';
@@ -16,10 +17,15 @@ function StoryElementText({element = {},externalLink}) {
 }
 
 function StoryElementAlsoRead({element, story}) {
-  const storyUrl = story['linked-stories'] && '/' + story['linked-stories'][element.metadata['linked-story-id']]['slug'];
+  const linkedStories = get(story, ['linked-stories']);
+  const linkedStoryId = get(element, ['metadata', 'linked-story-id']);
+  const linkedStorySlug = get(linkedStories, [linkedStoryId, 'slug']);
+  const storyUrl = `/${linkedStorySlug}`;
+
   const linkProps = { className: "story-element-text-also-read__link",
-                      href: storyUrl
-                    };
+    href: storyUrl
+  };
+
   return React.createElement("h3", {},
     React.createElement("span", { className: "story-element-text-also-read__label" }, "Also read: "),
     React.createElement(Link, linkProps, element.text)
@@ -67,8 +73,8 @@ function StoryElementTable({element}) {
 
 function StoryElementFile({element}) {
   return React.createElement(React.Fragment, null,
-            React.createElement("div", {className: "story-element-file__title"}, element["file-name"]),
-            React.createElement("a", {className: "story-element-file__link", href: element.url, download: true}, 'download'))
+    React.createElement("div", {className: "story-element-file__title"}, element["file-name"]),
+    React.createElement("a", {className: "story-element-file__link", href: element.url, download: true}, 'download'))
 }
 
 // FIXME MISSING: composite
@@ -109,12 +115,12 @@ class StoryElementBase extends React.Component {
     const renderTemplate = renderTemplates[storyElement.subtype] || renderTemplates[storyElement.type];
 
     return React.createElement("div", {
-      className: classNames({
-        "story-element": true,
-        [typeClassName]: true,
-        [subtypeClassName]: !!storyElement.subtype
-      })
-    }, (renderTemplate?
+        className: classNames({
+          "story-element": true,
+          [typeClassName]: true,
+          [subtypeClassName]: !!storyElement.subtype
+        })
+      }, (renderTemplate?
       React.createElement(
         renderTemplate,
         {...elementProps},

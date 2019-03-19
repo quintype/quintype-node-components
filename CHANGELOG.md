@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.53.6"></a>
+## [1.53.6](https://github.com/quintype/quintype-node-components/compare/v1.53.5...v1.53.6) (2019-03-19)
+
+
+### Bug Fixes
+
+* **package-lock:** Update package lock ([e64ea74](https://github.com/quintype/quintype-node-components/commit/e64ea74))
+* **story-element:** fail safe story element also read slug access ([37d1b88](https://github.com/quintype/quintype-node-components/commit/37d1b88))
+
+
+
 <a name="1.53.5"></a>
 ## [1.53.5](https://github.com/quintype/quintype-node-components/compare/v1.53.4...v1.53.5) (2019-03-01)
 
