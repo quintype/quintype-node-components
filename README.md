@@ -422,13 +422,18 @@ import { SocialShare } from '@quintype/components';
 
 class CustomComponent extends React.Component {
 
-  getSocialCardsTemplate({fbUrl, twitterUrl, gplusUrl, linkedinUrl}) {
+  getSocialCardsTemplate({fbUrl, twitterUrl, gplusUrl, linkedinUrl, handleNativeShare}) {
     return <ul className="social-share-icons">
         <li className="social-share-icon">
           <a href={fbUrl} target="_blank">
             <img src={fbIcon} alt="fb icon"/>
           </a>
         </li>
+        {handleNativeShare && <li className="social-share-icon">
+          <button onClick={handleNativeShare}>
+            <img src={fbIcon} alt="share icon"/>
+          </button>
+        </li>}
       </ul>
   }
 
