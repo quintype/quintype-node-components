@@ -3,41 +3,51 @@ import {connect} from "react-redux";
 import {get} from "lodash";
 import {withError} from './with-error';
 
-function SocialShareBase(props) {
-  const fullUrl = `${props.publisherUrl}/${props.url}`;
-  const hashtags = props.hashtags ? props.hashtags : '';
-  
-  function getShareHandler(title, fullUrl) {
-    const navigatorShare = global.navigator && global.navigator.share;
-    if (!navigatorShare) {
-      return null;
-    }
+function getNativeShareHandler(canNativeShare, title, fullUrl) {   
+  if (!canNativeShare) {
+    return null;
+  }
 
-    return function handleShare() {
-      navigatorShare({
-        title: title,
-        url: fullUrl,
-      });
+  return function handleShare() {
+    window.navigator.share({
+      title: title,
+      url: fullUrl,
+    }).catch(console.error);
+  }
+}
+
+class SocialShareBase extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      canNativeShare: null
     }
   }
 
-  return React.createElement(props.template, Object.assign({
-    fbUrl: `https://www.facebook.com/sharer.php?u=${fullUrl}`,
-    twitterUrl: `https://twitter.com/intent/tweet?url=${fullUrl}&text=${props.title}&hashtags=${hashtags}`,
-    gplusUrl: `https://plus.google.com/share?url=${fullUrl}`,
-    linkedinUrl: `https://www.linkedin.com/shareArticle?url=${fullUrl}&title=${props.title}`,
-    whatsappUrl: `https://api.whatsapp.com/send?text=${fullUrl}`,
-    mailtoUrl: `mailto:${''}?subject=${props.title}&body=${fullUrl}`,
-    handleShare: getShareHandler(props.title, fullUrl)
-  }, props));
-}
+  componentDidMount() {
+    this.setState({canNativeShare: global && global.navigator && global.navigator.share})
+  }
 
+  render() {
+    const fullUrl = `${this.props.publisherUrl}/${this.props.url}`;
+    const hashtags = this.props.hashtags ? this.props.hashtags : '';
+
+    return React.createElement(this.props.template, Object.assign({
+      fbUrl: `https://www.facebook.com/sharer.php?u=${fullUrl}`,
+      twitterUrl: `https://twitter.com/intent/tweet?url=${fullUrl}&text=${this.props.title}&hashtags=${hashtags}`,
+      gplusUrl: `https://plus.google.com/share?url=${fullUrl}`,
+      linkedinUrl: `https://www.linkedin.com/shareArticle?url=${fullUrl}&title=${this.props.title}`,
+      whatsappUrl: `https://api.whatsapp.com/send?text=${fullUrl}`,
+      mailtoUrl: `mailto:${''}?subject=${this.props.title}&body=${fullUrl}`,
+      handleNativeShare: getNativeShareHandler(this.state.canNativeShare, this.props.title, fullUrl)
+    }, this.props));
+  }
+}
 
 function mapStateToProps(state) {
   return {
     publisherUrl: state.qt.config["sketches-host"]
   };
 }
-
 
 export const SocialShare = connect(mapStateToProps, {})(withError(SocialShareBase));
