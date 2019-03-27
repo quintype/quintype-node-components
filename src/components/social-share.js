@@ -20,7 +20,7 @@ class SocialShareBase extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      canNativeShare: null
+      canNativeShare: false
     }
   }
 
