@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from "react-redux";
-import {get} from "lodash";
 import {withError} from './with-error';
 
 function getNativeShareHandler(canNativeShare, title, fullUrl) {   
