@@ -61,7 +61,7 @@ export class Table extends React.Component {
   }
 
   render() {
-    const tableModData = this.state;
+    const tableModData = this.state.tableModData;
     if (!get(tableModData, ['headerFields'], []).length > 0) {
       return null;
     }
