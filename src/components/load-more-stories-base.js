@@ -53,7 +53,12 @@ export class LoadMoreStoriesBase extends React.Component {
       offset: this.props.numStoriesToLoad * (pageNumber - 1) + stories.length,
       limit: this.props.numStoriesToLoad || 10,
       fields: this.props.fields
-    })).json(response => response.stories || get(response, ['results', 'stories'], []));
+    })).json(response => {
+      if (this.props.apiResponseTransformer) {
+        return this.props.apiResponseTransformer(response)
+      }
+      return response.stories || get(response, ['results', 'stories'], []);
+    });
   }
 
   render() {
