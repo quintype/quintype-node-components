@@ -252,7 +252,7 @@ import { Link } from '@quintype/components';
 
 This component starts with a set of stories, and then provides a load more button. This calls out to `/api/v1/stories` with the properties passed via the `params` prop. The stories are concatenated with the stories in `props.data.stories`, and the contents of `props.data` are passed to the rendered template.
 
-It can accept an alternate `api` as a prop as well as `apiReponseTrasformer` which can be used to tranformer the api response before being passed to the `template`.
+It can accept an alternate `api` as a prop as well as `apiResponseTransformer` which can be used to tranformer the api response before being passed to the `template`.
 
 ```javascript
 import { LoadMoreStoriesBase } from '@quintype/components';
@@ -265,7 +265,9 @@ export function SectionPage(props) {
   return <LoadMoreStoriesBase template={SectionPageWithStories}
                               fields={"id,headline"}
                               {...props}
-                              params={{"section-id": props.data.section.id}}/>
+                              params={{"section-id": props.data.section.id}}
+                              api="/api/v1/stories"
+                              apiResponseTransformer={(response) => response.stories} />
 }
 ```
 
