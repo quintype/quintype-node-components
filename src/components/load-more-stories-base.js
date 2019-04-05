@@ -74,7 +74,14 @@ export class LoadMoreStoriesBase extends React.Component {
 export class LoadMoreCollectionStories extends React.Component {
   loadMoreStories(pageNumber) {
     const stories = get(this.props, ['data', 'stories'], []);
-    return getRequest(`/api/v1/collections/${this.props.collectionSlug}`, Object.assign({}, this.props.params, {
+    const collectionType = get(this.props, ["collectionType"],null);
+    const collectionId = get(this.props, ["collectionId"],null);
+    
+    const url = (collectionType && collectionId) ? 
+                `/api/v1/${collectionType}/${collectionId}/collection`: 
+                `/api/v1/collections/${this.props.collectionSlug}`;
+
+    return getRequest(url, Object.assign({}, this.props.params, {
       offset: this.props.numStoriesToLoad * (pageNumber - 1) + stories.length,
       limit: this.props.numStoriesToLoad || 10,
     })).json(response => (response.items || []).map(item => item.story));
