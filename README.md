@@ -290,6 +290,19 @@ export function HomePage(props) {
 }
 ```
 
+### Get Collection of stories written by a particular author
+We can get the collection of stories written by a specific author by using the authorId prop as below:
+```javascript
+export function HomePage(props) {
+  return <LoadMoreCollectionStories
+            template={MoreCollectionStories}
+            data={{stories: stories}}
+            authorId={props.author.id}
+            params={{}}
+            numStoriesToLoad={10} />
+}
+```
+
 ### LoadingIndicator
 This component renders it's children when the app is moving between pages. It can be used to show a spinner. It always has the class "loading-indicator", and also "loading-indicator-loading" when loading.
 
