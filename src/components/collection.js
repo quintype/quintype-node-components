@@ -11,14 +11,15 @@ function CollectionNotImplemented() {
   return <div data-comment="Collection Template Not Implemented" />;
 }
 
-function renderCollectionItem(collectionItem, index, collectionTemplates, storyTemplates) {
+function renderCollectionItem(collectionItem, index, collectionTemplates, storyTemplates, otherProps={}) {
   switch (collectionItem.type) {
     case "collection":
       return React.createElement(collectionTemplates(getAssociatedTemplate(collectionItem), index), {
         key: `${index}-${collectionItem.id}`,
         index: index,
         collection: collectionItem,
-        metadata: collectionItem["associated-metadata"] || {}
+        metadata: collectionItem["associated-metadata"] || {},
+        ...otherProps
       });
 
     case "story":
@@ -26,7 +27,8 @@ function renderCollectionItem(collectionItem, index, collectionTemplates, storyT
         key: `${index}-${collectionItem.id}`,
         index: index,
         story: collectionItem.story,
-        metadata: collectionItem["associated-metadata"] || {}
+        metadata: collectionItem["associated-metadata"] || {},
+        ...otherProps
       });
 
     default: return <div data-comment={`${collectionItem.type} not implemented`} />
@@ -47,9 +49,9 @@ Collection.defaultProps = {
   storyTemplates: () => StoryNotImplemented
 }
 
-export function LazyCollection({className, collection, collectionTemplates, storyTemplates, lazyAfter}) {
+export function LazyCollection({className, collection, collectionTemplates, storyTemplates, lazyAfter, ...otherProps}) {
   return <div className={className}>
-    <InfiniteScroll render={({index}) => renderCollectionItem(collection.items[index], index, collectionTemplates, storyTemplates)}
+    <InfiniteScroll render={({index}) => renderCollectionItem(collection.items[index], index, collectionTemplates, storyTemplates, otherProps)}
                     items={collection.items}
                     loadNext={() => []}
                     initiallyShow={lazyAfter}
