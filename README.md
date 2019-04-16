@@ -225,6 +225,7 @@ exports.StoryPage = StoryPage;
 ### LazyCollection
 
 This component can be used to render a collection, but with the components being lazy. This takes all the same options as Collection, but with a `lazyAfter` prop.
+This Component also accepts extra props, which will be passed down to collection templates.
 
 Note: This does not accept `interstitial` items (yet). And home page items are not hidden after being rendered
 
@@ -236,7 +237,9 @@ import { LazyCollection } from '@quintype/components'
 <LazyCollection collection={collection}
                 collectionTemplates={collectionTemplates}
                 storyTemplates={storyTemplates}
-                lazyAfter={3} />
+                lazyAfter={3}
+                extraProp="some prop" />
+
 ```
 
 ### LazyLoadImages
@@ -318,6 +321,19 @@ export function HomePage(props) {
                                     collectionSlug={props.data.collectionSlug}
                                     data={{collection: collection, stories: initialStories}}
                                     params={{}}/>
+}
+```
+
+### Get Collection of stories written by a particular author
+We can get the collection of stories written by a specific author by using the authorId prop as below:
+```javascript
+export function HomePage(props) {
+  return <LoadMoreCollectionStories
+            template={MoreCollectionStories}
+            data={{stories: stories}}
+            authorId={props.author.id}
+            params={{}}
+            numStoriesToLoad={10} />
 }
 ```
 

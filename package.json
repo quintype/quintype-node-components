@@ -1,6 +1,6 @@
 {
   "name": "@quintype/components",
-  "version": "1.57.1-adbutler-mobile.0",
+  "version": "1.57.2",
   "description": "Components to help build Quintype Node.js apps",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
