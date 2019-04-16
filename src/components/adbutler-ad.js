@@ -3,8 +3,11 @@ import PropTypes from "prop-types";
 import get from "lodash/get";
 
 function getSize(sizeMap) {
-  const canUseDOM = typeof window !== 'undefined';
-  const screenWidth = canUseDOM && get(window, ["screen", "width"]);
+  const canUseDOM = !!(
+    typeof window !== 'undefined' &&
+    window.document &&
+    window.document.createElement);
+  const screenWidth = canUseDOM && get(window, ["screen", "width"], 440);
 
   if(!screenWidth) return [];
   if (screenWidth < 441) return sizeMap["mobile"];
