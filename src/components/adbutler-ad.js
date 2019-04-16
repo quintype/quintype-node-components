@@ -25,7 +25,7 @@ export function AdbutlerAd({ adtype, adbutlerConfig, sizes }) {
 
   return (
     <div className="adbutler-wrapper">
-      { hasSize && <iframe
+      { hasSize ? <iframe
         src={src}
         width={width}
         height={height}
@@ -35,7 +35,7 @@ export function AdbutlerAd({ adtype, adbutlerConfig, sizes }) {
         vspace="0"
         frameBorder="0"
         scrolling="no"
-      /> }
+      /> : null }
     </div>
   );
 }
