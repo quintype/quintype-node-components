@@ -29,3 +29,20 @@ export const awaitHelper = promise => (
         .then(data => ({ data, error: null }))
         .catch(error => ({ error, data: null }))
 );
+
+
+export const getQliticsSchema = (story = {}, card = {}, element = {}) => {
+
+  Array.from(arguments).forEach(ele => {
+    (Object.keys(ele).length < 1) && console.warn(`Required attribute missing for qlitics --> ${ele}`);
+  }); //Display warning to make debugging easier
+
+  return ({
+    'story-content-id': story['story-content-id'],
+    'story-version-id': story['story-version-id'],
+    'card-content-id': card['content-id'],
+    'card-version-id': card['content-version-id'],
+    'story-element-id': element.id,
+    'story-element-type': element.subtype || element.type
+  });
+};

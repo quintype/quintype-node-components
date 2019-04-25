@@ -502,6 +502,8 @@ class CustomComponent extends React.Component {
 ### StoryElement
 This component renders different types of story elements
 
+Qlitics event is fired on story-elements become visible (this can be disabled by passing a prop called `disableAnalytics={true}`)
+
 ```javascript
 import { StoryElement } from '@quintype/components';
 function StoryCard(props){
