@@ -111,7 +111,7 @@ import { ClientSideOnly } from '@quintype/components';
 ```
 
 ### DfpAds
-This is a higher order component which can be used to manage ad units in a single place. A component must be created, and used with the `adtype` parameter
+This is a higher order component which can be used to manage ad units in a single place. A component must be created, and used with the `adtype` parameter. These ads are lazy-loaded and single-request mode is disabled by default which can be overwritten as follows.
 
 ```javascript
 import { createDfpAdComponent } from '@quintype/components';
@@ -130,7 +130,10 @@ export const DfpAd = createDfpAdComponent({
     // if(storyIsSponsored) params['sponsor'] = storySponsor
 
     return params;
-  }
+  },
+  // Only if you want to overwrite the existing values
+  lazyLoad: false,
+  singleRequest: true
 });
 
 <DfpAd adtype="homepage-2" />

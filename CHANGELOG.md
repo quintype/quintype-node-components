@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.58.1](https://github.com/quintype/quintype-node-components/compare/v1.58.0...v1.58.1) (2019-04-30)
+
+
+### Bug Fixes
+
+* **Lazy-loading dfp ads:** Implement lazy-loading for dfp ads ([#85](https://github.com/quintype/quintype-node-components/issues/85)) ([e2ceb11](https://github.com/quintype/quintype-node-components/commit/e2ceb11))
+
+
+
 # [1.58.0](https://github.com/quintype/quintype-node-components/compare/v1.57.4...v1.58.0) (2019-04-25)
 
 
