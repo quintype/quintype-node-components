@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.58.0](https://github.com/quintype/quintype-node-components/compare/v1.57.4...v1.58.0) (2019-04-25)
+
+
+### Features
+
+* **qlitics:** qlitics for story-element-view, story-element action ([#84](https://github.com/quintype/quintype-node-components/issues/84)) ([16964a4](https://github.com/quintype/quintype-node-components/commit/16964a4))
+
+
+
 ## [1.57.4](https://github.com/quintype/quintype-node-components/compare/v1.57.3...v1.57.4) (2019-04-16)
 
 

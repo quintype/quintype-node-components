@@ -7,6 +7,7 @@ import Polltype from './story-elements/polltype';
 import {Table} from './story-elements/table';
 import { Link } from './link';
 import get from 'lodash/get';
+import {getQliticsSchema} from "../utils";
 
 function StoryElementText({element = {},externalLink}) {
   let text = element.text || '';
@@ -94,10 +95,60 @@ const DEFAULT_TEMPLATES = {
 };
 
 class StoryElementBase extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.observer = null;
+    this.storyElementRef = null;
+  }
+
+  componentDidMount() {
+    this.initiateObserver();
+  }
+
+  componentWillUnmount() {
+    this.destroyObserver();
+  }
+
+  initiateObserver = () => {
+    if(this.props.disableAnalytics === true) return false;
+
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1.0
+    };
+    this.observer = new IntersectionObserver(this.observerCallback, options);
+    this.observer.observe(this.storyElementRef);
+  };
+
+  destroyObserver = () => {
+    this.observer && this.observer.disconnect();
+  };
+
+  observerCallback = entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        this.emitElementQlitics();
+      }
+    });
+  };
+
   template() {
     const storyElement = this.props.element;
     const templates = Object.assign({}, DEFAULT_TEMPLATES, this.props.templates);
     return templates[storyElement.subtype] || templates[storyElement.type] || "div";
+  }
+
+
+  emitElementQlitics() {
+    const {story = {}, card = {}, element = {}} = this.props;
+    if(global.qlitics){
+      global.qlitics('track', 'story-element-view', getQliticsSchema(story,card,element));
+    } else {
+      global.qlitics=global.qlitics||function(){(qlitics.q=qlitics.q||[]).push(arguments);};
+      global.qlitics('track', 'story-element-view', getQliticsSchema(story,card,element));
+    }
   }
 
   storyElement() {
@@ -119,7 +170,8 @@ class StoryElementBase extends React.Component {
           "story-element": true,
           [typeClassName]: true,
           [subtypeClassName]: !!storyElement.subtype
-        })
+        }),
+        ref: ref => this.storyElementRef = ref
       }, (renderTemplate?
       React.createElement(
         renderTemplate,
