@@ -11,6 +11,7 @@ function LinkBase({
   externalLink,
   callback,
   href,
+  currentHostUrl,
   navigateTo = navigateToImpl,
   preventDefault = preventDefault,
   disableAjaxLinks = global.disableAjaxLinks || global.disableAjaxNavigation,
@@ -19,18 +20,22 @@ function LinkBase({
   return React.createElement("a", Object.assign(otherProps, {
     href,
     onClick(e) {
-      if(disableAjaxLinks)
+      if (disableAjaxLinks || e.ctrlKey || e.metaKey || e.shiftKey) {
         return;
+      }
 
-      if(e.ctrlKey || e.metaKey || e.shiftKey)
+      const relativeLink = href.startsWith(currentHostUrl) ? href.replace(currentHostUrl, "") : href;
+
+      if (!relativeLink.startsWith("/")) {
         return;
+      }
 
       preventDefault(e);
 
       if(externalLink) {
         global.open(externalLink, "_blank");
       } else {
-        navigateTo(href);
+        navigateTo(relativeLink);
       }
 
       typeof callback === 'function' && callback(e);
@@ -39,7 +44,9 @@ function LinkBase({
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    currentHostUrl: state.qt && state.qt.currentHostUrl
+  };
 }
 
 function mapDispatchToProps(dispatch) {
