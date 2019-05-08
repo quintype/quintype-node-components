@@ -45,11 +45,14 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.8.0",
     "babel-plugin-annotate-pure-calls": "^0.4.0",
     "babel-plugin-quintype-assets": "^1.1.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "jest": "^24.8.0",
     "onchange": "^4.1.0",
     "react-dom": "^16.8.6",
+    "react-testing-library": "^7.0.0",
     "rimraf": "^2.6.3",
     "rollup": "^1.10.1",
     "rollup-plugin-babel": "^4.3.2",
@@ -60,11 +63,12 @@
   },
   "scripts": {
     "build:cjs": "npx rollup -c",
-    "build:es": "npx babel src/ --out-dir dist/es --copy-files",
+    "build:es": "npx babel src/ --out-dir dist/es --ignore '**/*.spec.js' --ignore '**/*.snap'",
     "build": "npm run clean:dist && npm run build:cjs && npm run build:es",
     "clean:dist": "rimraf dist",
     "prepack": "npm run build",
     "prepublishOnly": "./bin-dev-scripts/standard-version-release.sh",
-    "sync-files-to": "npx onchange --verbose --wait --await-write-finish 'src/**/*' -- ./bin-dev-scripts/sync-to.sh "
+    "sync-files-to": "npx onchange --verbose --wait --await-write-finish 'src/**/*' -- ./bin-dev-scripts/sync-to.sh",
+    "test": "jest --config jest.config.js"
   }
 }
