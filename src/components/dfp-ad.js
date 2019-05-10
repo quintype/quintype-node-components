@@ -1,5 +1,5 @@
 import React from 'react';
-import {AdSlot, DFPSlotsProvider} from 'react-dfp';
+import {AdSlot, DFPSlotsProvider, DFPManager} from 'react-dfp';
 import {connect} from 'react-redux';
 import {withError} from './with-error';
 
@@ -24,4 +24,8 @@ export function createDfpAdComponent({defaultNetworkID, config, targeting, colla
     lazyLoad: lazyLoad,
     singleRequest: singleRequest
   }), () => ({}))(withError(DfpAdBase));
+}
+
+export function refreshDfpAds(adSlots) {
+  DFPManager.refresh(adSlots);
 }
