@@ -28,7 +28,7 @@
     "empty-web-gif": "^1.0.0",
     "get-youtube-id": "^1.0.1",
     "prop-types": "^15.7.2",
-    "quintype-js": "^1.1.0",
+    "quintype-js": "^1.2.0",
     "react": "^16.8.6",
     "react-dfp": "^0.11.2",
     "react-redux": "^7.0.3",
