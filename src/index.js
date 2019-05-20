@@ -27,6 +27,7 @@ export * from './components/update-on-interval';
 export * from './components/access-type';
 export * from './components/adbutler-ad';
 export * from './components/with-host-url';
+export * from './components/with-lazy';
 
 export * from './store/actions';
 export * from './store/reducers';

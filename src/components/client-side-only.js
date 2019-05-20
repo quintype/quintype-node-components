@@ -14,6 +14,12 @@ class ClientSideOnlyBase extends React.Component {
   }
 }
 
+const defaultFallback = () => <span />
+
+function WithClientSideOnlyBase({clientSideRendered = false, children}) {
+  return children({clientSideRendered})
+}
+
 function mapStateToProps(state) {
   return {
     clientSideRendered: state.clientSideRendered
@@ -25,3 +31,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 export const ClientSideOnly = connect(mapStateToProps, mapDispatchToProps)(ClientSideOnlyBase);
+export const WithClientSideOnly = connect(mapStateToProps, mapDispatchToProps)(WithClientSideOnlyBase);

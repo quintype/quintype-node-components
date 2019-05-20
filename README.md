@@ -28,8 +28,10 @@ This is a set of components that is to be used to build a Quintype Node App. Thi
          * [Search box](#search-box)
          * [SocialShare](#socialshare)
          * [StoryElement](#storyelement)
+         * [WithClientSideOnly](#withclientsideonly)
          * [WithError](#witherror)
          * [WithHostUrl](#withhosturl)
+         * [WithLazy](#withlazy)
          * [WithMember](#withmember)
          * [WithPreview](#withpreview)
          * [WithSocialLogin](#withsociallogin)
@@ -102,7 +104,7 @@ function interstitial(index) {
 ```
 
 ### ClientSideOnly
-This component will be loaded by client, and bypassed when doing server side rendering.
+This component will be loaded by client, and bypassed when doing server side rendering. Also see [WithClientSideOnly](#WithClientSideOnly) for a render props version.
 
 ```javascript
 import { ClientSideOnly } from '@quintype/components';
@@ -520,6 +522,19 @@ For different quality images in Image Story Element, pass `imageWidths` and `ima
 ```
 <StoryElement story={story} element={element} imageWidths={[420,1040,1600]} imageDefaultWidth={1040}/>
 ```
+
+### WithClientSideOnly
+This component calls the render prop with true if the client side is completely loaded, and false during SSR and initial bootup.
+
+```javascript
+import { WithClientSideOnly } from '@quintype/components';
+<WithClientSideOnly>
+  {({clientSideRendered}) => (
+    {clientSideRendered && <span>This will be shown only on the client side</span>}
+  )}
+</WithClientSideOnly>
+```
+
 ### WithError
 This function can be used to generate a wrapper component that implements `componentDidCatch()`.
 
@@ -546,6 +561,18 @@ import { WithHostUrl } from '@quintype/components';
     <div>currentHostUrl: {currentHostUrl}</div>
   </div>
 }</WithHostUrl>
+```
+
+### WithLazy
+
+This component can be used to load some DOM just before it scrolls into the screen. Currently, it does not support unloading. The `margin` prop is passed to `IntersectionObserver`.
+
+```javascript
+import { WithLazy } from '@quintype/components';
+
+<WithLazy margin="50px">{() =>
+  <SomeHeavyComponent />
+}</WithLazy>
 ```
 
 ### WithMember
