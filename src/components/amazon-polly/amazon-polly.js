@@ -24,7 +24,7 @@ export class AmazonPolly extends React.Component {
   }
 
   render() {  
-    const { caption, className = "amazon-polly", story, config, audioAttributes = { controls: true } } = this.props;
+    const { caption, className = "amazon-polly", story, config, audioAttributes = { controls: true }, headsetColor = "#333" } = this.props;
     const cdn = get(config, ["cdn-image"]);
     const audioS3Key = get(story, ["story-audio", "s3-key"]);
     const audioSrc = `//${cdn}/${audioS3Key}`;
@@ -32,7 +32,7 @@ export class AmazonPolly extends React.Component {
     return <div className={`${className}-wrapper`}>
       <div className={`${className}-text-wrapper`} onClick={this.onClickHandler}>
         <div className={`${className}-headset-wrapper`}>
-          <HeadsetIcon size={24} className={`${className}-headset`} />
+          <HeadsetIcon size={24} color={headsetColor} className={`${className}-headset`} />
         </div>
         <span className={`${className}-text`}>Listen to story</span>
       </div>
