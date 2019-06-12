@@ -25,9 +25,9 @@ export class AmazonPolly extends React.Component {
 
   render() {  
     const { caption, className = "amazon-polly", story, config, audioAttributes = { controls: true } } = this.props;
-    const cdnName = get(config, ["cdn-image"]);
+    const cdn = get(config, ["cdn-image"]);
     const audioS3Key = get(story, ["story-audio", "s3-key"]);
-    const audioSrc = `${cdnName}/${audioS3Key}`;
+    const audioSrc = `//${cdn}/${audioS3Key}`;
 
     return <div className={`${className}-wrapper`}>
       <div className={`${className}-text-wrapper`} onClick={this.onClickHandler}>
