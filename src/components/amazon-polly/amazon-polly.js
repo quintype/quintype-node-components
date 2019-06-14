@@ -12,6 +12,7 @@ export class AmazonPolly extends React.Component {
   }
 
   onClickHandler = () => {
+    this.props.preProcess();
     this.setState({
       isOpen: true
     })
