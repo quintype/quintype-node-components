@@ -20,7 +20,6 @@ function StoryElementText({ element = {}, externalLink }) {
 }
 
 function StoryElementAlsoRead({ element, story, lang }) {
-  console.log("lang changes", lang);
   const linkedStories = get(story, ["linked-stories"]);
   const linkedStoryId = get(element, ["metadata", "linked-story-id"]);
   const linkedStorySlug = get(linkedStories, [linkedStoryId, "slug"]);
