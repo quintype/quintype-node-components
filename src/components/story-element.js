@@ -19,16 +19,11 @@ function StoryElementText({ element = {}, externalLink }) {
   });
 }
 
-function StoryElementAlsoRead({ element, story, lang }) {
+function StoryElementAlsoRead({ element, story, alsoreadText }) {
   const linkedStories = get(story, ["linked-stories"]);
   const linkedStoryId = get(element, ["metadata", "linked-story-id"]);
   const linkedStorySlug = get(linkedStories, [linkedStoryId, "slug"]);
   const storyUrl = `/${linkedStorySlug}`;
-  const alsoread = {
-    "ur": "یہ بھی پڑھیں : ",
-    "hi" : "Also Read: ",
-    "en" : "Also Read: "
-  }
   const linkProps = {
     className: "story-element-text-also-read__link",
     href: storyUrl
@@ -40,7 +35,7 @@ function StoryElementAlsoRead({ element, story, lang }) {
     React.createElement(
       "span",
       { className: "story-element-text-also-read__label" },
-      alsoread[lang] || "Also Read: "
+      alsoreadText || "Also Read: "
     ),
     React.createElement(Link, linkProps, element.text)
   );
