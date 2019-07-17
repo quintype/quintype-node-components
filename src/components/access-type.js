@@ -11,7 +11,6 @@ import {
 import PropTypes from "prop-types";
 import {awaitHelper} from "../utils";
 
-
 class AccessTypeBase extends PureComponent {
     constructor(props){
         super(props);
