@@ -222,8 +222,3 @@ const mapDispatchToProps = dispatch  => ({
 });
 
 export const AccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase);
-
-
-export const accessTypeHOC = WrappedComponent => props => {
-    return <WrappedComponent {...props}/>;
-};
