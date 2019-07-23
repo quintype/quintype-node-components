@@ -90,12 +90,17 @@ class AccessTypeBase extends Component {
     runSequentialCalls = async () => {
         const user = await this.setUser(this.props.email, this.props.phone);
         if(user) {
-            Promise.all([this.getSubscription(), this.getPaymentOptions()]).then(([subscriptionGroups, paymentOptions]) => {
-                batch(() => {
-                    this.props.subscriptionGroupLoaded(subscriptionGroups);
-                    this.props.paymentOptionsLoaded(paymentOptions);
+            try{
+                Promise.all([this.getSubscription(), this.getPaymentOptions()]).then(([subscriptionGroups, paymentOptions]) => {
+                    batch(() => {
+                        this.props.subscriptionGroupLoaded(subscriptionGroups);
+                        this.props.paymentOptionsLoaded(paymentOptions);
+                    })
                 })
-            })
+            }catch (e) {
+                console.log(`Subscription / payments failed`);
+            }
+
         }
     };
 
