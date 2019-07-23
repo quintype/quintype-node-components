@@ -98,7 +98,7 @@ class AccessTypeBase extends Component {
                     })
                 })
             }catch (e) {
-                console.log(`Subscription / payments failed`);
+                console.log(`Subscription / payments failed`, e);
             }
 
         }
