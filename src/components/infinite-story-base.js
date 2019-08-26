@@ -21,7 +21,7 @@ export class InfiniteStoryBase extends React.Component {
   onFocus(index) {
     const item = this.allItems()[index];
 
-    if(!this.props.disableSetUrl) {
+    if(!this.props.doNotChangeUrl) {
       global.app.maybeSetUrl("/" + item.story.slug, get(item, ['story', 'seo', 'meta-title'], item.story.headline));
     }
 
