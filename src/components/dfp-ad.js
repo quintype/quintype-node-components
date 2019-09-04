@@ -16,8 +16,8 @@ function DfpAdBase({defaultNetworkID, config, collapseEmptyDivs, targetingArgume
 }
 
 export function createDfpAdComponent({defaultNetworkID, config, targeting, collapseEmptyDivs = true, lazyLoad = true, singleRequest = false}) {
-  return connect((state) => ({
-    targetingArguments: targeting(state),
+  return connect((state, ownProps) => ({
+    targetingArguments: targeting(state, ownProps),
     defaultNetworkID: defaultNetworkID,
     config: config,
     collapseEmptyDivs: collapseEmptyDivs,
