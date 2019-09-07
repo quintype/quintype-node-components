@@ -103,16 +103,6 @@ function interstitial(index) {
             interstitial={interstitial} />
 ```
 
-### ClientSideOnly
-This component will be loaded by client, and bypassed when doing server side rendering. Also see [WithClientSideOnly](#WithClientSideOnly) for a render props version.
-
-```javascript
-import { ClientSideOnly } from '@quintype/components';
-<ClientSideOnly>
-  This will be shown only on the client side
-</ClientSideOnly>
-```
-
 ### DfpAds
 This is a higher order component which can be used to manage ad units in a single place. A component must be created, and used with the `adtype` parameter. These ads are lazy-loaded and single-request mode is disabled by default which can be overwritten as follows.
 
@@ -532,41 +522,6 @@ function StoryCard(props){
 For different quality images in Image Story Element, pass `imageWidths` and `imageDefaultWidth` as props. like
 ```
 <StoryElement story={story} element={element} imageWidths={[420,1040,1600]} imageDefaultWidth={1040}/>
-```
-
-### WithClientSideOnly
-This component calls the render prop with true if the client side is completely loaded, and false during SSR and initial bootup.
-
-```javascript
-import { WithClientSideOnly } from '@quintype/components';
-<WithClientSideOnly>
-  {({clientSideRendered}) => (
-    {clientSideRendered && <span>This will be shown only on the client side</span>}
-  )}
-</WithClientSideOnly>
-```
-
-### WithMember
-This is a render props component which will call your callback with the current logged in member. It will automatically call `/api/v1/members/me` to figure out if you are logged in, and replace the contents in the store and callback. In future, this may use LocalStorage to cache the member for some time.
-
-The render will also be passed a function to call for logging out, and another to force the library to check if the member is now logged in.
-
-On initial load, the `isLoading` prop will be set, which will become false when the user is loaded. Use this field to avoid showing a Login Button while fetch is happening.
-
-In order to update the current member, call `checkForMemberUpdated`.
-
-```javascript
-import { WithMember } from '@quintype/components';
-
-function MyView({ member, logout, checkForMemberUpdated }) {
-  return member ? <div>{member.name} <a onClick={logout}>Logout</a></div> : <div>Please Login!</div>;
-}
-
-<WithMember>
-  {({ member, logout, isLoading }) => (
-    <MyView member={member} logout={logout} isLoading={isLoading} />
-  )}
-</WithMember>
 ```
 
 ### WithPreview
