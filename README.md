@@ -432,91 +432,6 @@ function SearchPageView({query, stories, onLoadMore, loading, noMoreStories}) {
 <SearchPageBase template={SearchPageView} fields={"id,headline"} {...props}/>
 ```
 
-### Search box
-This component provides a form with a search text box. On submit, the user is redirected to the search page via AJAX.
-
-A template function can also be passed in, to do custom rendering. The template prop will be called with childen having the child text box. See [madrid](https://github.com/quintype/madrid/blob/master/app/isomorphic/components/basic/search.js) as an example
-
-```javascript
-import { SearchBox } from '@quintype/components';
-
-<SearchBox className="foobar" placeholder="search" inputClassName="foobar-box" inputId="stg" inputRef={(x) => this.foo = x} onEscape={() => this.closeDialog()}/>
-```
-
-### SocialShare
-This component renders social share component to front end app.
-
-```javascript
-import { SocialShare } from '@quintype/components';
-
-class CustomComponent extends React.Component {
-
-  getSocialCardsTemplate({fbUrl, twitterUrl, gplusUrl, linkedinUrl, handleNativeShare}) {
-    return <ul className="social-share-icons">
-        <li className="social-share-icon">
-          <a href={fbUrl} target="_blank">
-            <img src={fbIcon} alt="fb icon"/>
-          </a>
-        </li>
-        {handleNativeShare && <li className="social-share-icon">
-          <button onClick={handleNativeShare}>
-            <img src={fbIcon} alt="share icon"/>
-          </button>
-        </li>}
-      </ul>
-  }
-
-  render() {
-    return <div className="story-byline__social-share">
-              <SocialShare fullUrl={this.props.story.url}
-                title='Headline of the story'
-                template={this.getSocialCardsTemplate}
-                hashtags='news,india,press' />
-           </div>
-  }
-}
-```
-
-### StoryElement
-This component renders different types of story elements
-
-Qlitics event is fired on story-elements become visible (this can be disabled by passing a prop called `disableAnalytics={true}`)
-
-```javascript
-import { StoryElement } from '@quintype/components';
-function StoryCard(props){
-  return <div>
-    {props.card['story-elements'].map((element, index) => <StoryElement element={element} key={index} story={props.story}></StoryElement>)}
-  </div>
-}
-```
-For different quality images in Image Story Element, pass `imageWidths` and `imageDefaultWidth` as props. like
-```
-<StoryElement story={story} element={element} imageWidths={[420,1040,1600]} imageDefaultWidth={1040}/>
-```
-
-### WithPreview
-
-This higher order component can be used for the home or story page preview
-
-```javascript
-import { WithPreview, replaceAllStoriesInCollection } from '@quintype/components';
-import { StoryPage } from '../pages/story';
-import { HomePage } from '../pages/home';
-
-function storyPageData(data, story) {
-  return {...data, story, relatedStories: Array(5).fill(story)};
-}
-
-// Remember to update load-data.js for the initial data
-function homePageData(data, story) {
-  return {...data, collection: replaceAllStoriesInCollection(data.collection, story)};
-}
-
-export const StoryPreview = WithPreview(StoryPage, storyPageData);
-export const HomePreview = WithPreview(HomePage, homePageData)
-```
-
 ## Recommended Components that are not included
 
 ### Sliders
@@ -530,39 +445,6 @@ Our Marquee recommendation is `react-malarquee`. Just remember to mark all items
 ### ReactTable for table story elements
 
 The story table element renders a very basic table story element. It can be enhaced by using 'react-table', which supports pagination and other fancy things.
-
-### UpdateOnInterval
-
-  Serves as a wrapper (using render props) used to update it's children via props while executing data loaders sent as props to the component.
-
-  Note : Dataloaders are made to be at an app level to keep the component generic, the return of Dataloaders are sent as props to its children.
-
-  Props | Type | Description | Optional
- --- | --- | --- | ---
- `interval`| `number`(ms) | Sets the time, defaults to 30s | True
- `dataLoader`| `func` | Executes the dataloader, the return of which will be the data to the components children.| False
-
-  Example :
- ```javascript
- import {UpdateOnInterval} from '@quintype/components';
-
- const story = {
-    'example' : 'data'
- };
-
- function getData() {
-     return fetch('/url/something')//...
- }
-
- ```
-
-```javascript
-      <UpdateOnInterval dataLoader={getData} interval={3000} initData={story}>
-        {
-          ({data}) => <Component data={data}></Component>
-        }
-      </UpdateOnInterval>
- ```
 
 ###### Redux notes:
 

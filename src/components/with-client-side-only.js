@@ -14,7 +14,6 @@ import { mapStateToProps, mapDispatchToProps } from './impl/client-side-only-imp
  *   )}
  * </WithClientSideOnly>
  * ```
- * @see {@link ClientSideOnly} for an earlier version of this component
  * @component
  */
 export const WithClientSideOnly = connect(mapStateToProps, mapDispatchToProps)(WithClientSideOnlyBase);

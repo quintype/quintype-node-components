@@ -1,6 +1,32 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * This render props component willupdate it's children via props while executing data loaders sent as props to the component.
+ *
+ * Note: Dataloaders are made to be at an app level to keep the component generic, the return of Dataloaders are sent as props to its children.
+ *
+ * Example
+ *  ```javascript
+ *  import {UpdateOnInterval} from '@quintype/components';
+ *
+ *  const story = {
+ *     'example' : 'data'
+ *  };
+ *
+ *  function getData() {
+ *      return fetch('/url/something')//...
+ *  }
+ *
+ * <UpdateOnInterval dataLoader={getData} interval={3000} initData={story}>
+ *   {
+ *     ({data}) => <Component data={data}></Component>
+ *   }
+ * </UpdateOnInterval>
+ *  ```
+ * @component
+ * @hideconstructor
+ */
 export class UpdateOnInterval extends Component {
     constructor(props){
         super(props);
@@ -44,7 +70,10 @@ UpdateOnInterval.defaultProps = {
 };
 
 UpdateOnInterval.propTypes = {
+    /** Sets the time (ms) */
     interval : PropTypes.number,
+    /** Async Function to load data */
     dataLoader : PropTypes.func.isRequired,
+    /** The initial data for server side rendering */
     initData : PropTypes.any.isRequired
 };
