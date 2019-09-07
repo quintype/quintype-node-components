@@ -48,5 +48,6 @@ function mapDispatchToProps(dispatch) {
  * renderBreakingNews('breaking-news-container', store, BreakingNewsView);
  * ```
  * @see {@link BreakingNewsItem}
+ * @component
  */
 export const BreakingNews = connect(mapStateToProps, mapDispatchToProps)(BreakingNewsBase);
