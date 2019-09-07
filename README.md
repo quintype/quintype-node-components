@@ -103,35 +103,6 @@ function interstitial(index) {
             interstitial={interstitial} />
 ```
 
-### DfpAds
-This is a higher order component which can be used to manage ad units in a single place. A component must be created, and used with the `adtype` parameter. These ads are lazy-loaded and single-request mode is disabled by default which can be overwritten as follows.
-
-```javascript
-import { createDfpAdComponent } from '@quintype/components';
-
-export const CONFIG = {
-  "homepage-2": { adUnit: "HP_728x90-3", sizes: [[728, 90], [320, 50]] },
-  "homepage-3": { adUnit: "HP_728x90-3", sizes: [[728, 90], [320, 50]] },
-}
-
-export const DfpAd = createDfpAdComponent({
-  defaultNetworkID: "123456789",
-  config: CONFIG,
-  targeting: function(state) {
-    const params = {};
-
-    // if(storyIsSponsored) params['sponsor'] = storySponsor
-
-    return params;
-  },
-  // Only if you want to overwrite the existing values
-  lazyLoad: false,
-  singleRequest: true
-});
-
-<DfpAd adtype="homepage-2" />
-```
-
 ### AdbutlerAds
 This component can be used to get ads from `Adbutler` ad service provider based on the `adtype` you want to show
 
