@@ -15,6 +15,7 @@ import {mapStateToProps, mapDispatchToProps} from './impl/client-side-only-impl'
  * ```
  * @see {@link WithClientSideOnly} for a render props version of this component
  * @component
+ * @deprecated
  */
 export const ClientSideOnly = connect(mapStateToProps, mapDispatchToProps)(ClientSideOnlyBase);
 

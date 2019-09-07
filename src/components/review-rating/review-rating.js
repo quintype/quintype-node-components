@@ -61,26 +61,26 @@ export function ReviewRating({
 };
 
 ReviewRating.propTypes = {
-  // Rating value to be displayed
+  /** Rating value to be displayed */
   value: PropTypes.number.isRequired,
-  // Can show Empty rating
+  /** Can show Empty rating */
   canShowEmptyRating: PropTypes.bool,
-  // Size of the icon (star)
+  /** Size of the icon (star) */
   size: PropTypes.number,
-  // Active color
+  /** Active color */
   activeColor: PropTypes.string,
-  // Inactive/ disabled stars color
+  /** Inactive/ disabled stars color */
   inActiveColor: PropTypes.string,
-  // Number of stars to render
+  /** Number of stars to render */
   count: PropTypes.number,
-  // Show half stars
+  /** Show half stars */
   showHalfStar: PropTypes.bool,
-  // Classname for the containing div
+  /** Classname for the containing div */
   className: PropTypes.string,
-  // Optional React component to render instead of active star
+  /** Optional React component to render instead of active star */
   activeSymbol: PropTypes.element,
-  // Optional React component to render instead of inactive star
+  /** Optional React component to render instead of inactive star */
   inActiveSymbol: PropTypes.element,
-  // Optional React component to render instead of half active star
+  /** Optional React component to render instead of half active star */
   halfActiveSymbol: PropTypes.elemenet
 };
