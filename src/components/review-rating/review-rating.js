@@ -2,7 +2,19 @@ import React from "react";
 import { StarIcon } from "./star-icon";
 import PropTypes from "prop-types";
 
-const ReviewRating = ({
+/**
+ * This component takes in the value for rating and renders star for the value passed in. This comopent is generally used for story review type.
+ *
+ * Example
+ * ```javascript
+ * import { ReviewRating } from '@quintype/components';
+ *
+ * <ReviewRating value="3" />
+ * ```
+ * The component supports additional props which allows more customization, you can pass in props like size, color, count of stars or even change the render from star to a custom svg component. Refer to component src to know exact details of what is supported.
+ * @component
+ */
+export function ReviewRating({
                         value,
                         canShowEmptyRating = false,
                         size=20,
@@ -14,11 +26,11 @@ const ReviewRating = ({
                         activeSymbol=null,
                         inActiveSymbol=null,
                         halfActiveSymbol=null
-                      }) => {
+                      }) {
 
 
   if(!canShowEmptyRating && value < 0.1) return null;
-  
+
 
   const activeComponent = index => activeSymbol ? React.cloneElement(activeSymbol, {size, activeColor, inActiveColor,className:`${className}-symbol active`, key: `review-${index}`}) : <StarIcon size={size} foregroundColor={activeColor} backgroundColor={activeColor} className={`${className}-symbol active`} key={`review-${index}`} data-test-id = "star-icon"/>;
 
@@ -47,8 +59,6 @@ const ReviewRating = ({
     </div>
   );
 };
-
-export { ReviewRating };
 
 ReviewRating.propTypes = {
   // Rating value to be displayed

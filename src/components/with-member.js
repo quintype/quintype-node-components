@@ -28,6 +28,7 @@ import { MEMBER_UPDATED, MEMBER_BEING_LOADED } from '../store/actions';
  * </WithMember>
  * ```
  * @component
+ * @category Login
  */
 export const WithMember = connect(mapStateToProps, mapDispatchToProps)(WithMemberBase);
 

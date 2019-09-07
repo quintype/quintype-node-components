@@ -517,54 +517,6 @@ export const StoryPreview = WithPreview(StoryPage, storyPageData);
 export const HomePreview = WithPreview(HomePage, homePageData)
 ```
 
-### WithSocialLogin
-This is a render props component for logging in. The component adds two items to scope: `serverSideLoginPath` for redirecting to server side, and `login` for doing a client side login. Calling `login()` returns a promise which can be used to handle success and failure cases.
-
-NOTE:
-- Twitter does not support ClientSideLogin, and thus `login()` will just redirect to the server. It also ignores the apiKey
-- Twitter and LinkedIn do not verify presence of email on the client side. Please ask for these permissions in the app
-
-```javascript
-import { WithFacebookLogin, WithGoogleLogin, WithTwitterLogin, WithLinkedInLogin } from '@quintype/components';
-
-function socialLogin(e, login) {
-  e.preventDefault();
-  login().then(() => window.location.refresh()); // Can also make an API call to /api/v1/members/me
-}
-
-<WithFacebookLogin appId="apiKey" scope="email" emailMandatory>{({ login, serverSideLoginPath }) =>
-    <a href={serverSideLoginPath} onClick={e => socialLogin(e, login)}>
-      <img src={assetify(facebookIcon)} />
-    </a>
-}</WithFacebookLogin>
-<WithGoogleLogin clientId="clientId" scope="email" emailMandatory>{({ login, serverSideLoginPath }) =>
-    <a href={serverSideLoginPath} onClick={e => socialLogin(e, login)}>
-      <img src={assetify(gplusIcon)} />
-    </a>
-}</WithGoogleLogin>
-<WithTwitterLogin apiKey="apiKey" emailMandatory>{({login, serverSideLoginPath}) =>
-    <a href={serverSideLoginPath} onClick={e => socialLogin(e, login)}>
-      <img src={assetify(twitterIcon)} />
-    </a>
-}</WithTwitterLogin>
-<WithLinkedInLogin clientKey="clientKey" emailMandatory>{({login, serverSideLoginPath}) =>
-    <a href={serverSideLoginPath} onClick={e => socialLogin(e, login)}>
-      <img src={assetify(linkedInIcon)} />
-    </a>
-}</WithLinkedInLogin>
-```
-
-### Review Rating
-
-This component takes in the value for rating and renders star for the value passed in. This comopent is generally used for story review type.
-
-```javascript
-import { ReviewRating } from '@quintype/components';
-
-<ReviewRating value="3" />
-```
-The component supports additional props which allows more customization, you can pass in props like size, color, count of stars or even change the render from star to a custom svg component. Refer to component src to know exact details of what is supported.
-
 ## Recommended Components that are not included
 
 ### Sliders

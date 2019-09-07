@@ -1,6 +1,21 @@
 import React from 'react';
 import { WithSocialLogin } from './with-social-login';
 
+/**
+ * @see {@link WithSocialLogin}
+ * @component
+ * @category Login
+ */
+export function WithGoogleLogin({ clientId, children, scope, emailMandatory }) {
+  return React.createElement(WithSocialLogin, {
+    provider: 'google',
+    initialize: () => loadGoogleSDK(clientId, scope),
+    socialLogin: () => loginWithGoogle({ emailMandatory }),
+    children: children
+  });
+}
+
+
 const onScriptLoaded = (clientId, scope) => {
   global.gapi.load('client:auth2', () =>
     global.gapi.client.init({ clientId, scope })
@@ -39,12 +54,3 @@ const loadGoogleSDK = (clientId, scope) => {
   script.onload = () => onScriptLoaded(clientId, scope);
   document.getElementsByTagName('body')[0].appendChild(script);
 };
-
-export function WithGoogleLogin({ clientId, children, scope, emailMandatory }) {
-  return React.createElement(WithSocialLogin, {
-    provider: 'google',
-    initialize: () => loadGoogleSDK(clientId, scope),
-    socialLogin: () => loginWithGoogle({ emailMandatory }),
-    children: children
-  });
-}
