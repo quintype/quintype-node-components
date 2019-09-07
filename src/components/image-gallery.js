@@ -10,6 +10,7 @@ import { ResponsiveImage } from "./responsive-image";
  *
  * <ImageGalleryElement element={element} key={element.id} imageAspectRatio={[4,3]} />
  * ```
+ * @category Other
  */
 export function ImageGalleryElement({ className, imageAspectRatio, defaultWidth, element = {}, widths, story, onClickHandler }) {
   const images = element['story-elements'].map((image, index) => (

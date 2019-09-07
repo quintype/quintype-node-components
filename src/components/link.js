@@ -64,5 +64,6 @@ function mapDispatchToProps(dispatch) {
  * import { Link } from '@quintype/components';
  * <Link href="/section/story-slug" otherLinkAttribute="value">Text here</Link>
  * ```
+ * @category Other
  */
 export const Link = connect(mapStateToProps, mapDispatchToProps)(LinkBase);
