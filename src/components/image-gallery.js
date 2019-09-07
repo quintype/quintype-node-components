@@ -1,7 +1,18 @@
 import React from "react";
 import { ResponsiveImage } from "./responsive-image";
 
-const ImageGalleryElement = ({className, imageAspectRatio, defaultWidth, element={}, widths, story, onClickHandler}) => {
+/**
+ * This component can be used for adding image gallery on the story page. You can pass in props like ```className, imageAspectRatio, defaultWidth, element``` and ```widths```
+ *
+ * Example
+ * ``` javascript
+ * import { ImageGalleryElement } from "@quintype/components";
+ *
+ * <ImageGalleryElement element={element} key={element.id} imageAspectRatio={[4,3]} />
+ * ```
+ * @component
+ */
+export const ImageGalleryElement = ({className, imageAspectRatio, defaultWidth, element={}, widths, story, onClickHandler}) => {
     const images = element['story-elements'].map((image, index) => (
       <figure data-test-id = "story-element-image-container" key={image.id}
         className={`story-element-image-gallery__image-container ${onClickHandler ? 'custom-cursor' : ''}`}
@@ -19,5 +30,3 @@ const ImageGalleryElement = ({className, imageAspectRatio, defaultWidth, element
     return <div className="story-element-image-gallery" data-test-id = "story-element-image-gallery">{images}</div>
 
   }
-
-export { ImageGalleryElement };

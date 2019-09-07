@@ -266,8 +266,7 @@ const mapDispatchToProps = dispatch  => ({
  * ```
  *
  *
- * ###### Example
- *
+ * Example
  * ```javascript
  * import { AccessType } from "@quintype/components";
  *

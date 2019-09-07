@@ -2,67 +2,6 @@
 
 This is a set of components that is to be used to build a Quintype Node App. This README servers as documentation of the components. Please see [malibu](https://github.com/quintype/malibu) for a reference application using this architecture.
 
-   * [Quintype Components](#quintype-components)
-         * [BreakingNews](#breakingnews)
-         * [BreakingNewsItem](#breakingnewsitem)
-         * [Collection](#collection)
-         * [ClientSideOnly](#clientsideonly)
-         * [DfpAds](#dfpads)
-         * [AdbutlerAds](#adbutlerads)
-         * [HamburgerButton](#hamburgerbutton)
-         * [ImageGalleryElement](#imagegalleryelement)
-         * [InfiniteScroll](#infinitescroll)
-         * [InfiniteStoryBase](#infinitestorybase)
-         * [LazyCollection](#lazycollection)
-         * [LazyLoadImages](#lazyloadimages)
-         * [Link](#link)
-         * [LoadMoreBase](#loadmorebase)
-         * [LoadMoreCollectionStories](#loadmorecollectionstories)
-         * [LoadingIndicator](#loadingindicator)
-         * [Menu](#menu)
-         * [NavigationComponentBase](#navigationcomponentbase)
-         * [ResponsiveHeroImage](#responsiveheroimage)
-         * [ResponsiveImage](#responsiveimage)
-         * [Responsive Source](#responsive-source)
-         * [SearchPageBase](#searchpagebase)
-         * [Search box](#search-box)
-         * [SocialShare](#socialshare)
-         * [StoryElement](#storyelement)
-         * [WithClientSideOnly](#withclientsideonly)
-         * [WithError](#witherror)
-         * [WithHostUrl](#withhosturl)
-         * [WithLazy](#withlazy)
-         * [WithMember](#withmember)
-         * [WithPreview](#withpreview)
-         * [WithSocialLogin](#withsociallogin)
-         * [Review Rating](#review-rating)
-      * [Recommended Components that are not included](#recommended-components-that-are-not-included)
-         * [Sliders](#sliders)
-         * [Marquee for Breaking News](#marquee-for-breaking-news)
-         * [ReactTable for table story elements](#reacttable-for-table-story-elements)
-         * [UpdateOnInterval](#UpdateOnInterval)
-         * [AccessType](#accesstype)
-
-### BreakingNews
-This component will automatically fetch breaking news every 30 seconds, and render the provided view.
-
-```javascript
-import { renderBreakingNews } from '@quintype/framework/client/start';
-const BreakingNewsView = ({breakingNews, breakingNewsLoaded}) =>
-  <ul>{breakingNews.map((item, index) => <li key={index}><BreakingNewsItem item={item} /></li>)}</ul>
-renderBreakingNews('breaking-news-container', store, BreakingNewsView);
-```
-
-### BreakingNewsItem
-
-This component can be used to render a BreakingNewsItem.
-
-```javascript
-import {BreakingNewsItem} from '@quintype/components'
-
-<BreakingNewsItem item={item} className="breaking-news__headline"/>
-```
-
 ### Collection
 
 This component can be used to render a collection. You should typically pass this a collection that represents a page. Also see [LazyCollection](#lazycollection).
@@ -101,55 +40,6 @@ function interstitial(index) {
             collectionTemplates={collectionTemplates}
             storyTemplates={storyTemplates}
             interstitial={interstitial} />
-```
-
-### AdbutlerAds
-This component can be used to get ads from `Adbutler` ad service provider based on the `adtype` you want to show
-
-```javascript
-import { AdbutlerAd } from '@quintype/components';
-
-// Lists publisher id and the respective mapping of the zone ids
-const adbutlerConfig = {
-  publisherId: "175635",
-  "Horizontal-Ad": "353618",
-  "Vertical-Ad": "353620"
-};
-
-// Lists sizes of respective ads
-const sizes = {
-  "Horizontal-Ad": {
-    mobile: [320, 50],  // [<width>, <height>]
-    tablet: [728, 90],
-    desktop: [728, 90]
-  },
-  "Vertical-Ad": {
-    mobile: [300, 250],
-    tablet: [300, 600],
-    desktop: [300, 600]
-  }
-};
-
-<AdbutlerAd adtype="Story-Middle-Ad" adbutlerConfig={adbutlerConfig} sizes={sizes} />
-```
-
-### HamburgerButton
-This component can be used to trigger an action openening the Hamburger menu. The state can be accessed via state.hamburgerOpened
-
-```javascript
-import { HamburgerButton } from '@quintype/components';
-<HamburgerButton>
-  <img src="/path/to/hamburger.png"/>
-</HamburgerButton>
-```
-
-### ImageGalleryElement
-This component can be used for adding image gallery on the story page. You can pass in props like ```className, imageAspectRatio, defaultWidth, element``` and ```widths```
-
-``` javascript
-import { ImageGalleryElement } from "@quintype/components";
-
-<ImageGalleryElement element={element} key={element.id} imageAspectRatio={[4,3]} />
 ```
 
 ### InfiniteScroll
@@ -252,14 +142,6 @@ function LazyLoadSecondImage() {
 }
 ```
 
-### Link
-This component generates an anchor tag. Instead of doing a browser page load, it will go to the next page via AJAX. Analytics scripts will be fired correctly (and if not, it's a bug)
-
-```javascript
-import { Link } from '@quintype/components';
-<Link href="/section/story-slug" otherLinkAttribute="value">Text here</Link>
-```
-
 ### LoadMoreBase
 
 This component starts with a set of stories, and then provides a load more button. This calls out to `/api/v1/stories` with the properties passed via the `params` prop. The stories are concatenated with the stories in `props.data.stories`, and the contents of `props.data` are passed to the rendered template.
@@ -285,7 +167,7 @@ export function SectionPage(props) {
 
 ### LoadMoreCollectionStories
 
-This component is very similar to the LoadMoreBase component but fetches the stroies from a `collection`. The api call `/api/v1/collections/{collectionSlug}` is made with the passed collection slug value. The component accepts the `params` prop and a requires a Collection Slug from which to fetch the stories and returns a set of stories only.
+This component is very similar to the LoadMoreBase component but fetches the stories from a `collection`. The api call `/api/v1/collections/{collectionSlug}` is made with the passed collection slug value. The component accepts the `params` prop and a requires a Collection Slug from which to fetch the stories and returns a set of stories only.
 
 ```javascript
 import { LoadMoreCollectionStories } from '@quintype/components';
@@ -313,17 +195,6 @@ export function HomePage(props) {
             params={{}}
             numStoriesToLoad={10} />
 }
-```
-
-### LoadingIndicator
-This component renders it's children when the app is moving between pages. It can be used to show a spinner. It always has the class "loading-indicator", and also "loading-indicator-loading" when loading.
-
-```javascript
-import { LoadingIndicator } from '@quintype/components';
-
-<LoadingIndicator>
-  <div className="spinner">Please Wait</div>
-</LoadingIndicator>
 ```
 
 ### ResponsiveHeroImage
