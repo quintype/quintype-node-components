@@ -86,5 +86,6 @@ const mapDispatchToProps = dispatch => ({
  * <SearchBox className="foobar" placeholder="search" inputClassName="foobar-box" inputId="stg" inputRef={(x) => this.foo = x} onEscape={() => this.closeDialog()}/>
  * ```
  * @component
+ * @category Header
  */
 export const SearchBox = connect(mapStateToProps, mapDispatchToProps)(SearchBoxBase);

@@ -24,6 +24,7 @@ import React from "react";
  * @param {Component} klazz
  * @param {function} updateData
  * @component
+ * @category Other
  */
 export function WithPreview(klazz, updateData) {
   return class WithPreviewWrapper extends React.Component {

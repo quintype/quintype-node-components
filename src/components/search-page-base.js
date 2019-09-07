@@ -20,6 +20,8 @@ import { LoadMoreStoriesManager } from './load-more-stories-base'
  * ```
  * @component
  * @hideconstructor
+ * @deprecated
+ * @category Other
  */
 export class SearchPageBase extends React.Component {
   search(pageNumber) {

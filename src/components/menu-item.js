@@ -5,6 +5,7 @@ import { Link } from "./link";
  * @see {@link Menu}
  * @deprecated
  * @component
+ * @category Header
  */
 export function MenuItem({ item, className, currentUrl }) {
   const url = getRelativeUrl(item.url);

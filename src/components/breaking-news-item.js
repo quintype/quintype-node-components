@@ -13,6 +13,7 @@ import get from "lodash/get";
  * ```
  * @see {@link BreakingNews}
  * @component
+ * @category Header
  */
 export function BreakingNewsItem({ item, className }) {
   const linkedStorySlug = get(item, ['metadata', 'linked-story-slug']);

@@ -29,5 +29,6 @@ function mapDispatchToProps() {
  * </LoadingIndicator>
  * ```
  * @component
+ * @category Other
  */
 export const LoadingIndicator = connect(mapStateToProps, mapDispatchToProps)(LoadingIndicatorBase);

@@ -28,5 +28,6 @@ class ClientSideOnlyBase extends React.Component {
  * ```
  * @see {@link WithClientSideOnly} for a render props version of this component
  * @component
+ * @category Other
  */
 export const ClientSideOnly = connect(mapStateToProps, mapDispatchToProps)(ClientSideOnlyBase);

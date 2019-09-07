@@ -84,5 +84,6 @@ function mapStateToProps(state) {
  * ```
  *
  * @component
+ * @category Other
  */
 export const SocialShare = connect(mapStateToProps, {})(withError(SocialShareBase));

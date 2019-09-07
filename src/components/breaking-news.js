@@ -49,5 +49,6 @@ function mapDispatchToProps(dispatch) {
  * ```
  * @see {@link BreakingNewsItem}
  * @component
+ * @category Header
  */
 export const BreakingNews = connect(mapStateToProps, mapDispatchToProps)(BreakingNewsBase);

@@ -29,6 +29,7 @@ import { getQliticsSchema } from "../utils";
  * ```
  * @component
  * @hideconstructor
+ * @category Other
  */
 export class StoryElement extends React.Component {
   constructor(props) {

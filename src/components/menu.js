@@ -40,5 +40,6 @@ function mapStateToProps(state) {
  * @deprecated
  * @see {@link MenuItem}
  * @component
+ * @category Header
  */
 export const Menu = connect(mapStateToProps, () => ({}))(MenuBase);

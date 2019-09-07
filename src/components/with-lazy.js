@@ -13,6 +13,7 @@ import React from 'react';
  * ```
  * @component
  * @hideconstructor
+ * @category Other
  */
 export class WithLazy extends React.Component {
   constructor(props) {

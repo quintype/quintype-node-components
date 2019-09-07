@@ -28,5 +28,6 @@ function mapDispatchToProps(dispatch) {
  * </HamburgerButton>
  * ```
  * @component
+ * @category Header
  */
 export const HamburgerButton = connect(state => ({}), mapDispatchToProps)(HamburgerButtonBase);

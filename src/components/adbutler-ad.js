@@ -46,6 +46,7 @@ function getSize(sizeMap) {
  * <AdbutlerAd adtype="Story-Middle-Ad" adbutlerConfig={adbutlerConfig} sizes={sizes} />
  * ```
  * @component
+ * @category Ads
  */
 export function AdbutlerAd({ adtype, adbutlerConfig, sizes }) {
   const { publisherId = "", [adtype]: zoneId = "" } = adbutlerConfig;

@@ -22,6 +22,7 @@ function defaultErrorFn(props) {
  * @param {Component} clazz
  * @param {function} errorFn
  * @component
+ * @category Other
  */
 export function withError(clazz, errorFn = defaultErrorFn) {
   return class WithError extends React.Component {

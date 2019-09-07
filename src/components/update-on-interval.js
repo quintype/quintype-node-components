@@ -26,6 +26,7 @@ import PropTypes from 'prop-types';
  *  ```
  * @component
  * @hideconstructor
+ * @category Other
  */
 export class UpdateOnInterval extends Component {
     constructor(props){
