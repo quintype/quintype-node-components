@@ -546,46 +546,6 @@ import { WithClientSideOnly } from '@quintype/components';
 </WithClientSideOnly>
 ```
 
-### WithError
-This function can be used to generate a wrapper component that implements `componentDidCatch()`.
-
-```javascript
-
-import { withError } from '@quintype/components';
-
-function optionalErrorFn(props) {
-  return <span />;
-}
-
-const MyStoryElement = withError(ClassThatMayCrash, optionalErrorFn)
-```
-
-### WithHostUrl
-This function can be used to get access to the `currentHostUrl` and `primaryHostUrl`.
-
-```javascript
-import { WithHostUrl } from '@quintype/components';
-
-<WithHostUrl>{({ primaryHostUrl, currentHostUrl }) =>
-  <div>
-    <div>primaryHostUrl: {primaryHostUrl}</div>
-    <div>currentHostUrl: {currentHostUrl}</div>
-  </div>
-}</WithHostUrl>
-```
-
-### WithLazy
-
-This component can be used to load some DOM just before it scrolls into the screen. Currently, it does not support unloading. The `margin` prop is passed to `IntersectionObserver`.
-
-```javascript
-import { WithLazy } from '@quintype/components';
-
-<WithLazy margin="50px">{() =>
-  <SomeHeavyComponent />
-}</WithLazy>
-```
-
 ### WithMember
 This is a render props component which will call your callback with the current logged in member. It will automatically call `/api/v1/members/me` to figure out if you are logged in, and replace the contents in the store and callback. In future, this may use LocalStorage to cache the member for some time.
 
