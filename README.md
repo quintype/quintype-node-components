@@ -326,35 +326,6 @@ import { LoadingIndicator } from '@quintype/components';
 </LoadingIndicator>
 ```
 
-### Menu
-This component can be used to render a menu from the menuItems in the editor. An extra class called active is applied if the menu item is the current url. By default, links will resolve via AJAX.
-
-Items will automatically be pulled from `config`, please remember to expose the `layout` key.
-
-Children are prepended to the list of items. Slice can be passed to extract a set of menu items.
-
-```javascript
-import { Menu } from '@quintype/components';
-
-<Menu className="menu-class" itemClassName="item-class" slice={[0, 10]}>
-  <li>
-    <a className="item-class" href="/"> होम </a>
-  </li>
-</Menu>
-```
-
-### NavigationComponentBase
-
-This is a base component which *must* be subclassed, providing a navigateTo function.
-
-```javascript
-import { NavigationComponentBase }from '@quintype/components';
-
-class SearchComponent extends NavigationComponentBase {
-  render() { return <a href="#" onClick={() => this.navigateTo("/some-page-here")}>Link</a>}
-}
-```
-
 ### ResponsiveHeroImage
 This component takes is a wrapper over [ResponsiveImages](#ResponsiveImage), which accepts a story and returns the hero image. By default, it picks the alt text from the headline.
 
@@ -415,21 +386,6 @@ import { ResponsiveSource } from '@quintype/components';
       imgParams={{auto:['format', 'compress']}}/>
   </picture>
 </figure>
-```
-
-### SearchPageBase
-This component is to handle search functionality and also handles load more.
-
-A template must be passed in to render search results. Fields can be passed to get specific fields in the results. The contents of `props.data` are passed to the rendered template.
-
-```javascript
-import { SearchPageBase } from "@quintype/components";
-
-function SearchPageView({query, stories, onLoadMore, loading, noMoreStories}) {
-  return <div />;
-}
-
-<SearchPageBase template={SearchPageView} fields={"id,headline"} {...props}/>
 ```
 
 ## Recommended Components that are not included

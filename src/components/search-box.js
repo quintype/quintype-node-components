@@ -2,21 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 
-/**
- * This component provides a form with a search text box. On submit, the user is redirected to the search page via AJAX.
- *
- * A template function can also be passed in, to do custom rendering. The template prop will be called with childen having the child text box.
- *
- * Example
- * ```javascript
- * import { SearchBox } from '@quintype/components';
- *
- * <SearchBox className="foobar" placeholder="search" inputClassName="foobar-box" inputId="stg" inputRef={(x) => this.foo = x} onEscape={() => this.closeDialog()}/>
- * ```
- * @component
- */
-export const SearchBox = connect(mapStateToProps, mapDispatchToProps)(SearchBoxBase);
-
 class SearchBoxBase extends React.Component {
   constructor(props) {
     super(props);
@@ -87,3 +72,19 @@ const mapDispatchToProps = dispatch => ({
     global.app.navigateToPage(dispatch, url);
   }
 });
+
+
+/**
+ * This component provides a form with a search text box. On submit, the user is redirected to the search page via AJAX.
+ *
+ * A template function can also be passed in, to do custom rendering. The template prop will be called with childen having the child text box.
+ *
+ * Example
+ * ```javascript
+ * import { SearchBox } from '@quintype/components';
+ *
+ * <SearchBox className="foobar" placeholder="search" inputClassName="foobar-box" inputId="stg" inputRef={(x) => this.foo = x} onEscape={() => this.closeDialog()}/>
+ * ```
+ * @component
+ */
+export const SearchBox = connect(mapStateToProps, mapDispatchToProps)(SearchBoxBase);
