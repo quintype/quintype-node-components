@@ -83,5 +83,5 @@ ReviewRating.propTypes = {
   /** Optional React component to render instead of inactive star */
   inActiveSymbol: PropTypes.element,
   /** Optional React component to render instead of half active star */
-  halfActiveSymbol: PropTypes.elemenet
+  halfActiveSymbol: PropTypes.element
 };

@@ -2,46 +2,6 @@
 
 This is a set of components that is to be used to build a Quintype Node App. This README servers as documentation of the components. Please see [malibu](https://github.com/quintype/malibu) for a reference application using this architecture.
 
-### Collection
-
-This component can be used to render a collection. You should typically pass this a collection that represents a page. Also see [LazyCollection](#lazycollection).
-
-```javascript
-import {Collection} from '@quintype/components'
-
-// collection = Collection.getCollectionBySlug(client, 'home', {}, {depth: 1})
-
-function TwoColLayout({collection, associatedMetadata, index}) {
-  // for item in collection.item
-  //   if item.type == story
-  //     showStory
-  //   else if item.type == colection
-  //     <Collection />
-  // speed = associatedMetadata.scroll_speed
-}
-
-function collectionTemplates(layout, index) {
-  if(layout == 'twoColLayout')
-    return TwoColLayout;
-}
-
-// optional
-function storyTemplates(index) {
-  return StoryTemplate;
-}
-
-// optional
-function interstitial(index) {
-  if(index % 2 == 0)
-    return <AdComponent />
-}
-
-<Collection collection={collection}
-            collectionTemplates={collectionTemplates}
-            storyTemplates={storyTemplates}
-            interstitial={interstitial} />
-```
-
 ### InfiniteScroll
 
 This component can be used to implement InfiniteScroll. This is an internal component.
@@ -90,25 +50,7 @@ An Example:
                             onItemFocus={(item) => console.log(`Story In View: ${item.story.headline}`)}
                             doNotChangeUrl={true} />
 ```
-### LazyCollection
 
-This component can be used to render a collection, but with the components being lazy. This takes all the same options as Collection, but with a `lazyAfter` prop.
-This Component also accepts extra props, which will be passed down to collection templates.
-
-Note: This does not accept `interstitial` items (yet). And home page items are not hidden after being rendered
-
-```javascript
-import { LazyCollection } from '@quintype/components'
-
-// collection = Collection.getCollectionBySlug(client, 'home', {}, {depth: 1})
-
-<LazyCollection collection={collection}
-                collectionTemplates={collectionTemplates}
-                storyTemplates={storyTemplates}
-                lazyAfter={3}
-                extraProp="some prop" />
-
-```
 
 ### LazyLoadImages
 
