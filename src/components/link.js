@@ -1,5 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
+import { string, func, bool } from 'prop-types';
 
 function preventDefaultImpl(e) {
   e.preventDefault();
@@ -43,6 +44,18 @@ function LinkBase({
   }));
 }
 
+LinkBase.propTypes = {
+  href: string.isRequired,
+  externalLink: bool,
+  callback: func,
+  /** @private */
+  navigateTo: func,
+  /** @private */
+  preventDefault: func,
+  /** @private */
+  disableAjaxLinks: bool,
+}
+
 function mapStateToProps(state) {
   return {
     currentHostUrl: state.qt && state.qt.currentHostUrl
@@ -65,5 +78,6 @@ function mapDispatchToProps(dispatch) {
  * <Link href="/section/story-slug" otherLinkAttribute="value">Text here</Link>
  * ```
  * @category Other
+ * @component
  */
 export const Link = connect(mapStateToProps, mapDispatchToProps)(LinkBase);

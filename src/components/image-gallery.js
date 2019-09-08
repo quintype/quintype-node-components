@@ -11,8 +11,10 @@ import { ResponsiveImage } from "./responsive-image";
  * <ImageGalleryElement element={element} key={element.id} imageAspectRatio={[4,3]} />
  * ```
  * @category Story Page
+ * @component
  */
-export function ImageGalleryElement({ className, imageAspectRatio, defaultWidth, element = {}, widths, story, onClickHandler }) {
+export function ImageGalleryElement({ className, imageAspectRatio, defaultWidth, element, widths, story, onClickHandler }) {
+  element = element || {};
   const images = element['story-elements'].map((image, index) => (
     <figure data-test-id="story-element-image-container" key={image.id}
       className={`story-element-image-gallery__image-container ${onClickHandler ? 'custom-cursor' : ''}`}
