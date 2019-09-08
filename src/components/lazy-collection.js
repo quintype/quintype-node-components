@@ -1,6 +1,7 @@
 import React from 'react';
 import { InfiniteScroll } from './infinite-scroll';
 import { string, object, func } from 'prop-types';
+import { StoryNotImplemented, CollectionNotImplemented, renderCollectionItem } from './impl/collection-impl';
 
 /**
  * This component can be used to render a collection, but with the components being lazy. This takes all the same options as Collection, but with a `lazyAfter` prop.

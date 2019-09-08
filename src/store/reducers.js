@@ -1,4 +1,3 @@
-import get from "lodash/get";
 import {
   BREAKING_NEWS_UPDATED,
   CLIENT_SIDE_RENDERED,

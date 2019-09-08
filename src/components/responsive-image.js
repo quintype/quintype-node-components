@@ -19,7 +19,7 @@ function hashString(string) {
     hash |= 0; // Convert to 32bit integer
   }
   return hash;
-};
+}
 
 function responsiveProps(props) {
   const image = new FocusedImage(props.slug, props.metadata);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { string, object, func } from 'prop-types';
+import { StoryNotImplemented, CollectionNotImplemented, renderCollectionItem } from './impl/collection-impl';
 
 /**
  * This component can be used to render a collection. You should typically pass this a collection that represents a page. Also see {@link LazyCollection}.
