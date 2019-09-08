@@ -21,8 +21,8 @@ function defaultErrorFn(props) {
  * ```
  * @param {Component} clazz
  * @param {function} errorFn
- * @component
  * @category Other
+ * @returns {Component} A component with errors caught
  */
 export function withError(clazz, errorFn = defaultErrorFn) {
   return class WithError extends React.Component {

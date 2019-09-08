@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
  * ```
  * The component supports additional props which allows more customization, you can pass in props like size, color, count of stars or even change the render from star to a custom svg component. Refer to component src to know exact details of what is supported.
  * @component
- * @category Other
+ * @category Story Page
  */
 export function ReviewRating({
                         value,

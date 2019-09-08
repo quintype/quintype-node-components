@@ -21,6 +21,7 @@
         "tutorials": "./docs-src/tutorials",
         "template": "./node_modules/better-docs"
     },
+    "sourceType": "module",
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false,

@@ -23,8 +23,8 @@ import React from "react";
  * ```
  * @param {Component} klazz
  * @param {function} updateData
- * @component
  * @category Other
+ * @returns {Component} Component which can be used for preview
  */
 export function WithPreview(klazz, updateData) {
   return class WithPreviewWrapper extends React.Component {

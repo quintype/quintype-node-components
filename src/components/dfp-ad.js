@@ -40,8 +40,8 @@ import {withError} from './with-error';
  * @param {boolean} params.collapseEmptyDivs (default true)
  * @param {boolean} params.lazyLoad (default true)
  * @param {boolean} params.singleRequest - Run Dfp in Single Request Mode (default false)
- * @component
  * @category Ads
+ * @returns {Component} A component that can
  */
 export function createDfpAdComponent({ defaultNetworkID, config, targeting, collapseEmptyDivs = true, lazyLoad = true, singleRequest = false }) {
   return connect((state) => ({

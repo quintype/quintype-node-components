@@ -57,10 +57,34 @@ function WrapCollectionComponent(Component) {
   }
 }
 
+/**
+ * Use this function to wrap a UI for collections, which returns a component handling common behavior, such as only rendering client side, or lazy loading images.
+ * This component adds two props: `stories` and `associatedMetadata`
+ *
+ * Example:
+ * ```javascript
+ * import { wrapCollectionLayout } from '@quintype/components';
+ *
+ * function CollectionBase({stories = [], associatedMetadata = {}, collection}) {
+ *   return <div>{stories.map(story => <div>{story.headline}</div>)}</div>
+ * }
+ * const Collection = wrapCollectionLayout(CollectionBase);
+ * ```
+ * @param {Component} component
+ * @category Collection Page
+ * @returns {Component} A component which can be passed collection
+ */
 export function wrapCollectionLayout(component) {
   return connect((state) => ({config: state.qt.config}))(WrapCollectionComponent(component))
 }
 
+/**
+ * Use this function to get the stories from a collection object
+ *
+ * @param {Collection} collection
+ * @category Collection Page
+ * @returns {Array} An array of stories
+ */
 export function collectionToStories(collection) {
   return collection.items
                    .filter(item => item.type === 'story')
