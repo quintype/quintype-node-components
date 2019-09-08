@@ -140,4 +140,10 @@ function withFocusObserver(Component) {
   }
 }
 
+/**
+ * This component can be used to implement InfiniteScroll. This is an internal component.
+ * @private
+ * @category Other
+ * @component
+ */
 export const InfiniteScroll = withFocusObserver(InfiniteScrollBase);
