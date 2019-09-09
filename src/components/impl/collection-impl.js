@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAssociatedTemplate } from "../utils";
+import { getAssociatedTemplate } from "../../utils";
 
 export function StoryNotImplemented() {
   return <div data-comment="Story Template Not Implemented" />;

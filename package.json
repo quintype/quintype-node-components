@@ -68,9 +68,6 @@
     "rollup-plugin-babel": "^4.3.2",
     "standard-version": "^5.0.2"
   },
-  "husky": {
-    "pre-commit": "eslint src && npm test"
-  },
   "peerDependencies": {
     "lodash": "^4.17.11"
   },
