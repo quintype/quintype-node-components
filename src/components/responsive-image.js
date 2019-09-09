@@ -1,9 +1,10 @@
 import React from "react";
 import {connect} from "react-redux";
 import {FocusedImage} from "quintype-js";
-import {func} from 'prop-types';
+import {func, string, arrayOf, number, object} from 'prop-types';
 import emptyWebGif from 'empty-web-gif';
 import omit from '@babel/runtime/helpers/objectWithoutProperties';
+import { objectExpression } from "@babel/types";
 
 const USED_PARAMS = ["imageCDN","defaultWidth","widths","imgParams","slug","metadata","aspectRatio", "reactTag", "eager"];
 
@@ -91,6 +92,32 @@ ResponsiveImageBase.contextTypes = {
   lazyLoadObserveImage: func,
   lazyLoadUnobserveImage: func,
   lazyLoadEagerPredicate: func
+}
+
+ResponsiveImageBase.propTypes = {
+  /** The Path to the image, relative to images.assettype.com. Usually /publisher/yyyy/mm/<rand>/image-name.type */
+  slug: string.isRequired,
+
+  /** The image metadata as returned by the editor. Usually has width, height and focus point */
+  metadata: object,
+
+  /** The alt text for this image */
+  alt: string.isRequired,
+
+  /** The aspect ratio of the image output. Ex: [16, 9] */
+  aspectRatio: arrayOf(number),
+
+  /** The default width for the image, in case the browser does not support srcset */
+  defaultWidth: number,
+
+  /** The list of available widths */
+  widths: arrayOf(number),
+
+  /** Hints for the browser to choose the best size. See <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images#Resolution_switching_Different_sizes">Syntax</a> */
+  sizes: string,
+
+  /** Other parameters to pass to the image resizing engine */
+  imgParams: object
 }
 
 /**
