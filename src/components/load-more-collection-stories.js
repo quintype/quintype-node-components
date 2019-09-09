@@ -2,7 +2,7 @@ import React from 'react';
 
 import get from "lodash/get";
 import { getRequest } from './api-client';
-import { LoadMoreStoriesManager } from './load-more-stories-manager';
+import { LoadMoreStoriesManager } from './impl/load-more-stories-manager';
 
 /**
  * This component is very similar to the {@link LoadMoreBase} component but fetches the stories from a `collection`. The api call `/api/v1/collections/{collectionSlug}` is made with the passed collection slug value. The component accepts the `params` prop and a requires a Collection Slug from which to fetch the stories and returns a set of stories only.

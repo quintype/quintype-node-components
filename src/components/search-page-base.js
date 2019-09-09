@@ -2,7 +2,7 @@ import React from 'react';
 import get from "lodash/get";
 import { getRequest } from './api-client';
 
-import { LoadMoreStoriesManager } from './load-more-stories-base'
+import { LoadMoreStoriesManager } from './impl/load-more-stories-manager'
 
 /**
  * This component is to handle search functionality and also handles load more.

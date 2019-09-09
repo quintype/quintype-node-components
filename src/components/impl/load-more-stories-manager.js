@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { removeDuplicateStories } from '../utils';
+import { removeDuplicateStories } from '../../utils';
 
 export class LoadMoreStoriesManager extends React.Component {
   constructor(props) {

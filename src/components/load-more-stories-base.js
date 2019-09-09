@@ -2,7 +2,7 @@ import React from 'react';
 
 import get from "lodash/get";
 import { getRequest } from './api-client';
-import { LoadMoreStoriesManager } from './load-more-stories-manager';
+import { LoadMoreStoriesManager } from './impl/load-more-stories-manager';
 /**
  * This component starts with a set of stories, and then provides a load more button. This calls out to `/api/v1/stories` with the properties passed via the `params` prop. The stories are concatenated with the stories in `props.data.stories`, and the contents of `props.data` are passed to the rendered template.
  *
