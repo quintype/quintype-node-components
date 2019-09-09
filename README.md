@@ -34,61 +34,6 @@ function LazyLoadSecondImage() {
 }
 ```
 
-### LoadMoreBase
-
-This component starts with a set of stories, and then provides a load more button. This calls out to `/api/v1/stories` with the properties passed via the `params` prop. The stories are concatenated with the stories in `props.data.stories`, and the contents of `props.data` are passed to the rendered template.
-
-It can accept an alternate `api` as a prop as well as `apiResponseTransformer` which can be used to tranformer the api response before being passed to the `template`.
-
-```javascript
-import { LoadMoreStoriesBase } from '@quintype/components';
-
-function SectionPageWithStories({section, stories, loading, onLoadMore, noMoreStories}) {
-  return <div/>;
-}
-
-export function SectionPage(props) {
-  return <LoadMoreStoriesBase template={SectionPageWithStories}
-                              fields={"id,headline"}
-                              {...props}
-                              params={{"section-id": props.data.section.id}}
-                              api="/api/v1/stories"
-                              apiResponseTransformer={(response) => response.stories} />
-}
-```
-
-### LoadMoreCollectionStories
-
-This component is very similar to the LoadMoreBase component but fetches the stories from a `collection`. The api call `/api/v1/collections/{collectionSlug}` is made with the passed collection slug value. The component accepts the `params` prop and a requires a Collection Slug from which to fetch the stories and returns a set of stories only.
-
-```javascript
-import { LoadMoreCollectionStories } from '@quintype/components';
-
-function MoreCollectionStories({collection, stories, loading, onLoadMore, noMoreStories}) {
-  return <div/>;
-}
-
-export function HomePage(props) {
-  return <LoadMoreCollectionStories template={MoreCollectionStories}
-                                    collectionSlug={props.data.collectionSlug}
-                                    data={{collection: collection, stories: initialStories}}
-                                    params={{}}/>
-}
-```
-
-### Get Collection of stories written by a particular author
-We can get the collection of stories written by a specific author by using the authorId prop as below:
-```javascript
-export function HomePage(props) {
-  return <LoadMoreCollectionStories
-            template={MoreCollectionStories}
-            data={{stories: stories}}
-            authorId={props.author.id}
-            params={{}}
-            numStoriesToLoad={10} />
-}
-```
-
 ### ResponsiveHeroImage
 This component takes is a wrapper over [ResponsiveImages](#ResponsiveImage), which accepts a story and returns the hero image. By default, it picks the alt text from the headline.
 
