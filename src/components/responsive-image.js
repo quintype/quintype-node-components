@@ -35,7 +35,7 @@ function responsiveProps(props) {
   }
 }
 
-export class ResponsiveImageBase extends React.Component {
+class ResponsiveImageBase extends React.Component {
   constructor(props, context) {
     if(process.env.NODE_ENV == 'development' && !props.alt && !props.reactTag) {
       global.console && global.console.warn(`Image Found without an alt attribute: ${responsiveProps(props).src}`);
@@ -93,20 +93,25 @@ ResponsiveImageBase.contextTypes = {
   lazyLoadEagerPredicate: func
 }
 
+/**
+ * This component takes an image, and resizes it to the correct aspect ratio using imgix or thumbor.
+ *
+ * Also see [Using Responsive Image](doc/using-responsive-image.md)
+ *
+ * ```javascript
+ * import { ResponsiveImage } from '@quintype/components';
+ *
+ * <figure className="story-grid-item-image qt-image-16x9">
+ *   <ResponsiveImage slug={props.story["hero-image-s3-key"]}
+ *     metadata={props.story["hero-image-metadata"]}
+ *     alt={props.story['headline']}
+ *     aspectRatio={[16,9]}
+ *     defaultWidth={480} widths={[250,480,640]}
+ *     sizes="(max-width: 500px) 98vw, (max-width: 768px) 48vw, 23vw"
+ *     imgParams={{auto:['format', 'compress']}}/>
+ * </figure>
+ * ```
+ * @component
+ * @category Images
+ */
 export const ResponsiveImage = connect(mapStateToProps, {})(ResponsiveImageBase);
-
-export const ResponsiveSource = function(props) {
-  return React.createElement(ResponsiveImage, Object.assign({
-    reactTag: 'source',
-    src: false,
-    defaultWidth: 1024
-  }, props));
-}
-
-export function ResponsiveHeroImage(props) {
-  return React.createElement(ResponsiveImage, Object.assign({
-    slug: props.story["hero-image-s3-key"],
-    metadata: props.story["hero-image-metadata"],
-    alt: props.story["headline"]
-  }, omit(props, ['story'])));
-}
