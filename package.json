@@ -76,7 +76,7 @@
     "build:es": "npx babel src/ --out-dir dist/es --ignore '**/*.spec.js' --ignore '**/*.snap'",
     "build": "npm run clean:dist && npm run build:cjs && npm run build:es",
     "clean:dist": "rimraf dist",
-    "docs": "rimraf docs && jsdoc -c jsdoc.json",
+    "docs": "rimraf docs && jsdoc -c jsdoc.json docs-src/Home.md",
     "prepack": "npm run build",
     "prepublishOnly": "npm test && ./bin-dev-scripts/standard-version-release.sh",
     "sync-files-to": "npx onchange --verbose --wait --await-write-finish 'src/**/*' -- ./bin-dev-scripts/sync-to.sh",

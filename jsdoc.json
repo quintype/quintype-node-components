@@ -15,7 +15,7 @@
     "opts": {
         "encoding": "utf8",
         "destination": "docs/",
-        "readme": "readme.md",
+        "readme": "docs-src/home.md",
         "recurse": true,
         "verbose": true,
         "tutorials": "./docs-src/tutorials",
@@ -26,12 +26,7 @@
         "cleverLinks": false,
         "monospaceLinks": false,
         "default": {
-            "includeDate": false,
-            "staticFiles": {
-              "include": [
-                  "./docs-src/statics"
-              ]
-            }
+            "includeDate": false
         },
         "better-docs": {
             "name": "Quintype Components",

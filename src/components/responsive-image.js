@@ -96,8 +96,9 @@ ResponsiveImageBase.contextTypes = {
 /**
  * This component takes an image, and resizes it to the correct aspect ratio using imgix or thumbor.
  *
- * Also see [Using Responsive Image](doc/using-responsive-image.md)
+ * See the tutorial {@tutorial using-responsive-image} for an in depth look at using this component
  *
+ * Example
  * ```javascript
  * import { ResponsiveImage } from '@quintype/components';
  *
@@ -113,5 +114,6 @@ ResponsiveImageBase.contextTypes = {
  * ```
  * @component
  * @category Images
+ * @tutorial using-responsive-image
  */
 export const ResponsiveImage = connect(mapStateToProps, {})(ResponsiveImageBase);
