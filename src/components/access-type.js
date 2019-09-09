@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect, batch} from 'react-redux';
 import get from "lodash/get";
 import {
@@ -11,7 +11,7 @@ import {
 import PropTypes from "prop-types";
 import {awaitHelper} from "../utils";
 
-class AccessTypeBase extends Component {
+class AccessTypeBase extends React.Component {
 
     componentDidMount() {
         this.initAccessType();

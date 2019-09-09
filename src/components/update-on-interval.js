@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -28,12 +28,12 @@ import PropTypes from 'prop-types';
  * @hideconstructor
  * @category Other
  */
-export class UpdateOnInterval extends Component {
+export class UpdateOnInterval extends React.Component {
     constructor(props){
         super(props);
         this.fetchIntervalIndex = -1;
         this.state = {
-            data: this.props.initData
+            data: this.props.initData,
         };
     }
 

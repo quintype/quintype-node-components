@@ -33,8 +33,7 @@ export const awaitHelper = promise => (
 );
 
 
-export const getQliticsSchema = (story = {}, card = {}, element = {}) => {
-
+export const getQliticsSchema = function(story = {}, card = {}, element = {}) {
   Array.from(arguments).forEach(ele => {
     (Object.keys(ele).length < 1) && console.warn(`Required attribute missing for qlitics --> ${ele}`);
   }); //Display warning to make debugging easier

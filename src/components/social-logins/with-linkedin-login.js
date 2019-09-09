@@ -37,9 +37,9 @@ const loginWithLinkedIn = ({ emailMandatory }) => {
   }
 
   return new Promise((resolve, reject) => {
-    IN.User.authorize((e) => {
-      if(IN.User.isAuthorized()) {
-        resolve({"access-token": IN.ENV.auth.oauth_token, client: true})
+    global.IN.User.authorize((e) => {
+      if(global.IN.User.isAuthorized()) {
+        resolve({"access-token": global.IN.ENV.auth.oauth_token, client: true})
       } else {
         reject("NOT_GRANTED");
       }

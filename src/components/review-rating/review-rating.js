@@ -59,7 +59,7 @@ export function ReviewRating({
       {children}
     </div>
   );
-};
+}
 
 ReviewRating.propTypes = {
   /** Rating value to be displayed */
