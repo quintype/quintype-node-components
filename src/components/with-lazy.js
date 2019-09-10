@@ -1,5 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
+/**
+ * This component can be used to load some DOM just before it scrolls into the screen. Currently, it does not support unloading. The `margin` prop is passed to `IntersectionObserver`.
+ *
+ * Example
+ * ```javascript
+ * import { WithLazy } from '@quintype/components';
+ *
+ * <WithLazy margin="50px">{() =>
+ *   <SomeHeavyComponent />
+ * }</WithLazy>
+ * ```
+ * @component
+ * @hideconstructor
+ * @category Other
+ */
 export class WithLazy extends React.Component {
   constructor(props) {
     super(props);

@@ -1,42 +1,50 @@
 import React from 'react';
+import { string, object, func } from 'prop-types';
+import { StoryNotImplemented, CollectionNotImplemented, renderCollectionItem } from './impl/collection-impl';
 
-import {getAssociatedTemplate} from "../utils";
-import { InfiniteScroll } from './infinite-scroll';
-
-function StoryNotImplemented() {
-  return <div data-comment="Story Template Not Implemented" />;
-}
-
-function CollectionNotImplemented() {
-  return <div data-comment="Collection Template Not Implemented" />;
-}
-
-function renderCollectionItem(collectionItem, index, collectionTemplates, storyTemplates, otherProps={}) {
-  switch (collectionItem.type) {
-    case "collection":
-      return React.createElement(collectionTemplates(getAssociatedTemplate(collectionItem), index), {
-        key: `${index}-${collectionItem.id}`,
-        index: index,
-        collection: collectionItem,
-        metadata: collectionItem["associated-metadata"] || {},
-        ...otherProps
-      });
-
-    case "story":
-      return React.createElement(storyTemplates(index), {
-        key: `${index}-${collectionItem.id}`,
-        index: index,
-        story: collectionItem.story,
-        metadata: collectionItem["associated-metadata"] || {},
-        ...otherProps
-      });
-
-    default: return <div data-comment={`${collectionItem.type} not implemented`} />
-  }
-}
-
-// Pass this the HomePage Collection
-export function Collection({ className, collection, collectionTemplates, storyTemplates, interstitial = () => undefined }) {
+/**
+ * This component can be used to render a collection. You should typically pass this a collection that represents a page. Also see {@link LazyCollection}.
+ *
+ * Example
+ * ```javascript
+ * import {Collection} from '@quintype/components'
+ *
+ * // collection = Collection.getCollectionBySlug(client, 'home', {}, {depth: 1})
+ *
+ * function TwoColLayout({collection, associatedMetadata, index}) {
+ *   // for item in collection.item
+ *   //   if item.type == story
+ *   //     showStory
+ *   //   else if item.type == colection
+ *   //     <Collection />
+ *   // speed = associatedMetadata.scroll_speed
+ * }
+ *
+ * function collectionTemplates(layout, index) {
+ *   if(layout == 'twoColLayout')
+ *     return TwoColLayout;
+ * }
+ *
+ * // optional
+ * function storyTemplates(index) {
+ *   return StoryTemplate;
+ * }
+ *
+ * // optional
+ * function interstitial(index) {
+ *   if(index % 2 == 0)
+ *     return <AdComponent />
+ * }
+ *
+ * <Collection collection={collection}
+ *             collectionTemplates={collectionTemplates}
+ *             storyTemplates={storyTemplates}
+ *             interstitial={interstitial} />
+ * ```
+ * @component
+ * @category Collection Page
+ */
+export const Collection = ({ className, collection, collectionTemplates, storyTemplates, interstitial }) => {
   const children = collection.items
                     .map((collectionItem, index) => renderCollectionItem(collectionItem, index, collectionTemplates, storyTemplates))
                     .reduce((arr, v, i) => arr.concat([v, interstitial(i)]), []);
@@ -44,26 +52,16 @@ export function Collection({ className, collection, collectionTemplates, storyTe
   return React.createElement("div", { className }, children);
 }
 
+Collection.propTypes = {
+  className: string,
+  collection: object,
+  collectionTemplates: func,
+  storyTemplates: func,
+  interstitial: func,
+}
+
 Collection.defaultProps = {
   collectionTemplates: () => CollectionNotImplemented,
-  storyTemplates: () => StoryNotImplemented
-}
-
-export function LazyCollection({className, collection, collectionTemplates, storyTemplates, lazyAfter, ...otherProps}) {
-  return <div className={className}>
-    <InfiniteScroll render={({index}) => renderCollectionItem(collection.items[index], index, collectionTemplates, storyTemplates, otherProps)}
-                    items={collection.items}
-                    loadNext={() => []}
-                    initiallyShow={lazyAfter}
-                    neverHideItem={true}
-                    showAllOnLegacyBrowser={true}
-                    // No Op
-                    focusCallbackAt={20}
-                    onFocus={() => { }} />
-  </div>;
-}
-
-LazyCollection.defaultProps = {
-  collectionTemplates: () => CollectionNotImplemented,
-  storyTemplates: () => StoryNotImplemented
+  storyTemplates: () => StoryNotImplemented,
+  interstitial: () => undefined
 }

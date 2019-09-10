@@ -9,6 +9,50 @@ import { Link } from "./link";
 import get from "lodash/get";
 import { getQliticsSchema } from "../utils";
 
+/**
+ * This component renders different types of story elements
+
+ * Qlitics event is fired on story-elements become visible (this can be disabled by passing a prop called `disableAnalytics={true}`)
+ *
+ * Example
+ * ```javascript
+ * import { StoryElement } from '@quintype/components';
+ * function StoryCard(props){
+ *   return <div>
+ *     {props.card['story-elements'].map((element, index) => <StoryElement element={element} key={index} story={props.story}></StoryElement>)}
+ *   </div>
+ * }
+ * ```
+ * For different quality images in Image Story Element, pass `imageWidths` and `imageDefaultWidth` as props
+ * ```javascript
+ * <StoryElement story={story} element={element} imageWidths={[420,1040,1600]} imageDefaultWidth={1040}/>
+ * ```
+ * @component
+ * @hideconstructor
+ * @category Story Page
+ */
+export class StoryElement extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { crashed: false };
+  }
+  componentDidCatch(error, stack) {
+    this.setState({
+      crashed: true,
+      error: error
+    });
+    console && console.error(`Caught Exception: ${error && error.message}`);
+  }
+
+  render() {
+    if (this.state.crashed) {
+      return <div className="story-element story-element-crashed" />;
+    } else {
+      return React.createElement(StoryElementBase, this.props);
+    }
+  }
+}
+
 function StoryElementText({ element = {}, externalLink }) {
   let text = element.text || "";
   if (externalLink) {
@@ -35,7 +79,7 @@ function StoryElementAlsoRead({ element, story, alsoreadText = "Also Read: " }) 
     React.createElement(
       "span",
       { className: "story-element-text-also-read__label" },
-      alsoreadText 
+      alsoreadText
     ),
     React.createElement(Link, linkProps, element.text)
   );
@@ -262,28 +306,6 @@ class StoryElementBase extends React.Component {
             Object.assign({}, elementProps)
           )
     );
-  }
-}
-
-export class StoryElement extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { crashed: false };
-  }
-  componentDidCatch(error, stack) {
-    this.setState({
-      crashed: true,
-      error: error
-    });
-    console && console.error(`Caught Exception: ${error && error.message}`);
-  }
-
-  render() {
-    if (this.state.crashed) {
-      return <div className="story-element story-element-crashed" />;
-    } else {
-      return React.createElement(StoryElementBase, this.props);
-    }
   }
 }
 

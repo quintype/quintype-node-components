@@ -15,6 +15,39 @@ function getSize(sizeMap) {
   return sizeMap["desktop"];
 }
 
+/**
+ * This component can be used to get ads from `Adbutler` ad service provider based on the `adtype` you want to show
+ *
+ * Example
+ * ```javascript
+ * import { AdbutlerAd } from '@quintype/components';
+ *
+ * // Lists publisher id and the respective mapping of the zone ids
+ * const adbutlerConfig = {
+ *   publisherId: "175635",
+ *   "Horizontal-Ad": "353618",
+ *   "Vertical-Ad": "353620"
+ * };
+ *
+ * // Lists sizes of respective ads
+ * const sizes = {
+ *   "Horizontal-Ad": {
+ *     mobile: [320, 50],  // [<width>, <height>]
+ *     tablet: [728, 90],
+ *     desktop: [728, 90]
+ *   },
+ *   "Vertical-Ad": {
+ *     mobile: [300, 250],
+ *     tablet: [300, 600],
+ *     desktop: [300, 600]
+ *   }
+ * };
+ *
+ * <AdbutlerAd adtype="Story-Middle-Ad" adbutlerConfig={adbutlerConfig} sizes={sizes} />
+ * ```
+ * @component
+ * @category Ads
+ */
 export function AdbutlerAd({ adtype, adbutlerConfig, sizes }) {
   const { publisherId = "", [adtype]: zoneId = "" } = adbutlerConfig;
   const { [adtype]: sizeMap } = sizes;

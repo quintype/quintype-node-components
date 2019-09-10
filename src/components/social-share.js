@@ -49,4 +49,41 @@ function mapStateToProps(state) {
   };
 }
 
+/**
+ * This component renders social share component to front end app.
+ *
+ * Example
+ * ```javascript
+ * import { SocialShare } from '@quintype/components';
+ *
+ * class CustomComponent extends React.Component {
+ *   getSocialCardsTemplate({fbUrl, twitterUrl, gplusUrl, linkedinUrl, handleNativeShare}) {
+ *     return <ul className="social-share-icons">
+*        <li className="social-share-icon">
+*          <a href={fbUrl} target="_blank">
+*            <img src={fbIcon} alt="fb icon"/>
+*          </a>
+*        </li>
+*        {handleNativeShare && <li className="social-share-icon">
+*          <button onClick={handleNativeShare}>
+*            <img src={fbIcon} alt="share icon"/>
+*          </button>
+*        </li>}
+*      </ul>
+ *   }
+ *
+ *   render() {
+ *     return <div className="story-byline__social-share">
+ *       <SocialShare fullUrl={this.props.story.url}
+ *         title='Headline of the story'
+ *         template={this.getSocialCardsTemplate}
+ *         hashtags='news,india,press' />
+ *     </div>
+ *   }
+ * }
+ * ```
+ *
+ * @component
+ * @category Story Page
+ */
 export const SocialShare = connect(mapStateToProps, {})(withError(SocialShareBase));
