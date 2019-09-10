@@ -19,7 +19,7 @@ import {withError} from './with-error';
  * export const DfpAd = createDfpAdComponent({
  *   defaultNetworkID: "123456789",
  *   config: CONFIG,
- *   targeting: function(state) {
+ *   targeting: function(state, ownProps) {
  *     const params = {};
  *
  *     // if(storyIsSponsored) params['sponsor'] = storySponsor
@@ -36,7 +36,7 @@ import {withError} from './with-error';
  * @param {Object} params
  * @param {string} params.defaultNetworkID - Network Id of the Ad Provider
  * @param {Object} params.config - Configuration of the ads (see example)
- * @param {function} params.targeting - Function which takes in the current state, and returns targetting parameters
+ * @param {function} params.targeting - Function which takes in the current state, props from the parent component and returns targetting parameters
  * @param {boolean} params.collapseEmptyDivs (default true)
  * @param {boolean} params.lazyLoad (default true)
  * @param {boolean} params.singleRequest - Run Dfp in Single Request Mode (default false)
