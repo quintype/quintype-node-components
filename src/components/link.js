@@ -1,6 +1,6 @@
 import React from "react";
-import {connect} from "react-redux";
-import { string, func, bool } from 'prop-types';
+import { connect } from "react-redux";
+import { string, func, bool } from "prop-types";
 
 function preventDefaultImpl(e) {
   e.preventDefault();
@@ -18,30 +18,31 @@ function LinkBase({
   disableAjaxLinks = global.disableAjaxLinks || global.disableAjaxNavigation,
   ...otherProps
 }) {
-  return React.createElement("a", Object.assign(otherProps, {
-    href,
-    onClick(e) {
-      if (disableAjaxLinks || e.ctrlKey || e.metaKey || e.shiftKey) {
-        return;
-      }
-
-      const relativeLink = href.startsWith(currentHostUrl) ? href.replace(currentHostUrl, "") : href;
-
-      if (!relativeLink.startsWith("/")) {
-        return;
-      }
-
-      preventDefault(e);
-
-      if(externalLink) {
-        global.open(externalLink, "_blank");
-      } else {
-        navigateTo(relativeLink);
-      }
-
-      typeof callback === 'function' && callback(e);
+  function handleClick(e) {
+    if (disableAjaxLinks || e.ctrlKey || e.metaKey || e.shiftKey) {
+      return;
     }
-  }));
+
+    const relativeLink = href.startsWith(currentHostUrl)
+      ? href.replace(currentHostUrl, "")
+      : href;
+
+    if (!relativeLink.startsWith("/")) {
+      return;
+    }
+
+    preventDefault(e);
+
+    if (externalLink) {
+      global.open(externalLink, "_blank");
+    } else {
+      navigateTo(relativeLink);
+    }
+
+    typeof callback === "function" && callback(e);
+  }
+
+  return <a href={href} {...otherProps} onClick={handleClick}></a>;
 }
 
 LinkBase.propTypes = {
@@ -53,8 +54,8 @@ LinkBase.propTypes = {
   /** @private */
   preventDefault: func,
   /** @private */
-  disableAjaxLinks: bool,
-}
+  disableAjaxLinks: bool
+};
 
 function mapStateToProps(state) {
   return {
@@ -80,4 +81,7 @@ function mapDispatchToProps(dispatch) {
  * @category Other
  * @component
  */
-export const Link = connect(mapStateToProps, mapDispatchToProps)(LinkBase);
+export const Link = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LinkBase);
