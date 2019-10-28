@@ -14,7 +14,12 @@ export function GumletImage(props) {
     key: hashString(slug)
   }
 
-  return React.createElement(reactTag || "img", Object.assign(imageProps, omit(props, USED_PARAMS), {
-    className: className ? `qt-image ${className}` : 'qt-image'
-  }));
+  const Tag = reactTag || "img";
+
+  return <React.Fragment>
+    <Tag {...imageProps} {...omit(props, USED_PARAMS)} className={className ? `qt-image ${className}` : 'qt-image'} />
+    <noscript>
+      <Tag src={`https://${imageCDN}/${image.path(aspectRatio, {...imgParams, w: 1200})}`} {...omit(props, USED_PARAMS)} />
+    </noscript>
+  </React.Fragment>
 }
