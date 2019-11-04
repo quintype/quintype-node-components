@@ -103,6 +103,7 @@ export class InfiniteStoryBase extends React.Component {
                            loadNext={() => this.loadMore()}
                            loadMargin={this.props.loadMargin}
                            focusCallbackAt={this.props.focusCallbackAt || 20}
-                           onFocus={(index) => this.onFocus(index)}/>
+                           onFocus={(index) => this.onFocus(index)}
+                           neverHideItem={this.props.neverHideItem}/>
   }
 }
