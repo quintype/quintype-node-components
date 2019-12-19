@@ -75,7 +75,11 @@ function WrapCollectionComponent(Component) {
  * @returns {Component} A component which can be passed collection
  */
 export function wrapCollectionLayout(component) {
-  return connect((state) => ({config: state.qt.config}))(WrapCollectionComponent(component))
+  const wrappedComponent = connect((state) => ({config: state.qt.config}))(WrapCollectionComponent(component));
+  if(component.storyLimit) {
+    wrappedComponent.storyLimit = component.storyLimit;
+  }
+  return wrappedComponent;
 }
 
 /**
