@@ -133,7 +133,6 @@ function meteringReducer(state = -1, action) {
 function assetPlansReducer(state = null, action) {
   switch (action.type) {
     case ASSET_PLANS:
-      console.log("action--", action);
       return action.assetPlans;
     default:
       return state;

@@ -92,7 +92,6 @@ class AccessTypeBase extends React.Component {
         error: "payment options fetch failed"
       };
     }
-    console.log("npm rebuild node-sass");
     return paymentOptions;
   };
 
@@ -105,7 +104,7 @@ class AccessTypeBase extends React.Component {
     );
     if (error) {
       return {
-        error: "api is not  returning anything"
+        error: "api is not returning anything"
       };
     }
 
@@ -155,7 +154,13 @@ class AccessTypeBase extends React.Component {
     }
   };
 
-  initRazorPayPayment = selectedPlan => {
+  initRazorPayPayment = (
+    selectedPlan,
+    planType = "",
+    storyId = "",
+    storyHeadline = "",
+    storySlug = ""
+  ) => {
     if (!selectedPlan) {
       console.warn("Razor pay needs a plan");
       return false;
@@ -175,7 +180,7 @@ class AccessTypeBase extends React.Component {
       ? "razorpay_recurring"
       : "razorpay";
     const paymentObject = {
-      type: "standard",
+      type: planType,
       plan: {
         id,
         title,
@@ -189,7 +194,14 @@ class AccessTypeBase extends React.Component {
         payment_type: paymentType,
         amount_cents: priceCents,
         amount_currency: priceCurrency
-      }
+      },
+      assets: [
+        {
+          id: storyId,
+          title: storyHeadline,
+          slug: storySlug
+        }
+      ]
     };
     return paymentOptions.razorpay.proceed(paymentObject);
   };
