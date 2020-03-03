@@ -104,7 +104,7 @@ class AccessTypeBase extends React.Component {
     );
     if (error) {
       return {
-        error: "api is not returning anything"
+        error: "asset plan fetch failed"
       };
     }
 
