@@ -30,7 +30,7 @@
     "prop-types": "^15.7.2",
     "quintype-js": "^1.2.0",
     "react": "^16.8.6",
-    "react-dfp": "^0.11.2",
+    "react-dfp": "^0.17.1",
     "react-redux": "^7.0.3",
     "react-youtube": "^7.9.0",
     "redux": "^4.0.1",
