@@ -1,6 +1,20 @@
 import React from 'react';
 import { WithSocialLogin } from './with-social-login';
 
+/**
+ * @see {@link WithSocialLogin}
+ * @component
+ * @category Login
+ */
+export function WithLinkedInLogin({ clientKey, children, scope, emailMandatory }) {
+  return React.createElement(WithSocialLogin, {
+    provider: 'linkedin',
+    initialize: () => loadLinkedInSdk(clientKey, scope),
+    socialLogin: () => loginWithLinkedIn({ emailMandatory }),
+    children: children
+  });
+}
+
 const loadLinkedInSdk = (clientKey, scope) => {
   if (global.IN) {
     return;
@@ -23,21 +37,12 @@ const loginWithLinkedIn = ({ emailMandatory }) => {
   }
 
   return new Promise((resolve, reject) => {
-    IN.User.authorize((e) => {
-      if(IN.User.isAuthorized()) {
-        resolve({"access-token": IN.ENV.auth.oauth_token, client: true})
+    global.IN.User.authorize((e) => {
+      if(global.IN.User.isAuthorized()) {
+        resolve({"access-token": global.IN.ENV.auth.oauth_token, client: true})
       } else {
         reject("NOT_GRANTED");
       }
     });
-  });
-}
-
-export function WithLinkedInLogin({ clientKey, children, scope, emailMandatory }) {
-  return React.createElement(WithSocialLogin, {
-    provider: 'linkedin',
-    initialize: () => loadLinkedInSdk(clientKey, scope),
-    socialLogin: () => loginWithLinkedIn({ emailMandatory }),
-    children: children
   });
 }

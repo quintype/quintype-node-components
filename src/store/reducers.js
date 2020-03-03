@@ -1,4 +1,6 @@
-import get from "lodash/get";
+/**
+ * @module Reducers
+ */
 import {
   BREAKING_NEWS_UPDATED,
   CLIENT_SIDE_RENDERED,
@@ -101,6 +103,9 @@ function meteringReducer(state = -1, action) {
   }
 }
 
+/**
+ * ComponentReducers is a list of reducers that are needed by the various components included
+ */
 export const ComponentReducers = {
   breakingNews: breakingNewsReducer,
   breakingNewsLoaded: breakingNewsLoadedReducer,

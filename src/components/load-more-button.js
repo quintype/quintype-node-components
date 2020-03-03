@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function LoadMoreButton(props) {
+export function LoadMoreButton(props) {
   return <button className={props.className} onClick={props.onLoadMore} data-test-id = "load-more">{props.text}</button>
 }
 
@@ -19,5 +19,3 @@ LoadMoreButton.defaultProps = {
     onLoadMore: () => {},
     text: 'Load more',
 }
-
-export { LoadMoreButton };

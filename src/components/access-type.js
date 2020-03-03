@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect, batch} from 'react-redux';
 import get from "lodash/get";
 import {
@@ -11,8 +11,7 @@ import {
 import PropTypes from "prop-types";
 import {awaitHelper} from "../utils";
 
-
-class AccessTypeBase extends Component {
+class AccessTypeBase extends React.Component {
 
     componentDidMount() {
         this.initAccessType();
@@ -209,7 +208,9 @@ AccessTypeBase.propTypes = {
     children: PropTypes.func.isRequired,
     email: PropTypes.string,
     phone: PropTypes.number,
-    isStaging: PropTypes.bool
+    isStaging: PropTypes.bool,
+    enableAccesstype: PropTypes.bool.isRequired,
+    accessTypeKey: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -226,4 +227,74 @@ const mapDispatchToProps = dispatch  => ({
     meterUpdated : meterCount => dispatch({type: METER_UPDATED, meterCount})
 });
 
+/**
+ * `AccessType` is a generic connected render prop which exposes methods to handle access to stories / assets and initialize accesstype js
+ *
+ *   Name | arguments | Description
+ *  --- | --- | ---
+ *  `initAccessType`| -NA- | Initializes accesstype, checks for existance of accesstype before requesting for AT js
+ *  `initRazorPayPayment`| `selectedPlan`(object) | Executes accesstype js method to bring forth RP payment gateway
+ *  `checkAccess`| `assetId`(string) | Checks if the user has access to the story/asset id passed
+ *  `getSubscriptionForUser`| -NA- | Gets the subscriptions of the current logged in user
+ *  `accessUpdated`| `accessObject`(object) | Sets the current story access to redux store
+ *  `accessIsLoading`| `loading`(boolean) | A boolean which holds true between the request for access of a story and its response
+ *
+ * ###### Notes :
+ *
+ * * This component uses AccessType Js internally
+ * * It uses the Access API from subtype for metering, the API works on firebase which uses `thinmint` cookie (set by qlitics) of the user to verify and keep track of visits
+ * * This component only supports Razorpay payment options for now
+ * * It communicates to sketches where routes are in pattern `/api/access/v1/*`
+ * * Metered story has a pingback which is achieved by the use of `navigator.sendBeacon` if available or falls back to fetch, this is needed to update the count of the visited stories for a user
+ * * Access to story/asset is saved on the redux store under the keyword access which holds keys as story asset id and the access returned from the API as its value
+ * * `subscriptions` is the key in the store under which all the subscription groups created for the specified account are maintained
+ * * `paymentOptions` is the key under the store which has all the payment options created for the current AT account
+ * * `selectedPlan` used by `initRazorPayPayment` refers to one of the plan object nested within the subscription groups
+ *
+ * ```javascript
+ * //access object on store
+ *
+ * access : {
+ *   'c1f6c0d7-2829-4d31-b673-58728f944f82': {
+ *         'data': {
+ *           'isLoggedIn':true,
+ *           'granted': false
+ *           'grantReason': "SUBSCRIBER"
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * Example
+ * ```javascript
+ * import { AccessType } from "@quintype/components";
+ *
+ *
+ * render() {
+ *   return  <AccessType
+ *                  enableAccesstype={enableAccesstype}
+ *                  isStaging={isStaging}
+ *                  accessTypeKey={accessTypeKey}
+ *                  email={email}
+ *                  phone={phone}
+ *                  disableMetering={disableMetering}
+ *                >
+ *                  {({ initAccessType, checkAccess, accessUpdated, accessIsLoading }) => (
+ *                    <div>
+ *                      <StoryComponent
+ *                        accessIsLoading={accessIsLoading}
+ *                        accessUpdated={accessUpdated}
+ *                        initAccessType={initAccessType}
+ *                        checkAccess={checkAccess}
+ *                        {...this.props}
+ *                      />
+ *                    </div>
+ *                  )}
+ *                </AccessType>
+ * }
+ *
+ * ```
+ * @component
+ * @category Subscription
+ */
 export const AccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase);
