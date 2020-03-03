@@ -11,7 +11,7 @@
     "annotate-pure-calls",
     "@babel/plugin-syntax-object-rest-spread",
     "transform-react-remove-prop-types",
-    "@babel/plugin-syntax-dynamic-import",
+    "dynamic-import-node",
     "@babel/plugin-transform-runtime",
     "@babel/plugin-proposal-class-properties"
   ]
