@@ -12,6 +12,9 @@ import {
 import PropTypes from "prop-types";
 import { awaitHelper } from "../utils";
 
+const prod_Host = "https://www.accesstype.com";
+const staging_Host = "https://staging.accesstype.com";
+
 class AccessTypeBase extends React.Component {
   componentDidMount() {
     this.initAccessType();
@@ -28,10 +31,11 @@ class AccessTypeBase extends React.Component {
 
     if (accessTypeKey && !global.AccessType && global.document) {
       const accessTypeScript = document.createElement("script");
-      let accessTypeHost = `https://www.accesstype.com/frontend/accesstype.js?key=${accessTypeKey}`;
-      if (isStaging) {
-        accessTypeHost = `https://staging.accesstype.com/frontend/accesstype.js?key=${accessTypeKey}&env=sandbox`;
-      }
+      const HOST = isStaging ? staging_Host : prod_Host;
+      const environment = isStaging ? "&env=sandbox" : "";
+
+      const accessTypeHost = `${HOST}/frontend/accesstype.js?key=${accessTypeKey}${environment}`;
+
       accessTypeScript.setAttribute("src", accessTypeHost);
       accessTypeScript.setAttribute("data-accessType-script", "1");
       accessTypeScript.async = 1;
@@ -65,10 +69,10 @@ class AccessTypeBase extends React.Component {
   getSubscription = async () => {
     const accessTypeKey = get(this.props, ["accessTypeKey"]);
     const isStaging = get(this.props, ["isStaging"]);
-    let accessTypeHost = `https://www.accesstype.com/api/v1/subscription_groups.json?key=${accessTypeKey}`;
-    if (isStaging) {
-      accessTypeHost = `https://staging.accesstype.com/api/v1/subscription_groups.json?key=${accessTypeKey}`;
-    }
+    const HOST = isStaging ? staging_Host : prod_Host;
+
+    const accessTypeHost = `${HOST}/api/v1/subscription_groups.json?key=${accessTypeKey}`;
+
     const { error, data: subscriptions } = await awaitHelper(
       (await global.fetch(accessTypeHost)).json()
     );
