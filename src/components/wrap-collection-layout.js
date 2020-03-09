@@ -30,7 +30,7 @@ function clientSideLoadWrapper(component, {client_side_only: clientSideOnly = fa
     React.createElement(ClientSideOnly, {}, component);
 }
 
-function WrapCollectionComponent(Component) {
+function WrapCollectionComponent(Component, opts) {
   return function(props) {
     if (!props.collection) {
       return <div></div>
@@ -42,7 +42,7 @@ function WrapCollectionComponent(Component) {
       stories = stories.slice(0, associatedMetadata.initial_stories_load_count);
     }
 
-    if(stories.length === 0) {
+    if(stories.length === 0 && (opts && !opts.allowComponentWithoutStories)) {
       return <div></div>
     }
 
@@ -71,11 +71,13 @@ function WrapCollectionComponent(Component) {
  * const Collection = wrapCollectionLayout(CollectionBase);
  * ```
  * @param {Component} component
+ * @param {Object} opts
+ * @param {boolean} opts.allowComponentWithoutStories - Allows the component to be toggled based on the stories present
  * @category Collection Page
  * @returns {Component} A component which can be passed collection
  */
-export function wrapCollectionLayout(component) {
-  const wrappedComponent = connect((state) => ({config: state.qt.config}))(WrapCollectionComponent(component));
+export function wrapCollectionLayout(component, opts) {
+  const wrappedComponent = connect((state) => ({config: state.qt.config}))(WrapCollectionComponent(component, opts));
   if(component.storyLimit) {
     wrappedComponent.storyLimit = component.storyLimit;
   }
