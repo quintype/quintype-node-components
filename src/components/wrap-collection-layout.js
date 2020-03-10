@@ -30,7 +30,7 @@ function clientSideLoadWrapper(component, {client_side_only: clientSideOnly = fa
     React.createElement(ClientSideOnly, {}, component);
 }
 
-function WrapCollectionComponent(Component, isDefaultStoryRequired) {
+function WrapCollectionComponent(Component) {
   return function(props) {
     if (!props.collection) {
       return <div></div>
@@ -40,10 +40,6 @@ function WrapCollectionComponent(Component, isDefaultStoryRequired) {
     let stories = collectionToStories(props.collection);
     if (associatedMetadata.initial_stories_load_count) {
       stories = stories.slice(0, associatedMetadata.initial_stories_load_count);
-    }
-
-    if(stories.length === 0 && isDefaultStoryRequired) {
-      return <div></div>
     }
 
     const data = Object.assign({}, props, {
@@ -72,12 +68,11 @@ function WrapCollectionComponent(Component, isDefaultStoryRequired) {
  * ```
  * @param {Component} component
  * @param {Object} opts
- * @param {boolean} isDefaultStoryRequired - Allows the component to be toggled based on the stories present (default true)
  * @category Collection Page
  * @returns {Component} A component which can be passed collection
  */
-export function wrapCollectionLayout(component, { isDefaultStoryRequired = true } = {}) {
-  const wrappedComponent = connect((state) => ({config: state.qt.config}))(WrapCollectionComponent(component, isDefaultStoryRequired));
+export function wrapCollectionLayout(component) {
+  const wrappedComponent = connect((state) => ({config: state.qt.config}))(WrapCollectionComponent(component));
   if(component.storyLimit) {
     wrappedComponent.storyLimit = component.storyLimit;
   }
