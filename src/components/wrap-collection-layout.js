@@ -72,7 +72,7 @@ function WrapCollectionComponent(Component, isDefaultStoryRequired) {
  * ```
  * @param {Component} component
  * @param {Object} opts
- * @param {boolean} opts.allowComponentWithoutStories - Allows the component to be toggled based on the stories present
+ * @param {boolean} isDefaultStoryRequired - Allows the component to be toggled based on the stories present (default true)
  * @category Collection Page
  * @returns {Component} A component which can be passed collection
  */
