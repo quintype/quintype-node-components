@@ -67,7 +67,6 @@ function WrapCollectionComponent(Component) {
  * const Collection = wrapCollectionLayout(CollectionBase);
  * ```
  * @param {Component} component
- * @param {Object} opts
  * @category Collection Page
  * @returns {Component} A component which can be passed collection
  */
