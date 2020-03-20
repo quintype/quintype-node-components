@@ -42,10 +42,6 @@ function WrapCollectionComponent(Component) {
       stories = stories.slice(0, associatedMetadata.initial_stories_load_count);
     }
 
-    if(stories.length === 0) {
-      return <div></div>
-    }
-
     const data = Object.assign({}, props, {
       stories: stories,
       associatedMetadata: associatedMetadata,

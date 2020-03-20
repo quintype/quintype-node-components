@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [2.18.0](https://github.com/quintype/quintype-node-components/compare/v2.17.0...v2.18.0) (2020-03-19)
+
+
+### Features
+
+* **Accesstype:** added support for pay per asset. ([#118](https://github.com/quintype/quintype-node-components/issues/118)) ([addf401](https://github.com/quintype/quintype-node-components/commit/addf401))
+
+
+
+# [2.17.0](https://github.com/quintype/quintype-node-components/compare/v2.15.4...v2.17.0) (2020-03-11)
+
+
+### Features
+
+* Add optional params for wrapCollectionLayout function ([#121](https://github.com/quintype/quintype-node-components/issues/121)) ([7bbb913](https://github.com/quintype/quintype-node-components/commit/7bbb913))
+* **ads:** Add slot id prop to dfp ad slots ([#116](https://github.com/quintype/quintype-node-components/issues/116)) ([9b193a2](https://github.com/quintype/quintype-node-components/commit/9b193a2))
+
+
+
+## [2.16.1](https://github.com/quintype/quintype-node-components/compare/v2.16.0...v2.16.1) (2020-03-03)
+
+
+
+# [2.16.0](https://github.com/quintype/quintype-node-components/compare/v2.15.4...v2.16.0) (2020-02-13)
+
+
+### Features
+
+* **ads:** Add slot id prop to dfp ad slots ([#116](https://github.com/quintype/quintype-node-components/issues/116)) ([9b193a2](https://github.com/quintype/quintype-node-components/commit/9b193a2))
+
+
+
 ## [2.15.4](https://github.com/quintype/quintype-node-components/compare/v2.15.3...v2.15.4) (2020-01-13)
 
 
