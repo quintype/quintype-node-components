@@ -48,7 +48,6 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.8.0",
     "babel-plugin-annotate-pure-calls": "^0.4.0",
-    "babel-plugin-dynamic-import-node": "^2.3.0",
     "babel-plugin-quintype-assets": "^1.1.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "better-docs": "^1.2.2",
