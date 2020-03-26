@@ -16,7 +16,8 @@ import {
   ACCESS_BEING_LOADED,
   ACCESS_UPDATED,
   METER_UPDATED,
-  ASSET_PLANS
+  ASSET_PLANS,
+  CAMPAIGN_SUBSCRIPTION_GROUP_UPDATED
 } from "./actions";
 import { computeAccess } from "../utils";
 
@@ -139,6 +140,15 @@ function assetPlansReducer(state = null, action) {
   }
 }
 
+function campaignSubscriptionReducer(state = [], action) {
+  switch (action.type) {
+    case CAMPAIGN_SUBSCRIPTION_GROUP_UPDATED:
+      return action.campaignSubscriptions;
+    default:
+      return state;
+  }
+}
+
 /**
  * ComponentReducers is a list of reducers that are needed by the various components included
  */
@@ -155,5 +165,6 @@ export const ComponentReducers = {
   accessLoading: accessLoadingReducer,
   access: accessReducer,
   meteringCount: meteringReducer,
-  assetPlans: assetPlansReducer
+  assetPlans: assetPlansReducer,
+  campaignSubscriptions: campaignSubscriptionReducer
 };
