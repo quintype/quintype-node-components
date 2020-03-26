@@ -117,8 +117,8 @@ class AccessTypeBase extends React.Component {
   };
 
   getCampaignSubscription = async () => {
-    const isCampaignEnabled = get(this.props, ["isCampaignEnabled"], false);
-    if(isCampaignEnabled) {
+    const isAccessTypeCampaignEnabled = get(this.props, ["isAccessTypeCampaignEnabled"], false);
+    if(isAccessTypeCampaignEnabled) {
       const accessTypeKey = get(this.props, ["accessTypeKey"]);
       const isStaging = get(this.props, ["isStaging"]);
       const HOST = isStaging ? staging_Host : prod_Host;

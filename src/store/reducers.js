@@ -166,5 +166,5 @@ export const ComponentReducers = {
   access: accessReducer,
   meteringCount: meteringReducer,
   assetPlans: assetPlansReducer,
-  campaignSubscriptions: campaignSubscriptionReducer
+  accessTypeCampaignSubscriptions: campaignSubscriptionReducer
 };
