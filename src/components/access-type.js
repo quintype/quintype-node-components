@@ -286,6 +286,37 @@ class AccessTypeBase extends React.Component {
     return paymentOptions.stripe.proceed(paymentObject);
   };
 
+  initPaypalPayment = (
+    selectedPlan,
+    planType = "",
+    success_url = "",
+    cancel_url = "",
+    storyId = "",
+    storyHeadline = "",
+    storySlug = ""
+  ) => {
+    if (!selectedPlan) {
+      console.warn("Paypal pay needs a plan");
+      return false;
+    }
+
+    const { paymentOptions } = this.props;
+    const paymentType = get(selectedPlan, ["recurring"])
+      ? "paypal_recurring"
+      : "paypal";
+    const paymentObject = this.makePaymentObject(
+      selectedPlan,
+      planType,
+      storyId,
+      storyHeadline,
+      storySlug,
+      paymentType,
+      success_url,
+      cancel_url
+    );
+    return paymentOptions.stripe.proceed(paymentObject);
+  };
+
   pingBackMeteredStory = async (assetId, accessData) => {
     const stringData = JSON.stringify(accessData);
 
@@ -353,6 +384,7 @@ class AccessTypeBase extends React.Component {
       initAccessType: this.initAccessType,
       initRazorPayPayment: this.initRazorPayPayment,
       initStripePayment: this.initStripePayment,
+      initPaypalPayment: this.initPaypalPayment,
       checkAccess: this.checkAccess,
       getSubscriptionForUser: this.getSubscriptionForUser,
       accessUpdated: this.props.accessUpdated,
