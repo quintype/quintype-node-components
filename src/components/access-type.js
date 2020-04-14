@@ -67,6 +67,24 @@ class AccessTypeBase extends React.Component {
     return user;
   };
 
+  validateCoupon = async (selectedPlanId, couponCode) => {
+    if (!global.AccessType) {
+      return {};
+    }
+
+    const { error, data } = await awaitHelper(
+      global.AccessType.validateCoupon({
+        subscriptionPlanId: selectedPlanId,
+        couponCode
+      })
+    );
+    if (error) {
+      console.warn(`Error --> `, error);
+      return error;
+    }
+    return data;
+  };
+
   getSubscription = async () => {
     const accessTypeKey = get(this.props, ["accessTypeKey"]);
     const isStaging = get(this.props, ["isStaging"]);
@@ -357,7 +375,8 @@ class AccessTypeBase extends React.Component {
       getSubscriptionForUser: this.getSubscriptionForUser,
       accessUpdated: this.props.accessUpdated,
       accessIsLoading: this.props.accessIsLoading,
-      getAssetPlans: this.props.getAssetPlans
+      getAssetPlans: this.props.getAssetPlans,
+      validateCoupon: this.validateCoupon
     });
   }
 }
