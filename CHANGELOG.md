@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [2.21.0](https://github.com/quintype/quintype-node-components/compare/v2.20.0...v2.21.0) (2020-04-13)
+
+
+### Bug Fixes
+
+* **PPA:** pushed PPA chnages ([#126](https://github.com/quintype/quintype-node-components/issues/126)) ([a51dbd0](https://github.com/quintype/quintype-node-components/commit/a51dbd0))
+
+
+### Features
+
+* add campaign subscription group ([#128](https://github.com/quintype/quintype-node-components/issues/128)) ([89d74bd](https://github.com/quintype/quintype-node-components/commit/89d74bd))
+
+
+
 ## [2.20.1](https://github.com/quintype/quintype-node-components/compare/v2.20.0...v2.20.1) (2020-03-24)
 
 
