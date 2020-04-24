@@ -261,7 +261,7 @@ class AccessTypeBase extends React.Component {
     return paymentObject;
   }
 makePlanObject(selectedPlanObj = {}, planType = "", storyId = "", storyHeadline = "", storySlug = "") {
-  return selectedPlanObj.arg && selectedPlanObj.arg === "options" ? {
+  return selectedPlanObj.argType && selectedPlanObj.argType === "options" ? {
     selectedPlan: selectedPlanObj.selectedPlan,
     planType: selectedPlanObj.planType,
     storyId: selectedPlanObj.storyId,
