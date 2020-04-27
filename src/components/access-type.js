@@ -308,7 +308,7 @@ class AccessTypeBase extends React.Component {
     return paymentOptions.stripe.proceed(paymentObject);
   };
 
-  pingBackMeteredStory = async (assetId, accessData) => {
+  pingBackMeteredStory = async (asset, accessData) => {
     const stringData = JSON.stringify(accessData);
 
     if (global.navigator && global.navigator.sendBeacon) {
