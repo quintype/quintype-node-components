@@ -293,24 +293,17 @@ makePlanObject(selectedPlanObj = {}, planType = "", storyId = "", storyHeadline 
     const paymentObject = this.makePaymentObject(planObject);
     return paymentOptions.razorpay.proceed(paymentObject);
   };
-
-  initStripePayment = (
-    selectedPlanObj,
-    planType = "",
-    storyId = "",
-    storyHeadline = "",
-    storySlug = ""
-  ) => {
-    if (!selectedPlanObj) {
+  
+  initStripePayment = (PlanObject =  {}) => {
+    if (!PlanObject.selectedPlan) {
       console.warn("Stripe pay needs a plan");
       return false;
     }
 
-    const planObject = this.makePlanObject(selectedPlanObj, planType, storyId, storyHeadline, storySlug) //we are doing this to sake of backward compatibility and will be refactored later.
     const { paymentOptions } = this.props;
-    planObject["paymentType"] = get(planObject.selectedPlan, ["recurring"]) ? "stripe_recurring" : "stripe";
-    const paymentObject = this.makePaymentObject(planObject);
-    return paymentOptions.stripe.proceed(paymentObject);
+    const paymentType = get(PlanObject.selectedPlan, ["recurring"]) ? "stripe_recurring" : "stripe";
+    const paymentObject = this.makePaymentObject({ paymentType , ...PlanObject});
+    return paymentOptions.stripe ? paymentOptions.stripe.proceed(paymentObject) : Promise.reject({message:"Payment option is loading..."})
   };
 
   pingBackMeteredStory = async (asset, accessData) => {
