@@ -281,7 +281,7 @@ makePlanObject(selectedPlanObj = {}, planType = "", storyId = "", storyHeadline 
     storySlug
   }
 }
-//initRazorPayPayment-> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
+//TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
   initRazorPayPayment = (selectedPlanObj = {}, planType = "", storyId = "", storyHeadline = "", storySlug = "") => {
     if (!selectedPlanObj) {
       console.warn("Razor pay needs a plan");
@@ -295,7 +295,7 @@ makePlanObject(selectedPlanObj = {}, planType = "", storyId = "", storyHeadline 
     return paymentOptions.razorpay.proceed(paymentObject);
   };
 
-  //initStripePayment-> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
+  //TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
   initStripePayment = (PlanObject =  {}) => { 
     if (!PlanObject.selectedPlan) {
       console.warn("Stripe pay needs a plan");
