@@ -35,7 +35,7 @@ class AccessTypeBase extends React.Component {
       const HOST = isStaging ? staging_Host : prod_Host;
       const environment = isStaging ? "&env=sandbox" : "";
 
-      const accessTypeHost = `${HOST}/frontend/accesstype.js?key=${accessTypeKey}${environment}`;
+      const accessTypeHost = `${HOST}/frontend/v2/accesstype.js?key=${accessTypeKey}${environment}`;
 
       accessTypeScript.setAttribute("src", accessTypeHost);
       accessTypeScript.setAttribute("data-accessType-script", "1");
@@ -49,7 +49,7 @@ class AccessTypeBase extends React.Component {
     return true;
   };
 
-  setUser = async (emailAddress, mobileNumber) => {
+  setUser = async (emailAddress, mobileNumber, accesstypeJwt) => {
     if (!global.AccessType) {
       return {};
     }
@@ -57,7 +57,8 @@ class AccessTypeBase extends React.Component {
     const { error, data: user } = await awaitHelper(
       global.AccessType.setUser({
         emailAddress: emailAddress,
-        mobileNumber: mobileNumber
+        mobileNumber: mobileNumber,
+        accesstypeJwt: accesstypeJwt
       })
     );
     if (error) {
@@ -90,6 +91,7 @@ class AccessTypeBase extends React.Component {
     const isStaging = get(this.props, ["isStaging"]);
     const HOST = isStaging ? staging_Host : prod_Host;
 
+    // TODO: use AccesstypeJS method insead of direct api call
     const accessTypeHost = `${HOST}/api/v1/subscription_groups.json?key=${accessTypeKey}`;
 
     const { error, data: subscriptions } = await awaitHelper(
@@ -158,7 +160,9 @@ class AccessTypeBase extends React.Component {
   }
 
   runSequentialCalls = async (storyId = "") => {
-    const user = await this.setUser(this.props.email, this.props.phone);
+    let jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
+    const user = await this.setUser(this.props.email, this.props.phone, jwtResponse.headers.get('x-integration-token'));
+
     if (user) {
       try {
         Promise.all([
@@ -309,12 +313,12 @@ makePlanObject(selectedPlanObj = {}, planType = "", storyId = "", storyHeadline 
     return paymentOptions.stripe.proceed(paymentObject);
   };
 
-  pingBackMeteredStory = async (assetId, accessData) => {
+  pingBackMeteredStory = async (asset, accessData) => {
     const stringData = JSON.stringify(accessData);
 
     if (global.navigator && global.navigator.sendBeacon) {
       global.navigator.sendBeacon(
-        `/api/access/v1/stories/${assetId}/pingback`,
+        `/api/access/v1/stories/${asset.id}/pingback`,
         stringData
       );
       return true;
@@ -327,12 +331,7 @@ makePlanObject(selectedPlanObj = {}, planType = "", storyId = "", storyHeadline 
       },
       body: stringData
     };
-    const { data, error } = await awaitHelper(
-      (await global.fetch(
-        `/api/access/v1/stories/${assetId}/pingback`,
-        meteredBody
-      )).json()
-    );
+    const {data, error} = await awaitHelper(global.AccessType.pingbackAssetAccess(asset, accessData));
     return true;
   };
 
@@ -344,13 +343,8 @@ makePlanObject(selectedPlanObj = {}, planType = "", storyId = "", storyHeadline 
 
     this.props.accessIsLoading(true);
 
-    const meteringParam =
-      this.props.disableMetering === true ? "?disable-meter=true" : "";
-    const { error, data: accessData } = await awaitHelper(
-      (await global.fetch(
-        `/api/access/v1/stories/${assetId}/access${meteringParam}`
-      )).json()
-    );
+    const asset = {id: assetId, type: 'story'};
+    const { error, data: accessData }  = await awaitHelper(global.AccessType.isAssetAccessible(asset, this.props.disableMetering));
 
     const accessById = { [assetId]: accessData };
 
@@ -358,9 +352,9 @@ makePlanObject(selectedPlanObj = {}, planType = "", storyId = "", storyHeadline 
     this.props.accessIsLoading(false);
 
     const { granted, grantReason, data = {} } = accessData;
-    if (!meteringParam && granted && grantReason === "METERING") {
-      this.pingBackMeteredStory(assetId, { granted, grantReason });
-      this.props.meterUpdated(data.numberRemaining || -1);
+    if(!this.props.disableMetering && granted && grantReason === "METERING") {
+        this.pingBackMeteredStory(asset, accessData);
+        this.props.meterUpdated(data.numberRemaining || -1);
     }
 
     if (error) {
@@ -392,7 +386,8 @@ AccessTypeBase.propTypes = {
   phone: PropTypes.number,
   isStaging: PropTypes.bool,
   enableAccesstype: PropTypes.bool.isRequired,
-  accessTypeKey: PropTypes.string.isRequired
+  accessTypeKey: PropTypes.string.isRequired,
+  accessTypeBkIntegrationId: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
