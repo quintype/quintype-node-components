@@ -296,15 +296,15 @@ makePlanObject(selectedPlanObj = {}, planType = "", storyId = "", storyHeadline 
   };
 
   //TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
-  initStripePayment = (PlanObject =  {}) => { 
-    if (!PlanObject.selectedPlan) {
+  initStripePayment = (planObject =  {}) => { 
+    if (!planObject.selectedPlan) {
       console.warn("Stripe pay needs a plan");
       return false;
     }
 
     const { paymentOptions } = this.props;
-    const paymentType = get(PlanObject.selectedPlan, ["recurring"]) ? "stripe_recurring" : "stripe";
-    const paymentObject = this.makePaymentObject({ paymentType , ...PlanObject});
+    const paymentType = get(planObject.selectedPlan, ["recurring"]) ? "stripe_recurring" : "stripe";
+    const paymentObject = this.makePaymentObject({ paymentType , ...planObject});
     return paymentOptions.stripe ? paymentOptions.stripe.proceed(paymentObject) : Promise.reject({message:"Payment option is loading..."})
   };
 
