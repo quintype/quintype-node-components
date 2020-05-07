@@ -206,24 +206,27 @@ class AccessTypeBase extends React.Component {
     }
   };
 
-  makePaymentObject(
-    selectedPlan,
+  makePaymentObject({
+    selectedPlan = {},
+    couponCode = "",
+    recipientSubscriber = {},
     planType = "",
     storyId = "",
     storyHeadline = "",
     storySlug = "",
     paymentType = "",
-    success_url = "",
-    cancel_url = ""
-  ) {
+    successUrl = "",
+    returnUrl = "",
+    cancelUrl = ""
+  }) {
     const {
       id,
       title,
       description,
-      price_cents: priceCents,
-      price_currency: priceCurrency,
-      duration_length: durationLength,
-      duration_unit: durationUnit
+      price_cents: price_cents,
+      price_currency: price_currency,
+      duration_length: duration_length,
+      duration_unit: duration_unit
     } = selectedPlan;
     const paymentObject = {
       type: planType,
@@ -231,15 +234,16 @@ class AccessTypeBase extends React.Component {
         id,
         title,
         description,
-        price_cents: priceCents,
-        price_currency: priceCurrency,
-        duration_length: durationLength,
-        duration_unit: durationUnit
+        price_cents: price_cents,
+        price_currency: price_currency,
+        duration_length: duration_length,
+        duration_unit: duration_unit
       },
+      coupon_code: couponCode,
       payment: {
         payment_type: paymentType,
-        amount_cents: priceCents,
-        amount_currency: priceCurrency
+        amount_cents: price_cents,
+        amount_currency: price_currency
       },
       assets: [
         {
@@ -247,65 +251,61 @@ class AccessTypeBase extends React.Component {
           title: storyHeadline,
           slug: storySlug
         }
-      ]
+      ],
+      recipient_subscriber: recipientSubscriber //for gift subscription
     };
-    if (success_url && cancel_url) {
+    if ((successUrl || returnUrl)&& cancelUrl) {
       paymentObject.options = {};
 
       paymentObject.options.urls = {
-        success_url: success_url,
-        cancel_url: cancel_url
+        cancel_url: cancelUrl
       };
+      paymentObject.options.urls = returnUrl ? {return_url:returnUrl} : {success_url:successUrl}
     }
     return paymentObject;
   }
-
-  initRazorPayPayment = (selectedPlan, planType = "", storyId = "", storyHeadline = "", storySlug = "") => {
-    if (!selectedPlan) {
+makePlanObject(selectedPlanObj = {}, planType = "", storyId = "", storyHeadline = "", storySlug = "") {
+  return selectedPlanObj.argType && selectedPlanObj.argType === "options" ? {
+    selectedPlan: selectedPlanObj.selectedPlan,
+    planType: selectedPlanObj.planType,
+    storyId: selectedPlanObj.storyId,
+    storyHeadline: selectedPlanObj.storyHeadline,
+    storySlug: selectedPlanObj.storySlug,
+    couponCode: selectedPlanObj.couponCode,
+    recipientSubscriber: selectedPlanObj.recipientSubscriber
+  } : {
+    selectedPlan: selectedPlanObj,
+    planType,
+    storyId,
+    storyHeadline,
+    storySlug
+  }
+}
+//TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
+  initRazorPayPayment = (selectedPlanObj = {}, planType = "", storyId = "", storyHeadline = "", storySlug = "") => {
+    if (!selectedPlanObj) {
       console.warn("Razor pay needs a plan");
       return false;
     }
 
+    const planObject = this.makePlanObject(selectedPlanObj, planType, storyId, storyHeadline, storySlug) //we are doing this to sake of backward compatibility and will be refactored later.
     const { paymentOptions } = this.props;
-    const paymentType = get(selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay";
-    const paymentObject = this.makePaymentObject(
-      selectedPlan,
-      planType,
-      storyId,
-      storyHeadline,
-      storySlug,
-      paymentType
-    );
+    planObject["paymentType"] = get(planObject.selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay";
+    const paymentObject = this.makePaymentObject(planObject);
     return paymentOptions.razorpay.proceed(paymentObject);
   };
 
-  initStripePayment = (
-    selectedPlan,
-    planType = "",
-    success_url = "",
-    cancel_url = "",
-    storyId = "",
-    storyHeadline = "",
-    storySlug = ""
-  ) => {
-    if (!selectedPlan) {
+  //TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
+  initStripePayment = (options =  {}) => { 
+    if (!options.selectedPlan) {
       console.warn("Stripe pay needs a plan");
       return false;
     }
 
     const { paymentOptions } = this.props;
-    const paymentType = get(selectedPlan, ["recurring"]) ? "stripe_recurring" : "stripe";
-    const paymentObject = this.makePaymentObject(
-      selectedPlan,
-      planType,
-      storyId,
-      storyHeadline,
-      storySlug,
-      paymentType,
-      success_url,
-      cancel_url
-    );
-    return paymentOptions.stripe.proceed(paymentObject);
+    const paymentType = get(options.selectedPlan, ["recurring"]) ? "stripe_recurring" : "stripe";
+    const paymentObject = this.makePaymentObject({ paymentType , ...options});
+    return paymentOptions.stripe ? paymentOptions.stripe.proceed(paymentObject) : Promise.reject({message:"Payment option is loading..."})
   };
 
   pingBackMeteredStory = async (asset, accessData) => {
