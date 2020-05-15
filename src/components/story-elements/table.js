@@ -1,7 +1,6 @@
 import React from "react";
 
 function TableHeader(columns) {
-  console.log('lop')
   return <thead>
     <tr>
       {columns.map(col => <th>{col.Header}</th>)}
