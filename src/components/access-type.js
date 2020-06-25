@@ -86,7 +86,7 @@ class AccessTypeBase extends React.Component {
     return data;
   };
 
-  cancelSubscription = async (subscriptionId=null) => {
+  cancelSubscription = async (subscriptionId = null) => {
     if(!subscriptionId) {
       return Promise.reject("Subscription id is not defined");
     }
@@ -514,7 +514,7 @@ const mapDispatchToProps = (dispatch) => ({
  * * `subscriptions` is the key in the store under which all the subscription groups created for the specified account are maintained
  * * `paymentOptions` is the key under the store which has all the payment options created for the current AT account
  * * `selectedPlan` used by `initRazorPayPayment` refers to one of the plan object nested within the subscription groups
- * 
+ *
  * ```javascript
  * //access object on store
  *
