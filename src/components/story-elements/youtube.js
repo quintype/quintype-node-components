@@ -110,7 +110,7 @@ export default class StoryElementYoutube extends React.Component {
         onReady: this.onPlayerReady,
       });
     };
-    
+
     if (this.props.loadIframeOnClick) {
       return (
         <div className="thumbnail-wrapper">
@@ -133,7 +133,13 @@ export default class StoryElementYoutube extends React.Component {
         </div>
       );
     } else if (!this.props.loadIframeOnClick && isLibraryLoaded()) {
-      return youtubeIframe();
+      return React.createElement(YouTube, {
+        videoId: getYouTubeID(this.props.element.url),
+        opts: this.opts,
+        onPlay: this.onPlayCallback,
+        onPause: this.onPauseCallback,
+        onEnd: this.onEndCallback,
+      });
     } else return <div></div>;
   }
 }
