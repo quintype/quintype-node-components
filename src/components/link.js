@@ -1,60 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
-import { string, func, bool } from 'prop-types';
+import {LinkBase} from "./link-base";
 
-const preventDefaultImpl = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-};
-
-const LinkBase = ({
-  navigateToImpl,
-  externalLink,
-  callback,
-  href,
-  currentHostUrl,
-  navigateTo = navigateToImpl,
-  preventDefault = preventDefaultImpl,
-  disableAjaxLinks = global.disableAjaxLinks || global.disableAjaxNavigation,
-  ...otherProps
-}) => {
-  return React.createElement("a", Object.assign(otherProps, {
-    href,
-    onClick(e) {
-      if (disableAjaxLinks || e.ctrlKey || e.metaKey || e.shiftKey) {
-        return;
-      }
-
-      const relativeLink = href.startsWith(currentHostUrl) ? href.replace(currentHostUrl, "") : href;
-
-      if (!relativeLink.startsWith("/")) {
-        return;
-      }
-
-      preventDefault(e);
-
-      if(externalLink) {
-        global.open(externalLink, "_blank");
-      } else {
-        navigateTo(relativeLink);
-      }
-
-      typeof callback === 'function' && callback(e);
-    }
-  }));
-};
-
-LinkBase.propTypes = {
-  href: string.isRequired,
-  externalLink: bool,
-  callback: func,
-  /** @private */
-  navigateTo: func,
-  /** @private */
-  preventDefault: func,
-  /** @private */
-  disableAjaxLinks: bool,
-}
 
 const mapStateToProps = state => ({
     currentHostUrl: state.qt && state.qt.currentHostUrl
@@ -77,4 +24,3 @@ const mapDispatchToProps = dispatch => ({
  * @component
  */
 export const Link = connect(mapStateToProps, mapDispatchToProps)(LinkBase);
-export default LinkBase;
