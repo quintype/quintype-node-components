@@ -2,12 +2,12 @@ import React from "react";
 import {connect} from "react-redux";
 import { string, func, bool } from 'prop-types';
 
-function preventDefaultImpl(e) {
+const preventDefaultImpl = (e) => {
   e.preventDefault();
   e.stopPropagation();
-}
+};
 
-function LinkBase({
+export const LinkBase = ({
   navigateToImpl,
   externalLink,
   callback,
@@ -17,7 +17,7 @@ function LinkBase({
   preventDefault = preventDefaultImpl,
   disableAjaxLinks = global.disableAjaxLinks || global.disableAjaxNavigation,
   ...otherProps
-}) {
+}) => {
   return React.createElement("a", Object.assign(otherProps, {
     href,
     onClick(e) {
@@ -42,7 +42,7 @@ function LinkBase({
       typeof callback === 'function' && callback(e);
     }
   }));
-}
+};
 
 LinkBase.propTypes = {
   href: string.isRequired,
@@ -56,19 +56,15 @@ LinkBase.propTypes = {
   disableAjaxLinks: bool,
 }
 
-function mapStateToProps(state) {
-  return {
+const mapStateToProps = state => ({
     currentHostUrl: state.qt && state.qt.currentHostUrl
-  };
-}
+});
 
-function mapDispatchToProps(dispatch) {
-  return {
+const mapDispatchToProps = dispatch => ({
     navigateToImpl: function(url) {
       global.app.navigateToPage(dispatch, url);
     }
-  };
-}
+});
 
 /**
  * This component generates an anchor tag. Instead of doing a browser page load, it will go to the next page via AJAX. Analytics scripts will be fired correctly (and if not, it's a bug)
