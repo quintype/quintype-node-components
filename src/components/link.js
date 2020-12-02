@@ -7,7 +7,7 @@ const preventDefaultImpl = (e) => {
   e.stopPropagation();
 };
 
-export const LinkBase = ({
+const LinkBase = ({
   navigateToImpl,
   externalLink,
   callback,
@@ -76,4 +76,9 @@ const mapDispatchToProps = dispatch => ({
  * @category Other
  * @component
  */
-export const Link = connect(mapStateToProps, mapDispatchToProps)(LinkBase);
+const Link = connect(mapStateToProps, mapDispatchToProps)(LinkBase);
+
+export {
+  Link,
+    LinkBase
+}
