@@ -242,6 +242,12 @@ class AccessTypeBase extends React.Component {
   };
 
   initAccessType = callback => {
+    const { accessTypeBkIntegrationId } = this.props
+    // dont try to initialize accessType if integration id is not available
+    if (accessTypeBkIntegrationId === undefined) {
+      console.warn("AccessType: Integration Id is undefined")
+      return false
+    }
     try {
       this.loadScript(() => this.runSequentialCalls(callback));
     } catch (e) {
