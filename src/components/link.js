@@ -1,16 +1,15 @@
 import React from "react";
-import {connect} from "react-redux";
-import {LinkBase} from "./link-base";
+import { connect } from "react-redux";
+import { LinkBase } from "./link-base";
 
-
-const mapStateToProps = state => ({
-    currentHostUrl: state.qt && state.qt.currentHostUrl
+const mapStateToProps = (state) => ({
+  currentHostUrl: state.qt && state.qt.currentHostUrl,
 });
 
-const mapDispatchToProps = dispatch => ({
-    navigateToImpl: function(url) {
-      global.app.navigateToPage(dispatch, url);
-    }
+const mapDispatchToProps = (dispatch) => ({
+  navigateToImpl: function (url) {
+    global.app.navigateToPage(dispatch, url);
+  },
 });
 
 /**
