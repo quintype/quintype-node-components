@@ -6,11 +6,12 @@ import { WithSocialLogin } from './with-social-login';
  * @component
  * @category Login
  */
-export function WithTwitterLogin({ clientId, children, scope, emailMandatory, redirectUrl, sso }) {
+export function WithTwitterLogin({ clientId, children, scope, emailMandatory, redirectUrl, sso, isBridgekeeperLogin = false }) {
   return React.createElement(WithSocialLogin, {
     provider: 'twitter',
     children: children,
     redirectUrl,
-    sso
+    sso,
+    isBridgekeeperLogin
   });
 }

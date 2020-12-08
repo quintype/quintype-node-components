@@ -48,8 +48,9 @@ import { postRequest } from '../api-client';
 export class WithSocialLogin extends React.Component {
   constructor(props) {
     super(props);
+    const defaultServerSideLoginPath = `/login?auth-provider=${this.props.provider}&remote-host=${global.location && global.location.origin}`;
     const brkServerLoginPath = `api/auth/v1/login?auth-provider=${this.props.provider}`;
-    this.serverSideLoginPath = brkServerLoginPath;
+    this.serverSideLoginPath = this.props.isBridgekeeperLogin ? brkServerLoginPath : defaultServerSideLoginPath;
     this.serverSideSSOLoginPath = `/login?auth-provider=${this.props.provider}&redirect-url=${this.props.sso && this.props.redirectUrl ? this.props.redirectUrl : global.location && global.location.origin}`;
   }
 
@@ -78,7 +79,8 @@ WithSocialLogin.propTypes = {
   children: PropTypes.func.isRequired,
   provider: PropTypes.string.isRequired,
   sso: PropTypes.bool,
-  redirectUrl: PropTypes.string
+  redirectUrl: PropTypes.string,
+  isBridgekeeperLogin: PropTypes.bool
 };
 
 WithSocialLogin.defaultProps = {

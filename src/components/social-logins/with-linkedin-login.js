@@ -6,14 +6,15 @@ import { WithSocialLogin } from './with-social-login';
  * @component
  * @category Login
  */
-export function WithLinkedInLogin({ clientKey, children, scope, emailMandatory, redirectUrl, sso }) {
+export function WithLinkedInLogin({ clientKey, children, scope, emailMandatory, redirectUrl, sso, isBridgekeeperLogin = false }) {
   return React.createElement(WithSocialLogin, {
     provider: 'linkedin',
     initialize: () => loadLinkedInSdk(clientKey, scope),
     socialLogin: () => loginWithLinkedIn({ emailMandatory }),
     children: children,
     redirectUrl,
-    sso
+    sso,
+    isBridgekeeperLogin,
   });
 }
 
