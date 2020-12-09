@@ -10,6 +10,7 @@ import { postRequest } from '../api-client';
  * NOTE:
  * - Twitter and LinkedIn do not support ClientSideLogin, and thus `login()` will just redirect to the server. It also ignores the apiKey
  * - Twitter and LinkedIn do not verify presence of email on the client side. Please ask for these permissions in the app
+ * - The `login()` need not be called when the `serverSideLoginPath` is called.
  *
  * Example
  * ```javascript
