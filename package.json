@@ -79,6 +79,7 @@
     "clean:dist": "rimraf dist",
     "docs": "rimraf docs && jsdoc -c jsdoc.json",
     "prepack": "npm run build",
+    "prepublishOnly": "./bin-dev-scripts/standard-version-release.sh",
     "sync-files-to": "npx onchange --verbose --wait --await-write-finish 'src/**/*' -- ./bin-dev-scripts/sync-to.sh",
     "test": "jest --config jest.config.js"
   }
