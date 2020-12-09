@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.24.2](https://github.com/quintype/quintype-node-components/compare/v2.24.1...v2.24.2) (2020-12-09)
+
+
+### Bug Fixes
+
+* **babel:** Remove duplicate plugin :cop ([3dcd702](https://github.com/quintype/quintype-node-components/commit/3dcd702c0d33483b79fbfa9f128782a6b1989fb7))
+
+
+
 ## [2.24.1](https://github.com/quintype/quintype-node-components/compare/v2.23.2...v2.24.1) (2020-12-09)
 
 
