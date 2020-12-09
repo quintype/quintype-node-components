@@ -1,0 +1,569 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-66074042-1', 'auto');ga('send', 'pageview');</script>
+    <meta charset="utf-8">
+    <title>JSDoc: components/access-type.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                     
+                        <img src="https://images.assettype.com/quintype-website/2018-10/013e8cbe-92b4-435f-bbbb-3e101efbc99a/quintype_logo.png?w=180" alt="logo">
+                    
+                     
+                        <h1 class="navbar-item">@quintype/components</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/quintype/quintype-node-components" target="_blank">Github</a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-using-responsive-image.html">Using ResponsiveImage</a></li></ul><h3>Modules</h3><ul><li><a href="module-Reducers.html">Reducers</a></li></ul></div><div class="category"><h2>Ads</h2><h3>Components</h3><ul><li><a href="AdbutlerAd.html">AdbutlerAd</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createDfpAdComponent">createDfpAdComponent</a></li></ul></div><div class="category"><h2>Collection Page</h2><h3>Components</h3><ul><li><a href="Collection.html">Collection</a></li><li><a href="LazyCollection.html">LazyCollection</a></li><li><a href="LoadMoreCollectionStories.html">LoadMoreCollectionStories</a></li><li><a href="LoadMoreStoriesBase.html">LoadMoreStoriesBase</a></li></ul><h3>Global</h3><ul><li><a href="global.html#collectionToStories">collectionToStories</a></li><li><a href="global.html#wrapCollectionLayout">wrapCollectionLayout</a></li></ul></div><div class="category"><h2>Header</h2><h3>Components</h3><ul><li><a href="BreakingNews.html">BreakingNews</a></li><li><a href="BreakingNewsItem.html">BreakingNewsItem</a></li><li><a href="HamburgerButton.html">HamburgerButton</a></li><li><a href="Menu.html">Menu</a></li><li><a href="MenuItem.html">MenuItem</a></li><li><a href="SearchBox.html">SearchBox</a></li></ul></div><div class="category"><h2>Images</h2><h3>Components</h3><ul><li><a href="EagerLoadImages.html">EagerLoadImages</a></li><li><a href="LazyLoadImages.html">LazyLoadImages</a></li><li><a href="ResponsiveHeroImage.html">ResponsiveHeroImage</a></li><li><a href="ResponsiveImage.html">ResponsiveImage</a></li><li><a href="ResponsiveSource.html">ResponsiveSource</a></li></ul></div><div class="category"><h2>Login</h2><h3>Components</h3><ul><li><a href="WithFacebookLogin.html">WithFacebookLogin</a></li><li><a href="WithGoogleLogin.html">WithGoogleLogin</a></li><li><a href="WithLinkedInLogin.html">WithLinkedInLogin</a></li><li><a href="WithMember.html">WithMember</a></li><li><a href="WithSocialLogin.html">WithSocialLogin</a></li><li><a href="WithTwitterLogin.html">WithTwitterLogin</a></li></ul></div><div class="category"><h2>Other</h2><h3>Components</h3><ul><li><a href="ClientSideOnly.html">ClientSideOnly</a></li><li><a href="Link.html">Link</a></li><li><a href="LoadingIndicator.html">LoadingIndicator</a></li><li><a href="SearchPageBase.html">SearchPageBase</a></li><li><a href="UpdateOnInterval.html">UpdateOnInterval</a></li><li><a href="WithClientSideOnly.html">WithClientSideOnly</a></li><li><a href="WithHostUrl.html">WithHostUrl</a></li><li><a href="WithLazy.html">WithLazy</a></li></ul><h3>Global</h3><ul><li><a href="global.html#withError">withError</a></li><li><a href="global.html#WithPreview">WithPreview</a></li></ul></div><div class="category"><h2>Story Page</h2><h3>Components</h3><ul><li><a href="ImageGalleryElement.html">ImageGalleryElement</a></li><li><a href="InfiniteStoryBase.html">InfiniteStoryBase</a></li><li><a href="ReviewRating.html">ReviewRating</a></li><li><a href="SocialShare.html">SocialShare</a></li><li><a href="StoryElement.html">StoryElement</a></li></ul></div><div class="category"><h2>Subscription</h2><h3>Components</h3><ul><li><a href="AccessType.html">AccessType</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>components/access-type.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import { connect, batch } from "react-redux";
+import get from "lodash/get";
+import {
+  ACCESS_BEING_LOADED,
+  ACCESS_UPDATED,
+  PAYMENT_OPTIONS_UPDATED,
+  SUBSCRIPTION_GROUP_UPDATED,
+  METER_UPDATED,
+  ASSET_PLANS,
+  CAMPAIGN_SUBSCRIPTION_GROUP_UPDATED
+} from "../store/actions";
+import PropTypes from "prop-types";
+import { awaitHelper } from "../utils";
+
+const prod_Host = "https://www.accesstype.com";
+const staging_Host = "https://staging.accesstype.com";
+
+class AccessTypeBase extends React.Component {
+  componentDidMount() {
+    this.initAccessType();
+  }
+
+  loadScript = callback => {
+    const accessTypeKey = get(this.props, ["accessTypeKey"]);
+    const isStaging = get(this.props, ["isStaging"]);
+    const enableAccesstype = get(this.props, ["enableAccesstype"]);
+
+    if (!enableAccesstype) {
+      return false;
+    }
+
+    if (accessTypeKey &amp;&amp; !global.AccessType &amp;&amp; global.document) {
+      const accessTypeScript = document.createElement("script");
+      const HOST = isStaging ? staging_Host : prod_Host;
+      const environment = isStaging ? "&amp;env=sandbox" : "";
+
+      const accessTypeHost = `${HOST}/frontend/accesstype.js?key=${accessTypeKey}${environment}`;
+
+      accessTypeScript.setAttribute("src", accessTypeHost);
+      accessTypeScript.setAttribute("data-accessType-script", "1");
+      accessTypeScript.async = 1;
+      accessTypeScript.onload = () => callback();
+      document.body.appendChild(accessTypeScript);
+      return true;
+    }
+
+    global.AccessType &amp;&amp; callback();
+    return true;
+  };
+
+  setUser = async (emailAddress, mobileNumber) => {
+    if (!global.AccessType) {
+      return {};
+    }
+
+    const { error, data: user } = await awaitHelper(
+      global.AccessType.setUser({
+        emailAddress: emailAddress,
+        mobileNumber: mobileNumber
+      })
+    );
+    if (error) {
+      console.warn(`User context setting failed --> `, error);
+      return error;
+    }
+    return user;
+  };
+
+  getSubscription = async () => {
+    const accessTypeKey = get(this.props, ["accessTypeKey"]);
+    const isStaging = get(this.props, ["isStaging"]);
+    const HOST = isStaging ? staging_Host : prod_Host;
+
+    const accessTypeHost = `${HOST}/api/v1/subscription_groups.json?key=${accessTypeKey}`;
+
+    const { error, data: subscriptions } = await awaitHelper(
+      (await global.fetch(accessTypeHost)).json()
+    );
+    if (error) {
+      return {
+        error: "subscriptions fetch failed"
+      };
+    }
+    return subscriptions["subscription_groups"] || [];
+  };
+
+  getPaymentOptions = async () => {
+    if (!global.AccessType) {
+      return [];
+    }
+    const { error, data: paymentOptions } = await awaitHelper(
+      global.AccessType.getPaymentOptions()
+    );
+    if (error) {
+      return {
+        error: "payment options fetch failed"
+      };
+    }
+    return paymentOptions;
+  };
+
+  getAssetPlans = async (storyId = "") => {
+    if (!global.AccessType) {
+      return [];
+    }
+    const { error, data: assetPlans = {} } = await awaitHelper(
+      global.AccessType.getAssetPlans({ id: storyId, type: "story" })
+    );
+    if (error) {
+      return {
+        error: "asset plan fetch failed"
+      };
+    }
+
+    return assetPlans;
+  };
+
+  getCampaignSubscription = async () => {
+    const isAccessTypeCampaignEnabled = get(this.props, ["isAccessTypeCampaignEnabled"], false);
+    if(isAccessTypeCampaignEnabled) {
+      const accessTypeKey = get(this.props, ["accessTypeKey"]);
+      const isStaging = get(this.props, ["isStaging"]);
+      const HOST = isStaging ? staging_Host : prod_Host;
+
+      const accessTypeHost = `${HOST}/api/v1/campaigns.json?key=${accessTypeKey}`;
+
+      const { error, data: campaignSubscriptions } = await awaitHelper(
+        (await global.fetch(accessTypeHost)).json()
+      );
+
+      if (error) {
+        return {
+          error: "subscriptions fetch failed"
+        };
+      }
+      return campaignSubscriptions["subscription_groups"] || [];
+    }
+    return [];
+  }
+
+  runSequentialCalls = async (storyId = "") => {
+    const user = await this.setUser(this.props.email, this.props.phone);
+    if (user) {
+      try {
+        Promise.all([
+          this.getSubscription(),
+          this.getPaymentOptions(),
+          this.getAssetPlans(storyId),
+          this.getCampaignSubscription()
+        ]).then(([subscriptionGroups, paymentOptions, assetPlans, campaignSubscriptionGroups]) => {
+          batch(() => {
+            this.props.subscriptionGroupLoaded(subscriptionGroups);
+            this.props.paymentOptionsLoaded(paymentOptions);
+            this.props.assetPlanLoaded(assetPlans);
+            this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups)
+          });
+        });
+      } catch (e) {
+        console.log(`Subscription / payments failed`, e);
+      }
+    }
+  };
+
+  getSubscriptionForUser = async () => {
+    if (!global.AccessType) {
+      return {};
+    }
+
+    const { error, data: subscriptions = [] } = await awaitHelper(
+      global.AccessType.getSubscriptions()
+    );
+    if (error) {
+      return error;
+    }
+    return subscriptions;
+  };
+
+  initAccessType = () => {
+    try {
+      this.loadScript(() => this.runSequentialCalls());
+    } catch (e) {
+      console.warn(`Accesstype load fail`, e);
+    }
+  };
+
+  makePaymentObject(
+    selectedPlan,
+    planType = "",
+    storyId = "",
+    storyHeadline = "",
+    storySlug = "",
+    paymentType = "",
+    success_url = "",
+    cancel_url = ""
+  ) {
+    const {
+      id,
+      title,
+      description,
+      price_cents: priceCents,
+      price_currency: priceCurrency,
+      duration_length: durationLength,
+      duration_unit: durationUnit
+    } = selectedPlan;
+    const paymentObject = {
+      type: planType,
+      plan: {
+        id,
+        title,
+        description,
+        price_cents: priceCents,
+        price_currency: priceCurrency,
+        duration_length: durationLength,
+        duration_unit: durationUnit
+      },
+      payment: {
+        payment_type: paymentType,
+        amount_cents: priceCents,
+        amount_currency: priceCurrency
+      },
+      assets: [
+        {
+          id: storyId,
+          title: storyHeadline,
+          slug: storySlug
+        }
+      ]
+    };
+    if (success_url &amp;&amp; cancel_url) {
+      paymentObject.options = {};
+
+      paymentObject.options.urls = {
+        success_url: success_url,
+        cancel_url: cancel_url
+      };
+    }
+    return paymentObject;
+  }
+
+  initRazorPayPayment = (selectedPlan, planType = "", storyId = "", storyHeadline = "", storySlug = "") => {
+    if (!selectedPlan) {
+      console.warn("Razor pay needs a plan");
+      return false;
+    }
+
+    const { paymentOptions } = this.props;
+    const paymentType = get(selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay";
+    const paymentObject = this.makePaymentObject(
+      selectedPlan,
+      planType,
+      storyId,
+      storyHeadline,
+      storySlug,
+      paymentType
+    );
+    return paymentOptions.razorpay.proceed(paymentObject);
+  };
+
+  initStripePayment = (
+    selectedPlan,
+    planType = "",
+    success_url = "",
+    cancel_url = "",
+    storyId = "",
+    storyHeadline = "",
+    storySlug = ""
+  ) => {
+    if (!selectedPlan) {
+      console.warn("Stripe pay needs a plan");
+      return false;
+    }
+
+    const { paymentOptions } = this.props;
+    const paymentType = get(selectedPlan, ["recurring"]) ? "stripe_recurring" : "stripe";
+    const paymentObject = this.makePaymentObject(
+      selectedPlan,
+      planType,
+      storyId,
+      storyHeadline,
+      storySlug,
+      paymentType,
+      success_url,
+      cancel_url
+    );
+    return paymentOptions.stripe.proceed(paymentObject);
+  };
+
+  pingBackMeteredStory = async (assetId, accessData) => {
+    const stringData = JSON.stringify(accessData);
+
+    if (global.navigator &amp;&amp; global.navigator.sendBeacon) {
+      global.navigator.sendBeacon(
+        `/api/access/v1/stories/${assetId}/pingback`,
+        stringData
+      );
+      return true;
+    }
+
+    const meteredBody = {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: stringData
+    };
+    const { data, error } = await awaitHelper(
+      (await global.fetch(
+        `/api/access/v1/stories/${assetId}/pingback`,
+        meteredBody
+      )).json()
+    );
+    return true;
+  };
+
+  checkAccess = async assetId => {
+    if (!assetId) {
+      console.warn("AssetId is required");
+      return false;
+    }
+
+    this.props.accessIsLoading(true);
+
+    const meteringParam =
+      this.props.disableMetering === true ? "?disable-meter=true" : "";
+    const { error, data: accessData } = await awaitHelper(
+      (await global.fetch(
+        `/api/access/v1/stories/${assetId}/access${meteringParam}`
+      )).json()
+    );
+
+    const accessById = { [assetId]: accessData };
+
+    this.props.accessUpdated(accessById);
+    this.props.accessIsLoading(false);
+
+    const { granted, grantReason, data = {} } = accessData;
+    if (!meteringParam &amp;&amp; granted &amp;&amp; grantReason === "METERING") {
+      this.pingBackMeteredStory(assetId, { granted, grantReason });
+      this.props.meterUpdated(data.numberRemaining || -1);
+    }
+
+    if (error) {
+      return error;
+    }
+    return accessById;
+  };
+
+  render() {
+    const { children } = this.props;
+
+    return children({
+      initAccessType: this.initAccessType,
+      initRazorPayPayment: this.initRazorPayPayment,
+      initStripePayment: this.initStripePayment,
+      checkAccess: this.checkAccess,
+      getSubscriptionForUser: this.getSubscriptionForUser,
+      accessUpdated: this.props.accessUpdated,
+      accessIsLoading: this.props.accessIsLoading,
+      getAssetPlans: this.props.getAssetPlans
+    });
+  }
+}
+
+AccessTypeBase.propTypes = {
+  children: PropTypes.func.isRequired,
+  email: PropTypes.string,
+  phone: PropTypes.number,
+  isStaging: PropTypes.bool,
+  enableAccesstype: PropTypes.bool.isRequired,
+  accessTypeKey: PropTypes.string.isRequired
+};
+
+const mapStateToProps = state => ({
+  subscriptions: state.subscriptions || null,
+  paymentOptions: state.paymentOptions || null,
+  assetPlans: state.assetPlans || null
+});
+
+const mapDispatchToProps = dispatch => ({
+  subscriptionGroupLoaded: subscriptions =>
+    dispatch({ type: SUBSCRIPTION_GROUP_UPDATED, subscriptions }),
+  paymentOptionsLoaded: paymentOptions =>
+    dispatch({ type: PAYMENT_OPTIONS_UPDATED, paymentOptions }),
+  accessIsLoading: loading => dispatch({ type: ACCESS_BEING_LOADED, loading }),
+  accessUpdated: access => dispatch({ type: ACCESS_UPDATED, access }),
+  meterUpdated: meterCount => dispatch({ type: METER_UPDATED, meterCount }),
+  assetPlanLoaded: assetPlans => dispatch({ type: ASSET_PLANS, assetPlans }),
+  campaignSubscriptionGroupLoaded: campaignSubscriptions =>
+    dispatch({ type: CAMPAIGN_SUBSCRIPTION_GROUP_UPDATED, campaignSubscriptions })
+});
+
+/**
+ * `AccessType` is a generic connected render prop which exposes methods to handle access to stories / assets and initialize accesstype js
+ *
+ *   Name | arguments | Description
+ *  --- | --- | ---
+ *  `initAccessType`| -NA- | Initializes accesstype, checks for existance of accesstype before requesting for AT js
+ *  `initRazorPayPayment`| `selectedPlan`(object) | Executes accesstype js method to bring forth RP payment gateway
+ *  `checkAccess`| `assetId`(string) | Checks if the user has access to the story/asset id passed
+ *  `getSubscriptionForUser`| -NA- | Gets the subscriptions of the current logged in user
+ *  `accessUpdated`| `accessObject`(object) | Sets the current story access to redux store
+ *  `accessIsLoading`| `loading`(boolean) | A boolean which holds true between the request for access of a story and its response
+ *
+ * ###### Notes :
+ *
+ * * This component uses AccessType Js internally
+ * * It uses the Access API from subtype for metering, the API works on firebase which uses `thinmint` cookie (set by qlitics) of the user to verify and keep track of visits
+ * * This component only supports Razorpay payment options for now
+ * * It communicates to sketches where routes are in pattern `/api/access/v1/*`
+ * * Metered story has a pingback which is achieved by the use of `navigator.sendBeacon` if available or falls back to fetch, this is needed to update the count of the visited stories for a user
+ * * Access to story/asset is saved on the redux store under the keyword access which holds keys as story asset id and the access returned from the API as its value
+ * * `subscriptions` is the key in the store under which all the subscription groups created for the specified account are maintained
+ * * `paymentOptions` is the key under the store which has all the payment options created for the current AT account
+ * * `selectedPlan` used by `initRazorPayPayment` refers to one of the plan object nested within the subscription groups
+ *
+ * ```javascript
+ * //access object on store
+ *
+ * access : {
+ *   'c1f6c0d7-2829-4d31-b673-58728f944f82': {
+ *         'data': {
+ *           'isLoggedIn':true,
+ *           'granted': false
+ *           'grantReason': "SUBSCRIBER"
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * Example
+ * ```javascript
+ * import { AccessType } from "@quintype/components";
+ *
+ *
+ * render() {
+ *   return  &lt;AccessType
+ *                  enableAccesstype={enableAccesstype}
+ *                  isStaging={isStaging}
+ *                  accessTypeKey={accessTypeKey}
+ *                  email={email}
+ *                  phone={phone}
+ *                  disableMetering={disableMetering}
+ *                >
+ *                  {({ initAccessType, checkAccess, accessUpdated, accessIsLoading }) => (
+ *                    &lt;div>
+ *                      &lt;StoryComponent
+ *                        accessIsLoading={accessIsLoading}
+ *                        accessUpdated={accessUpdated}
+ *                        initAccessType={initAccessType}
+ *                        checkAccess={checkAccess}
+ *                        {...this.props}
+ *                      />
+ *                    &lt;/div>
+ *                  )}
+ *                &lt;/AccessType>
+ * }
+ *
+ * ```
+ * @component
+ * @category Subscription
+ */
+export const AccessType = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AccessTypeBase);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a></p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
