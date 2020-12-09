@@ -69,5 +69,7 @@ LinkBase.propTypes = {
   /** @private */
   preventDefault: func,
   /** @private */
+  navigateToImpl: func,
+  /** @private */
   disableAjaxLinks: bool,
 };
