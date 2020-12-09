@@ -8,10 +8,11 @@ const preventDefaultImpl = (e) => {
 
 /**
  * This component generates an anchor tag. Instead of doing a browser page load, it will go to the next page via AJAX. Analytics scripts will be fired correctly (and if not, it's a bug)
+ * LinkBase is not connected to the store or plugged to context, this is used as an alternative for usecases such as partial hydration where context is lost.
  *
  * ```javascript
  * import { LinkBase } from '@quintype/components';
- * <Link href="/section/story-slug" otherLinkAttribute="value">Text here</Link>
+ * <LinkBase href="/section/story-slug" otherLinkAttribute="value">Text here</LinkBase>
  * ```
  * @category Other
  * @component
@@ -22,11 +23,12 @@ export const LinkBase = ({
   callback,
   href,
   currentHostUrl,
-  navigateTo = navigateToImpl,
+  navigateTo,
   preventDefault = preventDefaultImpl,
   disableAjaxLinks = global.disableAjaxLinks || global.disableAjaxNavigation,
   ...otherProps
 }) => {
+  navigateTo = navigateTo || navigateToImpl;
   return React.createElement(
     "a",
     Object.assign(otherProps, {
