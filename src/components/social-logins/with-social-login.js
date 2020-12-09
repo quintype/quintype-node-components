@@ -91,5 +91,6 @@ WithSocialLogin.defaultProps = {
     window.location = url;
     return Promise.reject('EXPECT_REDIRECT');
   },
-  sso: false
+  sso: false,
+  isBridgekeeperLogin: false,
 }

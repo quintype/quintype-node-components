@@ -6,7 +6,7 @@ import { WithSocialLogin } from './with-social-login';
  * @component
  * @category Login
  */
-export function WithFacebookLogin({ appId, children, scope, emailMandatory, redirectUrl, sso, isBridgekeeperLogin = false }) {
+export function WithFacebookLogin({ appId, children, scope, emailMandatory, redirectUrl, sso, isBridgekeeperLogin }) {
   return React.createElement(WithSocialLogin, {
     provider: 'facebook',
     initialize: () => loadFacebookSDK(appId),

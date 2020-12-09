@@ -6,7 +6,7 @@ import { WithSocialLogin } from './with-social-login';
  * @component
  * @category Login
  */
-export function WithGoogleLogin({ clientId, children, scope, emailMandatory, redirectUrl, sso, isBridgekeeperLogin = false }) {
+export function WithGoogleLogin({ clientId, children, scope, emailMandatory, redirectUrl, sso, isBridgekeeperLogin }) {
   return React.createElement(WithSocialLogin, {
     provider: 'google',
     initialize: () => loadGoogleSDK(clientId, scope),
