@@ -8,6 +8,7 @@ export * from './components/infinite-scroll';
 export * from './components/infinite-story-base';
 export * from './components/lazy-load-images';
 export * from './components/lazy-collection';
+export * from './components/link-base';
 export * from './components/link';
 export * from './components/load-more-stories-base';
 export * from './components/load-more-collection-stories';
