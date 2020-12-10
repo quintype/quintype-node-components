@@ -48,7 +48,9 @@ import { postRequest } from '../api-client';
 export class WithSocialLogin extends React.Component {
   constructor(props) {
     super(props);
-    this.serverSideLoginPath = `/login?auth-provider=${this.props.provider}&remote-host=${global.location && global.location.origin}`;
+    this.bridgekeeperServerLoginPath = `api/auth/v1/login?auth-provider=${this.props.provider}`;
+    this.defaultServerLoginPath = `/login?auth-provider=${this.props.provider}&remote-host=${global.location && global.location.origin}`;
+    this.serverLoginPath = this.props.isBridgekeeperLogin ? this.bridgekeeperServerLoginPath : this.defaultServerLoginPath;
     this.serverSideSSOLoginPath = `/login?auth-provider=${this.props.provider}&redirect-url=${this.props.sso && this.props.redirectUrl ? this.props.redirectUrl : global.location && global.location.origin}`;
   }
 
@@ -59,7 +61,7 @@ export class WithSocialLogin extends React.Component {
   render() {
     return this.props.children({
       login: props => this.props.socialLogin.call(this, props).then(token => createSession(this.props.provider, token)),
-      serverSideLoginPath: this.props.sso ? this.serverSideSSOLoginPath : this.serverSideLoginPath
+      serverSideLoginPath: this.props.sso ? this.serverSideSSOLoginPath : this.serverLoginPath
     });
   }
 }
@@ -84,7 +86,7 @@ WithSocialLogin.defaultProps = {
   initialize: () => {},
   // function is rebound in WithSocialLogin
   socialLogin: function() {
-    const url = this.props.sso ? this.serverSideSSOLoginPath : this.serverSideLoginPath;
+    const url = this.props.sso ? this.serverSideSSOLoginPath : this.serverLoginPath;
     window.location = url;
     return Promise.reject('EXPECT_REDIRECT');
   },
