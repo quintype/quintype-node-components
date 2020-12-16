@@ -79,7 +79,7 @@
 <header>
     
         <h2>
-            &ltWithSocialLogin <i>initialize</i> <i>socialLogin</i> <i>children</i> <i>provider</i> <i>sso</i> <i>redirectUrl</i> /&gt
+            &ltWithSocialLogin <i>initialize</i> <i>socialLogin</i> <i>children</i> <i>provider</i> <i>sso</i> <i>redirectUrl</i> <i>isBridgekeeperLogin</i> /&gt
         </h2>
         
             <div class="class-description"><p>This is an abstract render props component for logging in with social accounts. The component adds two items to scope: <code>serverSideLoginPath</code> for redirecting to server side, and <code>login</code> for doing a client side login. Calling <code>login()</code> returns a promise which can be used to handle success and failure cases.</p>
@@ -88,6 +88,7 @@
 <ul>
 <li>Twitter and LinkedIn do not support ClientSideLogin, and thus <code>login()</code> will just redirect to the server. It also ignores the apiKey</li>
 <li>Twitter and LinkedIn do not verify presence of email on the client side. Please ask for these permissions in the app</li>
+<li>The <code>login()</code> need not be called when serverSideLoginPath is called</li>
 </ul>
 <p>Example</p>
 <pre class="prettyprint source lang-javascript"><code>import { WithFacebookLogin, WithGoogleLogin, WithTwitterLogin, WithLinkedInLogin } from '@quintype/components';
@@ -102,7 +103,7 @@ function socialLogin(e, login) {
       &lt;img src={assetify(facebookIcon)} />
     &lt;/a>
 }&lt;/WithFacebookLogin>
-&lt;WithGoogleLogin clientId=&quot;clientId&quot; scope=&quot;email&quot; emailMandatory>{({ login, serverSideLoginPath }) =>
+&lt;WithGoogleLogin clientId=&quot;clientId&quot; scope=&quot;email&quot; emailMandatory isBridgekeeperLogin={true}>{({ login, serverSideLoginPath }) =>
     &lt;a href={serverSideLoginPath} onClick={e => socialLogin(e, login)}>
       &lt;img src={assetify(gplusIcon)} />
     &lt;/a>
@@ -171,7 +172,7 @@ function socialLogin(e, login) {
           <td>No</td>
           <td></td>
           <td>function() {
-  const url = this.props.sso ? this.serverSideSSOLoginPath : this.serverSideLoginPath;
+  const url = this.props.sso ? this.serverSideSSOLoginPath : this.serverLoginPath;
   window.location = url;
   return Promise.reject('EXPECT_REDIRECT');
 }</td>
@@ -222,6 +223,17 @@ function socialLogin(e, login) {
         </tr>
         
   
+        <tr class="deep-level-0">
+          <td class="name"><code>isBridgekeeperLogin</code></td>
+          <td>
+            bool
+          </td>
+          <td>No</td>
+          <td></td>
+          <td>false</td>
+        </tr>
+        
+  
   </tbody>
 </table>
     
@@ -267,7 +279,7 @@ function socialLogin(e, login) {
         <p class="tag-source">
             <a href="components_social-logins_with-social-login.js.html" class="button">View Source</a>
             <span>
-                <a href="components_social-logins_with-social-login.js.html">components/social-logins/with-social-login.js</a>, <a href="components_social-logins_with-social-login.js.html#line49">line 49</a>
+                <a href="components_social-logins_with-social-login.js.html">components/social-logins/with-social-login.js</a>, <a href="components_social-logins_with-social-login.js.html#line50">line 50</a>
             </span>
         </p>
     
