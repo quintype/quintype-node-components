@@ -26,7 +26,7 @@ import { postRequest } from '../api-client';
  *       <img src={assetify(facebookIcon)} />
  *     </a>
  * }</WithFacebookLogin>
- * <WithGoogleLogin clientId="clientId" scope="email" emailMandatory>{({ login, serverSideLoginPath }) =>
+ * <WithGoogleLogin clientId="clientId" scope="email" emailMandatory isBridgekeeperLogin={true}>{({ login, serverSideLoginPath }) =>
  *     <a href={serverSideLoginPath} onClick={e => socialLogin(e, login)}>
  *       <img src={assetify(gplusIcon)} />
  *     </a>
@@ -80,7 +80,8 @@ WithSocialLogin.propTypes = {
   children: PropTypes.func.isRequired,
   provider: PropTypes.string.isRequired,
   sso: PropTypes.bool,
-  redirectUrl: PropTypes.string
+  redirectUrl: PropTypes.string,
+  isBridgekeeperLogin: PropTypes.bool,
 };
 
 WithSocialLogin.defaultProps = {
