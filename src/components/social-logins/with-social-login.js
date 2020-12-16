@@ -6,11 +6,14 @@ import { postRequest } from '../api-client';
  * This is an abstract render props component for logging in with social accounts. The component adds two items to scope: `serverSideLoginPath` for redirecting to server side, and `login` for doing a client side login. Calling `login()` returns a promise which can be used to handle success and failure cases.
  *
  * This component should not be used directly, but should be used via one of the scomponents mentioned in the example.
+ * 
+ * Please contact the support in order to update the social app credentials in the Bridgekeeper database after making the relevant code changes.
  *
  * NOTE:
  * - Twitter and LinkedIn do not support ClientSideLogin, and thus `login()` will just redirect to the server. It also ignores the apiKey
  * - Twitter and LinkedIn do not verify presence of email on the client side. Please ask for these permissions in the app
  * - The `login()` need not be called when serverSideLoginPath is called
+ * 
  * 
  * Example
  * ```javascript
