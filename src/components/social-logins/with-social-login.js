@@ -10,7 +10,8 @@ import { postRequest } from '../api-client';
  * NOTE:
  * - Twitter and LinkedIn do not support ClientSideLogin, and thus `login()` will just redirect to the server. It also ignores the apiKey
  * - Twitter and LinkedIn do not verify presence of email on the client side. Please ask for these permissions in the app
- *
+ * - The `login()` need not be called when serverSideLoginPath is called
+ * 
  * Example
  * ```javascript
  * import { WithFacebookLogin, WithGoogleLogin, WithTwitterLogin, WithLinkedInLogin } from '@quintype/components';
@@ -25,7 +26,7 @@ import { postRequest } from '../api-client';
  *       <img src={assetify(facebookIcon)} />
  *     </a>
  * }</WithFacebookLogin>
- * <WithGoogleLogin clientId="clientId" scope="email" emailMandatory>{({ login, serverSideLoginPath }) =>
+ * <WithGoogleLogin clientId="clientId" scope="email" emailMandatory isBridgekeeperLogin={true}>{({ login, serverSideLoginPath }) =>
  *     <a href={serverSideLoginPath} onClick={e => socialLogin(e, login)}>
  *       <img src={assetify(gplusIcon)} />
  *     </a>
@@ -48,7 +49,9 @@ import { postRequest } from '../api-client';
 export class WithSocialLogin extends React.Component {
   constructor(props) {
     super(props);
-    this.serverSideLoginPath = `/login?auth-provider=${this.props.provider}&remote-host=${global.location && global.location.origin}`;
+    this.bridgekeeperServerLoginPath = `api/auth/v1/login?auth-provider=${this.props.provider}`;
+    this.defaultServerLoginPath = `/login?auth-provider=${this.props.provider}&remote-host=${global.location && global.location.origin}`;
+    this.serverLoginPath = this.props.isBridgekeeperLogin ? this.bridgekeeperServerLoginPath : this.defaultServerLoginPath;
     this.serverSideSSOLoginPath = `/login?auth-provider=${this.props.provider}&redirect-url=${this.props.sso && this.props.redirectUrl ? this.props.redirectUrl : global.location && global.location.origin}`;
   }
 
@@ -59,7 +62,7 @@ export class WithSocialLogin extends React.Component {
   render() {
     return this.props.children({
       login: props => this.props.socialLogin.call(this, props).then(token => createSession(this.props.provider, token)),
-      serverSideLoginPath: this.props.sso ? this.serverSideSSOLoginPath : this.serverSideLoginPath
+      serverSideLoginPath: this.props.sso ? this.serverSideSSOLoginPath : this.serverLoginPath
     });
   }
 }
@@ -77,16 +80,18 @@ WithSocialLogin.propTypes = {
   children: PropTypes.func.isRequired,
   provider: PropTypes.string.isRequired,
   sso: PropTypes.bool,
-  redirectUrl: PropTypes.string
+  redirectUrl: PropTypes.string,
+  isBridgekeeperLogin: PropTypes.bool,
 };
 
 WithSocialLogin.defaultProps = {
   initialize: () => {},
   // function is rebound in WithSocialLogin
   socialLogin: function() {
-    const url = this.props.sso ? this.serverSideSSOLoginPath : this.serverSideLoginPath;
+    const url = this.props.sso ? this.serverSideSSOLoginPath : this.serverLoginPath;
     window.location = url;
     return Promise.reject('EXPECT_REDIRECT');
   },
-  sso: false
+  sso: false,
+  isBridgekeeperLogin: false
 }
