@@ -4,17 +4,16 @@ import { WithSocialLogin } from './with-social-login';
 /**
  * @see {@link WithSocialLogin}
  * @component
- * @category Login
+ * @category Login 
  */
-export function WithFacebookLogin({ appId, children, scope, emailMandatory, redirectUrl, sso, isBridgekeeperLogin }) {
+export function WithFacebookLogin({ appId, children, scope, emailMandatory, redirectUrl, sso }) {
   return React.createElement(WithSocialLogin, {
     provider: 'facebook',
     initialize: () => loadFacebookSDK(appId),
     socialLogin: () => loginWithFacebook({ scope, emailMandatory }),
     children: children,
     redirectUrl,
-    sso,
-    isBridgekeeperLogin
+    sso
   });
 }
 
@@ -57,10 +56,13 @@ function fbVerifyEmailExists(token) {
 }
 
 function loginWithFacebook({scope, emailMandatory} = {}) {
+  console.log(scope, emailMandatory)
   if(!global.FB) {
     return Promise.reject('NOT_LOADED')
   }
 
   return fbLogin({scope})
-    .then(token => emailMandatory ? fbVerifyEmailExists(token) : token)
+    .then(token => {
+      emailMandatory ? fbVerifyEmailExists(token) : token
+    }).catch(error => console.log("error", error))
 }
