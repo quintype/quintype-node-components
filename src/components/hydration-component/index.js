@@ -7,6 +7,24 @@ import PropTypes from "prop-types";
 const EMPTY_HTML = { __html: "" };
 const isServer = typeof window === "undefined";
 
+
+/**
+ * Used to hydrate the component wrapped inside when scrolled to view.
+ *
+ * Example
+ * ```javascript
+ * import { ProgressiveHydration } from '@quintype/components';
+ *
+ * <ProgressiveHydration>
+ *     <AnyComponent />
+ * </ProgressiveHydration>
+ * ```
+ *
+ * Renders as usual on the server, checks if visible on the browser and conditionally hydrate
+ *
+ * @component
+ * @category Performance
+ */
 export const ProgressiveHydration = (props) => {
   const { children } = props;
   const ref = useRef(null);
