@@ -4,6 +4,7 @@ import {FocusedImage} from "quintype-js";
 import {func} from 'prop-types';
 import emptyWebGif from 'empty-web-gif';
 import omit from '@babel/runtime/helpers/objectWithoutProperties';
+import get from "lodash/get";
 
 const USED_PARAMS = ["imageCDN","defaultWidth","widths","imgParams","slug","metadata","aspectRatio", "reactTag", "eager"];
 
@@ -104,8 +105,20 @@ export const ResponsiveSource = function(props) {
 }
 
 export function ResponsiveHeroImage(props) {
-  return React.createElement(ResponsiveImage, Object.assign({
-    slug: props.story["hero-image-s3-key"],
+  return React.createElement(ResponsiveImage, Object.assign(
+    {
+      slug: get(
+        props,
+        [
+          "story",
+          "alternative",
+          "home",
+          "default",
+          "hero-image",
+          "hero-image-s3-key"
+        ],
+        get(props, ["story", "hero-image-s3-key"])
+      ),
     metadata: props.story["hero-image-metadata"],
     alt: props.story["headline"]
   }, omit(props, ['story'])));
