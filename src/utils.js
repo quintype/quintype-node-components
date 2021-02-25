@@ -1,4 +1,6 @@
 // FIXME: TEST THIS
+import get from "lodash/get";
+
 export function removeDuplicateStories(existingStories, newStories, keyFn = story => story.id) {
   const existingStoryIds = existingStories.map(keyFn);
   return newStories.filter(story => !existingStoryIds.includes(keyFn(story)));
@@ -31,8 +33,7 @@ export const awaitHelper = promise => (
 );
 
 
-export const getQliticsSchema = (story = {}, card = {}, element = {}) => {
-
+export const getQliticsSchema = function(story = {}, card = {}, element = {}) {
   Array.from(arguments).forEach(ele => {
     (Object.keys(ele).length < 1) && console.warn(`Required attribute missing for qlitics --> ${ele}`);
   }); //Display warning to make debugging easier
@@ -45,4 +46,18 @@ export const getQliticsSchema = (story = {}, card = {}, element = {}) => {
     'story-element-id': element.id,
     'story-element-type': element.subtype || element.type
   });
+};
+
+
+export const computeAccess = (previousState, currentState) => {
+  const currentAccess = get(currentState, ["access"], {});
+  const currentStoryId = get(Object.keys(currentAccess), [0], "");
+  if(currentStoryId in previousState){
+    const storyAccess = previousState[currentStoryId];
+    if(storyAccess.granted !== currentAccess[currentStoryId].granted || storyAccess.grantReason !== currentAccess[currentStoryId].grantReason){
+      return {...previousState, ...currentAccess};
+    }
+    return previousState;
+  }
+  return {...previousState, ...currentAccess};
 };

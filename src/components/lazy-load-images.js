@@ -1,23 +1,5 @@
 import React from "react";
-import {func} from 'prop-types';
-
-// A non lazy intersection observer (just load all the images)
-class FakeIntersectionObserver {
-  constructor(callback) {
-    this.callback = callback;
-    console && console.warn && console.warn("IntersectionObserver was not found");
-  }
-
-  observe(dom) {
-    this.callback([{isIntersecting: true, target: dom}])
-  }
-
-  unobserve() {
-  }
-
-  disconnect() {
-  }
-}
+import {func, string} from 'prop-types';
 
 class IntersectionObserverWrapper {
   constructor(callback) {
@@ -82,6 +64,40 @@ class StubObserverWrapper {
   disconnect() {}
 }
 
+/**
+ * This component will ensure all {@link ResponsiveImages} that are in its descendent path will be loaded async. By default, the image is loaded with an empty gif, and the image becomes visible when the image scrolls 250 from the edge of the screen.
+ *
+ * You can use {@link EagerLoadImages} or `eager={true}` to force the image to be eager. If `EagerLoadImages` is passed a predicate, then images that pass a matching value to `eager` will be rendered eagerly.
+ *
+ * Example
+ * ```javascript
+ * import { LazyLoadImages, EagerLoadImages } from '@quintype/components';
+ *
+ * function LazyLoadSecondImage() {
+ *   return <div>
+ *     <ResponsiveImage slug={props["eager-image-1"]} />
+ *     <LazyLoadImages margin={"450px"}>
+ *       <div>
+ *         <UnrelatedContent/>
+ *         <ResponsiveImage slug={props["lazy-image-1"]} />
+ *         <ResponsiveImage slug={props["lazy-image-forced-to-be-eager"]} eager/>
+ *         <ResponsiveImage slug={props["lazy-image-2"]} />
+ *         <EagerLoadImages>
+ *           <ResponsiveImage slug={props["lazy-image-forced-to-be-eager"]} />
+ *         </EagerLoadImages>
+ *         <EagerLoadImages predicate={(token) => token % 2 === 0}>
+ *           <ResponsiveImage slug={props["lazy-image"]} eager={1} />
+ *           <ResponsiveImage slug={props["eager-image"]} eager={2} />
+ *         </EagerLoadImages>
+ *       </div>
+ *     </LazyLoadImages>
+ *     <ResponsiveImage slug={props["eager-image-2"]} />
+ *   </div>
+ * }
+ * ```
+ * @component
+ * @category Images
+ */
 export class LazyLoadImages extends React.Component {
   constructor(props) {
     super(props);
@@ -114,18 +130,6 @@ LazyLoadImages.childContextTypes = {
   lazyLoadUnobserveImage: func
 };
 
-export class EagerLoadImages extends React.Component {
-  getChildContext() {
-    return {
-      lazyLoadEagerPredicate: this.props.predicate || (() => true)
-    }
-  }
-
-  render() {
-    return this.props.children;
-  }
+LazyLoadImages.propTypes = {
+  margin: string
 }
-
-EagerLoadImages.childContextTypes = {
-  lazyLoadEagerPredicate: func
-};

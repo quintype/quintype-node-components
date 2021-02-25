@@ -1,8 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
 import {BREAKING_NEWS_UPDATED} from '../store/actions';
-import {Link} from "./link";
-import get from "lodash/get";
 import {getRequest} from './api-client';
 
 class BreakingNewsBase extends React.Component {
@@ -39,13 +37,18 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+/**
+ * This component will automatically fetch breaking news every 30 seconds, and render the provided view.
+ *
+ * Example
+ * ```javascript
+ * import { renderBreakingNews } from '@quintype/framework/client/start';
+ * const BreakingNewsView = ({breakingNews, breakingNewsLoaded}) =>
+ *   <ul>{breakingNews.map((item, index) => <li key={index}><BreakingNewsItem item={item} /></li>)}</ul>
+ * renderBreakingNews('breaking-news-container', store, BreakingNewsView);
+ * ```
+ * @see {@link BreakingNewsItem}
+ * @component
+ * @category Header
+ */
 export const BreakingNews = connect(mapStateToProps, mapDispatchToProps)(BreakingNewsBase);
-
-export function BreakingNewsItem({item, className}) {
-  const linkedStorySlug = get(item,['metadata', 'linked-story-slug']);
-  if(linkedStorySlug) {
-    return <Link className={className} href={`/${linkedStorySlug}`}>{item.headline}</Link>
-  } else {
-    return <span className={className}>{item.headline}</span>
-  }
-}

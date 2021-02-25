@@ -1,76 +1,75 @@
 import React from "react";
-import get from "lodash/get";
 
-
-function renderTableBody(hasHeader, { headerFields, headerData }){
-  let headerRow = [];
-  if(hasHeader) {
-    headerRow = [<thead><tr>{headerFields.map(headerField => <th>{headerField}</th>)}</tr></thead>];
-  }
-  else {
-    headerRow = [<tr>{headerFields.map(headerField => <td>{headerField}</td>)}</tr>];
-  }
-  return headerRow.concat(headerData.map(data => <tr>{headerFields.map(headerField => <td>{data[headerField]}</td>)}</tr>));
+function TableHeader(columns) {
+  return <thead>
+    <tr>
+      {columns.map(col => <th>{col.Header}</th>)}
+    </tr>
+  </thead>;
 }
 
-export function TableView({className, hasHeader, tableModData = {}}) {
-  return <table className={className}>{renderTableBody(hasHeader, tableModData)}</table>;
+export function TableView({ data, columns, className, hasHeader }) {
+  return <table className={className}>
+    {hasHeader && TableHeader(columns)}
+    <tbody>
+      {data.map(row => <tr>
+        {columns.map(col => <td>
+          {row[col.Header]}
+        </td>)}
+      </tr>)}
+    </tbody>
+  </table>;
 }
 
 export class Table extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableModData: {
-        headerFields : [],
-        headerData: []
-      },
+      tableData: []
     };
   }
 
-  formatData(content) {
-    const dataArray = content.split(/\n/);
-    const headerRowData = get(dataArray, [0], '');
-    const headerFields = headerRowData.split(',').map(headerValue => headerValue.trim());
-    const dataFields = dataArray.slice(1, dataArray.length - 1);
-    const headerData = dataFields.map(dataField => dataField.split(',')
-      .reduce((acc, currEle, index) => {
-        acc[get(headerFields, [index], '').trim()] = currEle.trim();
-        return acc;
-      }, {}));
-
-    this.setState({tableModData: { headerFields, headerData }});
-
-    return {
-      headerFields,
-      headerData
-    }
+  parseCSVToJson(content) {
+    import(/* webpackChunkName: "qtc-parsecsv" */ "papaparse").then(({ parse }) => {
+      parse(content, {
+        header: this.props.hasHeader,
+        complete: results => this._isMounted && this.setState({ tableData: results.data })
+      });
+    })
   }
 
   componentDidMount() {
-    const content = get(this.props, ['data','content']);
-    this.formatData(content);
+    this._isMounted = true;
+    this.parseCSVToJson(this.props.data.content);
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   componentWillReceiveProps(nextProps) {
-    const prevContent = get(this.props, ['data','content']);
-    const nextContent = get(nextProps, ['data','content']);
-    if (prevContent !== nextContent) {
-      this.formatData(nextContent);
+    if (this.props.data.content !== nextProps.data.content) {
+      this.parseCSVToJson(nextProps.data.content);
     }
   }
 
   render() {
-    const tableModData = this.state.tableModData;
-    if (!get(tableModData, ['headerFields'], []).length > 0) {
+    if (!this.state.tableData.length > 0) {
       return null;
     }
+
+    const columns = Object.keys(this.state.tableData[0]).map(header => ({
+      Header: header,
+      accessor: header,
+      headerStyle: !this.props.hasHeader ? { display: "none" } : {}
+    }));
 
     const className = `story-element-table-${this.props.id}`;
 
     return React.createElement(this.props.tableComponent || TableView, {
       hasHeader: this.props.hasHeader,
-      tableModData,
+      data: this.state.tableData,
+      columns: columns,
       showPageSizeOptions: false,
       showPageJump: false,
       className: className,

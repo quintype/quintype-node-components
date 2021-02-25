@@ -1,6 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
 
+import {mapStateToProps, mapDispatchToProps} from './impl/client-side-only-impl';
+
 class ClientSideOnlyBase extends React.Component {
   render() {
     if (this.props.clientSideRendered) {
@@ -14,21 +16,18 @@ class ClientSideOnlyBase extends React.Component {
   }
 }
 
-const defaultFallback = () => <span />
-
-function WithClientSideOnlyBase({clientSideRendered = false, children}) {
-  return children({clientSideRendered})
-}
-
-function mapStateToProps(state) {
-  return {
-    clientSideRendered: state.clientSideRendered
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {};
-}
-
+/**
+ * This component will be loaded by client, and bypassed when doing server side rendering.
+ *
+ * Example
+ * ```javascript
+ * import { ClientSideOnly } from '@quintype/components';
+ * <ClientSideOnly>
+ *   This will be shown only on the client side
+ * </ClientSideOnly>
+ * ```
+ * @see {@link WithClientSideOnly} for a render props version of this component
+ * @component
+ * @category Other
+ */
 export const ClientSideOnly = connect(mapStateToProps, mapDispatchToProps)(ClientSideOnlyBase);
-export const WithClientSideOnly = connect(mapStateToProps, mapDispatchToProps)(WithClientSideOnlyBase);

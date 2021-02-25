@@ -17,4 +17,17 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+/**
+ * This component can be used to trigger an action openening the Hamburger menu. The state can be accessed via state.hamburgerOpened
+ *
+ * Example
+ * ```javascript
+ * import { HamburgerButton } from '@quintype/components';
+ * <HamburgerButton>
+ *   <img src="/path/to/hamburger.png"/>
+ * </HamburgerButton>
+ * ```
+ * @component
+ * @category Header
+ */
 export const HamburgerButton = connect(state => ({}), mapDispatchToProps)(HamburgerButtonBase);

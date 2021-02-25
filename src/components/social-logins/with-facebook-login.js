@@ -1,6 +1,23 @@
 import React from 'react';
 import { WithSocialLogin } from './with-social-login';
 
+/**
+ * @see {@link WithSocialLogin}
+ * @component
+ * @category Login
+ */
+export function WithFacebookLogin({ appId, children, scope, emailMandatory, redirectUrl, sso, isBridgekeeperLogin }) {
+  return React.createElement(WithSocialLogin, {
+    provider: 'facebook',
+    initialize: () => loadFacebookSDK(appId),
+    socialLogin: () => loginWithFacebook({ scope, emailMandatory }),
+    children: children,
+    redirectUrl,
+    sso,
+    isBridgekeeperLogin
+  });
+}
+
 function loadFacebookSDK(appId) {
   if (global.FB) {
     return;
@@ -25,8 +42,8 @@ function loadFacebookSDK(appId) {
 
 function fbLogin(params) {
   return new Promise((resolve, reject) =>
-    global.FB.login(response => response.status === 'connected' 
-      ? resolve({ 'access-token': response.authResponse.accessToken }) 
+    global.FB.login(response => response.status === 'connected'
+      ? resolve({ 'access-token': response.authResponse.accessToken })
       : reject('NOT_GRANTED'),
       params));
 }
@@ -46,13 +63,4 @@ function loginWithFacebook({scope, emailMandatory} = {}) {
 
   return fbLogin({scope})
     .then(token => emailMandatory ? fbVerifyEmailExists(token) : token)
-}
-
-export function WithFacebookLogin({appId, children, scope, emailMandatory}) {
-  return React.createElement(WithSocialLogin, {
-    provider: 'facebook',
-    initialize: () => loadFacebookSDK(appId),
-    socialLogin: () => loginWithFacebook({ scope, emailMandatory }),
-    children
-  });
 }

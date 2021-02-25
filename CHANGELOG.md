@@ -2,6 +2,357 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.25.3](https://github.com/quintype/quintype-node-components/compare/v2.25.1...v2.25.3) (2020-12-16)
+
+
+
+## [2.25.1](https://github.com/quintype/quintype-node-components/compare/v2.23.1...v2.25.1) (2020-12-16)
+
+
+### Bug Fixes
+
+* **babel:** Remove duplicate plugin :cop ([3dcd702](https://github.com/quintype/quintype-node-components/commit/3dcd702c0d33483b79fbfa9f128782a6b1989fb7))
+* **Link:** Export LinkBase component :cop: ([#161](https://github.com/quintype/quintype-node-components/issues/161)) ([2a75c3c](https://github.com/quintype/quintype-node-components/commit/2a75c3c0079e1c4265340c17765d64c8a792d008))
+
+
+
+## [2.24.2](https://github.com/quintype/quintype-node-components/compare/v2.24.1...v2.24.2) (2020-12-09)
+
+
+### Bug Fixes
+
+* **babel:** Remove duplicate plugin :cop ([3dcd702](https://github.com/quintype/quintype-node-components/commit/3dcd702c0d33483b79fbfa9f128782a6b1989fb7))
+
+
+
+## [2.24.1](https://github.com/quintype/quintype-node-components/compare/v2.23.2...v2.24.1) (2020-12-09)
+
+
+
+## [2.23.2](https://github.com/quintype/quintype-node-components/compare/v2.23.1...v2.23.2) (2020-12-09)
+
+
+### Bug Fixes
+
+* **Link:** Export LinkBase component :cop: ([#161](https://github.com/quintype/quintype-node-components/issues/161)) ([2a75c3c](https://github.com/quintype/quintype-node-components/commit/2a75c3c0079e1c4265340c17765d64c8a792d008))
+
+
+
+## [2.23.1](https://github.com/quintype/quintype-node-components/compare/v2.23.0...v2.23.1) (2020-12-07)
+
+
+
+# [2.23.0](https://github.com/quintype/quintype-node-components/compare/v2.22.8...v2.23.0) (2020-11-06)
+
+
+### Features
+
+* add a toggle to load the youtube iframe on click of thumbnail ([#158](https://github.com/quintype/quintype-node-components/issues/158)) ([e869ddd](https://github.com/quintype/quintype-node-components/commit/e869ddd91735c7844795f97a5f639c9812f1d967))
+
+
+
+## [2.22.8](https://github.com/quintype/quintype-node-components/compare/v2.22.7...v2.22.8) (2020-08-27)
+
+
+
+## [2.22.7](https://github.com/quintype/quintype-node-components/compare/v2.22.6...v2.22.7) (2020-08-27)
+
+
+
+## [2.22.6](https://github.com/quintype/quintype-node-components/compare/v2.22.5...v2.22.6) (2020-06-25)
+
+
+
+## [2.22.5](https://github.com/quintype/quintype-node-components/compare/v2.22.4...v2.22.5) (2020-05-22)
+
+
+
+## [2.22.4](https://github.com/quintype/quintype-node-components/compare/v2.22.2...v2.22.4) (2020-05-19)
+
+
+
+## [2.22.3](https://github.com/quintype/quintype-node-components/compare/v2.22.2...v2.22.3) (2020-05-19)
+
+
+
+## [2.22.2](https://github.com/quintype/quintype-node-components/compare/v2.22.0...v2.22.2) (2020-05-13)
+
+
+
+## [2.22.1](https://github.com/quintype/quintype-node-components/compare/v2.22.0...v2.22.1) (2020-05-13)
+
+
+
+## [2.22.1](https://github.com/quintype/quintype-node-components/compare/v2.22.0...v2.22.1) (2020-05-07)
+
+
+
+# [2.22.0](https://github.com/quintype/quintype-node-components/compare/v2.20.0...v2.22.0) (2020-05-07)
+
+
+### Bug Fixes
+
+* **PPA:** pushed PPA chnages ([#126](https://github.com/quintype/quintype-node-components/issues/126)) ([a51dbd0](https://github.com/quintype/quintype-node-components/commit/a51dbd03154f0b6d5f2d36b7f80c1b4826f6fdca))
+
+
+### Features
+
+* add campaign subscription group ([#128](https://github.com/quintype/quintype-node-components/issues/128)) ([89d74bd](https://github.com/quintype/quintype-node-components/commit/89d74bda1270bbd0ebfce6438e2b7571adfb1390))
+
+
+
+## [2.21.2](https://github.com/quintype/quintype-node-components/compare/v2.21.1...v2.21.2) (2020-05-07)
+
+
+
+## [2.21.1](https://github.com/quintype/quintype-node-components/compare/v2.21.0...v2.21.1) (2020-05-07)
+
+
+
+# [2.21.0](https://github.com/quintype/quintype-node-components/compare/v2.20.0...v2.21.0) (2020-04-13)
+
+
+### Bug Fixes
+
+* **PPA:** pushed PPA chnages ([#126](https://github.com/quintype/quintype-node-components/issues/126)) ([a51dbd0](https://github.com/quintype/quintype-node-components/commit/a51dbd0))
+
+
+### Features
+
+* add campaign subscription group ([#128](https://github.com/quintype/quintype-node-components/issues/128)) ([89d74bd](https://github.com/quintype/quintype-node-components/commit/89d74bd))
+
+
+
+## [2.20.1](https://github.com/quintype/quintype-node-components/compare/v2.20.0...v2.20.1) (2020-03-24)
+
+
+### Bug Fixes
+
+* **PPA:** pushed PPA chnages ([#126](https://github.com/quintype/quintype-node-components/issues/126)) ([a51dbd0](https://github.com/quintype/quintype-node-components/commit/a51dbd0))
+
+
+
+# [2.20.0](https://github.com/quintype/quintype-node-components/compare/v2.17.0...v2.20.0) (2020-03-20)
+
+
+### Features
+
+* **Accesstype:** added support for pay per asset. ([#118](https://github.com/quintype/quintype-node-components/issues/118)) ([addf401](https://github.com/quintype/quintype-node-components/commit/addf401))
+* **ssoLogin:** Adding paths for sso server side logins ([#114](https://github.com/quintype/quintype-node-components/issues/114)) ([83d2b44](https://github.com/quintype/quintype-node-components/commit/83d2b44))
+
+
+
+# [2.18.0](https://github.com/quintype/quintype-node-components/compare/v2.17.0...v2.18.0) (2020-03-19)
+
+
+### Features
+
+* **Accesstype:** added support for pay per asset. ([#118](https://github.com/quintype/quintype-node-components/issues/118)) ([addf401](https://github.com/quintype/quintype-node-components/commit/addf401))
+
+
+
+# [2.17.0](https://github.com/quintype/quintype-node-components/compare/v2.15.4...v2.17.0) (2020-03-11)
+
+
+### Features
+
+* Add optional params for wrapCollectionLayout function ([#121](https://github.com/quintype/quintype-node-components/issues/121)) ([7bbb913](https://github.com/quintype/quintype-node-components/commit/7bbb913))
+* **ads:** Add slot id prop to dfp ad slots ([#116](https://github.com/quintype/quintype-node-components/issues/116)) ([9b193a2](https://github.com/quintype/quintype-node-components/commit/9b193a2))
+
+
+
+## [2.16.1](https://github.com/quintype/quintype-node-components/compare/v2.16.0...v2.16.1) (2020-03-03)
+
+
+
+# [2.16.0](https://github.com/quintype/quintype-node-components/compare/v2.15.4...v2.16.0) (2020-02-13)
+
+
+### Features
+
+* **ads:** Add slot id prop to dfp ad slots ([#116](https://github.com/quintype/quintype-node-components/issues/116)) ([9b193a2](https://github.com/quintype/quintype-node-components/commit/9b193a2))
+
+
+
+## [2.15.4](https://github.com/quintype/quintype-node-components/compare/v2.15.3...v2.15.4) (2020-01-13)
+
+
+### Bug Fixes
+
+* defaulting mountAt to undefined, to avoid a crash ([c1ff3db](https://github.com/quintype/quintype-node-components/commit/c1ff3db))
+
+
+
+## [2.15.3](https://github.com/quintype/quintype-node-components/compare/v2.15.2...v2.15.3) (2020-01-11)
+
+
+### Bug Fixes
+
+* **Subdirectory:** api-client honors the mount point ([158266d](https://github.com/quintype/quintype-node-components/commit/158266d))
+
+
+
+## [2.15.2](https://github.com/quintype/quintype-node-components/compare/v2.15.1...v2.15.2) (2020-01-09)
+
+
+### Bug Fixes
+
+* InfiniteStoryBase sets the correct url ([#112](https://github.com/quintype/quintype-node-components/issues/112)) ([11656dc](https://github.com/quintype/quintype-node-components/commit/11656dc))
+
+
+
+## [2.15.1](https://github.com/quintype/quintype-node-components/compare/v2.15.0...v2.15.1) (2020-01-03)
+
+
+### Bug Fixes
+
+* **ResponsiveSource:** Removing the src="false" from everywhere ([034d403](https://github.com/quintype/quintype-node-components/commit/034d403))
+
+
+
+# [2.15.0](https://github.com/quintype/quintype-node-components/compare/v2.14.4...v2.15.0) (2019-12-19)
+
+
+### Features
+
+* wrapCollectionLayout preserves storyLimit ([#110](https://github.com/quintype/quintype-node-components/issues/110)) ([361bb06](https://github.com/quintype/quintype-node-components/commit/361bb06))
+
+
+
+## [2.14.4](https://github.com/quintype/quintype-node-components/compare/v2.14.3...v2.14.4) (2019-11-04)
+
+
+### Bug Fixes
+
+* Passing neverHideItem from InfiniteStoryBase ([#108](https://github.com/quintype/quintype-node-components/issues/108)) ([6db16ae](https://github.com/quintype/quintype-node-components/commit/6db16ae))
+
+
+
+## [2.14.3](https://github.com/quintype/quintype-node-components/compare/v2.14.2...v2.14.3) (2019-10-31)
+
+
+### Bug Fixes
+
+* npm audit, and moving to a slightly smaller gif ([513c500](https://github.com/quintype/quintype-node-components/commit/513c500))
+
+
+
+## [2.14.2](https://github.com/quintype/quintype-node-components/compare/v2.14.1...v2.14.2) (2019-10-28)
+
+
+### Bug Fixes
+
+* Gumlet loads dynamically in case you've updated the PWA ([2d4ae0d](https://github.com/quintype/quintype-node-components/commit/2d4ae0d))
+
+
+
+## [2.14.1](https://github.com/quintype/quintype-node-components/compare/v2.14.0...v2.14.1) (2019-10-28)
+
+
+### Bug Fixes
+
+* Remove junk params from noscript tag ([31e574c](https://github.com/quintype/quintype-node-components/commit/31e574c))
+
+
+
+# [2.14.0](https://github.com/quintype/quintype-node-components/compare/v2.13.0...v2.14.0) (2019-10-28)
+
+
+### Features
+
+* Supporting Gumlet Images ([#106](https://github.com/quintype/quintype-node-components/issues/106)) ([277eaef](https://github.com/quintype/quintype-node-components/commit/277eaef))
+
+
+
+# [2.13.0](https://github.com/quintype/quintype-node-components/compare/v2.12.1...v2.13.0) (2019-09-10)
+
+
+### Features
+
+* Pass props along with state for dfp ads ([#103](https://github.com/quintype/quintype-node-components/issues/103)) ([430a360](https://github.com/quintype/quintype-node-components/commit/430a360))
+
+
+
+## [2.12.1](https://github.com/quintype/quintype-node-components/compare/v2.12.0...v2.12.1) (2019-09-09)
+
+
+### Bug Fixes
+
+* Apparently standard-version runs pre-commit, so runs lint + test ([e6eed87](https://github.com/quintype/quintype-node-components/commit/e6eed87))
+
+
+
+# [2.12.0](https://github.com/quintype/quintype-node-components/compare/v2.10.0...v2.12.0) (2019-09-09)
+
+
+### Bug Fixes
+
+* Getting the build to work ([388754b](https://github.com/quintype/quintype-node-components/commit/388754b))
+
+
+### Features
+
+* Adding documentation everywhere ([5c56779](https://github.com/quintype/quintype-node-components/commit/5c56779))
+
+
+
+# [2.11.0](https://github.com/quintype/quintype-node-components/compare/v2.10.0...v2.11.0) (2019-09-09)
+
+
+### Features
+
+* Adding documentation everywhere ([5c56779](https://github.com/quintype/quintype-node-components/commit/5c56779))
+
+
+
+# [2.10.0](https://github.com/quintype/quintype-node-components/compare/v2.3.0...v2.10.0) (2019-08-26)
+
+
+### Bug Fixes
+
+* update quintype-js to 1.2.0 ([#90](https://github.com/quintype/quintype-node-components/issues/90)) ([4bc07ba](https://github.com/quintype/quintype-node-components/commit/4bc07ba))
+* **access-type:** Perf fix, access action dispatch :star: ([#101](https://github.com/quintype/quintype-node-components/issues/101)) ([394dbf0](https://github.com/quintype/quintype-node-components/commit/394dbf0))
+* **accesstype:** Modify core to pure component ([#100](https://github.com/quintype/quintype-node-components/issues/100)) ([bd741aa](https://github.com/quintype/quintype-node-components/commit/bd741aa))
+* **Encode social-share uri:** Add encoding back to social-share icons URIs ([#97](https://github.com/quintype/quintype-node-components/issues/97)) ([aca89a2](https://github.com/quintype/quintype-node-components/commit/aca89a2))
+
+
+### Features
+
+* Adding WithLazy and WithClientSideOnly ([#92](https://github.com/quintype/quintype-node-components/issues/92)) ([d9ee369](https://github.com/quintype/quintype-node-components/commit/d9ee369))
+* **accesstype:** Implement recurring plans for accesstype ([1337263](https://github.com/quintype/quintype-node-components/commit/1337263))
+* **image-caption:** add wrapper for image-caption and attribution in responsiveImage ([#94](https://github.com/quintype/quintype-node-components/issues/94)) ([07d7267](https://github.com/quintype/quintype-node-components/commit/07d7267))
+* **InfiniteStoryBase:** a new property disableSetUrl, when set to true will not execute setUrl ([#102](https://github.com/quintype/quintype-node-components/issues/102)) ([b1fb402](https://github.com/quintype/quintype-node-components/commit/b1fb402))
+* **SocialShare:** url encoding the social share icons ([#91](https://github.com/quintype/quintype-node-components/issues/91)) ([e9bf88a](https://github.com/quintype/quintype-node-components/commit/e9bf88a))
+
+
+
+## [2.9.1](https://github.com/quintype/quintype-node-components/compare/v2.9.0...v2.9.1) (2019-07-23)
+
+
+### Bug Fixes
+
+* **access-type:** Perf fix, access action dispatch :star: ([#101](https://github.com/quintype/quintype-node-components/issues/101)) ([394dbf0](https://github.com/quintype/quintype-node-components/commit/394dbf0))
+
+
+
+# [2.9.0](https://github.com/quintype/quintype-node-components/compare/v2.8.3...v2.9.0) (2019-07-18)
+
+
+### Features
+
+* **accesstype:** Implement recurring plans for accesstype ([1337263](https://github.com/quintype/quintype-node-components/commit/1337263))
+
+
+
+## [2.8.3](https://github.com/quintype/quintype-node-components/compare/v2.8.2...v2.8.3) (2019-07-17)
+
+
+### Bug Fixes
+
+* **accesstype:** Modify core to pure component ([#100](https://github.com/quintype/quintype-node-components/issues/100)) ([bd741aa](https://github.com/quintype/quintype-node-components/commit/bd741aa))
+
+
+
 ## [2.8.2](https://github.com/quintype/quintype-node-components/compare/v2.8.1...v2.8.2) (2019-06-27)
 
 

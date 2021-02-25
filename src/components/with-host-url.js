@@ -11,8 +11,6 @@ WithHostUrlBase.propTypes = {
   currentHostUrl: PropTypes.string,
 };
 
-export const WithHostUrl = connect(mapStateToProps, mapDispatchToProps)(WithHostUrlBase);
-
 function mapStateToProps({qt = {}}) {
   return {
     primaryHostUrl: qt.primaryHostUrl,
@@ -23,3 +21,22 @@ function mapStateToProps({qt = {}}) {
 function mapDispatchToProps(dispatch) {
   return { };
 }
+
+/**
+ * This component can be used to get access to the `currentHostUrl` and `primaryHostUrl`, as configured within the editor.
+ *
+ * Example
+ * ```javascript
+ * import { WithHostUrl } from '@quintype/components';
+ *
+ * <WithHostUrl>{({ primaryHostUrl, currentHostUrl }) =>
+ *   <div>
+ *     <div>primaryHostUrl: {primaryHostUrl}</div>
+ *     <div>currentHostUrl: {currentHostUrl}</div>
+ *   </div>
+ * }</WithHostUrl>
+ * ```
+ * @component
+ * @category Other
+ */
+export const WithHostUrl = connect(mapStateToProps, mapDispatchToProps)(WithHostUrlBase);

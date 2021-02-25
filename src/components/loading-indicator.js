@@ -17,4 +17,18 @@ function mapDispatchToProps() {
   return {};
 }
 
+/**
+ * This component renders it's children when the app is moving between pages. It can be used to show a spinner. It always has the class "loading-indicator", and also "loading-indicator-loading" when loading.
+ *
+ * Example
+ * ```javascript
+ * import { LoadingIndicator } from '@quintype/components';
+ *
+ * <LoadingIndicator>
+ *   <div className="spinner">Please Wait</div>
+ * </LoadingIndicator>
+ * ```
+ * @component
+ * @category Other
+ */
 export const LoadingIndicator = connect(mapStateToProps, mapDispatchToProps)(LoadingIndicatorBase);
