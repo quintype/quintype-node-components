@@ -22,21 +22,25 @@ import get from "lodash/get";
 export function ResponsiveHeroImage(props) {
   const { supportStoryAlternatives = false, story } = props;
   const alternateData = get(props, ["story", "alternative", "home", "default"]);
+  const slug =
+    (supportStoryAlternatives &&
+      get(alternateData, ["hero-image", "hero-image-s3-key"])) ||
+    get(story, ["hero-image-s3-key"]);
+  const metadata =
+    (supportStoryAlternatives &&
+      get(alternateData, ["hero-image", "hero-image-metadata"])) ||
+    get(story, ["hero-image-metadata"]);
+  const alternateText =
+    (supportStoryAlternatives && get(alternateData, ["headline"])) ||
+    get(story, ["headline"]);
+
   return React.createElement(
     ResponsiveImage,
     Object.assign(
       {
-        slug:
-          (supportStoryAlternatives &&
-            get(alternateData, ["hero-image", "hero-image-s3-key"])) ||
-          get(story, ["hero-image-s3-key"]),
-        metadata:
-          (supportStoryAlternatives &&
-            get(alternateData, ["hero-image", "hero-image-metadata"])) ||
-          get(story, ["hero-image-metadata"]),
-        alt:
-          (supportStoryAlternatives && get(alternateData, ["headline"])) ||
-          get(story, ["headline"])
+        slug,
+        metadata,
+        alt: alternateText
       },
       omit(props, ["story"])
     )
