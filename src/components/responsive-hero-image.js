@@ -35,8 +35,8 @@ export function ResponsiveHeroImage(props) {
           ],
           get(props, ["story", "hero-image-s3-key"])
         ),
-        metadata: props.story["hero-image-metadata"],
-        alt: props.story["headline"]
+        metadata: get(props, ["story", "hero-image-metadata"]),
+        alt: get(props, ["story", "headline"])
       },
       omit(props, ["story"])
     )
