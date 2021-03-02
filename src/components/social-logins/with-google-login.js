@@ -26,6 +26,7 @@ const onScriptLoaded = (clientId, scope) => {
 };
 
 const loginWithGoogle = ({ emailMandatory } = {}) => {
+  console.log("test");
   if(!global.gapi || !global.gapi.client) {
     return Promise.reject("NOT_LOADED");
   }
