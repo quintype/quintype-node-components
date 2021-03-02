@@ -52,7 +52,7 @@ import { postRequest } from '../api-client';
 export class WithSocialLogin extends React.Component {
   constructor(props) {
     super(props);
-    this.bridgekeeperServerLoginPath = `/api/auth/v1/login?auth-provider=${this.props.provider}&redirect_uri=${global.location && global.location.origin}`;
+    this.bridgekeeperServerLoginPath = `/api/auth/v1/login?auth-provider=${this.props.provider}&redirect_uri=${this.props.redirectUrl ? this.props.redirectUrl : global.location && global.location.origin}`;
     this.defaultServerLoginPath = `/login?auth-provider=${this.props.provider}&remote-host=${global.location && global.location.origin}`;
     this.serverLoginPath = this.props.isBridgekeeperLogin ? this.bridgekeeperServerLoginPath : this.defaultServerLoginPath;
     this.serverSideSSOLoginPath = `/login?auth-provider=${this.props.provider}&redirect-url=${this.props.sso && this.props.redirectUrl ? this.props.redirectUrl : global.location && global.location.origin}`;
