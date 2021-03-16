@@ -14,10 +14,14 @@ class WithMemberBase extends React.Component {
 
   checkForMemberUpdated() {
     this.props.memberBeingLoaded();
-    return getRequest('/api/v1/members/me')
+    const requestUrl = this.props.isBridgekeeperEnabled ? "/api/auth/v1/users/me" : "/api/v1/members/me";
+    return getRequest(requestUrl)
       .forbidden(() => this.props.memberUpdated(null))
       .unauthorized(() => this.props.memberUpdated(null))
-      .json(({ member }) => this.props.memberUpdated(member))
+      .json(({ member, user }) => {
+        const memberObj = this.props.isBridgekeeperEnabled ? user : member;
+        this.props.memberUpdated(memberObj)
+      })
   }
 
   componentDidMount() {
@@ -45,11 +49,12 @@ function mapStateToProps({member, memberLoading}) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
+  const logoutRequestUrl = ownProps.isBridgekeeperEnabled ? "/api/auth/v1/logout" : "/api/logout";
   return {
     memberBeingLoaded: () => dispatch({ type: MEMBER_BEING_LOADED }),
     memberUpdated: member => dispatch({ type: MEMBER_UPDATED, member }),
-    logout: () => getRequest('/api/logout').res(() => dispatch({ type: MEMBER_UPDATED, member: null }))
+    logout: () => getRequest(logoutRequestUrl).res(() => dispatch({ type: MEMBER_UPDATED, member: null }))
   };
 }
 
