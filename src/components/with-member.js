@@ -38,8 +38,14 @@ class WithMemberBase extends React.Component {
 }
 
 WithMemberBase.propTypes = {
-  children: PropTypes.func.isRequired
+  children: PropTypes.func.isRequired,
+  /** Enabling this prop makes the relevant bridgekeeper calls for checking the member and the logout api */
+  isBridgekeeperEnabled: PropTypes.bool
 };
+
+WithMemberBase.defaultProps = {
+  isBridgekeeperEnabled: false
+}
 
 function mapStateToProps({member, memberLoading}) {
   return {
@@ -66,6 +72,8 @@ function mapDispatchToProps(dispatch, ownProps) {
  * On initial load, the `isLoading` prop will be set, which will become false when the user is loaded. Use this field to avoid showing a Login Button while fetch is happening.
  *
  * In order to update the current member, call `checkForMemberUpdated`.
+ *
+ * In order to make bridgekeeper api calls for the current member and logout, `isBridgekeeperEnabled` prop needs to set to true. The default value is `false`.
  *
  * Example
  * ```javascript
