@@ -198,29 +198,7 @@ class AccessTypeBase extends React.Component {
     );
     if (!error) {
       try {
-        Promise.all([
-          this.getSubscription(),
-          this.getPaymentOptions(),
-          this.getAssetPlans(),
-          this.getCampaignSubscription(),
-        ]).then(
-          ([
-            subscriptionGroups,
-            paymentOptions,
-            assetPlans,
-            campaignSubscriptionGroups,
-          ]) => {
-            batch(() => {
-              this.props.subscriptionGroupLoaded(subscriptionGroups);
-              this.props.paymentOptionsLoaded(paymentOptions);
-              this.props.assetPlanLoaded(assetPlans);
-              this.props.campaignSubscriptionGroupLoaded(
-                campaignSubscriptionGroups
-              );
-            });
-            callback();
-          }
-        );
+          callback();
       } catch (e) {
         console.log(`Subscription / payments failed`, e);
       }
@@ -251,6 +229,10 @@ class AccessTypeBase extends React.Component {
           return false;
         }
         this.runSequentialCalls(callback);
+        this.getSubscription().then(subscriptionGroups => this.props.subscriptionGroupLoaded(subscriptionGroups))
+        this.getPaymentOptions().then(paymentOptions => this.props.paymentOptionsLoaded(paymentOptions))
+        this.getAssetPlans().then(assetPlans => this.props.assetPlanLoaded(assetPlans));
+        this.getCampaignSubscription().then(campaignSubscriptionGroups => this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups ))
       });
     } catch (e) {
       console.warn(`Accesstype load fail`, e);
