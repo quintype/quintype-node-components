@@ -198,10 +198,10 @@ class AccessTypeBase extends React.Component {
     );
     if (!error) {
       try {
-        this.getSubscription().then(subscriptionGroups => this.props.subscriptionGroupLoaded(subscriptionGroups))
-        this.getPaymentOptions().then(paymentOptions => this.props.paymentOptionsLoaded(paymentOptions))
+        this.getSubscription().then(subscriptionGroups => this.props.subscriptionGroupLoaded(subscriptionGroups));
+        this.getPaymentOptions().then(paymentOptions => this.props.paymentOptionsLoaded(paymentOptions));
         this.getAssetPlans().then(assetPlans => this.props.assetPlanLoaded(assetPlans));
-        this.getCampaignSubscription().then(campaignSubscriptionGroups => this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups ))
+        this.getCampaignSubscription().then(campaignSubscriptionGroups => this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups));
         callback();
       } catch (e) {
         console.log(`Subscription / payments failed`, e);
