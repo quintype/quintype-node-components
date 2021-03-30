@@ -12,6 +12,7 @@ import {
 } from '../store/actions';
 import PropTypes from 'prop-types';
 import {awaitHelper} from '../utils';
+import fetch from "isomorphic-fetch"
 
 const prod_Host = 'https://www.accesstype.com';
 const staging_Host = 'https://staging.accesstype.com';
@@ -116,7 +117,7 @@ class AccessTypeBase extends React.Component {
     const accessTypeHost = `${HOST}/api/v1/subscription_groups.json?key=${accessTypeKey}`;
 
     const {error, data: subscriptions} = await awaitHelper(
-      (await global.fetch(accessTypeHost)).json()
+      (await fetch(accessTypeHost)).json()
     );
     if (error) {
       return {
@@ -171,7 +172,7 @@ class AccessTypeBase extends React.Component {
       const accessTypeHost = `${HOST}/api/v1/campaigns.json?key=${accessTypeKey}`;
 
       const {error, data: campaignSubscriptions} = await awaitHelper(
-        (await global.fetch(accessTypeHost)).json()
+        (await fetch(accessTypeHost)).json()
       );
 
       if (error) {

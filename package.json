@@ -27,6 +27,7 @@
     "classnames": "^2.2.6",
     "empty-web-gif": "^1.0.1",
     "get-youtube-id": "^1.0.1",
+    "isomorphic-fetch": "^3.0.0",
     "papaparse": "^5.2.0",
     "prop-types": "^15.7.2",
     "quintype-js": "^1.2.0",
