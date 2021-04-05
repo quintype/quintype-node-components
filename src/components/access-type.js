@@ -509,6 +509,11 @@ const mapDispatchToProps = (dispatch) => ({
 /**
  * `AccessType` is a generic connected render prop which exposes methods to handle access to stories / assets and initialize accesstype js
  *
+ *  propName    |   Description
+ *  --------    |   -----------
+ *  prodHost    |   It is passed to configure the production host.(Optional)
+ *  stagingHost |   It is passed to configure the staging host.(Optional)
+ *
  *   Name | arguments | Description
  *  --- | --- | ---
  *  `initAccessType`| -NA- | Initializes accesstype, checks for existance of accesstype before requesting for AT js
@@ -548,10 +553,6 @@ const mapDispatchToProps = (dispatch) => ({
  * ```javascript
  * import { AccessType } from "@quintype/components";
  *
- * propName | Description
- *  --- | ---
- *  prodHost | It is passed to configure the production host.(Optional)
- *  stagingHost | It is passed to configure the staging host.(Optional)
  *
  * render() {
  *   return  <AccessType
