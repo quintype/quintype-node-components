@@ -16,8 +16,8 @@ import { awaitHelper } from "../utils";
 class AccessTypeBase extends React.Component {
   constructor(props) {
     super(props);
-    this.prod_Host = props.prodHost || "https://www.accesstype.com";
-    this.staging_Host = props.stagingHost || "https://staging.accesstype.com";
+    this.prodHost = props.prodHost || "https://www.accesstype.com";
+    this.stagingHost = props.stagingHost || "https://staging.accesstype.com";
   }
 
   componentDidMount() {
@@ -32,7 +32,7 @@ class AccessTypeBase extends React.Component {
     if (!enableAccesstype) {
       return false;
     }
-    const HOST = isStaging ? this.staging_Host : this.prod_Host;
+    const HOST = isStaging ? this.stagingHost : this.prodHost;
     const environment = isStaging ? "&env=sandbox" : "";
     const accessTypeHost = `${HOST}/frontend/v2/accesstype.js?key=${accessTypeKey}${environment}`;
     const isATScriptAlreadyPresent = document.querySelector(
@@ -113,7 +113,7 @@ class AccessTypeBase extends React.Component {
   getSubscription = async () => {
     const accessTypeKey = get(this.props, ["accessTypeKey"]);
     const isStaging = get(this.props, ["isStaging"]);
-    const HOST = isStaging ? this.staging_Host : this.prod_Host;
+    const HOST = isStaging ? this.stagingHost : this.prodHost;
 
     // TODO: use AccesstypeJS method insead of direct api call
     const accessTypeHost = `${HOST}/api/v1/subscription_groups.json?key=${accessTypeKey}`;
@@ -169,7 +169,7 @@ class AccessTypeBase extends React.Component {
     if (isAccessTypeCampaignEnabled) {
       const accessTypeKey = get(this.props, ["accessTypeKey"]);
       const isStaging = get(this.props, ["isStaging"]);
-      const HOST = isStaging ? this.staging_Host : this.prod_Host;
+      const HOST = isStaging ? this.stagingHost : this.prodHost;
 
       const accessTypeHost = `${HOST}/api/v1/campaigns.json?key=${accessTypeKey}`;
 
@@ -479,8 +479,8 @@ AccessTypeBase.propTypes = {
   enableAccesstype: PropTypes.bool.isRequired,
   accessTypeKey: PropTypes.string.isRequired,
   accessTypeBkIntegrationId: PropTypes.string.isRequired,
-  prod_Host: PropTypes.string,
-  staging_Host: PropTypes.string,
+  prodHost: PropTypes.string,
+  stagingHost: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
@@ -548,6 +548,10 @@ const mapDispatchToProps = (dispatch) => ({
  * ```javascript
  * import { AccessType } from "@quintype/components";
  *
+ * propName | Description
+ *  --- | ---
+ *  prodHost | It is passed to configure the production host.(Optional)
+ *  stagingHost | It is passed to configure the staging host.(Optional)
  *
  * render() {
  *   return  <AccessType
@@ -557,8 +561,8 @@ const mapDispatchToProps = (dispatch) => ({
  *                  email={email}
  *                  phone={phone}
  *                  disableMetering={disableMetering}
- *                  prodHost="www.abc.com"
- *                  stagingHost="staging.abc.com"
+ *                  prodHost="https://www.accesstype.com"
+ *                  stagingHost="https://staging.accesstype.com"
  *                >
  *                  {({ initAccessType, checkAccess, accessUpdated, accessIsLoading }) => (
  *                    <div>
