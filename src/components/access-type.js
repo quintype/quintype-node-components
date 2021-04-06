@@ -511,8 +511,8 @@ const mapDispatchToProps = (dispatch) => ({
  *
  *  propName    |   Description
  *  --------    |   -----------
- *  prodHost    |   It is passed to configure the production host.(Optional)
- *  stagingHost |   It is passed to configure the staging host.(Optional)
+ *  prodHost    |   It is passed to configure the production host.(Optional, default value is "https://www.accesstype.com")
+ *  stagingHost |   It is passed to configure the staging host.(Optional, default value is "https://staging.accesstype.com")
  *
  *   Name | arguments | Description
  *  --- | --- | ---
