@@ -79,7 +79,7 @@
 <header>
     
         <h2>
-            &ltAccessType <i>children</i> <i>email</i> <i>phone</i> <i>isStaging</i> <i>enableAccesstype</i> <i>accessTypeKey</i> <i>accessTypeBkIntegrationId</i> /&gt
+            &ltAccessType <i>children</i> <i>email</i> <i>phone</i> <i>isStaging</i> <i>enableAccesstype</i> <i>accessTypeKey</i> <i>accessTypeBkIntegrationId</i> <i>prodHost</i> <i>stagingHost</i> /&gt
         </h2>
         
     
@@ -101,7 +101,7 @@
         
         <span class="code-name">
             
-                &ltAccessType <i>children</i> <i>email</i> <i>phone</i> <i>isStaging</i> <i>enableAccesstype</i> <i>accessTypeKey</i> <i>accessTypeBkIntegrationId</i> /&gt
+                &ltAccessType <i>children</i> <i>email</i> <i>phone</i> <i>isStaging</i> <i>enableAccesstype</i> <i>accessTypeKey</i> <i>accessTypeBkIntegrationId</i> <i>prodHost</i> <i>stagingHost</i> /&gt
             
         </span>
     </h4>
@@ -111,6 +111,24 @@
     
     <div class="description">
         <p><code>AccessType</code> is a generic connected render prop which exposes methods to handle access to stories / assets and initialize accesstype js</p>
+<table>
+<thead>
+<tr>
+<th>propName</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prodHost</td>
+<td>It is passed to configure the production host.(Optional, default value is &quot;https://www.accesstype.com&quot;)</td>
+</tr>
+<tr>
+<td>stagingHost</td>
+<td>It is passed to configure the staging host.(Optional, default value is &quot;https://staging.accesstype.com&quot;)</td>
+</tr>
+</tbody>
+</table>
 <table>
 <thead>
 <tr>
@@ -188,6 +206,8 @@ render() {
                  email={email}
                  phone={phone}
                  disableMetering={disableMetering}
+                 prodHost=&quot;https://www.accesstype.com&quot;
+                 stagingHost=&quot;https://staging.accesstype.com&quot;
                >
                  {({ initAccessType, checkAccess, accessUpdated, accessIsLoading }) => (
                    &lt;div>
@@ -307,6 +327,28 @@ render() {
         </tr>
         
   
+        <tr class="deep-level-0">
+          <td class="name"><code>prodHost</code></td>
+          <td>
+            string
+          </td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+        </tr>
+        
+  
+        <tr class="deep-level-0">
+          <td class="name"><code>stagingHost</code></td>
+          <td>
+            string
+          </td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+        </tr>
+        
+  
   </tbody>
 </table>
     
@@ -352,7 +394,7 @@ render() {
         <p class="tag-source">
             <a href="components_access-type.js.html" class="button">View Source</a>
             <span>
-                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line573">line 573</a>
+                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line586">line 586</a>
             </span>
         </p>
     
