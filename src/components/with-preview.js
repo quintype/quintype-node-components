@@ -39,7 +39,7 @@ export function WithPreview(klazz, updateData) {
       global.addEventListener("message", (event) => {
         if (
           event.data &&
-          event.data.action == "sendStoryToIFrame" &&
+          event.data.action == "sendStoryToIframe" &&
           event.data.story
         ) {
           this.setState({ story: event.data.story });
