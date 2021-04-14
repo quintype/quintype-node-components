@@ -37,11 +37,7 @@ export function WithPreview(klazz, updateData) {
 
     componentDidMount() {
       global.addEventListener("message", (event) => {
-        if (
-          event.data &&
-          event.data.action == "sendStoryToIframe" &&
-          event.data.story
-        ) {
+        if (event.data && event.data.story) {
           this.setState({ story: event.data.story });
         }
       });
