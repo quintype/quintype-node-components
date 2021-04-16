@@ -4,7 +4,7 @@ import omit from "@babel/runtime/helpers/objectWithoutProperties";
 import get from "lodash/get";
 
 /**
- * This component takes in a wrapper over {@link ResponsiveImages}, which accepts a story and supportStoryAlternatives prop which in turn returns the alternate data if supportStoryAlternatives is true else returns the story data. By default, it picks the alt text from the headline.
+ * This component takes in a wrapper over {@link ResponsiveImages}, which accepts a story and supportStoryAlternatives prop which in turn returns the alternate data if story data is not present and the supportStoryAlternatives prop is set to true else returns the story data. By default, it picks the alt text from the headline.
  *
  * ```javascript
  * import { ResponsiveHeroImage } from '@quintype/components';
@@ -23,24 +23,23 @@ export function ResponsiveHeroImage(props) {
   const { supportStoryAlternatives = false, story } = props;
   const alternateData = get(props, ["story", "alternative", "home", "default"]);
   const slug =
+    get(story, ["hero-image-s3-key"]) ||
     (supportStoryAlternatives &&
-      get(alternateData, ["hero-image", "hero-image-s3-key"])) ||
-    get(story, ["hero-image-s3-key"]);
+      get(alternateData, ["hero-image", "hero-image-s3-key"]));
   const metadata =
+    get(story, ["hero-image-metadata"]) ||
     (supportStoryAlternatives &&
-      get(alternateData, ["hero-image", "hero-image-metadata"])) ||
-    get(story, ["hero-image-metadata"]);
+      get(alternateData, ["hero-image", "hero-image-metadata"]));
   const alternateText =
-    (supportStoryAlternatives && get(alternateData, ["headline"])) ||
-    get(story, ["headline"]);
-
+    get(story, ["headline"]) ||
+    (supportStoryAlternatives && get(alternateData, ["headline"]));
   return React.createElement(
     ResponsiveImage,
     Object.assign(
       {
         slug,
         metadata,
-        alt: alternateText
+        alt: alternateText,
       },
       omit(props, ["story"])
     )
