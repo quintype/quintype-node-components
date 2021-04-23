@@ -2,7 +2,7 @@ import React from "react";
 
 /**
  * This higher order function can be used for the home or story page preview. It takes a component, and a function to map the story into props suitable for the component
- * 
+ *
  * Preview in the Quintype CMS works by sending a postMessage to an iframe every time the story changes. This file abstracts this for you, and will just render the given component
  *
  * Example
@@ -36,20 +36,23 @@ export function WithPreview(klazz, updateData) {
     }
 
     componentDidMount() {
-      global.addEventListener("message", event => {
-        if (event.data && event.data.action == 'reloadStory' && event.data.story) {
-          this.setState({ story: event.data.story })
+      global.addEventListener("message", (event) => {
+        if (event.data && event.data.story) {
+          this.setState({ story: event.data.story });
         }
       });
     }
 
     render() {
-      if(!this.state.story) {
-        return <div style={{minHeight: 200}} />
+      if (!this.state.story) {
+        return <div style={{ minHeight: 200 }} />;
       }
-      return React.createElement(klazz, Object.assign({}, this.props, {
-        data: updateData(this.props.data, this.state.story)
-      }))
+      return React.createElement(
+        klazz,
+        Object.assign({}, this.props, {
+          data: updateData(this.props.data, this.state.story),
+        })
+      );
     }
-  }
+  };
 }
