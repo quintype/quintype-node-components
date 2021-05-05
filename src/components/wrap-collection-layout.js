@@ -75,6 +75,11 @@ export function wrapCollectionLayout(component) {
   if(component.storyLimit) {
     wrappedComponent.storyLimit = component.storyLimit;
   }
+
+  if(component.nestedCollectionLimit) {
+    wrappedComponent.nestedCollectionLimit = component.nestedCollectionLimit;
+  }
+  
   return wrappedComponent;
 }
 
