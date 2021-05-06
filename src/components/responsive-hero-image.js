@@ -4,7 +4,7 @@ import omit from "@babel/runtime/helpers/objectWithoutProperties";
 import get from "lodash/get";
 
 /**
- * This component takes in a wrapper over {@link ResponsiveImages}, which accepts a story, it returns image from story, if story doesn't have hero-image, it returns alternate hero-image of the story. By default, it picks the alt text from the headline.
+ * This component is a wrapper over {@link ResponsiveImages}. It accepts story as a prop and renders story's hero image, if hero image is absent then renders alternate hero-image of the story. If story's hero image is present it picks the alt text from the story headline else it picks from alternate headline.
  *
  * ```javascript
  * import { ResponsiveHeroImage } from '@quintype/components';
