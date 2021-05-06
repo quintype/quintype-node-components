@@ -7,6 +7,13 @@ import React from "react";
 afterEach(cleanup);
 
 const story = {
+  "hero-image-s3-key": null,
+  "hero-image-metadata": {
+    width: 760,
+    height: 427,
+    "focus-point": [306, 125],
+    },
+  "headline": "Text",
   alternative: {
     home: {
       default: {

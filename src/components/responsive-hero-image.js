@@ -26,7 +26,7 @@ export function ResponsiveHeroImage(props) {
 
   const slug = heroImage || altSlug;
   const metadata = (heroImage && get(props, ["story", "hero-image-metadata"])) || altMetadata;
-  const alternateText = get(props, ["story", "headline"]) || altHeadline;
+  const alternateText = (heroImage && get(props, ["story", "headline"])) || altHeadline;
 
   return React.createElement(
     ResponsiveImage,
