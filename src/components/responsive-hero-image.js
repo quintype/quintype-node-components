@@ -22,10 +22,11 @@ export function ResponsiveHeroImage(props) {
   const storyAlternateData = get(props, ["story", "alternative", "home", "default"], {});
   const { headline: altHeadline } = storyAlternateData;
   const { "hero-image-s3-key": altSlug, "hero-image-metadata": altMetadata } = get(storyAlternateData, ["hero-image"], {});
+  const heroImage = get(props, ["story", "hero-image-s3-key"]);
 
-  const slug = get(props, ["story", "hero-image-s3-key"], altSlug);
-  const metadata = get(props, ["story", "hero-image-metadata"], altMetadata);
-  const alternateText = get(props, ["story", "headline"], altHeadline);
+  const slug = heroImage || altSlug;
+  const metadata = (heroImage && get(props, ["story", "hero-image-metadata"])) || altMetadata;
+  const alternateText = get(props, ["story", "headline"]) || altHeadline;
 
   return React.createElement(
     ResponsiveImage,
