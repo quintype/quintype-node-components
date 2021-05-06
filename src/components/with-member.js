@@ -14,10 +14,14 @@ class WithMemberBase extends React.Component {
 
   checkForMemberUpdated() {
     this.props.memberBeingLoaded();
-    return getRequest('/api/v1/members/me')
+    const requestUrl = this.props.isBridgekeeperEnabled ? "/api/auth/v1/users/me" : "/api/v1/members/me";
+    return getRequest(requestUrl)
       .forbidden(() => this.props.memberUpdated(null))
       .unauthorized(() => this.props.memberUpdated(null))
-      .json(({ member }) => this.props.memberUpdated(member))
+      .json(({ member, user }) => {
+        const memberObj = this.props.isBridgekeeperEnabled ? user : member;
+        this.props.memberUpdated(memberObj)
+      })
   }
 
   componentDidMount() {
@@ -34,8 +38,14 @@ class WithMemberBase extends React.Component {
 }
 
 WithMemberBase.propTypes = {
-  children: PropTypes.func.isRequired
+  children: PropTypes.func.isRequired,
+  /** Enabling this prop makes the relevant bridgekeeper calls for checking the member and the logout api */
+  isBridgekeeperEnabled: PropTypes.bool
 };
+
+WithMemberBase.defaultProps = {
+  isBridgekeeperEnabled: false
+}
 
 function mapStateToProps({member, memberLoading}) {
   return {
@@ -45,11 +55,12 @@ function mapStateToProps({member, memberLoading}) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
+  const logoutRequestUrl = ownProps.isBridgekeeperEnabled ? "/api/auth/v1/logout" : "/api/logout";
   return {
     memberBeingLoaded: () => dispatch({ type: MEMBER_BEING_LOADED }),
     memberUpdated: member => dispatch({ type: MEMBER_UPDATED, member }),
-    logout: () => getRequest('/api/logout').res(() => dispatch({ type: MEMBER_UPDATED, member: null }))
+    logout: () => getRequest(logoutRequestUrl).res(() => dispatch({ type: MEMBER_UPDATED, member: null }))
   };
 }
 
@@ -61,6 +72,8 @@ function mapDispatchToProps(dispatch) {
  * On initial load, the `isLoading` prop will be set, which will become false when the user is loaded. Use this field to avoid showing a Login Button while fetch is happening.
  *
  * In order to update the current member, call `checkForMemberUpdated`.
+ *
+ * In order to make bridgekeeper api calls for the current member and logout, `isBridgekeeperEnabled` prop needs to set to true. The default value is `false`.
  *
  * Example
  * ```javascript

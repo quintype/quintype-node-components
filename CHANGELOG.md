@@ -1,6 +1,25 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [2.28.0](https://github.com/quintype/quintype-node-components/compare/v2.27.2...v2.28.0) (2021-05-05)
+
+
+### Features
+
+* support nestedCollectionLimit in wrapCollectionLayout ([#177](https://github.com/quintype/quintype-node-components/issues/177)) ([cebba5a](https://github.com/quintype/quintype-node-components/commit/cebba5a9adc0ec72eb134890f345338e50f34926))
+
+### [2.27.2](https://github.com/quintype/quintype-node-components/compare/v2.27.1...v2.27.2) (2021-04-07)
+
+### [2.27.1](https://github.com/quintype/quintype-node-components/compare/v2.27.0...v2.27.1) (2021-03-17)
+
+### [2.26.2](https://github.com/quintype/quintype-node-components/compare/v2.26.1...v2.26.2) (2021-03-16)
+
+### [2.26.1](https://github.com/quintype/quintype-node-components/compare/v2.26.0...v2.26.1) (2021-03-08)
+
+## [2.25.4](https://github.com/quintype/quintype-node-components/compare/v2.25.3...v2.25.4) (2021-03-02)
+
+
 
 ## [2.25.3](https://github.com/quintype/quintype-node-components/compare/v2.25.1...v2.25.3) (2020-12-16)
 
