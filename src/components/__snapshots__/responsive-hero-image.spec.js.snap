@@ -10,12 +10,21 @@ exports[`ResponsiveHeroImage Picks alternate data if story's hero-image is absen
 />
 `;
 
-exports[`ResponsiveHeroImage Picks story data if story's hero image is present 1`] = `
+exports[`ResponsiveHeroImage Picks story data when both story's hero image and alternate hero image is present 1`] = `
 <img
   alt="Text"
   class="qt-image"
   sizes="(max-width: 500px) 98vw, (max-width: 768px) 48vw, 23vw"
   src="//images.assettype.com/publisher%2Fimage.png?rect=0%2C0%2C759%2C427&w=480&auto=format%2Ccompress"
   srcset="//images.assettype.com/publisher%2Fimage.png?rect=0%2C0%2C759%2C427&w=250&auto=format%2Ccompress 250w,//images.assettype.com/publisher%2Fimage.png?rect=0%2C0%2C759%2C427&w=480&auto=format%2Ccompress 480w,//images.assettype.com/publisher%2Fimage.png?rect=0%2C0%2C759%2C427&w=640&auto=format%2Ccompress 640w"
+/>
+`;
+
+exports[`ResponsiveHeroImage Returns undefined slug when the story prop is not passed 1`] = `
+<img
+  class="qt-image"
+  sizes="(max-width: 500px) 98vw, (max-width: 768px) 48vw, 23vw"
+  src="//images.assettype.com/undefined?w=480&auto=format%2Ccompress"
+  srcset="//images.assettype.com/undefined?w=250&auto=format%2Ccompress 250w,//images.assettype.com/undefined?w=480&auto=format%2Ccompress 480w,//images.assettype.com/undefined?w=640&auto=format%2Ccompress 640w"
 />
 `;
