@@ -45,7 +45,7 @@ export function GumletImage(props) {
 
   const Tag = reactTag || 'img';
 
-  console.log('fooooooo', image.path(aspectRatio, {...imgParams, w: 1200}));
+  console.log('fooooooo', emptyWebGif);
 
   useEffect(loadGumlet);
 
@@ -60,7 +60,7 @@ export function GumletImage(props) {
         <img
           src={`https://${imageCDN}/${image.path(aspectRatio, {
             ...imgParams,
-            w: 100,
+            w: 1200,
           })}`}
           alt={props.alt || ''}
         />
