@@ -1,9 +1,10 @@
 import React from "react";
-import { ResponsiveImage } from './responsive-image';
-import omit from '@babel/runtime/helpers/objectWithoutProperties';
+import { ResponsiveImage } from "./responsive-image";
+import omit from "@babel/runtime/helpers/objectWithoutProperties";
+import get from "lodash/get";
 
 /**
- * This component takes is a wrapper over {@link ResponsiveImages}, which accepts a story and returns the hero image. By default, it picks the alt text from the headline.
+ * This component is a wrapper over {@link ResponsiveImages}. It accepts story as a prop and renders story's hero image, if hero image is absent then renders alternate hero-image of the story. If story's hero image is present it picks the alt text from the story headline else it picks from alternate headline.
  *
  * ```javascript
  * import { ResponsiveHeroImage } from '@quintype/components';
@@ -18,9 +19,24 @@ import omit from '@babel/runtime/helpers/objectWithoutProperties';
  * @category Images
  */
 export function ResponsiveHeroImage(props) {
-  return React.createElement(ResponsiveImage, Object.assign({
-    slug: props.story["hero-image-s3-key"],
-    metadata: props.story["hero-image-metadata"],
-    alt: props.story["headline"]
-  }, omit(props, ['story'])));
+  const storyAlternateData = get(props, ["story", "alternative", "home", "default"], {});
+  const { headline: altHeadline } = storyAlternateData;
+  const { "hero-image-s3-key": altHeroImage, "hero-image-metadata": altMetadata } = get(storyAlternateData, ["hero-image"], {});
+  const heroImage = get(props, ["story", "hero-image-s3-key"]);
+
+  const slug = heroImage || altHeroImage;
+  const metadata = heroImage ? get(props, ["story", "hero-image-metadata"]) : altMetadata;
+  const alternateText = heroImage ? get(props, ["story", "headline"]) : altHeadline;
+
+  return React.createElement(
+    ResponsiveImage,
+    Object.assign(
+      {
+        slug,
+        metadata,
+        alt: alternateText,
+      },
+      omit(props, ["story"])
+    )
+  );
 }
