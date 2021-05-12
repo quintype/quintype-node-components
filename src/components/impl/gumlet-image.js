@@ -60,7 +60,7 @@ export function GumletImage(props) {
         <img
           src={`https://${imageCDN}/${image.path(aspectRatio, {
             ...imgParams,
-            w: 300,
+            w: 100,
           })}`}
           alt={props.alt || ''}
         />
