@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.29.0](https://github.com/quintype/quintype-node-components/compare/v2.28.0...v2.29.0) (2021-05-12)
+
+
+### Features
+
+* **Responsive hero image:** support alternate hero-image as default fallback ([#167](https://github.com/quintype/quintype-node-components/issues/167)) ([56ebaa1](https://github.com/quintype/quintype-node-components/commit/56ebaa11911cbcc613989d7cc3d0c9d994b3f3bb))
+
 ## [2.28.0](https://github.com/quintype/quintype-node-components/compare/v2.27.2...v2.28.0) (2021-05-05)
 
 
