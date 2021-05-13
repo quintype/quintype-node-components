@@ -109,14 +109,14 @@ export function wrapCollectionLayout(component) {
 
 /**
  * Use this function to get the stories from a collection object
- * returns null if collection doesn't have items key
+ * returns [] if collection doesn't have items key
  *
  * @param {Collection} collection
  * @category Collection Page
  * @returns {Array} An array of stories
  */
 export function collectionToStories(collection) {
-  if (!collection.items) return null;
+  if (!collection.items) return [];
   return collection.items
     .filter((item) => item.type === "story")
     .map((item) => replaceWithAlternates(item.story));
