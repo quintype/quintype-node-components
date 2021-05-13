@@ -50,7 +50,8 @@ export function createDfpAdComponent({
   targeting,
   collapseEmptyDivs = true,
   lazyLoad = true,
-  singleRequest = false
+  singleRequest = false,
+  deferAds = true
 }) {
   return connect(
     (state, ownProps) => ({
@@ -60,7 +61,8 @@ export function createDfpAdComponent({
       slotId: slotId,
       collapseEmptyDivs: collapseEmptyDivs,
       lazyLoad: lazyLoad,
-      singleRequest: singleRequest
+      singleRequest: singleRequest,
+      deferAds: deferAds
     }),
     () => ({})
   )(withError(DfpAdBase));
@@ -74,7 +76,8 @@ function DfpAdBase({
   targetingArguments,
   adtype,
   lazyLoad,
-  singleRequest
+  singleRequest,
+  deferAds
 }) {
   const adConfig = config[adtype] || {};
 
@@ -87,6 +90,7 @@ function DfpAdBase({
       sizeMapping={adConfig.viewPortSizeMapping}
       lazyLoad={lazyLoad}
       singleRequest={singleRequest}
+      deferAds={deferAds}
     >
       <AdSlot {...adProps} />
     </DFPSlotsProvider>
