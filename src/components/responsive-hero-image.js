@@ -20,10 +20,11 @@ import get from "lodash/get";
  */
 export function ResponsiveHeroImage(props) {
   const storyAlternateData = get(props, ["story", "alternative", "home", "default"], {});
-  const { headline: altHeadline } = storyAlternateData;
-  const { "hero-image-s3-key": altHeroImage, "hero-image-metadata": altMetadata } = get(storyAlternateData, ["hero-image"], {});
+  var altHeadline = get(storyAlternateData, ["headline"]);
+  var altHeroImage = get(storyAlternateData, ["hero-image", "hero-image-s3-key"]);
+  var altMetadata = get(storyAlternateData, ["hero-image", "hero-image-metadata"]);
   const heroImage = get(props, ["story", "hero-image-s3-key"]);
-
+  
   const slug = heroImage || altHeroImage;
   const metadata = heroImage ? get(props, ["story", "hero-image-metadata"]) : altMetadata;
   const alternateText = heroImage ? get(props, ["story", "headline"]) : altHeadline;
