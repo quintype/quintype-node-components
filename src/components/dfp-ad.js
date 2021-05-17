@@ -40,6 +40,7 @@ import { withError } from "./with-error";
  * @param {boolean} params.collapseEmptyDivs (default true)
  * @param {boolean} params.lazyLoad (default true)
  * @param {boolean} params.singleRequest - Run Dfp in Single Request Mode (default false)
+ * @param {boolean} params.deferAds - Defers loading of gpt.js script by 2500ms
  * @category Ads
  * @returns {Component} A component that can
  */
