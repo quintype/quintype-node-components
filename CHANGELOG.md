@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.29.2](https://github.com/quintype/quintype-node-components/compare/v2.29.1...v2.29.2) (2021-05-17)
+
+
+### Bug Fixes
+
+* **Responsive Hero Image:** add fallback ([#182](https://github.com/quintype/quintype-node-components/issues/182)) ([e1872fe](https://github.com/quintype/quintype-node-components/commit/e1872fe42e543407418113aef05fb9f61632ca3c))
+* **responsive-image:** Update package lock :zap: ([703f233](https://github.com/quintype/quintype-node-components/commit/703f2338cefed7678c307703581d6722d48d00af))
+
+### [2.29.1](https://github.com/quintype/quintype-node-components/compare/v2.29.0...v2.29.1) (2021-05-13)
+
+
+### Bug Fixes
+
+* linting | add defensive check in collectionToStories ([#181](https://github.com/quintype/quintype-node-components/issues/181)) ([3f8ee69](https://github.com/quintype/quintype-node-components/commit/3f8ee69f82b60fd9d355a3400961ff60ae3f91a9))
+
 ## [2.29.0](https://github.com/quintype/quintype-node-components/compare/v2.28.0...v2.29.0) (2021-05-12)
 
 
