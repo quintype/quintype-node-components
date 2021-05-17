@@ -19,11 +19,10 @@ import get from "lodash/get";
  * @category Images
  */
 export function ResponsiveHeroImage(props) {
-  const storyAlternateData = get(props, ["story", "alternative", "home", "default"], {});
+  const storyAlternateData = get(props, ["story", "alternative", "home", "default"]) || {};
   const { headline: altHeadline } = storyAlternateData;
-  const { "hero-image-s3-key": altHeroImage, "hero-image-metadata": altMetadata } = get(storyAlternateData, ["hero-image"], {});
+  const { "hero-image-s3-key": altHeroImage, "hero-image-metadata": altMetadata } = get(storyAlternateData, ["hero-image"]) || {};
   const heroImage = get(props, ["story", "hero-image-s3-key"]);
-
   const slug = heroImage || altHeroImage;
   const metadata = heroImage ? get(props, ["story", "hero-image-metadata"]) : altMetadata;
   const alternateText = heroImage ? get(props, ["story", "headline"]) : altHeadline;
