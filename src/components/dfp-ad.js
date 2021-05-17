@@ -51,7 +51,7 @@ export function createDfpAdComponent({
   collapseEmptyDivs = true,
   lazyLoad = true,
   singleRequest = false,
-  deferAds = true
+  deferAds = false
 }) {
   return connect(
     (state, ownProps) => ({
