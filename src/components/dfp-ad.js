@@ -40,7 +40,7 @@ import { withError } from "./with-error";
  * @param {boolean} params.collapseEmptyDivs (default true)
  * @param {boolean} params.lazyLoad (default true)
  * @param {boolean} params.singleRequest - Run Dfp in Single Request Mode (default false)
- * @param {boolean} params.deferAds - Defers loading of gpt.js script by 2500ms
+ * @param {number} params.deferAdsBy - Defers loading of gpt.js script by the passed value in ms
  * @category Ads
  * @returns {Component} A component that can
  */
@@ -52,7 +52,7 @@ export function createDfpAdComponent({
   collapseEmptyDivs = true,
   lazyLoad = true,
   singleRequest = false,
-  deferAds = false
+  deferAdsBy = 0
 }) {
   return connect(
     (state, ownProps) => ({
@@ -63,7 +63,7 @@ export function createDfpAdComponent({
       collapseEmptyDivs: collapseEmptyDivs,
       lazyLoad: lazyLoad,
       singleRequest: singleRequest,
-      deferAds: deferAds
+      deferAdsBy: deferAdsBy
     }),
     () => ({})
   )(withError(DfpAdBase));
@@ -78,7 +78,7 @@ function DfpAdBase({
   adtype,
   lazyLoad,
   singleRequest,
-  deferAds
+  deferAdsBy
 }) {
   const adConfig = config[adtype] || {};
 
@@ -91,7 +91,7 @@ function DfpAdBase({
       sizeMapping={adConfig.viewPortSizeMapping}
       lazyLoad={lazyLoad}
       singleRequest={singleRequest}
-      deferAds={deferAds}
+      deferAdsBy={deferAdsBy}
     >
       <AdSlot {...adProps} />
     </DFPSlotsProvider>
