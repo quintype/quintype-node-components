@@ -1,6 +1,6 @@
 {
   "name": "@quintype/components",
-  "version": "2.29.2",
+  "version": "2.29.3-bugfix-hero-image.0",
   "description": "Components to help build Quintype Node.js apps",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
