@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.29.3](https://github.com/quintype/quintype-node-components/compare/v2.29.2...v2.29.3) (2021-05-19)
+
+
+### Bug Fixes
+
+* linting | responsiveHeroImage ([#183](https://github.com/quintype/quintype-node-components/issues/183)) ([4fd5aa4](https://github.com/quintype/quintype-node-components/commit/4fd5aa4f5f6b92dc5b67be570f4f7aa886b13196))
+
 ### [2.29.2](https://github.com/quintype/quintype-node-components/compare/v2.29.1...v2.29.2) (2021-05-17)
 
 
