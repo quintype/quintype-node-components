@@ -110,7 +110,10 @@
     
     
     <div class="description">
-        <p>This component is a wrapper over ResponsiveImages. It accepts story as a prop and renders story's hero image, if hero image is absent then renders alternate hero-image of the story. If story's hero image is present it picks the alt text from the story headline else it picks from alternate headline.</p>
+        <p>This component is a wrapper over ResponsiveImages. It accepts story as a prop and renders story's hero image.
+If hero-image-s3-key is present, it takes that as slug and the story headline as image alt text.
+Else it takes the slug from the alternate hero-image, alt text as alternate headline.
+If both are absent, it doesn't render</p>
 <pre class="prettyprint source lang-javascript"><code>import { ResponsiveHeroImage } from '@quintype/components';
 &lt;figure className=&quot;story-grid-item-image qt-image-16x9&quot;>
   &lt;ResponsiveHeroImage story={props.story}
@@ -171,7 +174,7 @@
         <p class="tag-source">
             <a href="components_responsive-hero-image.js.html" class="button">View Source</a>
             <span>
-                <a href="components_responsive-hero-image.js.html">components/responsive-hero-image.js</a>, <a href="components_responsive-hero-image.js.html#line21">line 21</a>
+                <a href="components_responsive-hero-image.js.html">components/responsive-hero-image.js</a>, <a href="components_responsive-hero-image.js.html#line24">line 24</a>
             </span>
         </p>
     
