@@ -24,11 +24,8 @@ import get from "lodash/get";
 export function ResponsiveHeroImage(props) {
   let metadata, slug, alternateText;
   const heroImageS3Key = get(props, ["story", "hero-image-s3-key"], "");
-  const storyAlternateData = get(
-    props,
-    ["story", "alternative", "home", "default"],
-    {}
-  );
+  const storyAlternateData =
+    get(props, ["story", "alternative", "home", "default"], {}) || {};
   const alternateHeroImageS3Key = get(
     storyAlternateData,
     ["hero-image", "hero-image-s3-key"],
