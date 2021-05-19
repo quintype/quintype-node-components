@@ -4,7 +4,10 @@ import omit from "@babel/runtime/helpers/objectWithoutProperties";
 import get from "lodash/get";
 
 /**
- * This component is a wrapper over {@link ResponsiveImages}. It accepts story as a prop and renders story's hero image, if hero image is absent then renders alternate hero-image of the story. If story's hero image is present it picks the alt text from the story headline else it picks from alternate headline.
+ * This component is a wrapper over {@link ResponsiveImages}. It accepts story as a prop and renders story's hero image.
+ * If hero-image-s3-key is present, it takes that as slug and the story headline as image alt text.
+ * Else it takes the slug from the alternate hero-image, alt text as alternate headline.
+ * If both are absent, it doesn't render
  *
  * ```javascript
  * import { ResponsiveHeroImage } from '@quintype/components';
@@ -19,13 +22,29 @@ import get from "lodash/get";
  * @category Images
  */
 export function ResponsiveHeroImage(props) {
-  const storyAlternateData = get(props, ["story", "alternative", "home", "default"]) || {};
-  const { headline: altHeadline } = storyAlternateData;
-  const { "hero-image-s3-key": altHeroImage, "hero-image-metadata": altMetadata } = get(storyAlternateData, ["hero-image"]) || {};
-  const heroImage = get(props, ["story", "hero-image-s3-key"]);
-  const slug = heroImage || altHeroImage;
-  const metadata = heroImage ? get(props, ["story", "hero-image-metadata"]) : altMetadata;
-  const alternateText = heroImage ? get(props, ["story", "headline"]) : altHeadline;
+  let metadata, slug, alternateText;
+  const heroImageS3Key = get(props, ["story", "hero-image-s3-key"], "");
+  const storyAlternateData =
+    get(props, ["story", "alternative", "home", "default"], {}) || {};
+  const alternateHeroImageS3Key = get(
+    storyAlternateData,
+    ["hero-image", "hero-image-s3-key"],
+    ""
+  );
+
+  if (heroImageS3Key) {
+    slug = heroImageS3Key;
+    metadata = get(props, ["story", "hero-image-metadata"], {});
+    alternateText = get(props, ["story", "headline"], "");
+  } else if (alternateHeroImageS3Key) {
+    slug = alternateHeroImageS3Key;
+    metadata = get(
+      storyAlternateData,
+      ["hero-image", "hero-image-metadata"],
+      {}
+    );
+    alternateText = get(storyAlternateData, ["headline"], "");
+  } else return null;
 
   return React.createElement(
     ResponsiveImage,
