@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.30.0](https://github.com/quintype/quintype-node-components/compare/v2.29.3...v2.30.0) (2021-05-24)
+
+
+### Features
+
+* **deferAds:** defer gpt.js script load by deferAdsBy(millisecs) prop ([#180](https://github.com/quintype/quintype-node-components/issues/180)) ([2e507d1](https://github.com/quintype/quintype-node-components/commit/2e507d11f5857ee6fc064aaf3d031a18a9b06313))
+
 ### [2.29.3](https://github.com/quintype/quintype-node-components/compare/v2.29.2...v2.29.3) (2021-05-19)
 
 
