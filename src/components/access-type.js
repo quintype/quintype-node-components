@@ -273,25 +273,11 @@ class AccessTypeBase extends React.Component {
     returnUrl = "",
     cancelUrl = "",
   }) {
-    const {
-      id,
-      title,
-      description,
-      price_cents: price_cents,
-      price_currency: price_currency,
-      duration_length: duration_length,
-      duration_unit: duration_unit,
-    } = selectedPlan;
+    const { price_cents, price_currency } = selectedPlan;
     const paymentObject = {
       type: planType,
       plan: {
-        id,
-        title,
-        description,
-        price_cents: price_cents,
-        price_currency: price_currency,
-        duration_length: duration_length,
-        duration_unit: duration_unit,
+        ...selectedPlan,
       },
       coupon_code: couponCode,
       payment: {
@@ -412,6 +398,39 @@ class AccessTypeBase extends React.Component {
       : Promise.reject({ message: "Payment option is loading..." });
   };
 
+  initOmisePayment = (
+    selectedPlanObj = {},
+    planType = "",
+    storyId = "",
+    storyHeadline = "",
+    storySlug = ""
+  ) => {
+    if (!selectedPlanObj) {
+      console.warn("Omise pay needs a plan");
+      return false;
+    }
+    const planObject = this.makePlanObject(
+      selectedPlanObj,
+      planType,
+      storyId,
+      storyHeadline,
+      storySlug
+    );
+    planObject["paymentType"] = get(planObject.selectedPlan, ["recurring"])
+      ? "omise_recurring"
+      : "omise";
+    const paymentObject = this.makePaymentObject({
+      ...planObject,
+      ...this.props.email,
+    });
+    const omise = get(this.props, ["paymentOptions", "omise"]);
+    return omise
+      ? omise
+          .proceed(paymentObject)
+          .then((response) => response.proceed(paymentObject))
+      : Promise.reject({ message: "Payment option is loading..." });
+  };
+
   pingBackMeteredStory = async (asset, accessData) => {
     try {
       global.AccessType.pingbackAssetAccess(asset, accessData);
@@ -454,12 +473,12 @@ class AccessTypeBase extends React.Component {
 
   render() {
     const { children } = this.props;
-
     return children({
       initAccessType: this.initAccessType,
       initRazorPayPayment: this.initRazorPayPayment,
       initStripePayment: this.initStripePayment,
       initPaypalPayment: this.initPaypalPayment,
+      initOmisePayment: this.initOmisePayment,
       checkAccess: this.checkAccess,
       getSubscriptionForUser: this.getSubscriptionForUser,
       accessUpdated: this.props.accessUpdated,
