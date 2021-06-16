@@ -8,6 +8,7 @@
   "extends": [
     "standard",
     "plugin:react/recommended",
+    "plugin:jest/recommended",
     "plugin:prettier/recommended",
     "prettier/react",
     "prettier/standard"
@@ -21,10 +22,12 @@
   "parserOptions": {
     "requireConfigFile": false
   },
-  "plugins": ["jest", "react"],
+  "plugins": ["react", "standard", "jest"],
   "rules": {
     "no-unused-vars": "warn",
     "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
+    "react/jsx-uses-vars": "error",
+    "jest/valid-expect": 0,
+    "max-len": ["warn", { "code": 120 }]
   }
 }
