@@ -273,11 +273,25 @@ class AccessTypeBase extends React.Component {
     returnUrl = "",
     cancelUrl = "",
   }) {
-    const { price_cents, price_currency } = selectedPlan;
+    const {
+      id,
+      title,
+      description,
+      price_cents,
+      price_currency,
+      duration_length,
+      duration_unit,
+    } = selectedPlan;
     const paymentObject = {
       type: planType,
       plan: {
-        ...selectedPlan,
+        id,
+        title,
+        description,
+        price_cents,
+        price_currency,
+        duration_length,
+        duration_unit,
       },
       coupon_code: couponCode,
       payment: {
@@ -416,13 +430,10 @@ class AccessTypeBase extends React.Component {
       storyHeadline,
       storySlug
     );
-    planObject["paymentType"] = get(planObject.selectedPlan, ["recurring"])
+    planObject["paymentType"] = get(planObject, ["selectedPlan", "recurring"])
       ? "omise_recurring"
       : "omise";
-    const paymentObject = this.makePaymentObject({
-      ...planObject,
-      ...this.props.email,
-    });
+    const paymentObject = this.makePaymentObject(planObject);
     const omise = get(this.props, ["paymentOptions", "omise"]);
     return omise
       ? omise
