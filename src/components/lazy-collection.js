@@ -1,7 +1,7 @@
-import { func, number, object, string } from "prop-types";
-import React from "react";
-import { CollectionNotImplemented, renderCollectionItem, StoryNotImplemented } from "./impl/collection-impl";
-import { InfiniteScroll } from "./infinite-scroll";
+import React from 'react';
+import { InfiniteScroll } from './infinite-scroll';
+import { string, object, func } from 'prop-types';
+import { StoryNotImplemented, CollectionNotImplemented, renderCollectionItem } from './impl/collection-impl';
 
 /**
  * This component can be used to render a collection, but with the components being lazy. This takes all the same options as Collection, but with a `lazyAfter` prop.
@@ -26,31 +26,18 @@ import { InfiniteScroll } from "./infinite-scroll";
  * @category Collection Page
  * @component
  */
-export function LazyCollection({
-  className,
-  collection,
-  collectionTemplates,
-  storyTemplates,
-  lazyAfter,
-  ...otherProps
-}) {
-  return (
-    <div className={className}>
-      <InfiniteScroll
-        render={({ index }) =>
-          renderCollectionItem(collection.items[index], index, collectionTemplates, storyTemplates, otherProps)
-        }
-        items={collection.items}
-        loadNext={() => []}
-        initiallyShow={lazyAfter}
-        neverHideItem={true}
-        showAllOnLegacyBrowser={true}
-        // No Op
-        focusCallbackAt={20}
-        onFocus={() => {}}
-      />
-    </div>
-  );
+export function LazyCollection({ className, collection, collectionTemplates, storyTemplates, lazyAfter, ...otherProps }) {
+  return <div className={className}>
+    <InfiniteScroll render={({ index }) => renderCollectionItem(collection.items[index], index, collectionTemplates, storyTemplates, otherProps)}
+      items={collection.items}
+      loadNext={() => []}
+      initiallyShow={lazyAfter}
+      neverHideItem={true}
+      showAllOnLegacyBrowser={true}
+      // No Op
+      focusCallbackAt={20}
+      onFocus={() => { }} />
+  </div>;
 }
 
 LazyCollection.propTypes = {
@@ -58,10 +45,9 @@ LazyCollection.propTypes = {
   collection: object,
   collectionTemplates: func,
   storyTemplates: func,
-  lazyAfter: number
-};
+}
 
 LazyCollection.defaultProps = {
   collectionTemplates: () => CollectionNotImplemented,
   storyTemplates: () => StoryNotImplemented
-};
+}
