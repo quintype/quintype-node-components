@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.30.2](https://github.com/quintype/quintype-node-components/compare/v2.30.0...v2.30.2) (2021-06-16)
+
+
+### Bug Fixes
+
+* standardize-linter to avoid lint issue ([#185](https://github.com/quintype/quintype-node-components/issues/185)) ([427d3fe](https://github.com/quintype/quintype-node-components/commit/427d3fefd9d2a417b59df09f84b5c6c6aaa6bb6b))
+
+### [2.30.1](https://github.com/quintype/quintype-node-components/compare/v2.30.0...v2.30.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* standardize-linter to avoid lint issue ([#185](https://github.com/quintype/quintype-node-components/issues/185)) ([427d3fe](https://github.com/quintype/quintype-node-components/commit/427d3fefd9d2a417b59df09f84b5c6c6aaa6bb6b))
+
 ## [2.30.0](https://github.com/quintype/quintype-node-components/compare/v2.29.3...v2.30.0) (2021-05-24)
 
 
