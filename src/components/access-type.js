@@ -277,10 +277,10 @@ class AccessTypeBase extends React.Component {
       id,
       title,
       description,
-      price_cents,
-      price_currency,
-      duration_length,
-      duration_unit,
+      price_cents: price_cents,
+      price_currency: price_currency,
+      duration_length: duration_length,
+      duration_unit: duration_unit,
     } = selectedPlan;
     const paymentObject = {
       type: planType,
@@ -288,10 +288,10 @@ class AccessTypeBase extends React.Component {
         id,
         title,
         description,
-        price_cents,
-        price_currency,
-        duration_length,
-        duration_unit,
+        price_cents: price_cents,
+        price_currency: price_currency,
+        duration_length: duration_length,
+        duration_unit: duration_unit,
       },
       coupon_code: couponCode,
       payment: {
@@ -412,24 +412,12 @@ class AccessTypeBase extends React.Component {
       : Promise.reject({ message: "Payment option is loading..." });
   };
 
-  initOmisePayment = (
-    selectedPlanObj = {},
-    planType = "",
-    storyId = "",
-    storyHeadline = "",
-    storySlug = ""
-  ) => {
+  initOmisePayment = (selectedPlanObj = {}, planType = "") => {
     if (!selectedPlanObj) {
       console.warn("Omise pay needs a plan");
       return false;
     }
-    const planObject = this.makePlanObject(
-      selectedPlanObj,
-      planType,
-      storyId,
-      storyHeadline,
-      storySlug
-    );
+    const planObject = this.makePlanObject(selectedPlanObj, planType);
     planObject["paymentType"] = get(planObject, ["selectedPlan", "recurring"])
       ? "omise_recurring"
       : "omise";
