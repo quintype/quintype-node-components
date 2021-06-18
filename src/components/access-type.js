@@ -134,6 +134,7 @@ class AccessTypeBase extends React.Component {
       return [];
     }
     const { error, data: paymentOptions } = await awaitHelper(
+      
       global.AccessType.getPaymentOptions()
     );
     if (error) {
@@ -423,11 +424,12 @@ class AccessTypeBase extends React.Component {
       : "omise";
     const paymentObject = this.makePaymentObject(planObject);
     const omise = get(this.props, ["paymentOptions", "omise"]);
+    if (!omise) {
+      return Promise.reject({ message: "Payment option is loading..." });
+    }
     return omise
-      ? omise
-          .proceed(paymentObject)
-          .then((response) => response.proceed(paymentObject))
-      : Promise.reject({ message: "Payment option is loading..." });
+      .proceed(paymentObject)
+      .then((response) => response.proceed(paymentObject));
   };
 
   pingBackMeteredStory = async (asset, accessData) => {
