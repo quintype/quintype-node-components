@@ -121,35 +121,22 @@ describe("AccessType", () => {
     );
   });
 
-  let instance;
   let selectedPlan = {
     id: 47742,
-    subscription_group_id: 20714,
     duration_length: 5,
     price_cents: 3000,
     price_currency: "THB",
     created_at: "2021-06-15T08:31:56.348Z",
     updated_at: "2021-06-16T11:58:23.996Z",
     duration_unit: "days",
-    description: "Omise",
-    title: "Omise",
+    description: "Selected Plan",
+    title: "Selected Plan",
     recurring: true,
     enabled: true,
     trial_period_enabled: false,
     supported_payment_providers: ["omise"],
-    assets: [
-      {
-        title: "omise",
-        type: "site",
-      },
-    ],
-    display_assets: [
-      {
-        title: "omise",
-        type: "site",
-      },
-    ],
   };
+  let instance;
 
   it("Successful omise recurring payment", () => {
     const container = render(
@@ -159,9 +146,7 @@ describe("AccessType", () => {
             omise: {
               action: "pay",
               proceed: async (i) => {
-                return {
-                  proceed: async (j) => j,
-                };
+                return { proceed: (j) => j };
               },
             },
           },
@@ -185,12 +170,12 @@ describe("AccessType", () => {
     );
     instance(selectedPlan, "standard")
       .then((data) =>
-        expect(data).toBe({
+        expect(data).toStrictEqual({
           type: "standard",
           plan: {
             id: 47742,
-            title: "Omise",
-            description: "Omise",
+            title: "Selected Plan",
+            description: "Selected Plan",
             price_cents: 3000,
             price_currency: "THB",
             duration_length: 5,
@@ -217,9 +202,7 @@ describe("AccessType", () => {
             omise: {
               action: "pay",
               proceed: async (i) => {
-                return {
-                  proceed: async (j) => j,
-                };
+                return { proceed: (j) => j };
               },
             },
           },
@@ -243,12 +226,12 @@ describe("AccessType", () => {
     );
     instance({ ...selectedPlan, recurring: false }, "standard")
       .then((data) =>
-        expect(data).toBe({
+        expect(data).toStrictEqual({
           type: "standard",
           plan: {
             id: 47742,
-            title: "Omise",
-            description: "Omise",
+            title: "Selected Plan",
+            description: "Selected Plan",
             price_cents: 3000,
             price_currency: "THB",
             duration_length: 5,
@@ -289,7 +272,117 @@ describe("AccessType", () => {
     instance(selectedPlan, "standard")
       .then((data) => data)
       .catch((error) =>
-        expect(error.message).toMatch(/Payment option is loading.../)
+        expect(error.message).toStrictEqual("Payment option is loading...")
       );
+  });
+
+  it("Successful razorpay recurring payment", () => {
+    const container = render(
+      <Provider
+        store={createStore((x) => x, {
+          paymentOptions: {
+            razorpay: {
+              action: "pay",
+              proceed: async (i) => i,
+            },
+          },
+        })}
+      >
+        <AccessType
+          isStaging={true}
+          enableAccesstype={true}
+          accessTypeKey="j"
+          email="r@gmail.com"
+          phone="9900990099"
+          disableMetering={false}
+          stagingHost="https://staging.accesstype.com"
+          accessTypeBkIntegrationId="8"
+          children={({ initRazorPayPayment }) => {
+            instance = initRazorPayPayment;
+            return <div />;
+          }}
+        />
+      </Provider>
+    );
+
+    instance(selectedPlan, "standard")
+      .then((data) =>
+        expect(data).toStrictEqual({
+          type: "standard",
+          plan: {
+            id: 47774,
+            title: "Selected Plan",
+            description: "Selected Plan",
+            price_cents: 3000,
+            price_currency: "USD",
+            duration_length: 1,
+            duration_unit: "months",
+          },
+          coupon_code: "",
+          payment: {
+            payment_type: "razorpay_recurring",
+            amount_cents: 3000,
+            amount_currency: "USD",
+          },
+          assets: [{ id: "", title: "", slug: "" }],
+          recipient_subscriber: {},
+        })
+      )
+      .catch((error) => error);
+  });
+
+  it("Successful razorpay one-time payment", () => {
+    const container = render(
+      <Provider
+        store={createStore((x) => x, {
+          paymentOptions: {
+            razorpay: {
+              action: "pay",
+              proceed: async (i) => i,
+            },
+          },
+        })}
+      >
+        <AccessType
+          isStaging={true}
+          enableAccesstype={true}
+          accessTypeKey="j"
+          email="r@gmail.com"
+          phone="9900990099"
+          disableMetering={false}
+          stagingHost="https://staging.accesstype.com"
+          accessTypeBkIntegrationId="8"
+          children={({ initRazorPayPayment }) => {
+            instance = initRazorPayPayment;
+            return <div />;
+          }}
+        />
+      </Provider>
+    );
+
+    instance({ ...selectedPlan, recurring: false }, "standard")
+      .then((data) =>
+        expect(data).toStrictEqual({
+          type: "standard",
+          plan: {
+            id: 47774,
+            title: "Selected Plan",
+            description: "Selected Plan",
+            price_cents: 3000,
+            price_currency: "USD",
+            duration_length: 1,
+            duration_unit: "months",
+          },
+          coupon_code: "",
+          payment: {
+            payment_type: "razorpay",
+            amount_cents: 3000,
+            amount_currency: "USD",
+          },
+          assets: [{ id: "", title: "", slug: "" }],
+          recipient_subscriber: {},
+        })
+      )
+      .catch((error) => error);
   });
 });
