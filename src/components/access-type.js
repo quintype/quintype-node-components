@@ -134,6 +134,7 @@ class AccessTypeBase extends React.Component {
       return [];
     }
     const { error, data: paymentOptions } = await awaitHelper(
+      
       global.AccessType.getPaymentOptions()
     );
     if (error) {
@@ -412,6 +413,25 @@ class AccessTypeBase extends React.Component {
       : Promise.reject({ message: "Payment option is loading..." });
   };
 
+  initOmisePayment = (selectedPlanObj = {}, planType = "") => {
+    if (!selectedPlanObj) {
+      console.warn("Omise pay needs a plan");
+      return false;
+    }
+    const planObject = this.makePlanObject(selectedPlanObj, planType);
+    planObject["paymentType"] = get(planObject, ["selectedPlan", "recurring"])
+      ? "omise_recurring"
+      : "omise";
+    const paymentObject = this.makePaymentObject(planObject);
+    const omise = get(this.props, ["paymentOptions", "omise"]);
+    if (!omise) {
+      return Promise.reject({ message: "Payment option is loading..." });
+    }
+    return omise
+      .proceed(paymentObject)
+      .then((response) => response.proceed(paymentObject));
+  };
+
   pingBackMeteredStory = async (asset, accessData) => {
     try {
       global.AccessType.pingbackAssetAccess(asset, accessData);
@@ -454,12 +474,12 @@ class AccessTypeBase extends React.Component {
 
   render() {
     const { children } = this.props;
-
     return children({
       initAccessType: this.initAccessType,
       initRazorPayPayment: this.initRazorPayPayment,
       initStripePayment: this.initStripePayment,
       initPaypalPayment: this.initPaypalPayment,
+      initOmisePayment: this.initOmisePayment,
       checkAccess: this.checkAccess,
       getSubscriptionForUser: this.getSubscriptionForUser,
       accessUpdated: this.props.accessUpdated,
