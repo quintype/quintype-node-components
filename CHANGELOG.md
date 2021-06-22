@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.31.0](https://github.com/quintype/quintype-node-components/compare/v2.30.2...v2.31.0) (2021-06-22)
+
+
+### Features
+
+* support omise payment gateway ([#186](https://github.com/quintype/quintype-node-components/issues/186)) ([4e52cc1](https://github.com/quintype/quintype-node-components/commit/4e52cc16d3e87e6ea6342fea522c5ab480c9b1fd))
+
 ### [2.30.2](https://github.com/quintype/quintype-node-components/compare/v2.30.0...v2.30.2) (2021-06-16)
 
 
