@@ -102,6 +102,7 @@
     "prepack": "npm run build",
     "prepublishOnly": "./bin-dev-scripts/standard-version-release.sh",
     "sync-files-to": "npx onchange --verbose --wait --await-write-finish 'src/**/*' -- ./bin-dev-scripts/sync-to.sh",
-    "test": "jest --config jest.config.js"
+    "test": "jest --config jest.config.js",
+    "test:cover": "jest --coverage --watchAll; open coverage/index.html"
   }
 }
