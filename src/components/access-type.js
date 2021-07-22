@@ -485,9 +485,9 @@ const mapDispatchToProps = dispatch => ({
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
  *  validateCoupon|  selectedPlan(object), couponCode (string)  | Validate coupon with plan
  *  cancelSubscription| subscriptionId(number) | Cancel a subscription
- *  getSubscriptionForUser`| -NA- | Gets the subscriptions of the current logged in user
+ *  getSubscriptionForUser | -NA- | Gets the subscriptions of the current logged in user
  *  accessUpdated| accessObject(object) | Sets the current story access to redux store
- *  accessIsLoading| loading`(boolean) | A boolean which holds true between the request for access of a story and its response
+ *  accessIsLoading| loading(boolean) | A boolean which holds true between the request for access of a story and its response
  *
  * ###### Notes :
  *
