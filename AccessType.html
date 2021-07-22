@@ -111,25 +111,7 @@
     
     
     <div class="description">
-        <p><code>AccessType</code> is a generic connected render prop which exposes methods to handle access to stories / assets and initialize accesstype js</p>
-<table>
-<thead>
-<tr>
-<th>propName</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>prodHost</td>
-<td>It is passed to configure the production host.(Optional, default value is &quot;https://www.accesstype.com&quot;)</td>
-</tr>
-<tr>
-<td>stagingHost</td>
-<td>It is passed to configure the staging host.(Optional, default value is &quot;https://staging.accesstype.com&quot;)</td>
-</tr>
-</tbody>
-</table>
+        <p><code>AccessType</code> is a generic connected render prop which exposes methods to handle access to stories / assets and initialize AccessTypeJS.</p>
 <table>
 <thead>
 <tr>
@@ -140,33 +122,58 @@
 </thead>
 <tbody>
 <tr>
-<td><code>initAccessType</code></td>
+<td>initAccessType</td>
 <td>-NA-</td>
 <td>Initializes accesstype, checks for existance of accesstype before requesting for AT js</td>
 </tr>
 <tr>
-<td><code>initRazorPayPayment</code></td>
-<td><code>selectedPlan</code>(object)</td>
+<td>initRazorPayPayment</td>
+<td>selectedPlan(object), planType(string)</td>
 <td>Executes accesstype js method to bring forth RP payment gateway</td>
 </tr>
 <tr>
-<td><code>checkAccess</code></td>
-<td><code>assetId</code>(string)</td>
-<td>Checks if the user has access to the story/asset id passed</td>
+<td>initStripePayment</td>
+<td>options(object), options={ argType: &quot;options&quot;,selectedPlan: selectedPlanObj, planType:&quot;&quot;,couponCode: &quot;&quot;, successUrl:&quot;&quot;, cancelUrl:&quot;&quot;, recipientSubscriber: {}}</td>
+<td>Initialize the Stripe payment</td>
 </tr>
 <tr>
-<td><code>getSubscriptionForUser</code></td>
+<td>initPaypalPayment</td>
+<td>options(object), options={argType: &quot;options&quot;,selectedPlan: selectedPlanObj,planType: planType,couponCode: &quot;&quot;, recipientSubscriber: {}, returnUrl: &quot;&quot;,cancelUrl:&quot;&quot;}</td>
+<td>Initialize the PayPal payment</td>
+</tr>
+<tr>
+<td>initOmisePayment</td>
+<td>selectedPlan(object), planType(string)</td>
+<td>Initialize the Omise payment</td>
+</tr>
+<tr>
+<td>getAssetPlans</td>
+<td>storyId(string)</td>
+<td>Get Asset Subscription Plans</td>
+</tr>
+<tr>
+<td>validateCoupon</td>
+<td>selectedPlan(object), couponCode (string)</td>
+<td>Validate coupon with plan</td>
+</tr>
+<tr>
+<td>cancelSubscription</td>
+<td>subscriptionId(number)</td>
+<td>Cancel a subscription</td>
+</tr>
+<tr>
+<td>getSubscriptionForUser</td>
 <td>-NA-</td>
 <td>Gets the subscriptions of the current logged in user</td>
 </tr>
 <tr>
-<td><code>accessUpdated</code></td>
-<td><code>accessObject</code>(object)</td>
+<td>accessUpdated</td>
+<td>accessObject(object)</td>
 <td>Sets the current story access to redux store</td>
 </tr>
 <tr>
-<td><code>accessIsLoading</code></td>
-<td><code>loading</code>(boolean)</td>
+<td>accessIsLoading</td>
+<td>loading(boolean)</td>
 <td>A boolean which holds true between the request for access of a story and its response</td>
 </tr>
 </tbody>
@@ -175,13 +182,12 @@
 <ul>
 <li>This component uses AccessType Js internally</li>
 <li>It uses the Access API from subtype for metering, the API works on firebase which uses <code>thinmint</code> cookie (set by qlitics) of the user to verify and keep track of visits</li>
-<li>This component only supports Razorpay payment options for now</li>
+<li>This component  supports Razorpay, Stripe, PayPal and Omise payment options for now</li>
 <li>It communicates to sketches where routes are in pattern <code>/api/access/v1/*</code></li>
 <li>Metered story has a pingback which is achieved by the use of <code>navigator.sendBeacon</code> if available or falls back to fetch, this is needed to update the count of the visited stories for a user</li>
 <li>Access to story/asset is saved on the redux store under the keyword access which holds keys as story asset id and the access returned from the API as its value</li>
 <li><code>subscriptions</code> is the key in the store under which all the subscription groups created for the specified account are maintained</li>
 <li><code>paymentOptions</code> is the key under the store which has all the payment options created for the current AT account</li>
-<li><code>selectedPlan</code> used by <code>initRazorPayPayment</code> refers to one of the plan object nested within the subscription groups</li>
 </ul>
 <pre class="prettyprint source lang-javascript"><code>//access object on store
 
@@ -198,7 +204,6 @@ access : {
 <p>Example</p>
 <pre class="prettyprint source lang-javascript"><code>import { AccessType } from &quot;@quintype/components&quot;;
 
-
 render() {
   return  &lt;AccessType
                  enableAccesstype={enableAccesstype}
@@ -209,20 +214,77 @@ render() {
                  disableMetering={disableMetering}
                  prodHost=&quot;https://www.accesstype.com&quot;
                  stagingHost=&quot;https://staging.accesstype.com&quot;
+                 accessTypeBkIntegrationId={accessTypeBkIntegrationId}
                >
-                 {({ initAccessType, checkAccess, accessUpdated, accessIsLoading }) => (
+                 {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, getSubscriptionForUser }) => (
                    &lt;div>
-                     &lt;StoryComponent
+                     &lt;PaymentCheckoutLayout
                        accessIsLoading={accessIsLoading}
                        accessUpdated={accessUpdated}
                        initAccessType={initAccessType}
                        checkAccess={checkAccess}
+                       initRazorPayPayment={initRazorPayPayment}
+                       initStripePayment={initStripePayment}
+                       initPaypalPayment={initPaypalPayment}
+                       getSubscriptionForUser={getSubscriptionForUser}
                        {...this.props}
                      />
                    &lt;/div>
                  )}
                &lt;/AccessType>
 }
+
+...
+
+const PaymentCheckoutLayout = (props) => {
+
+ useEffect(() => {
+    !global.AccessType && initAccessType(); // initialize accesstype
+  }, []);
+
+  ....
+
+ checkout(plan = {}) {
+  const paymentGateway = get(plan, [&quot;supported_payment_providers&quot;, 0], &quot;razorpay&quot;);
+
+  if (paymentGateway === &quot;razorpay&quot;) {
+    return props.initRazorPayPayment(plan, &quot;standard&quot;);
+  }
+
+  if (paymentGateway === &quot;paypal&quot;) {
+    const options = {
+      selectedPlan: plan,
+      planType: &quot;standard&quot;,
+      returnUrl: `${document.location.origin}/paypal-return-url`,
+      cancelUrl: `${document.location.origin}/paypal-cancel-url`
+    };
+    return props.initPaypalPayment(options);
+  }
+
+  if (paymentGateway === &quot;omise&quot;) {
+    return props.initOmisePayment(plan, &quot;standard&quot;);
+  }
+
+  if (paymentGateway === &quot;stripe&quot;) {
+    const options = {
+      selectedPlan: plan,
+      planType: &quot;standard&quot;,
+      successUrl: `${document.location.origin}/paypal-return-url`,
+      cancelUrl: `${document.location.origin}/paypal-cancel-url`
+    };
+    return props.initPaypalPayment(options);
+  }
+
+....
+
+ return (){
+
+   &lt;Button onClick={() => checkout(plan)}  disabled={isLoading}>
+     {isLoading ? &lt;Loader /> : &quot;SUBSCRIBE&quot;}
+   &lt;/Button>
+ }
+}
+
 
 </code></pre>
     </div>
@@ -268,7 +330,7 @@ render() {
             string
           </td>
           <td>No</td>
-          <td></td>
+          <td>Email address of the user</td>
           <td></td>
         </tr>
         
@@ -279,7 +341,7 @@ render() {
             number
           </td>
           <td>No</td>
-          <td></td>
+          <td>Phone number of the user</td>
           <td></td>
         </tr>
         
@@ -290,7 +352,7 @@ render() {
             bool
           </td>
           <td>No</td>
-          <td></td>
+          <td>Specify if you are using the AccessType Staging</td>
           <td></td>
         </tr>
         
@@ -301,7 +363,7 @@ render() {
             bool
           </td>
           <td>Yes</td>
-          <td></td>
+          <td>Load AccessType Script</td>
           <td></td>
         </tr>
         
@@ -312,7 +374,7 @@ render() {
             string
           </td>
           <td>Yes</td>
-          <td></td>
+          <td>AccessType ACCOUNT_KEY</td>
           <td></td>
         </tr>
         
@@ -323,7 +385,7 @@ render() {
             string
           </td>
           <td>Yes</td>
-          <td></td>
+          <td>AccessType BK_Integration_Id</td>
           <td></td>
         </tr>
         
@@ -334,7 +396,7 @@ render() {
             string
           </td>
           <td>No</td>
-          <td></td>
+          <td>AccessType production host url. Default value is "https://www.accesstype.com"</td>
           <td></td>
         </tr>
         
@@ -345,7 +407,7 @@ render() {
             string
           </td>
           <td>No</td>
-          <td></td>
+          <td>AccessType staging host url. Default value is "https://staging.accesstype.com"</td>
           <td></td>
         </tr>
         
@@ -395,7 +457,7 @@ render() {
         <p class="tag-source">
             <a href="components_access-type.js.html" class="button">View Source</a>
             <span>
-                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line606">line 606</a>
+                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line608">line 608</a>
             </span>
         </p>
     
