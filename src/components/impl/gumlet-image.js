@@ -31,9 +31,9 @@ export function GumletImage(props) {
   const imageProps = {
     src: emptyWebGif,
     "data-src": "https://" + imageCDN + "/" + image.path(aspectRatio, imgParams),
-    srcSet: `https://${imageCDN}/${image.path(aspectRatio, imgParams)}&w=300 300w,
-    https://${imageCDN}/${image.path(aspectRatio, imgParams)}&w=768 768w,
-    https://${imageCDN}/${image.path(aspectRatio, imgParams)}&w=1080 1080w,`,
+    srcSet: `https://${imageCDN}/${image.path(aspectRatio, imgParams)}&w=320 320w,
+    https://${imageCDN}/${image.path(aspectRatio, imgParams)}&w=640 640w,
+    https://${imageCDN}/${image.path(aspectRatio, imgParams)}&w=1024 1024w,`,
     key: hashString(slug)
   };
 
