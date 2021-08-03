@@ -5,5 +5,8 @@ exports[`ResponsiveSource Checks for a gumlet image 1`] = `
   alt="Alt Text"
   class="qt-image"
   data-src="https://images.assettype.com/somepublisher%2Fimage.png?rect=0%2C0%2C759%2C427"
+  srcset="https://images.assettype.com/somepublisher%2Fimage.png?rect=0%2C0%2C759%2C427&w=320 320w,
+    https://images.assettype.com/somepublisher%2Fimage.png?rect=0%2C0%2C759%2C427&w=640 640w,
+    https://images.assettype.com/somepublisher%2Fimage.png?rect=0%2C0%2C759%2C427&w=1024 1024w,"
 />
 `;
