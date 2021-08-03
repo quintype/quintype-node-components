@@ -1,5 +1,6 @@
 import omit from "@babel/runtime/helpers/objectWithoutProperties";
 import emptyWebGif from "empty-web-gif";
+import { object, string } from "prop-types";
 import { FocusedImage } from "quintype-js";
 import React, { useEffect } from "react";
 import { hashString, USED_PARAMS } from "./image-utils";
@@ -9,9 +10,10 @@ function loadGumlet() {
   if (window.GUMLET_CONFIG || window.gumlet || forceLoadingGumlet === true) {
     return;
   }
-  if (process.env.NODE_ENV == "development") {
+  if (process.env.NODE_ENV === "development") {
     console.warn(
-      "Loading Gumlet Dynamically! This is really bad for page speed. Please see https://developers.quintype.com/malibu/tutorial/gumlet-integration"
+      "Loading Gumlet Dynamically! This is really bad for page speed." +
+        "Please see https://developers.quintype.com/malibu/tutorial/gumlet-integration"
     );
   }
   forceLoadingGumlet = true;
@@ -50,3 +52,14 @@ export function GumletImage(props) {
     </React.Fragment>
   );
 }
+
+GumletImage.propTypes = {
+  slug: string,
+  metadata: object,
+  aspectRatio: string,
+  imageCDN: string,
+  imgParams: object,
+  reactTag: string,
+  className: string,
+  alt: string
+};
