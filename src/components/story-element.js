@@ -93,7 +93,8 @@ function StoryElementImage({
   story = {},
   imageWidths,
   imageDefaultWidth,
-  onClick = () => {}
+  onClick = () => { },
+  src
 }) {
   return React.createElement(
     "figure",
@@ -106,22 +107,23 @@ function StoryElementImage({
       widths: imageWidths || [360, 640, 1200],
       imgParams: { auto: ["format", "compress"] },
       alt: element.title || story.headline,
-      onClick
+      onClick,
+      src
     }),
     React.createElement(
       "div",
       { className: "story-element-caption-attribution-wrapper" },
       element.title
         ? React.createElement("figcaption", {
-            dangerouslySetInnerHTML: { __html: element.title },
-            className: "story-element-image-title"
-          })
+          dangerouslySetInnerHTML: { __html: element.title },
+          className: "story-element-image-title"
+        })
         : undefined,
       element["image-attribution"]
         ? React.createElement("figcaption", {
-            dangerouslySetInnerHTML: { __html: element["image-attribution"] },
-            className: "story-element-image-attribution"
-          })
+          dangerouslySetInnerHTML: { __html: element["image-attribution"] },
+          className: "story-element-image-attribution"
+        })
         : undefined
     )
   );
