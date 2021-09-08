@@ -1,19 +1,16 @@
 import atob from "atob";
-import { PropTypes } from "prop-types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-function cloneScriptNode(node) {
+const cloneScriptNode = node => {
   var script = document.createElement("script");
   script.text = node.innerHTML;
   for (var i = node.attributes.length - 1; i >= 0; i--) {
-    setTimeout(() => {
-      script.setAttribute(node.attributes[i].name, node.attributes[i].value);
-    }, 3000);
+    script.setAttribute(node.attributes[i].name, node.attributes[i].value);
   }
   return script;
-}
+};
 
-function replaceScriptNodes(node) {
+const replaceScriptNodes = node => {
   if (node.tagName === "SCRIPT") {
     node.parentNode.replaceChild(cloneScriptNode(node), node);
     if (window.instgrm) window.instgrm.Embeds.process(); // Temporary fix for instagram element on live blog page.
@@ -24,45 +21,55 @@ function replaceScriptNodes(node) {
       replaceScriptNodes(children[i++]);
     }
   }
-}
+};
 
-export default class JSEmbed extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    return !(this.props.id === nextProps.id && this.props.embedJS === nextProps.embedJS);
-  }
+const JSEmbed = props => {
+  const [JSEmbed, setJSEmbed] = useState(null);
+  const [showEmbed, setshowEmbed] = useState(false);
 
-  constructor(props) {
-    super(props);
+  useEffect(() => {
+    console.log("###usefff");
+    JSEmbed && replaceScriptNodes(JSEmbed);
+  }, []);
 
-    this.uniqueId = "anagh";
-  }
+  useEffect(() => {
+    console.log("###usefff2222");
+    JSEmbed && replaceScriptNodes(JSEmbed);
+  }, [JSEmbed, props.loadEmbed]);
 
-  componentDidMount() {
-    replaceScriptNodes(this.JSEmbed);
-  }
+  const getEmbedJS = () => {
+    var embedjs = props.embedJS;
+    const embed = embedjs != null ? atob(embedjs) : null;
+    return embed;
+  };
 
-  componentDidUpdate() {
-    replaceScriptNodes(this.JSEmbed);
-  }
-
-  getEmbedJS() {
-    var embedjs = this.props.embedJS;
-    return embedjs != null ? atob(embedjs) : null;
-  }
-
-  render() {
+  const renderEmbed = () => {
     return (
       <div
         ref={jsembed => {
-          this.JSEmbed = jsembed;
+          setJSEmbed(jsembed);
         }}
-        dangerouslySetInnerHTML={{ __html: this.getEmbedJS() }}
+        dangerouslySetInnerHTML={{ __html: getEmbedJS() }}
       />
     );
-  }
-}
+  };
 
-JSEmbed.propTypes = {
-  id: PropTypes.string,
-  embedJS: PropTypes.string
+  const settings = () => {
+    setshowEmbed(true);
+  };
+
+  if (props.loadEmbed) {
+    return (
+      <>
+        {!showEmbed && (
+          <div className="embed-overlay" onClick={settings} style={{ background: "blue" }}>
+            Click to load...
+          </div>
+        )}
+        {showEmbed && renderEmbed()}
+      </>
+    );
+  } else renderEmbed();
 };
+
+export default JSEmbed;
