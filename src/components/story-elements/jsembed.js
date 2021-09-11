@@ -1,5 +1,6 @@
 import atob from "atob";
 import React, { useEffect, useState } from "react";
+import { WithLazy } from "../with-lazy";
 
 const cloneScriptNode = node => {
   var script = document.createElement("script");
@@ -23,19 +24,16 @@ const replaceScriptNodes = node => {
   }
 };
 
-const JSEmbed = props => {
+const CustomJSEmbed = props => {
   const [JSEmbed, setJSEmbed] = useState(null);
-  const [showEmbed, setshowEmbed] = useState(false);
 
   useEffect(() => {
-    console.log("###usefff");
     JSEmbed && replaceScriptNodes(JSEmbed);
   }, []);
 
   useEffect(() => {
-    console.log("###usefff2222");
     JSEmbed && replaceScriptNodes(JSEmbed);
-  }, [JSEmbed, props.loadEmbed]);
+  }, [JSEmbed]);
 
   const getEmbedJS = () => {
     var embedjs = props.embedJS;
@@ -43,33 +41,18 @@ const JSEmbed = props => {
     return embed;
   };
 
-  const renderEmbed = () => {
-    return (
-      <div
-        ref={jsembed => {
-          setJSEmbed(jsembed);
-        }}
-        dangerouslySetInnerHTML={{ __html: getEmbedJS() }}
-      />
-    );
-  };
+  return (
+    <div
+      ref={jsembed => {
+        setJSEmbed(jsembed);
+      }}
+      dangerouslySetInnerHTML={{ __html: getEmbedJS() }}
+    />
+  );
+};
 
-  const settings = () => {
-    setshowEmbed(true);
-  };
-
-  if (props.loadEmbed) {
-    return (
-      <>
-        {!showEmbed && (
-          <div className="embed-overlay" onClick={settings} style={{ background: "blue" }}>
-            Click to load...
-          </div>
-        )}
-        {showEmbed && renderEmbed()}
-      </>
-    );
-  } else renderEmbed();
+const JSEmbed = props => {
+  return <WithLazy margin="0px">{() => <CustomJSEmbed {...props} />}</WithLazy>;
 };
 
 export default JSEmbed;
