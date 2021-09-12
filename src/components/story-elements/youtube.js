@@ -1,20 +1,19 @@
-import React from 'react';
-import getYouTubeID from 'get-youtube-id';
-import {getQliticsSchema} from '../../utils';
+import getYouTubeID from "get-youtube-id";
+import React from "react";
+import { getQliticsSchema } from "../../utils";
+import { WithLazy } from "../with-lazy";
 
 let YouTube = null;
 let loaderPromise = null;
 
 function loadLibrary() {
   if (loaderPromise === null) {
-    loaderPromise = import(
-      /* webpackChunkName: "qtc-react-youtube" */ 'react-youtube'
-    )
+    loaderPromise = import(/* webpackChunkName: "qtc-react-youtube" */ "react-youtube")
       .then(YT => {
         YouTube = YT.default;
       })
       .catch(err => {
-        console.log('Failed to load react-youtube', err);
+        console.log("Failed to load react-youtube", err);
         return Promise.reject();
       });
   }
@@ -26,16 +25,16 @@ function isLibraryLoaded() {
   return YouTube !== null;
 }
 
-export default class StoryElementYoutube extends React.Component {
+class CustomStoryElementYoutube extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showVideo: false,
+      showVideo: false
     };
     this.opts = {
       playerVars: {
-        autoplay: 0,
-      },
+        autoplay: 0
+      }
     };
   }
 
@@ -52,36 +51,36 @@ export default class StoryElementYoutube extends React.Component {
   triggerQlitics = action => {
     if (this.props.disableAnalytics === true) return false;
 
-    const {story = {}, card = {}, element = {}} = this.props;
+    const { story = {}, card = {}, element = {} } = this.props;
     const qliticsData = {
       ...getQliticsSchema(story, card, element),
-      ...{'story-element-action': action},
+      ...{ "story-element-action": action }
     };
     if (global.qlitics) {
-      global.qlitics('track', 'story-element-action', qliticsData);
+      global.qlitics("track", "story-element-action", qliticsData);
     } else {
       global.qlitics =
         global.qlitics ||
         function() {
           (qlitics.q = qlitics.q || []).push(arguments);
         };
-      qlitics.qlitics.q.push('track', 'story-element-action', qliticsData);
+      qlitics.qlitics.q.push("track", "story-element-action", qliticsData);
     }
   };
 
   onPlayCallback = event => {
-    this.triggerQlitics('play');
-    this.props.onPlay === 'function' && this.props.onPlay(event);
+    this.triggerQlitics("play");
+    this.props.onPlay === "function" && this.props.onPlay(event);
   };
 
   onPauseCallback = event => {
-    this.triggerQlitics('pause');
-    this.props.onPause === 'function' && this.props.onPause(event);
+    this.triggerQlitics("pause");
+    this.props.onPause === "function" && this.props.onPause(event);
   };
 
   onEndCallback = event => {
-    this.triggerQlitics('end');
-    this.props.onEnd === 'function' && this.props.onEnd(event);
+    this.triggerQlitics("end");
+    this.props.onEnd === "function" && this.props.onEnd(event);
   };
 
   triggerIframe = () => {
@@ -96,7 +95,7 @@ export default class StoryElementYoutube extends React.Component {
 
   renderVideo = () => {
     this.triggerIframe();
-    this.setState({showVideo: true});
+    this.setState({ showVideo: true });
   };
 
   render() {
@@ -107,29 +106,21 @@ export default class StoryElementYoutube extends React.Component {
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
         onEnd: this.onEndCallback,
-        onReady: this.onPlayerReady,
+        onReady: this.onPlayerReady
       });
     };
 
     if (this.props.loadIframeOnClick) {
       return (
         <div className="thumbnail-wrapper">
-          <button
-            className="youtube-playBtn"
-            onClick={this.renderVideo}
-            aria-label="Play Video"
-          />
+          <button className="youtube-playBtn" onClick={this.renderVideo} aria-label="Play Video" />
           <img
             className="youtube-thumbnail"
             onClick={this.renderVideo}
-            src={`https://img.youtube.com/vi/${getYouTubeID(
-              this.props.element.url
-            )}/sddefault.jpg`}
+            src={`https://img.youtube.com/vi/${getYouTubeID(this.props.element.url)}/sddefault.jpg`}
             alt="video"
           />
-          {this.state.showVideo && isLibraryLoaded() && (
-            <div className="youtube-iframe-wrapper">{youtubeIframe()}</div>
-          )}
+          {this.state.showVideo && isLibraryLoaded() && <div className="youtube-iframe-wrapper">{youtubeIframe()}</div>}
         </div>
       );
     } else if (!this.props.loadIframeOnClick && isLibraryLoaded()) {
@@ -138,8 +129,14 @@ export default class StoryElementYoutube extends React.Component {
         opts: this.opts,
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
-        onEnd: this.onEndCallback,
+        onEnd: this.onEndCallback
       });
-    } else return <div></div>;
+    } else return <div />;
   }
 }
+
+const StoryElementYoutube = props => {
+  return <WithLazy margin="0px">{() => <CustomStoryElementYoutube {...props} />}</WithLazy>;
+};
+
+export default StoryElementYoutube;
