@@ -4,6 +4,7 @@ import React from "react";
 import { getQliticsSchema } from "../utils";
 import { Link } from "./link";
 import { ResponsiveImage } from "./responsive-image";
+import StoryElementDailyMotion from "./story-elements/dailymotion";
 import JSEmbed from "./story-elements/jsembed";
 import Polltype from "./story-elements/polltype";
 import { Table } from "./story-elements/table";
@@ -173,6 +174,7 @@ const DEFAULT_TEMPLATES = {
   image: StoryElementImage,
   title: StoryElementTitle,
   "youtube-video": StoryElementYoutube,
+  "dailymotion-video": StoryElementDailyMotion,
   "soundcloud-audio": StoryElementSoundCloud,
   jsembed: StoryElementJsembed,
   polltype: StoryElementPolltype,

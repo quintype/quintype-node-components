@@ -1,20 +1,19 @@
-import getYouTubeID from "get-youtube-id";
+import getVideoID from "get-video-id";
 import { PropTypes } from "prop-types";
 import React from "react";
-import { getQliticsSchema } from "../../utils";
 import { WithLazy } from "../with-lazy";
 
-let YouTube = null;
+let DailyMotion = null;
 let loaderPromise = null;
 
 function loadLibrary() {
   if (loaderPromise === null) {
-    loaderPromise = import(/* webpackChunkName: "qtc-react-youtube" */ "react-youtube")
-      .then(YT => {
-        YouTube = YT.default;
+    loaderPromise = import(/* webpackChunkName: "qtc-react-dailymotion" */ "react-dailymotion")
+      .then(DM => {
+        DailyMotion = DM.default;
       })
       .catch(err => {
-        console.log("Failed to load react-youtube", err);
+        console.log("Failed to load react-dailymotion", err);
         return Promise.reject();
       });
   }
@@ -23,10 +22,10 @@ function loadLibrary() {
 }
 
 function isLibraryLoaded() {
-  return YouTube !== null;
+  return DailyMotion !== null;
 }
 
-class CustomStoryElementYoutube extends React.Component {
+class CustomStoryElementDailyMotion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,38 +48,15 @@ class CustomStoryElementYoutube extends React.Component {
     this._isMounted = false;
   }
 
-  triggerQlitics = action => {
-    if (this.props.disableAnalytics === true) return false;
-
-    const { story = {}, card = {}, element = {} } = this.props;
-    const qliticsData = {
-      ...getQliticsSchema(story, card, element),
-      ...{ "story-element-action": action }
-    };
-    if (global.qlitics) {
-      global.qlitics("track", "story-element-action", qliticsData);
-    } else {
-      global.qlitics =
-        global.qlitics ||
-        function() {
-          (qlitics.q = qlitics.q || []).push(arguments);
-        };
-      qlitics.qlitics.q.push("track", "story-element-action", qliticsData);
-    }
-  };
-
   onPlayCallback = event => {
-    this.triggerQlitics("play");
     this.props.onPlay === "function" && this.props.onPlay(event);
   };
 
   onPauseCallback = event => {
-    this.triggerQlitics("pause");
     this.props.onPause === "function" && this.props.onPause(event);
   };
 
   onEndCallback = event => {
-    this.triggerQlitics("end");
     this.props.onEnd === "function" && this.props.onEnd(event);
   };
 
@@ -100,14 +76,15 @@ class CustomStoryElementYoutube extends React.Component {
   };
 
   render() {
-    const youtubeIframe = () => {
-      return React.createElement(YouTube, {
-        videoId: getYouTubeID(this.props.element.url),
+    const { id: videoId } = getVideoID(this.props.element.metadata["dailymotion-url"]);
+
+    const dailymotionIframe = () => {
+      return React.createElement(DailyMotion, {
+        video: videoId,
         opts: this.opts,
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
-        onEnd: this.onEndCallback,
-        onReady: this.onPlayerReady
+        onEnd: this.onEndCallback
       });
     };
 
@@ -116,21 +93,23 @@ class CustomStoryElementYoutube extends React.Component {
         <div className="thumbnail-wrapper">
           {!this.state.showVideo && (
             <>
-              <button className="youtube-playBtn" onClick={this.renderVideo} aria-label="Play Video" />
+              <button className="dailymotion-playBtn" onClick={this.renderVideo} aria-label="Play Video" />
               <img
-                className="youtube-thumbnail"
+                className="dailymotion-thumbnail"
                 onClick={this.renderVideo}
-                src={`https://img.youtube.com/vi/${getYouTubeID(this.props.element.url)}/sddefault.jpg`}
-                alt="video"
+                src={`https://www.dailymotion.com/thumbnail/video/${videoId}`}
+                alt="daily-motion-video"
               />
             </>
           )}
-          {this.state.showVideo && isLibraryLoaded() && <div className="youtube-iframe-wrapper">{youtubeIframe()}</div>}
+          {this.state.showVideo && isLibraryLoaded() && (
+            <div className="dailymotion-iframe-wrapper">{dailymotionIframe()}</div>
+          )}
         </div>
       );
     } else if (!this.props.loadIframeOnClick && isLibraryLoaded()) {
-      return React.createElement(YouTube, {
-        videoId: getYouTubeID(this.props.element.url),
+      return React.createElement(DailyMotion, {
+        video: videoId,
         opts: this.opts,
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
@@ -140,7 +119,7 @@ class CustomStoryElementYoutube extends React.Component {
   }
 }
 
-CustomStoryElementYoutube.propTypes = {
+CustomStoryElementDailyMotion.propTypes = {
   loadIframeOnClick: PropTypes.bool,
   disableAnalytics: PropTypes.bool,
   story: PropTypes.object,
@@ -151,8 +130,8 @@ CustomStoryElementYoutube.propTypes = {
   onEnd: PropTypes.func
 };
 
-const StoryElementYoutube = props => {
-  return <WithLazy margin="0px">{() => <CustomStoryElementYoutube {...props} />}</WithLazy>;
+const StoryElementDailyMotion = props => {
+  return <WithLazy margin="0px">{() => <CustomStoryElementDailyMotion {...props} />}</WithLazy>;
 };
 
-export default StoryElementYoutube;
+export default StoryElementDailyMotion;
