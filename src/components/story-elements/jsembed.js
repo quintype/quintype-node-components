@@ -1,6 +1,5 @@
 import atob from "atob";
 import React, { useEffect, useState } from "react";
-import { WithLazy } from "../with-lazy";
 
 const cloneScriptNode = node => {
   var script = document.createElement("script");
@@ -52,7 +51,16 @@ const CustomJSEmbed = props => {
 };
 
 const JSEmbed = props => {
-  return <WithLazy margin="0px">{() => <CustomJSEmbed {...props} />}</WithLazy>;
+  console.log("###props", props);
+  return (
+    // <WithLazy margin="0px">
+    //   {() => {
+    //     console.log("###lazy loading");
+    //     return <CustomJSEmbed {...props} />;
+    //   }}
+    // </WithLazy>
+    <div>Lazy</div>
+  );
 };
 
 export default JSEmbed;
