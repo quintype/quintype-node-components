@@ -25,7 +25,7 @@ function isLibraryLoaded() {
   return DailyMotion !== null;
 }
 
-class CustomStoryElementDailyMotion extends React.Component {
+export default class StoryElementDailyMotion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -84,7 +84,8 @@ class CustomStoryElementDailyMotion extends React.Component {
         opts: this.opts,
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
-        onEnd: this.onEndCallback
+        onEnd: this.onEndCallback,
+        autoplay: true
       });
     };
 
@@ -103,7 +104,9 @@ class CustomStoryElementDailyMotion extends React.Component {
             </>
           )}
           {this.state.showVideo && isLibraryLoaded() && (
-            <div className="dailymotion-iframe-wrapper">{dailymotionIframe()}</div>
+            <WithLazy margin="0px">
+              {() => <div className="dailymotion-iframe-wrapper">{dailymotionIframe()}</div>}
+            </WithLazy>
           )}
         </div>
       );
@@ -119,7 +122,7 @@ class CustomStoryElementDailyMotion extends React.Component {
   }
 }
 
-CustomStoryElementDailyMotion.propTypes = {
+StoryElementDailyMotion.propTypes = {
   loadIframeOnClick: PropTypes.bool,
   disableAnalytics: PropTypes.bool,
   story: PropTypes.object,
@@ -129,9 +132,3 @@ CustomStoryElementDailyMotion.propTypes = {
   onPause: PropTypes.func,
   onEnd: PropTypes.func
 };
-
-const StoryElementDailyMotion = props => {
-  return <WithLazy margin="0px">{() => <CustomStoryElementDailyMotion {...props} />}</WithLazy>;
-};
-
-export default StoryElementDailyMotion;

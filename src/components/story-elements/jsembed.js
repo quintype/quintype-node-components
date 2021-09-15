@@ -1,5 +1,6 @@
 import atob from "atob";
 import React from "react";
+import { WithLazy } from "../with-lazy";
 
 function cloneScriptNode(node) {
   var script = document.createElement("script");
@@ -49,12 +50,16 @@ export default class JSEmbed extends React.Component {
 
   render() {
     return (
-      <div
-        ref={jsembed => {
-          this.JSEmbed = jsembed;
-        }}
-        dangerouslySetInnerHTML={{ __html: this.getEmbedJS() }}
-      />
+      <WithLazy margin="0px">
+        {() => (
+          <div
+            ref={jsembed => {
+              this.JSEmbed = jsembed;
+            }}
+            dangerouslySetInnerHTML={{ __html: this.getEmbedJS() }}
+          />
+        )}
+      </WithLazy>
     );
   }
 }

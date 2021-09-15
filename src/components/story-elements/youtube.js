@@ -114,17 +114,15 @@ export default class StoryElementYoutube extends React.Component {
     if (this.props.loadIframeOnClick) {
       return (
         <div className="thumbnail-wrapper">
-          {!this.state.showVideo && (
-            <>
-              <button className="youtube-playBtn" onClick={this.renderVideo} aria-label="Play Video" />
-              <img
-                className="youtube-thumbnail"
-                onClick={this.renderVideo}
-                src={`https://img.youtube.com/vi/${getYouTubeID(this.props.element.url)}/sddefault.jpg`}
-                alt="video"
-              />
-            </>
-          )}
+          <>
+            <button className="youtube-playBtn" onClick={this.renderVideo} aria-label="Play Video" />
+            <img
+              className="youtube-thumbnail"
+              onClick={this.renderVideo}
+              src={`https://img.youtube.com/vi/${getYouTubeID(this.props.element.url)}/sddefault.jpg`}
+              alt="video"
+            />
+          </>
           {this.state.showVideo && isLibraryLoaded() && (
             <WithLazy margin="0px">{() => <div className="youtube-iframe-wrapper">{youtubeIframe()}</div>}</WithLazy>
           )}
