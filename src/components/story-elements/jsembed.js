@@ -1,7 +1,6 @@
 import atob from "atob";
 import { PropTypes } from "prop-types";
 import React from "react";
-import { WithLazy } from "../with-lazy";
 
 function cloneScriptNode(node) {
   var script = document.createElement("script");
@@ -25,7 +24,7 @@ function replaceScriptNodes(node) {
   }
 }
 
-class CustomJSEmbed extends React.Component {
+export default class CustomJSEmbed extends React.Component {
   shouldComponentUpdate(nextProps) {
     return !(this.props.id === nextProps.id && this.props.embedJS === nextProps.embedJS);
   }
@@ -65,9 +64,3 @@ CustomJSEmbed.propTypes = {
   id: PropTypes.string,
   embedJS: PropTypes.string
 };
-
-const JSEmbed = props => {
-  return <WithLazy margin="0px">{() => <CustomJSEmbed {...props} />}</WithLazy>;
-};
-
-export default JSEmbed;
