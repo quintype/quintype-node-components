@@ -1,17 +1,16 @@
 import atob from "atob";
-import React, { useEffect, useState } from "react";
-import { WithLazy } from "../with-lazy";
+import React from "react";
 
-const cloneScriptNode = node => {
+function cloneScriptNode(node) {
   var script = document.createElement("script");
   script.text = node.innerHTML;
   for (var i = node.attributes.length - 1; i >= 0; i--) {
     script.setAttribute(node.attributes[i].name, node.attributes[i].value);
   }
   return script;
-};
+}
 
-const replaceScriptNodes = node => {
+function replaceScriptNodes(node) {
   if (node.tagName === "SCRIPT") {
     node.parentNode.replaceChild(cloneScriptNode(node), node);
     if (window.instgrm) window.instgrm.Embeds.process(); // Temporary fix for instagram element on live blog page.
@@ -22,37 +21,40 @@ const replaceScriptNodes = node => {
       replaceScriptNodes(children[i++]);
     }
   }
-};
+}
 
-const CustomJSEmbed = props => {
-  const [JSEmbed, setJSEmbed] = useState(null);
+export default class JSEmbed extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    return !(this.props.id === nextProps.id && this.props.embedJS === nextProps.embedJS);
+  }
 
-  useEffect(() => {
-    JSEmbed && replaceScriptNodes(JSEmbed);
-  }, []);
+  constructor(props) {
+    super(props);
 
-  useEffect(() => {
-    JSEmbed && replaceScriptNodes(JSEmbed);
-  }, [JSEmbed]);
+    this.uniqueId = "anagh";
+  }
 
-  const getEmbedJS = () => {
-    var embedjs = props.embedJS;
-    const embed = embedjs != null ? atob(embedjs) : null;
-    return embed;
-  };
+  componentDidMount() {
+    replaceScriptNodes(this.JSEmbed);
+  }
 
-  return (
-    <div
-      ref={jsembed => {
-        setJSEmbed(jsembed);
-      }}
-      dangerouslySetInnerHTML={{ __html: getEmbedJS() }}
-    />
-  );
-};
+  componentDidUpdate() {
+    replaceScriptNodes(this.JSEmbed);
+  }
 
-const JSEmbed = props => {
-  return <WithLazy margin="0px">{() => <CustomJSEmbed {...props} />}</WithLazy>;
-};
+  getEmbedJS() {
+    var embedjs = this.props.embedJS;
+    return embedjs != null ? atob(embedjs) : null;
+  }
 
-export default JSEmbed;
+  render() {
+    return (
+      <div
+        ref={jsembed => {
+          this.JSEmbed = jsembed;
+        }}
+        dangerouslySetInnerHTML={{ __html: this.getEmbedJS() }}
+      />
+    );
+  }
+}
