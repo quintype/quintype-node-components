@@ -26,7 +26,7 @@ function isLibraryLoaded() {
   return YouTube !== null;
 }
 
-class CustomStoryElementYoutube extends React.Component {
+export default class StoryElementYoutube extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -125,7 +125,9 @@ class CustomStoryElementYoutube extends React.Component {
               />
             </>
           )}
-          {this.state.showVideo && isLibraryLoaded() && <div className="youtube-iframe-wrapper">{youtubeIframe()}</div>}
+          {this.state.showVideo && isLibraryLoaded() && (
+            <WithLazy margin="0px">{() => <div className="youtube-iframe-wrapper">{youtubeIframe()}</div>}</WithLazy>
+          )}
         </div>
       );
     } else if (!this.props.loadIframeOnClick && isLibraryLoaded()) {
@@ -140,7 +142,7 @@ class CustomStoryElementYoutube extends React.Component {
   }
 }
 
-CustomStoryElementYoutube.propTypes = {
+StoryElementYoutube.propTypes = {
   loadIframeOnClick: PropTypes.bool,
   disableAnalytics: PropTypes.bool,
   story: PropTypes.object,
@@ -150,9 +152,3 @@ CustomStoryElementYoutube.propTypes = {
   onPause: PropTypes.func,
   onEnd: PropTypes.func
 };
-
-const StoryElementYoutube = props => {
-  return <WithLazy margin="0px">{() => <CustomStoryElementYoutube {...props} />}</WithLazy>;
-};
-
-export default StoryElementYoutube;
