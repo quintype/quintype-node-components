@@ -1,13 +1,14 @@
-import React from "react";
 import classNames from "classnames";
-import JSEmbed from "./story-elements/jsembed";
-import StoryElementYoutube from "./story-elements/youtube";
+import get from "lodash/get";
+import React from "react";
+import { getQliticsSchema } from "../utils";
+import { Link } from "./link";
 import { ResponsiveImage } from "./responsive-image";
+import StoryElementDailyMotion from "./story-elements/dailymotion";
+import JSEmbed from "./story-elements/jsembed";
 import Polltype from "./story-elements/polltype";
 import { Table } from "./story-elements/table";
-import { Link } from "./link";
-import get from "lodash/get";
-import { getQliticsSchema } from "../utils";
+import StoryElementYoutube from "./story-elements/youtube";
 
 /**
  * This component renders different types of [story elements](https://developers.quintype.com/malibu/terminology#story-elements)
@@ -79,22 +80,12 @@ function StoryElementAlsoRead({ element, story, alsoreadText = "Also Read: " }) 
   return React.createElement(
     "h3",
     {},
-    React.createElement(
-      "span",
-      { className: "story-element-text-also-read__label" },
-      alsoreadText
-    ),
+    React.createElement("span", { className: "story-element-text-also-read__label" }, alsoreadText),
     React.createElement(Link, linkProps, element.text)
   );
 }
 
-function StoryElementImage({
-  element,
-  story = {},
-  imageWidths,
-  imageDefaultWidth,
-  onClick = () => {}
-}) {
+function StoryElementImage({ element, story = {}, imageWidths, imageDefaultWidth, onClick = () => {} }) {
   return React.createElement(
     "figure",
     {},
@@ -161,11 +152,7 @@ function StoryElementFile({ element }) {
   return React.createElement(
     React.Fragment,
     null,
-    React.createElement(
-      "div",
-      { className: "story-element-file__title" },
-      element["file-name"]
-    ),
+    React.createElement("div", { className: "story-element-file__title" }, element["file-name"]),
     React.createElement(
       "a",
       {
@@ -185,6 +172,7 @@ const DEFAULT_TEMPLATES = {
   text: StoryElementText,
   image: StoryElementImage,
   title: StoryElementTitle,
+  "dailymotion-video": StoryElementDailyMotion,
   "youtube-video": StoryElementYoutube,
   "soundcloud-audio": StoryElementSoundCloud,
   jsembed: StoryElementJsembed,
@@ -235,35 +223,21 @@ class StoryElementBase extends React.Component {
 
   template() {
     const storyElement = this.props.element;
-    const templates = Object.assign(
-      {},
-      DEFAULT_TEMPLATES,
-      this.props.templates
-    );
-    return (
-      templates[storyElement.subtype] || templates[storyElement.type] || "div"
-    );
+    const templates = Object.assign({}, DEFAULT_TEMPLATES, this.props.templates);
+    return templates[storyElement.subtype] || templates[storyElement.type] || "div";
   }
 
   emitElementQlitics() {
     const { story = {}, card = {}, element = {} } = this.props;
     if (global.qlitics) {
-      global.qlitics(
-        "track",
-        "story-element-view",
-        getQliticsSchema(story, card, element)
-      );
+      global.qlitics("track", "story-element-view", getQliticsSchema(story, card, element));
     } else {
       global.qlitics =
         global.qlitics ||
         function() {
           (qlitics.q = qlitics.q || []).push(arguments);
         };
-      global.qlitics(
-        "track",
-        "story-element-view",
-        getQliticsSchema(story, card, element)
-      );
+      global.qlitics("track", "story-element-view", getQliticsSchema(story, card, element));
     }
   }
 
@@ -274,16 +248,12 @@ class StoryElementBase extends React.Component {
   render() {
     const storyElement = this.props.element;
     const typeClassName = `story-element-${storyElement.type}`;
-    const subtypeClassName = `story-element-${storyElement.type}-${
-      storyElement.subtype
-    }`;
+    const subtypeClassName = `story-element-${storyElement.type}-${storyElement.subtype}`;
 
     const storyElementTemplate = this.template();
 
     const { renderTemplates = {}, ...elementProps } = this.props;
-    const renderTemplate =
-      renderTemplates[storyElement.subtype] ||
-      renderTemplates[storyElement.type];
+    const renderTemplate = renderTemplates[storyElement.subtype] || renderTemplates[storyElement.type];
 
     return React.createElement(
       "div",
@@ -299,15 +269,9 @@ class StoryElementBase extends React.Component {
         ? React.createElement(
             renderTemplate,
             { ...elementProps },
-            React.createElement(
-              storyElementTemplate,
-              Object.assign({}, elementProps)
-            )
+            React.createElement(storyElementTemplate, Object.assign({}, elementProps))
           )
-        : React.createElement(
-            storyElementTemplate,
-            Object.assign({}, elementProps)
-          )
+        : React.createElement(storyElementTemplate, Object.assign({}, elementProps))
     );
   }
 }
