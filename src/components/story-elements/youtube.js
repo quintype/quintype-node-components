@@ -1,4 +1,5 @@
 import getYouTubeID from "get-youtube-id";
+import { PropTypes } from "prop-types";
 import React from "react";
 import { getQliticsSchema } from "../../utils";
 import { WithLazy } from "../with-lazy";
@@ -113,17 +114,13 @@ class CustomStoryElementYoutube extends React.Component {
     if (this.props.loadIframeOnClick) {
       return (
         <div className="thumbnail-wrapper">
-          {this.state.showVideo && (
-            <>
-              <button className="youtube-playBtn" onClick={this.renderVideo} aria-label="Play Video" />
-              <img
-                className="youtube-thumbnail"
-                onClick={this.renderVideo}
-                src={`https://img.youtube.com/vi/${getYouTubeID(this.props.element.url)}/sddefault.jpg`}
-                alt="video"
-              />
-            </>
-          )}
+          <button className="youtube-playBtn" onClick={this.renderVideo} aria-label="Play Video" />
+          <img
+            className="youtube-thumbnail"
+            onClick={this.renderVideo}
+            src={`https://img.youtube.com/vi/${getYouTubeID(this.props.element.url)}/sddefault.jpg`}
+            alt="video"
+          />
           {this.state.showVideo && isLibraryLoaded() && <div className="youtube-iframe-wrapper">{youtubeIframe()}</div>}
         </div>
       );
@@ -138,6 +135,17 @@ class CustomStoryElementYoutube extends React.Component {
     } else return <div />;
   }
 }
+
+CustomStoryElementYoutube.propTypes = {
+  loadIframeOnClick: PropTypes.bool,
+  disableAnalytics: PropTypes.bool,
+  story: PropTypes.object,
+  card: PropTypes.object,
+  element: PropTypes.object,
+  onPlay: PropTypes.func,
+  onPause: PropTypes.func,
+  onEnd: PropTypes.func
+};
 
 const StoryElementYoutube = props => {
   return <WithLazy margin="0px">{() => <CustomStoryElementYoutube {...props} />}</WithLazy>;

@@ -1,5 +1,7 @@
 import getVideoID from "get-video-id";
+import { PropTypes } from "prop-types";
 import React from "react";
+import { WithLazy } from "../with-lazy";
 
 let DailyMotion = null;
 let loaderPromise = null;
@@ -23,7 +25,7 @@ function isLibraryLoaded() {
   return DailyMotion !== null;
 }
 
-class StoryElementDailyMotion extends React.Component {
+class CustomStoryElementDailyMotion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -82,7 +84,8 @@ class StoryElementDailyMotion extends React.Component {
         opts: this.opts,
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
-        onEnd: this.onEndCallback
+        onEnd: this.onEndCallback,
+        autoplay: true
       });
     };
 
@@ -116,5 +119,20 @@ class StoryElementDailyMotion extends React.Component {
     } else return <div />;
   }
 }
+
+CustomStoryElementDailyMotion.propTypes = {
+  loadIframeOnClick: PropTypes.bool,
+  disableAnalytics: PropTypes.bool,
+  story: PropTypes.object,
+  card: PropTypes.object,
+  element: PropTypes.object,
+  onPlay: PropTypes.func,
+  onPause: PropTypes.func,
+  onEnd: PropTypes.func
+};
+
+const StoryElementDailyMotion = props => {
+  return <WithLazy margin="0px">{() => <CustomStoryElementDailyMotion {...props} />}</WithLazy>;
+};
 
 export default StoryElementDailyMotion;
