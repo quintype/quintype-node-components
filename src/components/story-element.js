@@ -4,6 +4,7 @@ import React from "react";
 import { getQliticsSchema } from "../utils";
 import { Link } from "./link";
 import { ResponsiveImage } from "./responsive-image";
+import StoryElementDailyMotion from "./story-elements/dailymotion";
 import JSEmbed from "./story-elements/jsembed";
 import Polltype from "./story-elements/polltype";
 import { Table } from "./story-elements/table";
@@ -103,15 +104,15 @@ function StoryElementImage({ element, story = {}, imageWidths, imageDefaultWidth
       { className: "story-element-caption-attribution-wrapper" },
       element.title
         ? React.createElement("figcaption", {
-            dangerouslySetInnerHTML: { __html: element.title },
-            className: "story-element-image-title"
-          })
+          dangerouslySetInnerHTML: { __html: element.title },
+          className: "story-element-image-title"
+        })
         : undefined,
       element["image-attribution"]
         ? React.createElement("figcaption", {
-            dangerouslySetInnerHTML: { __html: element["image-attribution"] },
-            className: "story-element-image-attribution"
-          })
+          dangerouslySetInnerHTML: { __html: element["image-attribution"] },
+          className: "story-element-image-attribution"
+        })
         : undefined
     )
   );
@@ -171,6 +172,7 @@ const DEFAULT_TEMPLATES = {
   text: StoryElementText,
   image: StoryElementImage,
   title: StoryElementTitle,
+  "dailymotion-video": StoryElementDailyMotion,
   "youtube-video": StoryElementYoutube,
   "soundcloud-audio": StoryElementSoundCloud,
   jsembed: StoryElementJsembed,
@@ -232,7 +234,7 @@ class StoryElementBase extends React.Component {
     } else {
       global.qlitics =
         global.qlitics ||
-        function() {
+        function () {
           (qlitics.q = qlitics.q || []).push(arguments);
         };
       global.qlitics("track", "story-element-view", getQliticsSchema(story, card, element));
@@ -265,8 +267,8 @@ class StoryElementBase extends React.Component {
       },
       renderTemplate
         ? React.createElement(
-            renderTemplate,
-            { ...elementProps },
+          renderTemplate,
+          { ...elementProps },
           React.createElement(storyElementTemplate, Object.assign({}, elementProps))
         )
         : React.createElement(storyElementTemplate, Object.assign({}, elementProps))
