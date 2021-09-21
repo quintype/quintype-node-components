@@ -1,6 +1,6 @@
 import { any, element, func, string } from 'prop-types';
 import React from 'react';
-import { connect } from "react-redux/src/connect";
+import { connect } from "react-redux";
 
 class SearchBoxBase extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
-import { Link } from "./link";
-import React from 'react';
 import get from "lodash/get";
+import React from "react";
+import { Link } from "./link";
 
 /**
  * This component can be used to render a BreakingNewsItem.

@@ -1,8 +1,8 @@
-import { Link } from '..';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { render, cleanup, fireEvent } from 'react-testing-library';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { cleanup, fireEvent, render } from 'react-testing-library';
+import { createStore } from 'redux';
+import { Link } from '../components/link';
 
 afterEach(cleanup);
 

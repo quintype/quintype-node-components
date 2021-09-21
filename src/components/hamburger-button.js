@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux/src/connect';
+import { connect } from 'react-redux';
 import { HAMBURGER_CLICKED } from "../store/actions";
 
 

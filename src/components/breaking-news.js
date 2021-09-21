@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from "react-redux/src/connect";
+import { connect } from "react-redux";
 import { BREAKING_NEWS_UPDATED } from '../store/actions';
 import { getRequest } from './api-client';
 

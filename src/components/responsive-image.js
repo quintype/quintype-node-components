@@ -1,8 +1,8 @@
-import { connect } from "react-redux/src/connect";
+import { arrayOf, number, object, string } from "prop-types";
 import React from "react";
-import { ThumborImage } from "./impl/thumbor-image";
-import { string, arrayOf, number, object } from "prop-types";
+import { connect } from "react-redux";
 import { GumletImage } from "./impl/gumlet-image";
+import { ThumborImage } from "./impl/thumbor-image";
 
 function mapStateToProps(state) {
   return {

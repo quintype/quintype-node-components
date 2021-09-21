@@ -1,5 +1,5 @@
 import { func, string } from "prop-types";
-import { connect } from "react-redux/src/connect";
+import { connect } from "react-redux";
 
 function WithHostUrlBase({ children, primaryHostUrl, currentHostUrl }) {
   return children({primaryHostUrl, currentHostUrl});

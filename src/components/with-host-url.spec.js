@@ -1,8 +1,8 @@
-import { WithHostUrl } from '..';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { render, cleanup } from 'react-testing-library';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { cleanup, render } from 'react-testing-library';
+import { createStore } from 'redux';
+import { WithHostUrl } from '../components/with-host-url';
 
 afterEach(cleanup);
 

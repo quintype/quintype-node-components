@@ -1,8 +1,8 @@
-import { ResponsiveImage } from '..';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { render, cleanup } from 'react-testing-library';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { cleanup, render } from 'react-testing-library';
+import { createStore } from 'redux';
+import { ResponsiveImage } from '../components/responsive-image';
 
 afterEach(cleanup);
 

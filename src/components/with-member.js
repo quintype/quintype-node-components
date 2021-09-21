@@ -1,6 +1,6 @@
 import { bool, func } from "prop-types";
 import React from "react";
-import { connect } from "react-redux/src/connect";
+import { connect } from "react-redux";
 import { MEMBER_BEING_LOADED, MEMBER_UPDATED } from '../store/actions';
 import { getRequest } from './api-client';
 

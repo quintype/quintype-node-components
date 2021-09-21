@@ -1,6 +1,6 @@
 import React from "react";
 import { AdSlot, DFPManager, DFPSlotsProvider } from "react-dfp";
-import { connect } from "react-redux/src/connect";
+import { connect } from "react-redux";
 import { withError } from "./with-error";
 
 /**

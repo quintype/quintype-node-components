@@ -1,6 +1,5 @@
-import { connect } from "react-redux/src/connect";
-import { mapDispatchToProps, mapStateToProps } from './impl/client-side-only-impl';
-
+import { connect } from "react-redux";
+import { mapDispatchToProps, mapStateToProps } from "./impl/client-side-only-impl";
 
 /**
  * This component calls the render prop with `clientSideRendered` = true if the client side is completely loaded, and false during SSR and initial bootup.
@@ -17,8 +16,11 @@ import { mapDispatchToProps, mapStateToProps } from './impl/client-side-only-imp
  * @component
  * @category Other
  */
-export const WithClientSideOnly = connect(mapStateToProps, mapDispatchToProps)(WithClientSideOnlyBase);
+export const WithClientSideOnly = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WithClientSideOnlyBase);
 
 function WithClientSideOnlyBase({ clientSideRendered = false, children }) {
-  return children({ clientSideRendered })
+  return children({ clientSideRendered });
 }

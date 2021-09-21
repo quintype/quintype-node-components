@@ -1,6 +1,6 @@
 import get from "lodash/get";
 import React from "react";
-import { connect } from "react-redux/src/connect";
+import { connect } from "react-redux";
 import { ClientSideOnly } from "./client-side-only";
 import { LazyLoadImages } from "./lazy-load-images";
 import { LoadMoreCollectionStories } from "./load-more-collection-stories";

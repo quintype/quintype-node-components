@@ -1,4 +1,4 @@
-import { ResponsiveSource } from '..';
+import { ResponsiveSource } from '../components/responsive-source';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { render, cleanup } from 'react-testing-library';

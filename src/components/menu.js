@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from "react-redux/src/connect";
+import { connect } from "react-redux";
 
 function MenuBase({children, className, itemClassName, items, currentUrl, slice}) {
   items = items.slice.apply(items, slice);
