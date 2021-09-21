@@ -1,6 +1,6 @@
-import { connect } from "react-redux";
+import { connect } from "react-redux/src/connect";
+import { mapDispatchToProps, mapStateToProps } from './impl/client-side-only-impl';
 
-import { mapStateToProps, mapDispatchToProps } from './impl/client-side-only-impl';
 
 /**
  * This component calls the render prop with `clientSideRendered` = true if the client side is completely loaded, and false during SSR and initial bootup.

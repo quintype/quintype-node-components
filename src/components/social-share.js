@@ -1,6 +1,6 @@
 import React from "react";
-import {connect} from "react-redux";
-import {withError} from './with-error';
+import { connect } from "react-redux/src/connect";
+import { withError } from './with-error';
 
 function getNativeShareHandler(canNativeShare, title, fullUrl) {
   if (!canNativeShare) {

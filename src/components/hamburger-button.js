@@ -1,7 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux/src/connect';
+import { HAMBURGER_CLICKED } from "../store/actions";
 
-import {HAMBURGER_CLICKED} from "../store/actions";
 
 function HamburgerButtonBase({onClick, children}) {
   return <a href="/" onClick={onClick}>{children}</a>;

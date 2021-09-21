@@ -1,5 +1,4 @@
-import React from "react";
-import { connect } from "react-redux";
+import { connect } from "react-redux/src/connect";
 import { LinkBase } from "./link-base";
 
 const mapStateToProps = (state) => ({

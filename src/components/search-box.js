@@ -1,6 +1,6 @@
+import { any, element, func, string } from 'prop-types';
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from "react-redux";
+import { connect } from "react-redux/src/connect";
 
 class SearchBoxBase extends React.Component {
   constructor(props) {
@@ -53,16 +53,16 @@ class SearchBoxBase extends React.Component {
 }
 
 SearchBoxBase.propTypes = {
-  initValue: PropTypes.string,
-  placeholder: PropTypes.string,
-  className: PropTypes.string,
-  formRef: PropTypes.any,
-  inputClassName: PropTypes.string,
-  inputId: PropTypes.string,
-  template: PropTypes.element,
-  onSubmitHandler: PropTypes.func,
-  onEscape: PropTypes.func,
-  navigateTo: PropTypes.func
+  initValue: string,
+  placeholder: string,
+  className: string,
+  formRef: any,
+  inputClassName: string,
+  inputId: string,
+  template: element,
+  onSubmitHandler: func,
+  onEscape: func,
+  navigateTo: func
 };
 
 const mapStateToProps = state => ({});

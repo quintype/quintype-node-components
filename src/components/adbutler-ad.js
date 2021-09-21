@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
 import get from "lodash/get";
+import { object, string } from "prop-types";
+import React from "react";
 
 function getSize(sizeMap) {
   const canUseDOM = !!(
@@ -74,7 +74,7 @@ export function AdbutlerAd({ adtype, adbutlerConfig, sizes }) {
 }
 
 AdbutlerAd.propTypes = {
-  adtype: PropTypes.string,
-  adbutlerConfig: PropTypes.object,
-  sizes: PropTypes.object
+  adtype: string,
+  adbutlerConfig: object,
+  sizes: object
 };

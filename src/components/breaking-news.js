@@ -1,7 +1,7 @@
 import React from "react";
-import {connect} from "react-redux";
-import {BREAKING_NEWS_UPDATED} from '../store/actions';
-import {getRequest} from './api-client';
+import { connect } from "react-redux/src/connect";
+import { BREAKING_NEWS_UPDATED } from '../store/actions';
+import { getRequest } from './api-client';
 
 class BreakingNewsBase extends React.Component {
   render() {

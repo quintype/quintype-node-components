@@ -1,14 +1,14 @@
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { func, string } from "prop-types";
+import { connect } from "react-redux/src/connect";
 
 function WithHostUrlBase({ children, primaryHostUrl, currentHostUrl }) {
   return children({primaryHostUrl, currentHostUrl});
 }
 
 WithHostUrlBase.propTypes = {
-  children: PropTypes.func.isRequired,
-  primaryHostUrl: PropTypes.string,
-  currentHostUrl: PropTypes.string,
+  children: func.isRequired,
+  primaryHostUrl: string,
+  currentHostUrl: string,
 };
 
 function mapStateToProps({qt = {}}) {

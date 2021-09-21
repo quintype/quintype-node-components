@@ -1,24 +1,32 @@
 import React from "react";
 
 function TableHeader(columns) {
-  return <thead>
-    <tr>
-      {columns.map(col => <th>{col.Header}</th>)}
-    </tr>
-  </thead>;
+  return (
+    <thead>
+      <tr key="1">
+        {columns.map(col => (
+          <th key="1">{col.Header}</th>
+        ))}
+      </tr>
+    </thead>
+  );
 }
 
 export function TableView({ data, columns, className, hasHeader }) {
-  return <table className={className}>
-    {hasHeader && TableHeader(columns)}
-    <tbody>
-      {data.map(row => <tr>
-        {columns.map(col => <td>
-          {row[col.Header]}
-        </td>)}
-      </tr>)}
-    </tbody>
-  </table>;
+  return (
+    <table className={className}>
+      {hasHeader && TableHeader(columns)}
+      <tbody>
+        {data.map(row => (
+          <tr key="2">
+            {columns.map(col => (
+              <td key="2">{row[col.Header]}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 }
 
 export class Table extends React.Component {
@@ -35,7 +43,7 @@ export class Table extends React.Component {
         header: this.props.hasHeader,
         complete: results => this._isMounted && this.setState({ tableData: results.data })
       });
-    })
+    });
   }
 
   componentDidMount() {
@@ -72,7 +80,7 @@ export class Table extends React.Component {
       columns: columns,
       showPageSizeOptions: false,
       showPageJump: false,
-      className: className,
+      className: className
     });
   }
 }

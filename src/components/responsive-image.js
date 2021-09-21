@@ -1,7 +1,7 @@
-import {connect} from "react-redux";
+import { connect } from "react-redux/src/connect";
 import React from "react";
 import { ThumborImage } from "./impl/thumbor-image";
-import { string, arrayOf, number, object } from 'prop-types';
+import { string, arrayOf, number, object } from "prop-types";
 import { GumletImage } from "./impl/gumlet-image";
 
 function mapStateToProps(state) {
@@ -12,11 +12,11 @@ function mapStateToProps(state) {
 }
 
 function ResponsiveImageBase(props) {
-  if (process.env.NODE_ENV == 'development' && !props.alt && !props.reactTag) {
+  if (process.env.NODE_ENV == "development" && !props.alt && !props.reactTag) {
     global.console && global.console.warn(`Image Found without an alt attribute: ${props.slug}`);
   }
 
-  if(props.imageCDNFormat === "gumlet") {
+  if (props.imageCDNFormat === "gumlet") {
     return React.createElement(GumletImage, props);
   }
   return React.createElement(ThumborImage, props);
@@ -77,4 +77,7 @@ ResponsiveImageBase.propTypes = {
  * @category Images
  * @tutorial using-responsive-image
  */
-export const ResponsiveImage = connect(mapStateToProps, {})(ResponsiveImageBase);
+export const ResponsiveImage = connect(
+  mapStateToProps,
+  {}
+)(ResponsiveImageBase);

@@ -1,7 +1,7 @@
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux/src/connect";
+import { mapDispatchToProps, mapStateToProps } from './impl/client-side-only-impl';
 
-import {mapStateToProps, mapDispatchToProps} from './impl/client-side-only-impl';
 
 class ClientSideOnlyBase extends React.Component {
   render() {

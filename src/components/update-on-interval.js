@@ -1,5 +1,5 @@
+import { any, func, number } from 'prop-types';
 import React from 'react';
-import PropTypes from 'prop-types';
 
 /**
  * This render props component willupdate it's children via props while executing data loaders sent as props to the component.
@@ -72,9 +72,9 @@ UpdateOnInterval.defaultProps = {
 
 UpdateOnInterval.propTypes = {
     /** Sets the time (ms) */
-    interval : PropTypes.number,
+  interval: number,
     /** Async Function to load data */
-    dataLoader : PropTypes.func.isRequired,
+  dataLoader: func.isRequired,
     /** The initial data for server side rendering */
-    initData : PropTypes.any.isRequired
+  initData: any.isRequired
 };

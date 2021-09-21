@@ -1,5 +1,5 @@
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux/src/connect";
 
 function LoadingIndicatorBase(props) {
   return <div className={`loading-indicator ${props.loading ? 'loading-indicator-loading' : ''}`}>
