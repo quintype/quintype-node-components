@@ -1,5 +1,5 @@
+import { func, string } from 'prop-types';
 import React from "react";
-import {func, string} from 'prop-types';
 
 class IntersectionObserverWrapper {
   constructor(callback) {

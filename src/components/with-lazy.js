@@ -1,5 +1,5 @@
+import { func, number, string } from 'prop-types';
 import React from 'react';
-import PropTypes from 'prop-types';
 
 /**
  * This component can be used to load some DOM just before it scrolls into the screen. Currently, it does not support unloading. The `margin` prop is passed to `IntersectionObserver`.
@@ -53,7 +53,7 @@ export class WithLazy extends React.Component {
 }
 
 WithLazy.propTypes = {
-  children: PropTypes.func.isRequired,
-  margin: PropTypes.string,
-  height: PropTypes.number
+  children: func.isRequired,
+  margin: string,
+  height: number
 };
