@@ -1,5 +1,5 @@
 import getVideoID from "get-video-id";
-import { PropTypes } from "prop-types";
+import { bool, func, object } from "prop-types";
 import React from "react";
 import { WithLazy } from "../with-lazy";
 
@@ -121,14 +121,14 @@ class CustomStoryElementDailyMotion extends React.Component {
 }
 
 CustomStoryElementDailyMotion.propTypes = {
-  loadIframeOnClick: PropTypes.bool,
-  disableAnalytics: PropTypes.bool,
-  story: PropTypes.object,
-  card: PropTypes.object,
-  element: PropTypes.object,
-  onPlay: PropTypes.func,
-  onPause: PropTypes.func,
-  onEnd: PropTypes.func
+  loadIframeOnClick: bool,
+  disableAnalytics: bool,
+  story: object,
+  card: object,
+  element: object,
+  onPlay: func,
+  onPause: func,
+  onEnd: func
 };
 
 const StoryElementDailyMotion = props => {
