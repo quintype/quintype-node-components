@@ -33,7 +33,7 @@ class SocialShareBase extends React.Component {
 
     return React.createElement(this.props.template, Object.assign({
       fbUrl: `https://www.facebook.com/sharer.php?u=${encodeURIComponent(fullUrl)}`,
-      twitterUrl: `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(this.props.title)}&hashtags=${hashtags}`,
+      twitterUrl: `https://twitter.com/intent/tweet?url=${encodeURI(fullUrl)}&text=${encodeURIComponent(this.props.title)}&hashtags=${hashtags}`,
       gplusUrl: `https://plus.google.com/share?url=${encodeURIComponent(fullUrl)}`,
       linkedinUrl: `https://www.linkedin.com/shareArticle?url=${encodeURIComponent(fullUrl)}&title=${encodeURIComponent(this.props.title)}`,
       whatsappUrl: `https://api.whatsapp.com/send?text=${encodeURIComponent(fullUrl)}`,
