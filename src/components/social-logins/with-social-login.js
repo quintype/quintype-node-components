@@ -1,5 +1,5 @@
+import { bool, func, string } from 'prop-types';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { postRequest } from '../api-client';
 
 /**
@@ -78,13 +78,13 @@ function createSession(provider, token) {
 }
 
 WithSocialLogin.propTypes = {
-  initialize: PropTypes.func.isRequired,
-  socialLogin: PropTypes.func.isRequired,
-  children: PropTypes.func.isRequired,
-  provider: PropTypes.string.isRequired,
-  sso: PropTypes.bool,
-  redirectUrl: PropTypes.string,
-  isBridgekeeperLogin: PropTypes.bool,
+  initialize: func.isRequired,
+  socialLogin: func.isRequired,
+  children: func.isRequired,
+  provider: string.isRequired,
+  sso: bool,
+  redirectUrl: string,
+  isBridgekeeperLogin: bool,
 };
 
 WithSocialLogin.defaultProps = {

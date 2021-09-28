@@ -1,8 +1,8 @@
+import { bool, func } from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { MEMBER_BEING_LOADED, MEMBER_UPDATED } from '../store/actions';
 import { getRequest } from './api-client';
-import { MEMBER_UPDATED, MEMBER_BEING_LOADED } from '../store/actions';
 
 let loadedMember = false;
 
@@ -38,9 +38,9 @@ class WithMemberBase extends React.Component {
 }
 
 WithMemberBase.propTypes = {
-  children: PropTypes.func.isRequired,
+  children: func.isRequired,
   /** Enabling this prop makes the relevant bridgekeeper calls for checking the member and the logout api */
-  isBridgekeeperEnabled: PropTypes.bool
+  isBridgekeeperEnabled: bool
 };
 
 WithMemberBase.defaultProps = {

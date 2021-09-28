@@ -1,5 +1,5 @@
+import { func, string } from 'prop-types';
 import React from 'react';
-import PropTypes from 'prop-types';
 
 export function LoadMoreButton(props) {
   return <button className={props.className} onClick={props.onLoadMore} data-test-id = "load-more">{props.text}</button>
@@ -7,11 +7,11 @@ export function LoadMoreButton(props) {
 
 LoadMoreButton.propTypes = {
   // CSS class to add styles from
-  className: PropTypes.string.isRequired,
+  className: string.isRequired,
   // Callback function for click event
-  onLoadMore: PropTypes.func.isRequired,
+  onLoadMore: func.isRequired,
   // Button text to display
-  text: PropTypes.string.isRequired,
+  text: string.isRequired,
 };
 
 LoadMoreButton.defaultProps = {
