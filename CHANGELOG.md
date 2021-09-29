@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.31.6](https://github.com/quintype/quintype-node-components/compare/v2.31.5...v2.31.6) (2021-09-29)
+
+
+### Bug Fixes
+
+* **perf:** Reduce Home List Vendor  ([#195](https://github.com/quintype/quintype-node-components/issues/195)) ([ae49774](https://github.com/quintype/quintype-node-components/commit/ae49774418c4962753dd5fb8b0619205f6177192))
+
 ### [2.31.5](https://github.com/quintype/quintype-node-components/compare/v2.31.4...v2.31.5) (2021-09-22)
 
 ### [2.31.4](https://github.com/quintype/quintype-node-components/compare/v2.31.3...v2.31.4) (2021-09-16)
