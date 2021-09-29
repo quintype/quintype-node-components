@@ -79,9 +79,9 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React from "react";
+            <pre class="prettyprint source linenums"><code>import { bool, element, number, string } from "prop-types";
+import React from "react";
 import { StarIcon } from "./star-icon";
-import PropTypes from "prop-types";
 
 /**
  * This component takes in the value for rating and renders star for the value passed in. This comopent is generally used for story review type.
@@ -144,27 +144,27 @@ export function ReviewRating({
 
 ReviewRating.propTypes = {
   /** Rating value to be displayed */
-  value: PropTypes.number.isRequired,
+  value: number.isRequired,
   /** Can show Empty rating */
-  canShowEmptyRating: PropTypes.bool,
+  canShowEmptyRating: bool,
   /** Size of the icon (star) */
-  size: PropTypes.number,
+  size: number,
   /** Active color */
-  activeColor: PropTypes.string,
+  activeColor: string,
   /** Inactive/ disabled stars color */
-  inActiveColor: PropTypes.string,
+  inActiveColor: string,
   /** Number of stars to render */
-  count: PropTypes.number,
+  count: number,
   /** Show half stars */
-  showHalfStar: PropTypes.bool,
+  showHalfStar: bool,
   /** Classname for the containing div */
-  className: PropTypes.string,
+  className: string,
   /** Optional React component to render instead of active star */
-  activeSymbol: PropTypes.element,
+  activeSymbol: element,
   /** Optional React component to render instead of inactive star */
-  inActiveSymbol: PropTypes.element,
+  inActiveSymbol: element,
   /** Optional React component to render instead of half active star */
-  halfActiveSymbol: PropTypes.element
+  halfActiveSymbol: element
 };
 </code></pre>
         </article>
