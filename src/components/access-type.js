@@ -54,6 +54,7 @@ class AccessTypeBase extends React.Component {
     if (!global.AccessType) {
       return null;
     }
+    console.log("EMAILA IEL", emailAddress);
     const userObj = isLoggedIn
       ? {
           emailAddress: emailAddress,
@@ -119,6 +120,7 @@ class AccessTypeBase extends React.Component {
     }
     const { error, data: paymentOptions } = await awaitHelper(global.AccessType.getPaymentOptions());
     if (error) {
+      console.log("THE REAL ERRROR", error);
       return {
         error: "payment options fetch failed"
       };
@@ -165,6 +167,7 @@ class AccessTypeBase extends React.Component {
 
   runSequentialCalls = async (callback = () => null) => {
     let jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
+    console.log("EMAIL FROM RSC REAL", this.props);
     const { error } = await awaitHelper(
       this.setUser(
         this.props.email,
@@ -316,6 +319,7 @@ class AccessTypeBase extends React.Component {
     const { paymentOptions } = this.props;
     planObject["paymentType"] = get(planObject.selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay";
     const paymentObject = this.makePaymentObject(planObject);
+    console.log(paymentObject);
     return paymentOptions.razorpay.proceed(paymentObject);
   };
 
@@ -362,6 +366,30 @@ class AccessTypeBase extends React.Component {
       return Promise.reject({ message: "Payment option is loading..." });
     }
     return omise.proceed(paymentObject).then(response => response.proceed(paymentObject));
+  };
+
+  initAdyenPayment = options => {
+    if (!document.getElementById("adyen-dropin")) {
+      const dropInElement = document.createElement("div");
+      dropInElement.setAttribute("id", "adyen-dropin");
+      document.body.appendChild(dropInElement);
+    }
+
+    console.log(options, "OPTIONS FROM QT COMP");
+
+    const paymentType = get(options.selectedPlan, ["recurring"]) ? "adyen_recurring" : "adyen";
+
+    const paymentObject = this.makePaymentObject({ ...options, paymentType, dropin_container_id: "adyen-dropin" });
+
+    paymentObject["dropin_container_id"] = "adyen_dropin";
+
+    const adyen = get(this.props, ["paymentOptions", "adyen"]);
+    console.log(this.props.paymentOptions);
+    console.log("PAYMENT OBJECT", paymentObject);
+    return adyen.proceed(paymentObject).then(response => {
+      console.log(response);
+      return response.proceed(paymentObject);
+    });
   };
 
   pingBackMeteredStory = async (asset, accessData) => {
@@ -412,6 +440,7 @@ class AccessTypeBase extends React.Component {
       initStripePayment: this.initStripePayment,
       initPaypalPayment: this.initPaypalPayment,
       initOmisePayment: this.initOmisePayment,
+      initAdyenPayment: this.initAdyenPayment,
       checkAccess: this.checkAccess,
       getSubscriptionForUser: this.getSubscriptionForUser,
       accessUpdated: this.props.accessUpdated,
@@ -605,7 +634,4 @@ const mapDispatchToProps = dispatch => ({
  * @component
  * @category Subscription
  */
-export const AccessType = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AccessTypeBase);
+export const AccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase);
