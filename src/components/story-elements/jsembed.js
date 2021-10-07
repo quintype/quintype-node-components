@@ -1,5 +1,5 @@
 import atob from "atob";
-import { PropTypes } from "prop-types";
+import { string } from "prop-types";
 import React from "react";
 
 function cloneScriptNode(node) {
@@ -61,6 +61,6 @@ export default class JSEmbed extends React.Component {
 }
 
 JSEmbed.propTypes = {
-  id: PropTypes.string,
-  embedJS: PropTypes.string
-};
+  id: string,
+  embedJS: string
+}

@@ -1,5 +1,5 @@
 import get from "lodash/get";
-import PropTypes from "prop-types";
+import { bool, func, number, string } from "prop-types";
 import React from "react";
 import { batch, connect } from "react-redux";
 import {
@@ -452,31 +452,31 @@ class AccessTypeBase extends React.Component {
 }
 
 AccessTypeBase.propTypes = {
-  children: PropTypes.func.isRequired,
+  children: func.isRequired,
 
   /** Email address of the user */
-  email: PropTypes.string,
+  email: string,
 
   /** Phone number of the user */
-  phone: PropTypes.number,
+  phone: number,
 
   /** Specify if you are using the AccessType Staging */
-  isStaging: PropTypes.bool,
+  isStaging: bool,
 
   /** Load AccessType Script */
-  enableAccesstype: PropTypes.bool.isRequired,
+  enableAccesstype: bool.isRequired,
 
   /** AccessType ACCOUNT_KEY */
-  accessTypeKey: PropTypes.string.isRequired,
+  accessTypeKey: string.isRequired,
 
   /** AccessType BK_Integration_Id */
-  accessTypeBkIntegrationId: PropTypes.string.isRequired,
+  accessTypeBkIntegrationId: string.isRequired,
 
   /** AccessType production host url. Default value is "https://www.accesstype.com" */
-  prodHost: PropTypes.string,
+  prodHost: string,
 
   /** AccessType staging host url. Default value is "https://staging.accesstype.com" */
-  stagingHost: PropTypes.string
+  stagingHost: string
 };
 
 const mapStateToProps = state => ({
