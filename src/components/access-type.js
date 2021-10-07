@@ -54,7 +54,7 @@ class AccessTypeBase extends React.Component {
     if (!global.AccessType) {
       return null;
     }
-    console.log("EMAILA IEL", emailAddress);
+    console.log("EMAILA setUSER", emailAddress);
     const userObj = isLoggedIn
       ? {
           emailAddress: emailAddress,
@@ -368,28 +368,27 @@ class AccessTypeBase extends React.Component {
     return omise.proceed(paymentObject).then(response => response.proceed(paymentObject));
   };
 
-  initAdyenPayment = options => {
+  initAdyenPayment = (selectedPlanObj = {}, planType = "") => {
     if (!document.getElementById("adyen-dropin")) {
       const dropInElement = document.createElement("div");
       dropInElement.setAttribute("id", "adyen-dropin");
       document.body.appendChild(dropInElement);
     }
 
-    console.log(options, "OPTIONS FROM QT COMP");
+    const planObject = this.makePlanObject(selectedPlanObj, planType);
+    planObject["paymentType"] = get(planObject, ["selectedPlan", "recurring"]) ? "adyen_recurring" : "adyen";
 
-    const paymentType = get(options.selectedPlan, ["recurring"]) ? "adyen_recurring" : "adyen";
-
-    const paymentObject = this.makePaymentObject({ ...options, paymentType, dropin_container_id: "adyen-dropin" });
-
-    paymentObject["dropin_container_id"] = "adyen_dropin";
+    const paymentObject = this.makePaymentObject(planObject);
 
     const adyen = get(this.props, ["paymentOptions", "adyen"]);
-    console.log(this.props.paymentOptions);
-    console.log("PAYMENT OBJECT", paymentObject);
-    return adyen.proceed(paymentObject).then(response => {
-      console.log(response);
-      return response.proceed(paymentObject);
-    });
+
+    paymentObject["options"] = { ...paymentObject["options"], dropin_container_id: "adyen-dropin" };
+    paymentObject["additional_data"] = {
+      publisher_return_url: `${document.location.origin}/adyen-return-url`
+    };
+
+    console.log("Final pay opts", paymentObject);
+    return adyen.proceed(paymentObject).then(response => response.proceed(paymentObject));
   };
 
   pingBackMeteredStory = async (asset, accessData) => {
