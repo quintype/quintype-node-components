@@ -1,6 +1,7 @@
 import get from "lodash/get";
 import { bool, func, number, string } from "prop-types";
 import React from "react";
+import ReactDOM from "react-dom";
 import { batch, connect } from "react-redux";
 import {
   ACCESS_BEING_LOADED,
@@ -368,27 +369,43 @@ class AccessTypeBase extends React.Component {
     return omise.proceed(paymentObject).then(response => response.proceed(paymentObject));
   };
 
-  initAdyenPayment = (selectedPlanObj = {}, planType = "") => {
-    if (!document.getElementById("adyen-dropin")) {
-      const dropInElement = document.createElement("div");
-      dropInElement.setAttribute("id", "adyen-dropin");
-      document.body.appendChild(dropInElement);
+  initAdyenPayment = (selectedPlanObj = {}, planType = "", AdyenModal) => {
+    if (!document.getElementById("adyen-modal")) {
+      console.log("ADDING ELEMENT");
+      const modalElement = document.createElement("div");
+      modalElement.setAttribute("id", "adyen-modal");
+      document.body.appendChild(modalElement);
+      ReactDOM.render(AdyenModal, "adyen-modal");
     }
 
-    const planObject = this.makePlanObject(selectedPlanObj, planType);
-    planObject["paymentType"] = get(planObject, ["selectedPlan", "recurring"]) ? "adyen_recurring" : "adyen";
+    return new Promise(() => {
+      const observer = new MutationObserver((mutations, obs) => {
+        const planObject = this.makePlanObject(selectedPlanObj, planType);
+        planObject["paymentType"] = get(planObject, ["selectedPlan", "recurring"]) ? "adyen_recurring" : "adyen";
 
-    const paymentObject = this.makePaymentObject(planObject);
+        const paymentObject = this.makePaymentObject(planObject);
 
-    const adyen = get(this.props, ["paymentOptions", "adyen"]);
+        const adyen = get(this.props, ["paymentOptions", "adyen"]);
 
-    paymentObject["options"] = { ...paymentObject["options"], dropin_container_id: "adyen-dropin" };
-    paymentObject["additional_data"] = {
-      publisher_return_url: `${document.location.origin}/adyen-return-url`
-    };
+        paymentObject["options"] = { ...paymentObject["options"], dropin_container_id: "dropin-adyen" };
+        paymentObject["additional_data"] = {
+          publisher_return_url: `${document.location.origin}/adyen-return-url`
+        };
 
-    console.log("Final pay opts", paymentObject);
-    return adyen.proceed(paymentObject).then(response => response.proceed(paymentObject));
+        console.log("Final pay opts", paymentObject);
+
+        const adyenDropin = document.getElementById("dropin-adyen");
+        if (adyenDropin) {
+          obs.disconnect();
+          return adyen.proceed(paymentObject).then(response => response.proceed(paymentObject));
+        }
+      });
+
+      observer.observe(document, {
+        childList: true,
+        subtree: true
+      });
+    });
   };
 
   pingBackMeteredStory = async (asset, accessData) => {
