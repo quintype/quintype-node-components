@@ -55,7 +55,6 @@ class AccessTypeBase extends React.Component {
     if (!global.AccessType) {
       return null;
     }
-    console.log("EMAILA setUSER", emailAddress);
     const userObj = isLoggedIn
       ? {
           emailAddress: emailAddress,
@@ -121,7 +120,6 @@ class AccessTypeBase extends React.Component {
     }
     const { error, data: paymentOptions } = await awaitHelper(global.AccessType.getPaymentOptions());
     if (error) {
-      console.log("THE REAL ERRROR", error);
       return {
         error: "payment options fetch failed"
       };
@@ -168,7 +166,6 @@ class AccessTypeBase extends React.Component {
 
   runSequentialCalls = async (callback = () => null) => {
     let jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
-    console.log("EMAIL FROM RSC REAL", this.props);
     const { error } = await awaitHelper(
       this.setUser(
         this.props.email,
@@ -370,16 +367,15 @@ class AccessTypeBase extends React.Component {
   };
 
   initAdyenPayment = (selectedPlanObj = {}, planType = "", AdyenModal) => {
-    if (!document.getElementById("adyen-modal")) {
-      console.log("ADDING ELEMENT");
-      const modalElement = document.createElement("div");
-      modalElement.setAttribute("id", "adyen-modal");
-      document.body.appendChild(modalElement);
-      ReactDOM.render(AdyenModal, "adyen-modal");
-    }
+    return new Promise((resolve, reject) => {
+      if (!document.getElementById("adyen-modal")) {
+        console.log("ADDING ELEMENT");
+        const modalElement = document.createElement("div");
+        modalElement.setAttribute("id", "adyen-modal");
+        document.body.appendChild(modalElement);
+      }
 
-    return new Promise(() => {
-      const observer = new MutationObserver((mutations, obs) => {
+      const afterOpen = () => {
         const planObject = this.makePlanObject(selectedPlanObj, planType);
         planObject["paymentType"] = get(planObject, ["selectedPlan", "recurring"]) ? "adyen_recurring" : "adyen";
 
@@ -394,17 +390,10 @@ class AccessTypeBase extends React.Component {
 
         console.log("Final pay opts", paymentObject);
 
-        const adyenDropin = document.getElementById("dropin-adyen");
-        if (adyenDropin) {
-          obs.disconnect();
-          return adyen.proceed(paymentObject).then(response => response.proceed(paymentObject));
-        }
-      });
+        return resolve(adyen.proceed(paymentObject).then(response => response.proceed(paymentObject)));
+      };
 
-      observer.observe(document, {
-        childList: true,
-        subtree: true
-      });
+      ReactDOM.render(<AdyenModal afterOpen={afterOpen} afterClose={reject} />, document.getElementById("adyen-modal"));
     });
   };
 
