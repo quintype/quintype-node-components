@@ -369,7 +369,6 @@ class AccessTypeBase extends React.Component {
   initAdyenPayment = (selectedPlanObj = {}, planType = "", AdyenModal) => {
     return new Promise((resolve, reject) => {
       if (!document.getElementById("adyen-modal")) {
-        console.log("ADDING ELEMENT");
         const modalElement = document.createElement("div");
         modalElement.setAttribute("id", "adyen-modal");
         document.body.appendChild(modalElement);
