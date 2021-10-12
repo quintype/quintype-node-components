@@ -34,7 +34,7 @@ export function GumletImage(props) {
 
   const Tag = reactTag || "img";
 
-  useEffect(loadGumlet);
+  /*useEffect(loadGumlet);*/
 
   return <React.Fragment>
     <Tag {...imageProps} {...omit(props, USED_PARAMS)} className={className ? `qt-image ${className}` : 'qt-image'} />
