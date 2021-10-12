@@ -385,10 +385,8 @@ class AccessTypeBase extends React.Component {
 
         paymentObject["options"] = { ...paymentObject["options"], dropin_container_id: "dropin-adyen" };
         paymentObject["additional_data"] = {
-          publisher_return_url: `${document.location.origin}/adyen-return-url`
+          publisher_return_url: `${document.location.origin}/user-details`
         };
-
-        console.log("Final pay opts", paymentObject);
 
         return resolve(adyen.proceed(paymentObject).then(response => response.proceed(paymentObject)));
       };
