@@ -365,7 +365,7 @@ class AccessTypeBase extends React.Component {
     return omise.proceed(paymentObject).then(response => response.proceed(paymentObject));
   };
 
-  initAdyenPayment = (selectedPlanObj = {}, planType = "", AdyenModal) => {
+  initAdyenPayment = (selectedPlanObj = {}, planType = "", AdyenModal, locale) => {
     return new Promise((resolve, reject) => {
       if (!document.getElementById("adyen-modal")) {
         const modalElement = document.createElement("div");
@@ -381,7 +381,7 @@ class AccessTypeBase extends React.Component {
 
         const adyen = get(this.props, ["paymentOptions", "adyen"]);
 
-        paymentObject["options"] = { ...paymentObject["options"], dropin_container_id: "dropin-adyen" };
+        paymentObject["options"] = { ...paymentObject["options"], dropin_container_id: "dropin-adyen", locale };
         paymentObject["additional_data"] = {
           publisher_return_url: `${document.location.origin}/user-details`
         };
