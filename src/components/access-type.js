@@ -512,6 +512,7 @@ const mapDispatchToProps = dispatch => ({
  *  initStripePayment| options(object), options={ argType: "options",selectedPlan: selectedPlanObj, planType:"",couponCode: "", successUrl:"", cancelUrl:"", recipientSubscriber: {}} | Initialize the Stripe payment
  *  initPaypalPayment| options(object), options={argType: "options",selectedPlan: selectedPlanObj,planType: planType,couponCode: "", recipientSubscriber: {}, returnUrl: "",cancelUrl:""} | Initialize the PayPal payment
  *  initOmisePayment| selectedPlan(object), planType(string)  | Initialize the Omise payment
+ *  initAdyenPayment| selectedPlan(object), planType(string), AdyenModal(React Component), locale(string) | Initialize Adyen Payment
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
  *  validateCoupon|  selectedPlan(object), couponCode (string)  | Validate coupon with plan
  *  cancelSubscription| subscriptionId(number) | Cancel a subscription
@@ -618,6 +619,13 @@ const mapDispatchToProps = dispatch => ({
  *       cancelUrl: `${document.location.origin}/paypal-cancel-url`
  *     };
  *     return props.initPaypalPayment(options);
+ *   }
+ *  
+ *   if (paymentGateway === "adyen") {
+ *     const locale = get(this.props, ["config", "pagebuilder-config", "general", "accesstypeIntegration"]);
+ *     // The AdyenModal component should accept two functions as props: `afterOpen` and `afterClose`
+ *     // `afterOpen` will trigger the adyen payment.
+ *     return this.props.initAdyenPayment(plan, "standard", AdyenModal, locale);
  *   }
  *
  * ....
