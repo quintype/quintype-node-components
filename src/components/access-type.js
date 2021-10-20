@@ -375,9 +375,10 @@ class AccessTypeBase extends React.Component {
 
       const afterOpen = () => {
         const planObject = this.makePlanObject(selectedPlanObj, planType);
-        planObject["paymentType"] = get(planObject, ["selectedPlan", "recurring"]) ? "adyen_recurring" : "adyen";
+        const isRecurring = get(planObject, ["selectedPlan", "recurring"]);
+        const paymentType = isRecurring ? "adyen_recurring" : "adyen";
 
-        const paymentObject = this.makePaymentObject(planObject);
+        const paymentObject = this.makePaymentObject({ ...planObject, paymentType });
 
         const adyen = get(this.props, ["paymentOptions", "adyen"]);
 
