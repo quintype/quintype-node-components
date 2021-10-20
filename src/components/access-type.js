@@ -366,32 +366,33 @@ class AccessTypeBase extends React.Component {
   };
 
   initAdyenPayment = (selectedPlanObj = {}, planType = "", AdyenModal, locale) => {
-    return new Promise((resolve, reject) => {
-      if (!document.getElementById("adyen-modal")) {
-        const modalElement = document.createElement("div");
-        modalElement.setAttribute("id", "adyen-modal");
-        document.body.appendChild(modalElement);
-      }
+    const adyenExecutor = (resolve, reject) => {
+    if (!document.getElementById("adyen-modal")) {
+      const modalElement = document.createElement("div");
+      modalElement.setAttribute("id", "adyen-modal");
+      document.body.appendChild(modalElement);
+    }
 
-      const afterOpen = () => {
-        const planObject = this.makePlanObject(selectedPlanObj, planType);
-        const isRecurring = get(planObject, ["selectedPlan", "recurring"]);
-        const paymentType = isRecurring ? "adyen_recurring" : "adyen";
+    const afterOpen = () => {
+      const planObject = this.makePlanObject(selectedPlanObj, planType);
+      const isRecurring = get(planObject, ["selectedPlan", "recurring"]);
+      const paymentType = isRecurring ? "adyen_recurring" : "adyen";
 
-        const paymentObject = this.makePaymentObject({ ...planObject, paymentType });
+      const paymentObject = this.makePaymentObject({ ...planObject, paymentType });
 
-        const adyen = get(this.props, ["paymentOptions", "adyen"]);
+      const adyen = get(this.props, ["paymentOptions", "adyen"]);
 
-        paymentObject["options"] = { ...paymentObject["options"], dropin_container_id: "dropin-adyen", locale };
-        paymentObject["additional_data"] = {
-          publisher_return_url: `${document.location.origin}/user-details`
-        };
-
-        return resolve(adyen.proceed(paymentObject).then(response => response.proceed(paymentObject)));
+      paymentObject["options"] = { ...paymentObject["options"], dropin_container_id: "dropin-adyen", locale };
+      paymentObject["additional_data"] = {
+        publisher_return_url: `${document.location.origin}/user-details`
       };
 
-      ReactDOM.render(<AdyenModal afterOpen={afterOpen} afterClose={reject} />, document.getElementById("adyen-modal"));
-    });
+      return resolve(adyen.proceed(paymentObject).then(response => response.proceed(paymentObject)));
+    };
+
+    ReactDOM.render(<AdyenModal afterOpen={afterOpen} afterClose={reject} />, document.getElementById("adyen-modal"));
+    }
+    return new Promise(adyenExecutor);
   };
 
   pingBackMeteredStory = async (asset, accessData) => {
