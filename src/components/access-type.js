@@ -404,6 +404,22 @@ class AccessTypeBase extends React.Component {
     return accessById;
   };
 
+  getgetSubscriberMetadata = async () => {
+    if (!global.AccessType) {
+      return {};
+    }
+    const metadata = await awaitHelper(global.AccessType.getSubscriberMetadata());
+    return metadata;
+  };
+
+  setSubscriberMetadata = async subscriberMetadata => {
+    if (!global.AccessType || !subscriberMetadata) {
+      return {};
+    }
+    const response = await awaitHelper(global.AccessType.setSubscriberMetadata(subscriberMetadata));
+    return response;
+  };
+
   render() {
     const { children } = this.props;
     return children({
@@ -418,7 +434,9 @@ class AccessTypeBase extends React.Component {
       accessIsLoading: this.props.accessIsLoading,
       getAssetPlans: this.props.getAssetPlans,
       validateCoupon: this.validateCoupon,
-      cancelSubscription: this.cancelSubscription
+      cancelSubscription: this.cancelSubscription,
+      getgetSubscriberMetadata: this.getgetSubscriberMetadata,
+      setSubscriberMetadata: this.setSubscriberMetadata
     });
   }
 }
