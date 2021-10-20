@@ -366,7 +366,7 @@ class AccessTypeBase extends React.Component {
   };
 
   initAdyenPayment = (selectedPlanObj = {}, planType = "", AdyenModal, locale) => {
-    return new Promise((resolve, reject) => {
+    const adyenExecutor = (resolve, reject) => {
       if (!document.getElementById("adyen-modal")) {
         const modalElement = document.createElement("div");
         modalElement.setAttribute("id", "adyen-modal");
@@ -375,12 +375,11 @@ class AccessTypeBase extends React.Component {
 
       const afterOpen = () => {
         const planObject = this.makePlanObject(selectedPlanObj, planType);
-        planObject["paymentType"] = get(planObject, ["selectedPlan", "recurring"]) ? "adyen_recurring" : "adyen";
+        const isRecurring = get(planObject, ["selectedPlan", "recurring"]);
+        const paymentType = isRecurring ? "adyen_recurring" : "adyen";
 
-        let paymentObject = this.makePaymentObject(planObject);
-
+        let paymentObject = this.makePaymentObject({ ...planObject, paymentType });
         const adyen = get(this.props, ["paymentOptions", "adyen"]);
-
         paymentObject = {
           ...paymentObject,
           options: { ...paymentObject["options"], dropin_container_id: "dropin-adyen", locale },
@@ -389,11 +388,17 @@ class AccessTypeBase extends React.Component {
           }
         };
 
+        paymentObject["options"] = { ...paymentObject["options"], dropin_container_id: "dropin-adyen", locale };
+        paymentObject["additional_data"] = {
+          publisher_return_url: `${document.location.origin}/user-details`
+        };
+
         return resolve(adyen.proceed(paymentObject).then(response => response.proceed(paymentObject)));
       };
 
       ReactDOM.render(<AdyenModal afterOpen={afterOpen} afterClose={reject} />, document.getElementById("adyen-modal"));
-    });
+    };
+    return new Promise(adyenExecutor);
   };
 
   pingBackMeteredStory = async (asset, accessData) => {
@@ -623,7 +628,7 @@ const mapDispatchToProps = dispatch => ({
  *     };
  *     return props.initPaypalPayment(options);
  *   }
- *  
+ *
  *   if (paymentGateway === "adyen") {
  *     const locale = get(this.props, ["config", "pagebuilder-config", "general", "accesstypeIntegration"]);
  *     // The AdyenModal component should accept two functions as props: `afterOpen` and `afterClose`
@@ -646,4 +651,7 @@ const mapDispatchToProps = dispatch => ({
  * @component
  * @category Subscription
  */
-export const AccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase);
+export const AccessType = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AccessTypeBase);
