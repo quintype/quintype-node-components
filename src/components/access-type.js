@@ -404,7 +404,7 @@ class AccessTypeBase extends React.Component {
     return accessById;
   };
 
-  getgetSubscriberMetadata = async () => {
+  getSubscriberMetadata = async () => {
     if (!global.AccessType) {
       return {};
     }
@@ -435,7 +435,7 @@ class AccessTypeBase extends React.Component {
       getAssetPlans: this.props.getAssetPlans,
       validateCoupon: this.validateCoupon,
       cancelSubscription: this.cancelSubscription,
-      getgetSubscriberMetadata: this.getgetSubscriberMetadata,
+      getSubscriberMetadata: this.getSubscriberMetadata,
       setSubscriberMetadata: this.setSubscriberMetadata
     });
   }
@@ -501,6 +501,14 @@ const mapDispatchToProps = dispatch => ({
  *  initPaypalPayment| options(object), options={argType: "options",selectedPlan: selectedPlanObj,planType: planType,couponCode: "", recipientSubscriber: {}, returnUrl: "",cancelUrl:""} | Initialize the PayPal payment
  *  initOmisePayment| selectedPlan(object), planType(string)  | Initialize the Omise payment
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
+ *  getSubscriberMetadata| Get the Subscriber Metadata
+ *  setSubscriberMetadata| subscriberMetadata(object), subscriberMetadata={"address": {
+      "line1": "221B Bakers Street",
+      "line2": "Near Watson Library",
+      "city": "London",
+      "state": "",
+  },
+  "phone_number": "007"}}  | Update the Subscriber Metadata
  *  validateCoupon|  selectedPlan(object), couponCode (string)  | Validate coupon with plan
  *  cancelSubscription| subscriptionId(number) | Cancel a subscription
  *  getSubscriptionForUser | -NA- | Gets the subscriptions of the current logged in user
@@ -548,7 +556,7 @@ const mapDispatchToProps = dispatch => ({
  *                  stagingHost="https://staging.accesstype.com"
  *                  accessTypeBkIntegrationId={accessTypeBkIntegrationId}
  *                >
- *                  {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, getSubscriptionForUser }) => (
+ *                  {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, getSubscriptionForUser, getSubscriberMetadata, setSubscriberMetadata }) => (
  *                    <div>
  *                      <PaymentCheckoutLayout
  *                        accessIsLoading={accessIsLoading}
@@ -559,6 +567,9 @@ const mapDispatchToProps = dispatch => ({
  *                        initStripePayment={initStripePayment}
  *                        initPaypalPayment={initPaypalPayment}
  *                        getSubscriptionForUser={getSubscriptionForUser}
+ *                        getgetSubscriberMetadata={getgetSubscriberMetadata}
+ *                        setSubscriberMetadata={setSubscriberMetadata}
+ *
  *                        {...this.props}
  *                      />
  *                    </div>
