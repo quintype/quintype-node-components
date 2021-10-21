@@ -377,7 +377,6 @@ class AccessTypeBase extends React.Component {
         const planObject = this.makePlanObject(selectedPlanObj, planType);
         const isRecurring = get(planObject, ["selectedPlan", "recurring"]);
         const paymentType = isRecurring ? "adyen_recurring" : "adyen";
-
         let paymentObject = this.makePaymentObject({ ...planObject, paymentType });
         const adyen = get(this.props, ["paymentOptions", "adyen"]);
         paymentObject = {
@@ -386,11 +385,6 @@ class AccessTypeBase extends React.Component {
           additional_data: {
             publisher_return_url: `${document.location.origin}/user-details`
           }
-        };
-
-        paymentObject["options"] = { ...paymentObject["options"], dropin_container_id: "dropin-adyen", locale };
-        paymentObject["additional_data"] = {
-          publisher_return_url: `${document.location.origin}/user-details`
         };
 
         return resolve(adyen.proceed(paymentObject).then(response => response.proceed(paymentObject)));
