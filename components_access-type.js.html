@@ -82,6 +82,7 @@
             <pre class="prettyprint source linenums"><code>import get from "lodash/get";
 import { bool, func, number, string } from "prop-types";
 import React from "react";
+import ReactDOM from "react-dom";
 import { batch, connect } from "react-redux";
 import {
   ACCESS_BEING_LOADED,
@@ -445,6 +446,36 @@ class AccessTypeBase extends React.Component {
     return omise.proceed(paymentObject).then(response => response.proceed(paymentObject));
   };
 
+  initAdyenPayment = (selectedPlanObj = {}, planType = "", AdyenModal, locale) => {
+    const adyenExecutor = (resolve, reject) => {
+      if (!document.getElementById("adyen-modal")) {
+        const modalElement = document.createElement("div");
+        modalElement.setAttribute("id", "adyen-modal");
+        document.body.appendChild(modalElement);
+      }
+
+      const afterOpen = () => {
+        const planObject = this.makePlanObject(selectedPlanObj, planType);
+        const isRecurring = get(planObject, ["selectedPlan", "recurring"]);
+        const paymentType = isRecurring ? "adyen_recurring" : "adyen";
+        let paymentObject = this.makePaymentObject({ ...planObject, paymentType });
+        const adyen = get(this.props, ["paymentOptions", "adyen"]);
+        paymentObject = {
+          ...paymentObject,
+          options: { ...paymentObject["options"], dropin_container_id: "dropin-adyen", locale },
+          additional_data: {
+            publisher_return_url: `${document.location.origin}/user-details`
+          }
+        };
+
+        return resolve(adyen.proceed(paymentObject).then(response => response.proceed(paymentObject)));
+      };
+
+      ReactDOM.render(&lt;AdyenModal afterOpen={afterOpen} afterClose={reject} />, document.getElementById("adyen-modal"));
+    };
+    return new Promise(adyenExecutor);
+  };
+
   pingBackMeteredStory = async (asset, accessData) => {
     try {
       global.AccessType.pingbackAssetAccess(asset, accessData);
@@ -493,6 +524,7 @@ class AccessTypeBase extends React.Component {
       initStripePayment: this.initStripePayment,
       initPaypalPayment: this.initPaypalPayment,
       initOmisePayment: this.initOmisePayment,
+      initAdyenPayment: this.initAdyenPayment,
       checkAccess: this.checkAccess,
       getSubscriptionForUser: this.getSubscriptionForUser,
       accessUpdated: this.props.accessUpdated,
@@ -563,6 +595,7 @@ const mapDispatchToProps = dispatch => ({
  *  initStripePayment| options(object), options={ argType: "options",selectedPlan: selectedPlanObj, planType:"",couponCode: "", successUrl:"", cancelUrl:"", recipientSubscriber: {}} | Initialize the Stripe payment
  *  initPaypalPayment| options(object), options={argType: "options",selectedPlan: selectedPlanObj,planType: planType,couponCode: "", recipientSubscriber: {}, returnUrl: "",cancelUrl:""} | Initialize the PayPal payment
  *  initOmisePayment| selectedPlan(object), planType(string)  | Initialize the Omise payment
+ *  initAdyenPayment| selectedPlan(object), planType(string), AdyenModal(React Component), locale(string) | Initialize Adyen Payment
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
  *  validateCoupon|  selectedPlan(object), couponCode (string)  | Validate coupon with plan
  *  cancelSubscription| subscriptionId(number) | Cancel a subscription
@@ -669,6 +702,13 @@ const mapDispatchToProps = dispatch => ({
  *       cancelUrl: `${document.location.origin}/paypal-cancel-url`
  *     };
  *     return props.initPaypalPayment(options);
+ *   }
+ *
+ *   if (paymentGateway === "adyen") {
+ *     const locale = get(this.props, ["config", "pagebuilder-config", "general", "accesstypeIntegration"]);
+ *     // The AdyenModal component should accept two functions as props: `afterOpen` and `afterClose`
+ *     // `afterOpen` will trigger the adyen payment.
+ *     return this.props.initAdyenPayment(plan, "standard", AdyenModal, locale);
  *   }
  *
  * ....

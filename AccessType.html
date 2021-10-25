@@ -147,6 +147,11 @@
 <td>Initialize the Omise payment</td>
 </tr>
 <tr>
+<td>initAdyenPayment</td>
+<td>selectedPlan(object), planType(string), AdyenModal(React Component), locale(string)</td>
+<td>Initialize Adyen Payment</td>
+</tr>
+<tr>
 <td>getAssetPlans</td>
 <td>storyId(string)</td>
 <td>Get Asset Subscription Plans</td>
@@ -273,6 +278,13 @@ const PaymentCheckoutLayout = (props) => {
       cancelUrl: `${document.location.origin}/paypal-cancel-url`
     };
     return props.initPaypalPayment(options);
+  }
+
+  if (paymentGateway === &quot;adyen&quot;) {
+    const locale = get(this.props, [&quot;config&quot;, &quot;pagebuilder-config&quot;, &quot;general&quot;, &quot;accesstypeIntegration&quot;]);
+    // The AdyenModal component should accept two functions as props: `afterOpen` and `afterClose`
+    // `afterOpen` will trigger the adyen payment.
+    return this.props.initAdyenPayment(plan, &quot;standard&quot;, AdyenModal, locale);
   }
 
 ....
@@ -457,7 +469,7 @@ const PaymentCheckoutLayout = (props) => {
         <p class="tag-source">
             <a href="components_access-type.js.html" class="button">View Source</a>
             <span>
-                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line608">line 608</a>
+                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line648">line 648</a>
             </span>
         </p>
     
