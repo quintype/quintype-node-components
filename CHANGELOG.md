@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.32.0](https://github.com/quintype/quintype-node-components/compare/v2.31.7...v2.32.0) (2021-10-25)
+
+
+### Features
+
+* **payment:** adyen integration ([#196](https://github.com/quintype/quintype-node-components/issues/196)) ([0764124](https://github.com/quintype/quintype-node-components/commit/07641243e9702ff2606c000f9d001844e13dadaf))
+
 ### [2.31.7](https://github.com/quintype/quintype-node-components/compare/v2.31.6...v2.31.7) (2021-09-29)
 
 ### [2.31.6](https://github.com/quintype/quintype-node-components/compare/v2.31.5...v2.31.6) (2021-09-29)
