@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.33.0](https://github.com/quintype/quintype-node-components/compare/v2.31.3...v2.33.0) (2021-10-28)
+
+
+### Features
+
+* **payment:** adyen integration ([#196](https://github.com/quintype/quintype-node-components/issues/196)) ([0764124](https://github.com/quintype/quintype-node-components/commit/07641243e9702ff2606c000f9d001844e13dadaf))
+
+
+### Bug Fixes
+
+* **perf:** Reduce Home List Vendor  ([#195](https://github.com/quintype/quintype-node-components/issues/195)) ([ae49774](https://github.com/quintype/quintype-node-components/commit/ae49774418c4962753dd5fb8b0619205f6177192))
+
 ## [2.32.0](https://github.com/quintype/quintype-node-components/compare/v2.31.7...v2.32.0) (2021-10-25)
 
 
