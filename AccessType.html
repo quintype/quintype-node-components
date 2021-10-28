@@ -157,32 +157,29 @@
 <td>Get Asset Subscription Plans</td>
 </tr>
 <tr>
-<td>validateCoupon</td>
-<td>selectedPlan(object), couponCode (string)</td>
-<td>Validate coupon with plan</td>
+<td>getSubscriberMetadata</td>
+<td>Get the Subscriber Metadata</td>
+<td></td>
 </tr>
 <tr>
-<td>cancelSubscription</td>
-<td>subscriptionId(number)</td>
-<td>Cancel a subscription</td>
-</tr>
-<tr>
-<td>getSubscriptionForUser</td>
-<td>-NA-</td>
-<td>Gets the subscriptions of the current logged in user</td>
-</tr>
-<tr>
-<td>accessUpdated</td>
-<td>accessObject(object)</td>
-<td>Sets the current story access to redux store</td>
-</tr>
-<tr>
-<td>accessIsLoading</td>
-<td>loading(boolean)</td>
-<td>A boolean which holds true between the request for access of a story and its response</td>
+<td>setSubscriberMetadata</td>
+<td>subscriberMetadata(object), subscriberMetadata={&quot;address&quot;: {</td>
+<td></td>
 </tr>
 </tbody>
 </table>
+<pre><code>  &quot;line1&quot;: &quot;221B Bakers Street&quot;,
+  &quot;line2&quot;: &quot;Near Watson Library&quot;,
+  &quot;city&quot;: &quot;London&quot;,
+  &quot;state&quot;: &quot;&quot;,
+</code></pre>
+<p>},
+&quot;phone_number&quot;: &quot;007&quot;}}  | Update the Subscriber Metadata
+validateCoupon|  selectedPlan(object), couponCode (string)  | Validate coupon with plan
+cancelSubscription| subscriptionId(number) | Cancel a subscription
+getSubscriptionForUser | -NA- | Gets the subscriptions of the current logged in user
+accessUpdated| accessObject(object) | Sets the current story access to redux store
+accessIsLoading| loading(boolean) | A boolean which holds true between the request for access of a story and its response</p>
 <h6>Notes :</h6>
 <ul>
 <li>This component uses AccessType Js internally</li>
@@ -221,7 +218,7 @@ render() {
                  stagingHost=&quot;https://staging.accesstype.com&quot;
                  accessTypeBkIntegrationId={accessTypeBkIntegrationId}
                >
-                 {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, getSubscriptionForUser }) => (
+                 {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, getSubscriptionForUser, getSubscriberMetadata, setSubscriberMetadata }) => (
                    &lt;div>
                      &lt;PaymentCheckoutLayout
                        accessIsLoading={accessIsLoading}
@@ -232,6 +229,9 @@ render() {
                        initStripePayment={initStripePayment}
                        initPaypalPayment={initPaypalPayment}
                        getSubscriptionForUser={getSubscriptionForUser}
+                       getgetSubscriberMetadata={getgetSubscriberMetadata}
+                       setSubscriberMetadata={setSubscriberMetadata}
+
                        {...this.props}
                      />
                    &lt;/div>
@@ -469,7 +469,7 @@ const PaymentCheckoutLayout = (props) => {
         <p class="tag-source">
             <a href="components_access-type.js.html" class="button">View Source</a>
             <span>
-                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line648">line 648</a>
+                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line677">line 677</a>
             </span>
         </p>
     
