@@ -435,6 +435,22 @@ class AccessTypeBase extends React.Component {
     return accessById;
   };
 
+  getSubscriberMetadata = async () => {
+    if (!global.AccessType) {
+      return {};
+    }
+    const metadata = await awaitHelper(global.AccessType.getSubscriberMetadata());
+    return metadata;
+  };
+
+  setSubscriberMetadata = async subscriberMetadata => {
+    if (!global.AccessType || !subscriberMetadata) {
+      return {};
+    }
+    const response = await awaitHelper(global.AccessType.setSubscriberMetadata(subscriberMetadata));
+    return response;
+  };
+
   render() {
     const { children } = this.props;
     return children({
@@ -450,7 +466,9 @@ class AccessTypeBase extends React.Component {
       accessIsLoading: this.props.accessIsLoading,
       getAssetPlans: this.props.getAssetPlans,
       validateCoupon: this.validateCoupon,
-      cancelSubscription: this.cancelSubscription
+      cancelSubscription: this.cancelSubscription,
+      getSubscriberMetadata: this.getSubscriberMetadata,
+      setSubscriberMetadata: this.setSubscriberMetadata
     });
   }
 }
@@ -516,6 +534,14 @@ const mapDispatchToProps = dispatch => ({
  *  initOmisePayment| selectedPlan(object), planType(string)  | Initialize the Omise payment
  *  initAdyenPayment| selectedPlan(object), planType(string), AdyenModal(React Component), locale(string) | Initialize Adyen Payment
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
+ *  getSubscriberMetadata| Get the Subscriber Metadata
+ *  setSubscriberMetadata| subscriberMetadata(object), subscriberMetadata={"address": {
+      "line1": "221B Bakers Street",
+      "line2": "Near Watson Library",
+      "city": "London",
+      "state": "",
+  },
+  "phone_number": "007"}}  | Update the Subscriber Metadata
  *  validateCoupon|  selectedPlan(object), couponCode (string)  | Validate coupon with plan
  *  cancelSubscription| subscriptionId(number) | Cancel a subscription
  *  getSubscriptionForUser | -NA- | Gets the subscriptions of the current logged in user
@@ -563,7 +589,7 @@ const mapDispatchToProps = dispatch => ({
  *                  stagingHost="https://staging.accesstype.com"
  *                  accessTypeBkIntegrationId={accessTypeBkIntegrationId}
  *                >
- *                  {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, getSubscriptionForUser }) => (
+ *                  {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, getSubscriptionForUser, getSubscriberMetadata, setSubscriberMetadata }) => (
  *                    <div>
  *                      <PaymentCheckoutLayout
  *                        accessIsLoading={accessIsLoading}
@@ -574,6 +600,9 @@ const mapDispatchToProps = dispatch => ({
  *                        initStripePayment={initStripePayment}
  *                        initPaypalPayment={initPaypalPayment}
  *                        getSubscriptionForUser={getSubscriptionForUser}
+ *                        getgetSubscriberMetadata={getgetSubscriberMetadata}
+ *                        setSubscriberMetadata={setSubscriberMetadata}
+ *
  *                        {...this.props}
  *                      />
  *                    </div>
