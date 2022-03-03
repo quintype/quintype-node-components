@@ -1,3 +1,4 @@
+import omit from "@babel/runtime/helpers/objectWithoutProperties";
 import emptyWebGif from "empty-web-gif";
 import { FocusedImage } from "quintype-js";
 import React, { useEffect } from "react";
