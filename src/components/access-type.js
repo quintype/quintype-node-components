@@ -19,6 +19,9 @@ class AccessTypeBase extends React.Component {
     super(props);
     this.prodHost = props.prodHost || "https://www.accesstype.com";
     this.stagingHost = props.stagingHost || "https://staging.accesstype.com";
+    this.state = {
+      accessLoading: false
+    }
   }
 
   componentDidMount() {
@@ -165,7 +168,12 @@ class AccessTypeBase extends React.Component {
   };
 
   runSequentialCalls = async (callback = () => null) => {
+    if(this.state.accessLoading){
+      return false;
+    }
+    this.setState({accessLoading: true});
     let jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
+    this.setState({accessLoading: false});
     const { error } = await awaitHelper(
       this.setUser(
         this.props.email,
