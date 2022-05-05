@@ -26,3 +26,12 @@ exports[`ResponsiveImage Does not add a rect param if the focus point is missing
   srcset="//images.assettype.com/somepublisher%2Fimage.png?w=320 320w,//images.assettype.com/somepublisher%2Fimage.png?w=640 640w,//images.assettype.com/somepublisher%2Fimage.png?w=1024 1024w"
 />
 `;
+
+exports[`ResponsiveImage should pick imgParams from the props 1`] = `
+<img
+  alt="Alt Text"
+  class="qt-image"
+  src="//images.assettype.com/somepublisher%2Fimage.png?w=640&auto=format%2Ccompress&fmt=png"
+  srcset="//images.assettype.com/somepublisher%2Fimage.png?w=320&auto=format%2Ccompress&fmt=png 320w,//images.assettype.com/somepublisher%2Fimage.png?w=640&auto=format%2Ccompress&fmt=png 640w,//images.assettype.com/somepublisher%2Fimage.png?w=1024&auto=format%2Ccompress&fmt=png 1024w"
+/>
+`;

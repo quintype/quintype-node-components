@@ -1,4 +1,5 @@
 module.exports = {
   verbose: true,
-  transform: { '^.+\\.js$': '<rootDir>/jestPreprocess.js' },
+  transform: { "^.+\\.js$": "<rootDir>/jestPreprocess.js" },
+  testEnvironment: "jsdom",
 };
