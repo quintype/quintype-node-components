@@ -6,7 +6,7 @@ import { ResponsiveImage } from "..";
 
 afterEach(cleanup);
 
-describe.only("ResponsiveImage", () => {
+describe("ResponsiveImage", () => {
   it("Adds a focus point", () => {
     const { container } = render(
       <Provider store={createStore((x) => x, { qt: { config: { "cdn-image": "images.assettype.com" } } })}>
