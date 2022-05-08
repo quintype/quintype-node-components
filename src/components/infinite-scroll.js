@@ -140,6 +140,7 @@ function withFocusObserver(Component) {
       entries.forEach(entry => {
         const item = entry.target.getAttribute("data-infinite-scroll");
         console.log("foooooooooo inside focuscallback", entry);
+        console.log("foooooooooo inside item", item);
         if (entry.isIntersecting) {
           this.props.onFocus(item);
         }
