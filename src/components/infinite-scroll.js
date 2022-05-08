@@ -6,22 +6,26 @@ class ScrollItem extends React.Component {
     super(props);
     this.state = {
       minHeight: props.minHeight
-    }
+    };
   }
 
   render() {
-    return <div ref={node => this.node = node}
-                data-infinite-scroll={this.props.index}
-                style={{minHeight: this.state.minHeight}}>
-      {this.props.show && this.props.render(Object.assign({index: this.props.index}, this.props.data))}
-    </div>;
+    return (
+      <div
+        ref={node => (this.node = node)}
+        data-infinite-scroll={this.props.index}
+        style={{ minHeight: this.state.minHeight }}
+      >
+        {this.props.show && this.props.render(Object.assign({ index: this.props.index }, this.props.data))}
+      </div>
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.show && !this.props.show) {
-      this.setState({minHeight: this.props.minHeight});
-    } else if(!nextProps.show && this.props.show) {
-      this.setState({minHeight: this.node.clientHeight});
+    if (nextProps.show && !this.props.show) {
+      this.setState({ minHeight: this.props.minHeight });
+    } else if (!nextProps.show && this.props.show) {
+      this.setState({ minHeight: this.node.clientHeight });
     }
   }
 
@@ -37,7 +41,7 @@ class ScrollItem extends React.Component {
 // When this becomes visible, we call loadMore()
 class ScrollLoadMore extends React.Component {
   render() {
-    return <div ref={node => this.node = node} data-infinite-scroll="load-more"/>;
+    return <div ref={node => (this.node = node)} data-infinite-scroll="load-more" />;
   }
 
   componentDidMount() {
@@ -55,10 +59,13 @@ class InfiniteScrollBase extends React.Component {
     super(props);
     const initiallyShow = props.initiallyShow || 1;
     this.state = {
-      visibleComponents: [...Array(initiallyShow).keys()].reduce((arr, i) => { arr[i] = true; return arr }, {})
-    }
-    if(global.IntersectionObserver) {
-      this.loadObserver = new IntersectionObserver((x) => this.intersectionCallback(x), {
+      visibleComponents: [...Array(initiallyShow).keys()].reduce((arr, i) => {
+        arr[i] = true;
+        return arr;
+      }, {})
+    };
+    if (global.IntersectionObserver) {
+      this.loadObserver = new IntersectionObserver(x => this.intersectionCallback(x), {
         rootMargin: props.loadMargin || "200px 0px 500px"
       });
     }
@@ -71,10 +78,9 @@ class InfiniteScrollBase extends React.Component {
   intersectionCallback(entries) {
     var visibleComponents = this.state.visibleComponents;
     entries.forEach(entry => {
-
       // Stupid browsers like UC and Mi don't correctly support the spec
-      if(entry.isIntersecting === undefined) {
-        if(this.props.showAllOnLegacyBrowser) {
+      if (entry.isIntersecting === undefined) {
+        if (this.props.showAllOnLegacyBrowser) {
           entry.isIntersecting = true;
         } else {
           return;
@@ -82,28 +88,35 @@ class InfiniteScrollBase extends React.Component {
       }
 
       const item = entry.target.getAttribute("data-infinite-scroll");
-      if(item == 'load-more' && entry.isIntersecting) {
+      if (item == "load-more" && entry.isIntersecting) {
         this.props.loadNext();
       } else {
-        const showItem = this.props.neverHideItem ? visibleComponents[item] || entry.isIntersecting : entry.isIntersecting;
-        visibleComponents = Object.assign({}, visibleComponents, {[item]: showItem});
+        const showItem = this.props.neverHideItem
+          ? visibleComponents[item] || entry.isIntersecting
+          : entry.isIntersecting;
+        visibleComponents = Object.assign({}, visibleComponents, { [item]: showItem });
       }
-    })
-    this.setState({visibleComponents: visibleComponents});
+    });
+    this.setState({ visibleComponents: visibleComponents });
   }
 
   render() {
-    return <div>
-      {this.props.items.map((data, index) =>
-        <ScrollItem observers={this.props.observers.concat([this.loadObserver])}
-                    key={index}
-                    index={index}
-                    show={this.state.visibleComponents[index]}
-                    render={this.props.render}
-                    data={data}
-                    minHeight={this.props.minHeight || 50}/>)}
-      <ScrollLoadMore observers={[this.loadObserver]} />
-    </div>;
+    return (
+      <div>
+        {this.props.items.map((data, index) => (
+          <ScrollItem
+            observers={this.props.observers.concat([this.loadObserver])}
+            key={index}
+            index={index}
+            show={this.state.visibleComponents[index]}
+            render={this.props.render}
+            data={data}
+            minHeight={this.props.minHeight || 50}
+          />
+        ))}
+        <ScrollLoadMore observers={[this.loadObserver]} />
+      </div>
+    );
   }
 }
 
@@ -112,10 +125,10 @@ function withFocusObserver(Component) {
   return class WithFocusObserver extends React.Component {
     constructor(props) {
       super(props);
-      if(global.IntersectionObserver) {
-        this.focusObserver = new IntersectionObserver((x) => this.focusCallback(x), {
+      if (global.IntersectionObserver) {
+        this.focusObserver = new IntersectionObserver(x => this.focusCallback(x), {
           rootMargin: `-${100 - props.focusCallbackAt}% 0px -${props.focusCallbackAt}%`
-        })
+        });
       }
     }
 
@@ -126,18 +139,22 @@ function withFocusObserver(Component) {
     focusCallback(entries) {
       entries.forEach(entry => {
         const item = entry.target.getAttribute("data-infinite-scroll");
-        if(entry.isIntersecting) {
-          this.props.onFocus(item)
+        console.log("foooooooooo inside focuscallback", entry);
+        if (entry.isIntersecting) {
+          this.props.onFocus(item);
         }
       });
     }
 
     render() {
-      return React.createElement(Component, Object.assign({}, this.props, {
-        observers: (this.props.observers || []).concat([this.focusObserver])
-      }))
+      return React.createElement(
+        Component,
+        Object.assign({}, this.props, {
+          observers: (this.props.observers || []).concat([this.focusObserver])
+        })
+      );
     }
-  }
+  };
 }
 
 /**
