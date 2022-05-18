@@ -53,6 +53,7 @@ export function createDfpAdComponent({
   lazyLoad = true,
   singleRequest = false,
   deferAdsBy = 0,
+  isInitialLoadDisabled,
 }) {
   return connect(
     (state, ownProps) => ({
@@ -64,6 +65,7 @@ export function createDfpAdComponent({
       lazyLoad: lazyLoad,
       singleRequest: singleRequest,
       deferAdsBy: deferAdsBy,
+      isInitialLoadDisabled: isInitialLoadDisabled,
     }),
     () => ({})
   )(withError(DfpAdBase));
