@@ -52,7 +52,7 @@ export function createDfpAdComponent({
   collapseEmptyDivs = true,
   lazyLoad = true,
   singleRequest = false,
-  deferAdsBy = 0
+  deferAdsBy = 0,
 }) {
   return connect(
     (state, ownProps) => ({
@@ -63,7 +63,7 @@ export function createDfpAdComponent({
       collapseEmptyDivs: collapseEmptyDivs,
       lazyLoad: lazyLoad,
       singleRequest: singleRequest,
-      deferAdsBy: deferAdsBy
+      deferAdsBy: deferAdsBy,
     }),
     () => ({})
   )(withError(DfpAdBase));
@@ -78,7 +78,8 @@ function DfpAdBase({
   adtype,
   lazyLoad,
   singleRequest,
-  deferAdsBy
+  deferAdsBy,
+  isInitialLoadDisabled,
 }) {
   const adConfig = config[adtype] || {};
 
@@ -92,6 +93,7 @@ function DfpAdBase({
       lazyLoad={lazyLoad}
       singleRequest={singleRequest}
       deferAdsBy={deferAdsBy}
+      disableInitialLoad={isInitialLoadDisabled}
     >
       <AdSlot {...adProps} />
     </DFPSlotsProvider>
