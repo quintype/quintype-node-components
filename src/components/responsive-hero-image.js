@@ -1,7 +1,7 @@
-import React from "react";
-import { ResponsiveImage } from "./responsive-image";
 import omit from "@babel/runtime/helpers/objectWithoutProperties";
 import get from "lodash/get";
+import React from "react";
+import { ResponsiveImage } from "./responsive-image";
 
 /**
  * This component is a wrapper over {@link ResponsiveImages}. It accepts story as a prop and renders story's hero image.
@@ -24,25 +24,16 @@ import get from "lodash/get";
 export function ResponsiveHeroImage(props) {
   let metadata, slug, alternateText;
   const heroImageS3Key = get(props, ["story", "hero-image-s3-key"], "");
-  const storyAlternateData =
-    get(props, ["story", "alternative", "home", "default"], {}) || {};
-  const alternateHeroImageS3Key = get(
-    storyAlternateData,
-    ["hero-image", "hero-image-s3-key"],
-    ""
-  );
+  const storyAlternateData = get(props, ["story", "alternative", "home", "default"], {}) || {};
+  const alternateHeroImageS3Key = get(storyAlternateData, ["hero-image", "hero-image-s3-key"], "");
 
   if (heroImageS3Key) {
     slug = heroImageS3Key;
     metadata = get(props, ["story", "hero-image-metadata"], {});
-    alternateText = get(props, ["story", "headline"], "");
+    alternateText = props.alt ? alt : get(props, ["story", "headline"], "");
   } else if (alternateHeroImageS3Key) {
     slug = alternateHeroImageS3Key;
-    metadata = get(
-      storyAlternateData,
-      ["hero-image", "hero-image-metadata"],
-      {}
-    );
+    metadata = get(storyAlternateData, ["hero-image", "hero-image-metadata"], {});
     alternateText = get(storyAlternateData, ["headline"], "");
   } else return null;
 
