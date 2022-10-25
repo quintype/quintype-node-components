@@ -404,7 +404,6 @@ class AccessTypeBase extends React.Component {
     const { paymentOptions } = this.props;
     const paymentType = get(options.selectedPlan, ["recurring"]) ? "paytrail_recurring" : "paytrail";
     const paymentObject = this.makePaymentObject({ paymentType, ...options });
-    console.log("paymentObject------------", paymentObject);
     return paymentOptions.paytrail
       ? paymentOptions.paytrail.proceed(paymentObject).then((response) => response.proceed(paymentObject))
       : Promise.reject({ message: "Payment option is loading..." });
@@ -549,6 +548,7 @@ const mapDispatchToProps = (dispatch) => ({
  *  initPaypalPayment| options(object), options={argType: "options",selectedPlan: selectedPlanObj,planType: planType,couponCode: "", recipientSubscriber: {}, returnUrl: "",cancelUrl:""} | Initialize the PayPal payment
  *  initOmisePayment| selectedPlan(object), planType(string)  | Initialize the Omise payment
  *  initAdyenPayment| selectedPlan(object), planType(string), AdyenModal(React Component), locale(string) | Initialize Adyen Payment
+ *  initPaytrailPayment| selectedPlan(object), ptions={selectedPlan: selectedPlanObj,planType: planType,couponCode: "", recipientSubscriber: {}, returnUrl: "",cancelUrl:""} | Initialize the Paytrail payment
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
  *  getSubscriberMetadata| Get the Subscriber Metadata
  *  setSubscriberMetadata| subscriberMetadata(object), subscriberMetadata={"address": {
@@ -605,7 +605,7 @@ const mapDispatchToProps = (dispatch) => ({
  *                  stagingHost="https://staging.accesstype.com"
  *                  accessTypeBkIntegrationId={accessTypeBkIntegrationId}
  *                >
- *                  {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, getSubscriptionForUser, getSubscriberMetadata, setSubscriberMetadata }) => (
+ *                  {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, initPaytrailPayment,  getSubscriptionForUser, getSubscriberMetadata, setSubscriberMetadata }) => (
  *                    <div>
  *                      <PaymentCheckoutLayout
  *                        accessIsLoading={accessIsLoading}
@@ -615,6 +615,7 @@ const mapDispatchToProps = (dispatch) => ({
  *                        initRazorPayPayment={initRazorPayPayment}
  *                        initStripePayment={initStripePayment}
  *                        initPaypalPayment={initPaypalPayment}
+ *                        initPaytrailPayment={initPaytrailPayment}
  *                        getSubscriptionForUser={getSubscriptionForUser}
  *                        getgetSubscriberMetadata={getgetSubscriberMetadata}
  *                        setSubscriberMetadata={setSubscriberMetadata}
@@ -652,6 +653,16 @@ const mapDispatchToProps = (dispatch) => ({
  *       cancelUrl: `${document.location.origin}/paypal-cancel-url`
  *     };
  *     return props.initPaypalPayment(options);
+ *   }
+ *
+ *  if (paymentGateway === "paytrail") {
+ *     const options = {
+ *       selectedPlan: plan,
+ *       planType: "standard",
+ *       returnUrl: `${document.location.origin}/paytrail-success.html`,
+ *       cancelUrl: `${document.location.origin}/paytrail-cancel.html`
+ *     };
+ *     return props.initPaytrailPayment(options);
  *   }
  *
  *   if (paymentGateway === "omise") {
