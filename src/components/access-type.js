@@ -402,7 +402,7 @@ class AccessTypeBase extends React.Component {
     }
 
     const { paymentOptions } = this.props;
-    const paymentType = get(options.selectedPlan, ["recurring"]) ? "paypal_recurring" : "paypal";
+    const paymentType = get(options.selectedPlan, ["recurring"]) ? "paytrail_recurring" : "paytrail";
     const paymentObject = this.makePaymentObject({ paymentType, ...options });
     console.log("paymentObject------------", paymentObject);
     return paymentOptions.paytrail
