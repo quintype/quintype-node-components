@@ -10,7 +10,7 @@ import {
   CAMPAIGN_SUBSCRIPTION_GROUP_UPDATED,
   METER_UPDATED,
   PAYMENT_OPTIONS_UPDATED,
-  SUBSCRIPTION_GROUP_UPDATED
+  SUBSCRIPTION_GROUP_UPDATED,
 } from "../store/actions";
 import { awaitHelper } from "../utils";
 
@@ -25,7 +25,7 @@ class AccessTypeBase extends React.Component {
     this.initAccessType();
   }
 
-  loadScript = callback => {
+  loadScript = (callback) => {
     const accessTypeKey = get(this.props, ["accessTypeKey"]);
     const isStaging = get(this.props, ["isStaging"]);
     const enableAccesstype = get(this.props, ["enableAccesstype"]);
@@ -59,10 +59,10 @@ class AccessTypeBase extends React.Component {
       ? {
           emailAddress: emailAddress,
           mobileNumber: mobileNumber,
-          accesstypeJwt: accesstypeJwt
+          accesstypeJwt: accesstypeJwt,
         }
       : {
-          isLoggedIn: false
+          isLoggedIn: false,
         };
     const { error, data: user } = await awaitHelper(global.AccessType.setUser(userObj));
     if (error) {
@@ -80,7 +80,7 @@ class AccessTypeBase extends React.Component {
     const { error, data } = await awaitHelper(
       global.AccessType.validateCoupon({
         subscriptionPlanId: selectedPlanId,
-        couponCode
+        couponCode,
       })
     );
     if (error) {
@@ -108,7 +108,7 @@ class AccessTypeBase extends React.Component {
     const { error, data: subscriptions } = await awaitHelper((await global.fetch(accessTypeHost)).json());
     if (error) {
       return {
-        error: "subscriptions fetch failed"
+        error: "subscriptions fetch failed",
       };
     }
     return subscriptions["subscription_groups"] || [];
@@ -121,7 +121,7 @@ class AccessTypeBase extends React.Component {
     const { error, data: paymentOptions } = await awaitHelper(global.AccessType.getPaymentOptions());
     if (error) {
       return {
-        error: "payment options fetch failed"
+        error: "payment options fetch failed",
       };
     }
     return paymentOptions;
@@ -136,7 +136,7 @@ class AccessTypeBase extends React.Component {
     );
     if (error) {
       return {
-        error: "asset plan fetch failed"
+        error: "asset plan fetch failed",
       };
     }
 
@@ -156,7 +156,7 @@ class AccessTypeBase extends React.Component {
 
       if (error) {
         return {
-          error: "subscriptions fetch failed"
+          error: "subscriptions fetch failed",
         };
       }
       return campaignSubscriptions["subscription_groups"] || [];
@@ -180,7 +180,7 @@ class AccessTypeBase extends React.Component {
           this.getSubscription(),
           this.getPaymentOptions(),
           this.getAssetPlans(),
-          this.getCampaignSubscription()
+          this.getCampaignSubscription(),
         ]).then(([subscriptionGroups, paymentOptions, assetPlans, campaignSubscriptionGroups]) => {
           batch(() => {
             this.props.subscriptionGroupLoaded(subscriptionGroups);
@@ -208,7 +208,7 @@ class AccessTypeBase extends React.Component {
     return subscriptions;
   };
 
-  initAccessType = callback => {
+  initAccessType = (callback) => {
     const { accessTypeBkIntegrationId } = this.props;
     try {
       this.loadScript(() => {
@@ -235,7 +235,7 @@ class AccessTypeBase extends React.Component {
     paymentType = "",
     successUrl = "",
     returnUrl = "",
-    cancelUrl = ""
+    cancelUrl = "",
   }) {
     const {
       id,
@@ -244,7 +244,7 @@ class AccessTypeBase extends React.Component {
       price_cents: price_cents,
       price_currency: price_currency,
       duration_length: duration_length,
-      duration_unit: duration_unit
+      duration_unit: duration_unit,
     } = selectedPlan;
     const paymentObject = {
       type: planType,
@@ -255,28 +255,28 @@ class AccessTypeBase extends React.Component {
         price_cents: price_cents,
         price_currency: price_currency,
         duration_length: duration_length,
-        duration_unit: duration_unit
+        duration_unit: duration_unit,
       },
       coupon_code: couponCode,
       payment: {
         payment_type: paymentType,
         amount_cents: price_cents,
-        amount_currency: price_currency
+        amount_currency: price_currency,
       },
       assets: [
         {
           id: storyId,
           title: storyHeadline,
-          slug: storySlug
-        }
+          slug: storySlug,
+        },
       ],
-      recipient_subscriber: recipientSubscriber //for gift subscription
+      recipient_subscriber: recipientSubscriber, //for gift subscription
     };
     if ((successUrl || returnUrl) && cancelUrl) {
       paymentObject.options = {};
 
       paymentObject.options.urls = {
-        cancel_url: cancelUrl
+        cancel_url: cancelUrl,
       };
 
       if (returnUrl) {
@@ -296,14 +296,14 @@ class AccessTypeBase extends React.Component {
           storyHeadline: selectedPlanObj.storyHeadline,
           storySlug: selectedPlanObj.storySlug,
           couponCode: selectedPlanObj.couponCode,
-          recipientSubscriber: selectedPlanObj.recipientSubscriber
+          recipientSubscriber: selectedPlanObj.recipientSubscriber,
         }
       : {
           selectedPlan: selectedPlanObj,
           planType,
           storyId,
           storyHeadline,
-          storySlug
+          storySlug,
         };
   }
   //TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
@@ -346,7 +346,7 @@ class AccessTypeBase extends React.Component {
     const paymentType = get(options.selectedPlan, ["recurring"]) ? "paypal_recurring" : "paypal";
     const paymentObject = this.makePaymentObject({ paymentType, ...options });
     return paymentOptions.paypal
-      ? paymentOptions.paypal.proceed(paymentObject).then(response => response.proceed(paymentObject))
+      ? paymentOptions.paypal.proceed(paymentObject).then((response) => response.proceed(paymentObject))
       : Promise.reject({ message: "Payment option is loading..." });
   };
 
@@ -362,7 +362,7 @@ class AccessTypeBase extends React.Component {
     if (!omise) {
       return Promise.reject({ message: "Payment option is loading..." });
     }
-    return omise.proceed(paymentObject).then(response => response.proceed(paymentObject));
+    return omise.proceed(paymentObject).then((response) => response.proceed(paymentObject));
   };
 
   initAdyenPayment = (selectedPlanObj = {}, planType = "", AdyenModal, locale) => {
@@ -383,16 +383,31 @@ class AccessTypeBase extends React.Component {
           ...paymentObject,
           options: { ...paymentObject["options"], dropin_container_id: "dropin-adyen", locale },
           additional_data: {
-            publisher_return_url: `${document.location.origin}/user-details`
-          }
+            publisher_return_url: `${document.location.origin}/user-details`,
+          },
         };
 
-        return resolve(adyen.proceed(paymentObject).then(response => response.proceed(paymentObject)));
+        return resolve(adyen.proceed(paymentObject).then((response) => response.proceed(paymentObject)));
       };
 
       ReactDOM.render(<AdyenModal afterOpen={afterOpen} afterClose={reject} />, document.getElementById("adyen-modal"));
     };
     return new Promise(adyenExecutor);
+  };
+
+  initPaytrailPayment = (options = {}) => {
+    if (!options.selectedPlan) {
+      console.warn("Paytrail needs a plan");
+      return false;
+    }
+
+    const { paymentOptions } = this.props;
+    const paymentType = get(options.selectedPlan, ["recurring"]) ? "paypal_recurring" : "paypal";
+    const paymentObject = this.makePaymentObject({ paymentType, ...options });
+    console.log("paymentObject------------", paymentObject);
+    return paymentOptions.paytrail
+      ? paymentOptions.paytrail.proceed(paymentObject).then((response) => response.proceed(paymentObject))
+      : Promise.reject({ message: "Payment option is loading..." });
   };
 
   pingBackMeteredStory = async (asset, accessData) => {
@@ -405,7 +420,7 @@ class AccessTypeBase extends React.Component {
     return true;
   };
 
-  checkAccess = async assetId => {
+  checkAccess = async (assetId) => {
     if (!assetId) {
       console.warn("AssetId is required");
       return false;
@@ -443,7 +458,7 @@ class AccessTypeBase extends React.Component {
     return metadata;
   };
 
-  setSubscriberMetadata = async subscriberMetadata => {
+  setSubscriberMetadata = async (subscriberMetadata) => {
     if (!global.AccessType || !subscriberMetadata) {
       return {};
     }
@@ -460,6 +475,7 @@ class AccessTypeBase extends React.Component {
       initPaypalPayment: this.initPaypalPayment,
       initOmisePayment: this.initOmisePayment,
       initAdyenPayment: this.initAdyenPayment,
+      initPaytrailPayment: this.initPaytrailPayment,
       checkAccess: this.checkAccess,
       getSubscriptionForUser: this.getSubscriptionForUser,
       accessUpdated: this.props.accessUpdated,
@@ -468,7 +484,7 @@ class AccessTypeBase extends React.Component {
       validateCoupon: this.validateCoupon,
       cancelSubscription: this.cancelSubscription,
       getSubscriberMetadata: this.getSubscriberMetadata,
-      setSubscriberMetadata: this.setSubscriberMetadata
+      setSubscriberMetadata: this.setSubscriberMetadata,
     });
   }
 }
@@ -498,27 +514,27 @@ AccessTypeBase.propTypes = {
   prodHost: string,
 
   /** AccessType staging host url. Default value is "https://staging.accesstype.com" */
-  stagingHost: string
+  stagingHost: string,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   subscriptions: state.subscriptions || null,
   paymentOptions: state.paymentOptions || null,
-  assetPlans: state.assetPlans || null
+  assetPlans: state.assetPlans || null,
 });
 
-const mapDispatchToProps = dispatch => ({
-  subscriptionGroupLoaded: subscriptions => dispatch({ type: SUBSCRIPTION_GROUP_UPDATED, subscriptions }),
-  paymentOptionsLoaded: paymentOptions => dispatch({ type: PAYMENT_OPTIONS_UPDATED, paymentOptions }),
-  accessIsLoading: loading => dispatch({ type: ACCESS_BEING_LOADED, loading }),
-  accessUpdated: access => dispatch({ type: ACCESS_UPDATED, access }),
-  meterUpdated: meterCount => dispatch({ type: METER_UPDATED, meterCount }),
-  assetPlanLoaded: assetPlans => dispatch({ type: ASSET_PLANS, assetPlans }),
-  campaignSubscriptionGroupLoaded: campaignSubscriptions =>
+const mapDispatchToProps = (dispatch) => ({
+  subscriptionGroupLoaded: (subscriptions) => dispatch({ type: SUBSCRIPTION_GROUP_UPDATED, subscriptions }),
+  paymentOptionsLoaded: (paymentOptions) => dispatch({ type: PAYMENT_OPTIONS_UPDATED, paymentOptions }),
+  accessIsLoading: (loading) => dispatch({ type: ACCESS_BEING_LOADED, loading }),
+  accessUpdated: (access) => dispatch({ type: ACCESS_UPDATED, access }),
+  meterUpdated: (meterCount) => dispatch({ type: METER_UPDATED, meterCount }),
+  assetPlanLoaded: (assetPlans) => dispatch({ type: ASSET_PLANS, assetPlans }),
+  campaignSubscriptionGroupLoaded: (campaignSubscriptions) =>
     dispatch({
       type: CAMPAIGN_SUBSCRIPTION_GROUP_UPDATED,
-      campaignSubscriptions
-    })
+      campaignSubscriptions,
+    }),
 });
 
 /**
@@ -674,7 +690,4 @@ const mapDispatchToProps = dispatch => ({
  * @component
  * @category Subscription
  */
-export const AccessType = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AccessTypeBase);
+export const AccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase);
