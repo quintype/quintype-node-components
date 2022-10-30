@@ -2,12 +2,11 @@ import atob from "atob";
 import React from "react";
 import { WithLazy } from "../with-lazy";
 
-
 class DailyMotion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showVideo: false
+      showVideo: false,
     };
   }
 
@@ -15,15 +14,12 @@ class DailyMotion extends React.Component {
     this.setState({ showVideo: true });
   };
 
-  dailymotionIframe=() => {
-    return (<div className="dailymotion-iframe-wrapper">{atob(this.props.element["embed-js"])}</div>)
-
-  }
-
-
+  dailymotionIframe = () => {
+    return <div className="dailymotion-iframe-wrapper">{atob(this.props.element["embed-js"])}</div>;
+  };
 
   render() {
-    const videoId = this.props.element.metadata["video-id"]
+    const videoId = this.props.element.metadata["video-id"];
     if (this.props.loadIframeOnClick) {
       return (
         <div className="thumbnail-wrapper">
@@ -38,23 +34,15 @@ class DailyMotion extends React.Component {
               />
             </>
           )}
-          {this.state.showVideo  && (
-            dailymotionIframe()
-          )}
+          {this.state.showVideo && <>{this.dailymotionIframe()}</>}
         </div>
       );
-
-  } else if (!this.props.loadIframeOnClick) {
-    return  <>{dailymotionIframe()}</>
-
-}
+    } else if (!this.props.loadIframeOnClick) {
+      return <>{this.dailymotionIframe()}</>;
+    }
   }
-
 }
-
 
 export default function DailyMotionEmbedScript(props) {
   return <WithLazy margin="0px">{() => <DailyMotion {...props} />}</WithLazy>;
-};
-
-
+}
