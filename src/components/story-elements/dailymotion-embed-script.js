@@ -15,7 +15,12 @@ class DailyMotion extends React.Component {
   };
 
   dailymotionIframe = () => {
-    return <div className="dailymotion-iframe-wrapper">{atob(this.props.element["embed-js"])}</div>;
+    return (
+      <div
+        className="dailymotion-iframe-wrapper"
+        dangerouslySetInnerHTML={{ __html: atob(this.props.element["embed-js"]) }}
+      />
+    );
   };
 
   render() {
