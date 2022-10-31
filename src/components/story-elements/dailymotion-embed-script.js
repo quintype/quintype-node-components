@@ -26,7 +26,7 @@ class DailyMotion extends React.Component {
     const script = document.createElement("script");
     script.src = `https://geo.dailymotion.com/player/${playerId}.js`;
     script.dataset.video = videoId;
-    this.containerRef.classList.remove("thumbnail-wrapper");
+    this.containerRef.current.classList.remove("thumbnail-wrapper");
     this.containerRef.current.appendChild(script);
   };
 
