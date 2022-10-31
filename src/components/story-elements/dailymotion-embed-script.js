@@ -1,26 +1,32 @@
-import atob from "atob";
 import React from "react";
 import { WithLazy } from "../with-lazy";
 
 class DailyMotion extends React.Component {
   constructor(props) {
     super(props);
+    this.containerRef = React.createRef();
     this.state = {
       showVideo: false,
     };
   }
 
+  componentDidMount() {
+    if (!this.props.loadIframeOnClick) {
+      this.addScript();
+    }
+  }
+
   renderVideo = () => {
     this.setState({ showVideo: true });
+    this.addScript();
   };
 
-  dailymotionIframe = () => {
-    return (
-      <div
-        className="dailymotion-iframe-wrapper"
-        dangerouslySetInnerHTML={{ __html: atob(this.props.element["embed-js"]) }}
-      />
-    );
+  addScript = () => {
+    const { "video-id": videoId, "player-id": playerId } = this.props.element.metadata;
+    const script = document.createElement("script");
+    script.src = `https://geo.dailymotion.com/player/${playerId}.js`;
+    script.dataset.video = videoId;
+    this.containerRef.current.appendChild(script);
   };
 
   render() {
@@ -39,11 +45,11 @@ class DailyMotion extends React.Component {
               />
             </>
           )}
-          {this.state.showVideo && <>{this.dailymotionIframe()}</>}
+          <div className="dailymotion-iframe-wrapper" ref={this.containerRef} />
         </div>
       );
     } else if (!this.props.loadIframeOnClick) {
-      return <>{this.dailymotionIframe()}</>;
+      return <div className="dailymotion-iframe-wrapper" ref={this.containerRef} />;
     }
   }
 }
