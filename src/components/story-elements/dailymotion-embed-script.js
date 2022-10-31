@@ -33,9 +33,9 @@ class DailyMotion extends React.Component {
     const videoId = this.props.element.metadata["video-id"];
     if (this.props.loadIframeOnClick) {
       return (
-        <div className="thumbnail-wrapper">
+        <>
           {!this.state.showVideo && (
-            <>
+            <div className="thumbnail-wrapper">
               <button className="dailymotion-playBtn" onClick={this.renderVideo} aria-label="Play Video" />
               <img
                 className="dailymotion-thumbnail"
@@ -43,10 +43,10 @@ class DailyMotion extends React.Component {
                 src={`https://www.dailymotion.com/thumbnail/video/${videoId}`}
                 alt="daily-motion-video"
               />
-            </>
+            </div>
           )}
           <div className="dailymotion-iframe-wrapper" ref={this.containerRef} />
-        </div>
+        </>
       );
     } else if (!this.props.loadIframeOnClick) {
       return <div className="dailymotion-iframe-wrapper" ref={this.containerRef} />;
