@@ -27,7 +27,6 @@ class DailyMotion extends React.Component {
     const script = document.createElement("script");
     script.src = `https://geo.dailymotion.com/player/${playerId}.js`;
     script.dataset.video = videoId;
-    this.containerRef.current.classList.remove("thumbnail-wrapper");
     this.containerRef.current.appendChild(script);
   };
 
@@ -47,13 +46,11 @@ class DailyMotion extends React.Component {
               />
             </div>
           )}
-          {this.state.showVideo && (
-            <div className="dailymotion-iframe-wrapper thumbnail-wrapper" ref={this.containerRef} />
-          )}
+          {this.state.showVideo && <div className="dailymotion-embed-wrapper" ref={this.containerRef} />}
         </>
       );
     } else if (!this.props.loadIframeOnClick) {
-      return <div className="dailymotion-iframe-wrapper thumbnail-wrapper" ref={this.containerRef} />;
+      return <div className="dailymotion-embed-wrapper" ref={this.containerRef} />;
     }
   }
 }
