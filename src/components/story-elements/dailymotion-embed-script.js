@@ -17,8 +17,9 @@ class DailyMotion extends React.Component {
   }
 
   renderVideo = () => {
-    this.setState({ showVideo: true });
-    this.addScript();
+    this.setState({ showVideo: true }, () => {
+      this.addScript();
+    });
   };
 
   addScript = () => {
