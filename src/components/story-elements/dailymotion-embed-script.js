@@ -46,11 +46,13 @@ class DailyMotion extends React.Component {
               />
             </div>
           )}
-          {this.state.showVideo && <div className="dailymotion-embed-wrapper" ref={this.containerRef} />}
+          {this.state.showVideo && (
+            <div className="dailymotion-embed-wrapper dm-embed-integration" ref={this.containerRef} />
+          )}
         </>
       );
     } else if (!this.props.loadIframeOnClick) {
-      return <div className="dailymotion-embed-wrapper" ref={this.containerRef} />;
+      return <div className="dailymotion-embed-wrapper dm-embed-integration" ref={this.containerRef} />;
     }
   }
 }
