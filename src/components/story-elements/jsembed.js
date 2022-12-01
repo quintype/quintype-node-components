@@ -44,17 +44,17 @@ export default class JSEmbed extends React.Component {
 
   getEmbedJS() {
     const embedJs = this.props.embedJS;
-    if(!embedJs) return null;
-    if(global) {
-      return decodeURIComponent(escape(global.atob( embedJs )));
+    if (!embedJs) return null;
+    if (global) {
+      return decodeURIComponent(escape(global.atob(embedJs)));
     }
-    return Buffer.from(embedJs, 'base64').toString('utf-8')
+    return Buffer.from(embedJs, "base64").toString("utf-8");
   }
 
   render() {
     return (
       <div
-        ref={jsembed => {
+        ref={(jsembed) => {
           this.JSEmbed = jsembed;
         }}
         dangerouslySetInnerHTML={{ __html: this.getEmbedJS() }}
@@ -65,5 +65,5 @@ export default class JSEmbed extends React.Component {
 
 JSEmbed.propTypes = {
   id: string,
-  embedJS: string
-}
+  embedJS: string,
+};
