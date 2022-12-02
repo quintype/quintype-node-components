@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/quintype/quintype-node-components/compare/v3.0.2...v3.1.0) (2022-12-02)
+
+
+### Features
+
+* **dailymotion:** support new daily motion subtype ([#207](https://github.com/quintype/quintype-node-components/issues/207)) ([7105b85](https://github.com/quintype/quintype-node-components/commit/7105b85215c61cdd1e025cf2fe15a7627bccd064))
+
 ### [3.0.2](https://github.com/quintype/quintype-node-components/compare/v2.33.0...v3.0.2) (2022-07-26)
 
 ### [3.0.1](https://github.com/quintype/quintype-node-components/compare/v3.0.0...v3.0.1) (2022-05-16)
