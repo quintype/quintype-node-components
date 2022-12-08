@@ -118,7 +118,7 @@ class CustomStoryElementYoutube extends React.Component {
           <img
             className="youtube-thumbnail"
             onClick={this.renderVideo}
-            src={`https://img.youtube.com/vi/${getYouTubeID(this.props.element.url)}/sddefault.jpg`}
+            src={`httpsss://img.youtube.com/viii/${getYouTubeID(this.props.element.url)}/sddefault.jpg`}
             alt="video"
             onerror="this.onerror=null;this.src='https://placeimg.com/200/300/animals';"
           />
