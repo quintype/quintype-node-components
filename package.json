@@ -23,7 +23,6 @@
   "homepage": "https://github.com/quintype/quintype-node-components#readme",
   "dependencies": {
     "@babel/runtime": "^7.16.3",
-    "atob-utf-8": "^1.0.0",
     "classnames": "^2.3.1",
     "empty-web-gif": "^1.0.1",
     "get-video-id": "^3.4.3",
