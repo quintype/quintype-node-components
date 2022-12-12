@@ -1,6 +1,6 @@
 {
   "name": "@quintype/components",
-  "version": "3.1.0-url-decode.3",
+  "version": "3.1.0-url-decode.4",
   "description": "Components to help build Quintype Node.js apps",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
