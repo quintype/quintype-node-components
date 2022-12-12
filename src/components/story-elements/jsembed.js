@@ -48,7 +48,7 @@ export default class JSEmbed extends React.Component {
     if(global) {
       return decodeURIComponent(escape(global.atob(embedJs)));
     }
-    return decodeURIComponent(escape(Buffer.from(str, 'base64').toString('utf-8')));
+    return decodeURIComponent(escape(Buffer.from(embedJs, 'base64').toString('utf-8')));
   }
 
   render() {
