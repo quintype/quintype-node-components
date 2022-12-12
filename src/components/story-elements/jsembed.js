@@ -1,5 +1,6 @@
 import { string } from "prop-types";
 import React from "react";
+import atob from "atob-utf-8";
 
 function cloneScriptNode(node) {
   var script = document.createElement("script");
@@ -44,11 +45,7 @@ export default class JSEmbed extends React.Component {
 
   getEmbedJS() {
     const embedJs = this.props.embedJS;
-    if (!embedJs) return null;
-    if (global) {
-      return decodeURIComponent(escape(global.atob(embedJs)));
-    }
-    return Buffer.from(embedJs, "base64").toString("utf-8");
+    return embedjs != null ? atob(embedjs) : null;
   }
 
   render() {
