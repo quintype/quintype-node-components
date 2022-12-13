@@ -1,4 +1,4 @@
-import atob from "atob";
+import atob from "atob-utf-8";
 import { string } from "prop-types";
 import React from "react";
 
