@@ -1,3 +1,4 @@
+import atob from "atob";
 import { string } from "prop-types";
 import React from "react";
 
@@ -43,17 +44,14 @@ export default class JSEmbed extends React.Component {
   }
 
   getEmbedJS() {
-    const embedJs = this.props.embedJS;
-    if(!embedJs) return null;
-    if(global) {
-      return decodeURIComponent(escape(global.atob(embedJs)));
-    }
-    return decodeURIComponent(escape(Buffer.from(embedJs, 'base64').toString('utf-8')));
+    var embedjs = this.props.embedJS;
+    return embedjs != null ? atob(embedjs) : null;
   }
 
   render() {
     return (
       <div
+        className="jsembed-wrapper"
         ref={(jsembed) => {
           this.JSEmbed = jsembed;
         }}
