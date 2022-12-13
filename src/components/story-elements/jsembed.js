@@ -44,8 +44,12 @@ export default class JSEmbed extends React.Component {
   }
 
   getEmbedJS() {
-    var embedjs = this.props.embedJS;
-    return embedjs != null ? atob(embedjs) : null;
+    const embedJs = this.props.embedJS;
+    if(!embedJs) return null;
+    if(global) {
+      return decodeURIComponent(escape(global.atob( embedJs )));
+    }
+    return Buffer.from(embedJs, 'base64').toString('utf-8')
   }
 
   render() {
