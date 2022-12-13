@@ -51,7 +51,8 @@ export default class JSEmbed extends React.Component {
   render() {
     return (
       <div
-        ref={jsembed => {
+        className="jsembed-wrapper"
+        ref={(jsembed) => {
           this.JSEmbed = jsembed;
         }}
         dangerouslySetInnerHTML={{ __html: this.getEmbedJS() }}
@@ -62,5 +63,5 @@ export default class JSEmbed extends React.Component {
 
 JSEmbed.propTypes = {
   id: string,
-  embedJS: string
-}
+  embedJS: string,
+};
