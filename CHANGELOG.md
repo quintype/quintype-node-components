@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.3](https://github.com/quintype/quintype-node-components/compare/v3.1.2...v3.1.3) (2022-12-13)
+
+
+### Bug Fixes
+
+* **atob:** Fix decode url of embedjs ([65796bb](https://github.com/quintype/quintype-node-components/commit/65796bb281081f7596c07e9bfb97f4c98e7d5555))
+
 ### [3.1.2](https://github.com/quintype/quintype-node-components/compare/v3.1.1...v3.1.2) (2022-12-13)
 
 
