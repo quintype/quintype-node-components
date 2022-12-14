@@ -1,6 +1,6 @@
 {
   "name": "@quintype/components",
-  "version": "3.1.1-yt-thumbnail.1",
+  "version": "3.1.3",
   "description": "Components to help build Quintype Node.js apps",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
@@ -23,7 +23,6 @@
   "homepage": "https://github.com/quintype/quintype-node-components#readme",
   "dependencies": {
     "@babel/runtime": "^7.16.3",
-    "atob": "^2.1.2",
     "classnames": "^2.3.1",
     "empty-web-gif": "^1.0.1",
     "get-video-id": "^3.4.3",

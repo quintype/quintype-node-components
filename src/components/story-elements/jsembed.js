@@ -1,4 +1,4 @@
-import atob from "atob";
+import atob from "atob-utf-8";
 import { string } from "prop-types";
 import React from "react";
 
@@ -44,14 +44,19 @@ export default class JSEmbed extends React.Component {
   }
 
   getEmbedJS() {
-    var embedjs = this.props.embedJS;
-    return embedjs != null ? atob(embedjs) : null;
+    const embedJs = this.props.embedJS;
+    if(!embedJs) return null;
+    if(global) {
+      return decodeURIComponent(escape(global.atob( embedJs )));
+    }
+    return Buffer.from(embedJs, 'base64').toString('utf-8')
   }
 
   render() {
     return (
       <div
-        ref={jsembed => {
+        className="jsembed-wrapper"
+        ref={(jsembed) => {
           this.JSEmbed = jsembed;
         }}
         dangerouslySetInnerHTML={{ __html: this.getEmbedJS() }}
@@ -62,5 +67,5 @@ export default class JSEmbed extends React.Component {
 
 JSEmbed.propTypes = {
   id: string,
-  embedJS: string
-}
+  embedJS: string,
+};
