@@ -118,7 +118,7 @@ class CustomStoryElementYoutube extends React.Component {
           <img
             className="youtube-thumbnail"
             onClick={this.renderVideo}
-            src={`https://i.ytimg.com/vi/${getYouTubeID(this.props.element.url)}/mqdefault.jpg`}
+            src={`https://i.ytimg.com/vi/${getYouTubeID(this.props.element.url)}/hqdefault.jpg`}
             alt="video"
           />
           {this.state.showVideo && isLibraryLoaded() && <div className="youtube-iframe-wrapper">{youtubeIframe()}</div>}
