@@ -1,4 +1,3 @@
-import atob from "atob-utf-8";
 import { string } from "prop-types";
 import React from "react";
 
@@ -45,11 +44,11 @@ export default class JSEmbed extends React.Component {
 
   getEmbedJS() {
     const embedJs = this.props.embedJS;
-    if(!embedJs) return null;
-    if(global) {
-      return decodeURIComponent(escape(global.atob( embedJs )));
+    if (!embedJs) return null;
+    if (global) {
+      return decodeURIComponent(escape(global.atob(embedJs)));
     }
-    return Buffer.from(embedJs, 'base64').toString('utf-8')
+    return Buffer.from(embedJs, "base64").toString("utf-8");
   }
 
   render() {
