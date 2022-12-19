@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.4](https://github.com/quintype/quintype-node-components/compare/v3.1.3...v3.1.4) (2022-12-19)
+
+
+### Bug Fixes
+
+* **youtube:** use mqdefault image format ([#214](https://github.com/quintype/quintype-node-components/issues/214)) ([123f756](https://github.com/quintype/quintype-node-components/commit/123f7564686f2716d4dfc36d276f6ca93dd8b391))
+
 ### [3.1.3](https://github.com/quintype/quintype-node-components/compare/v3.1.2...v3.1.3) (2022-12-13)
 
 
