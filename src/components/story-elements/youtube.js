@@ -10,10 +10,10 @@ let loaderPromise = null;
 function loadLibrary() {
   if (loaderPromise === null) {
     loaderPromise = import(/* webpackChunkName: "qtc-react-youtube" */ "react-youtube")
-      .then(YT => {
+      .then((YT) => {
         YouTube = YT.default;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Failed to load react-youtube", err);
         return Promise.reject();
       });
@@ -30,12 +30,12 @@ class CustomStoryElementYoutube extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showVideo: false
+      showVideo: false,
     };
     this.opts = {
       playerVars: {
-        autoplay: 0
-      }
+        autoplay: 0,
+      },
     };
   }
 
@@ -49,37 +49,37 @@ class CustomStoryElementYoutube extends React.Component {
     this._isMounted = false;
   }
 
-  triggerQlitics = action => {
+  triggerQlitics = (action) => {
     if (this.props.disableAnalytics === true) return false;
 
     const { story = {}, card = {}, element = {} } = this.props;
     const qliticsData = {
       ...getQliticsSchema(story, card, element),
-      ...{ "story-element-action": action }
+      ...{ "story-element-action": action },
     };
     if (global.qlitics) {
       global.qlitics("track", "story-element-action", qliticsData);
     } else {
       global.qlitics =
         global.qlitics ||
-        function() {
+        function () {
           (qlitics.q = qlitics.q || []).push(arguments);
         };
       qlitics.qlitics.q.push("track", "story-element-action", qliticsData);
     }
   };
 
-  onPlayCallback = event => {
+  onPlayCallback = (event) => {
     this.triggerQlitics("play");
     this.props.onPlay === "function" && this.props.onPlay(event);
   };
 
-  onPauseCallback = event => {
+  onPauseCallback = (event) => {
     this.triggerQlitics("pause");
     this.props.onPause === "function" && this.props.onPause(event);
   };
 
-  onEndCallback = event => {
+  onEndCallback = (event) => {
     this.triggerQlitics("end");
     this.props.onEnd === "function" && this.props.onEnd(event);
   };
@@ -89,7 +89,7 @@ class CustomStoryElementYoutube extends React.Component {
     loadLibrary().then(() => this._isMounted && this.forceUpdate());
   };
 
-  onPlayerReady = event => {
+  onPlayerReady = (event) => {
     event.target.setVolume(100);
     event.target.playVideo();
   };
@@ -107,7 +107,7 @@ class CustomStoryElementYoutube extends React.Component {
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
         onEnd: this.onEndCallback,
-        onReady: this.onPlayerReady
+        onReady: this.onPlayerReady,
       });
     };
 
@@ -118,7 +118,7 @@ class CustomStoryElementYoutube extends React.Component {
           <img
             className="youtube-thumbnail"
             onClick={this.renderVideo}
-            src={`https://img.youtube.com/vi/${getYouTubeID(this.props.element.url)}/sddefault.jpg`}
+            src={`https://i.ytimg.com/vi/${getYouTubeID(this.props.element.url)}/hqdefault.jpg`}
             alt="video"
           />
           {this.state.showVideo && isLibraryLoaded() && <div className="youtube-iframe-wrapper">{youtubeIframe()}</div>}
@@ -130,7 +130,7 @@ class CustomStoryElementYoutube extends React.Component {
         opts: this.opts,
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
-        onEnd: this.onEndCallback
+        onEnd: this.onEndCallback,
       });
     } else return <div />;
   }
@@ -144,10 +144,10 @@ CustomStoryElementYoutube.propTypes = {
   element: object,
   onPlay: func,
   onPause: func,
-  onEnd: func
+  onEnd: func,
 };
 
-const StoryElementYoutube = props => {
+const StoryElementYoutube = (props) => {
   return <WithLazy margin="0px">{() => <CustomStoryElementYoutube {...props} />}</WithLazy>;
 };
 
