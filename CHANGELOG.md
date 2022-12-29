@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.4](https://github.com/quintype/quintype-node-components/compare/v3.1.3...v3.1.4) (2022-12-19)
+
+
+### Bug Fixes
+
+* **youtube:** use mqdefault image format ([#214](https://github.com/quintype/quintype-node-components/issues/214)) ([123f756](https://github.com/quintype/quintype-node-components/commit/123f7564686f2716d4dfc36d276f6ca93dd8b391))
+
+### [3.1.3](https://github.com/quintype/quintype-node-components/compare/v3.1.2...v3.1.3) (2022-12-13)
+
+
+### Bug Fixes
+
+* **atob:** Fix decode url of embedjs ([65796bb](https://github.com/quintype/quintype-node-components/commit/65796bb281081f7596c07e9bfb97f4c98e7d5555))
+
+### [3.1.2](https://github.com/quintype/quintype-node-components/compare/v3.1.1...v3.1.2) (2022-12-13)
+
+
+### Bug Fixes
+
+* **decoding:** Decode base64 embed using utf 8 ([#208](https://github.com/quintype/quintype-node-components/issues/208)) ([7e663ad](https://github.com/quintype/quintype-node-components/commit/7e663ada5e68aeddc7b702ca59bf3fd3cbf34be5))
+
+### [3.1.1](https://github.com/quintype/quintype-node-components/compare/v3.1.0...v3.1.1) (2022-12-13)
+
+## [3.1.0](https://github.com/quintype/quintype-node-components/compare/v3.0.2...v3.1.0) (2022-12-02)
+
+
+### Features
+
+* **dailymotion:** support new daily motion subtype ([#207](https://github.com/quintype/quintype-node-components/issues/207)) ([7105b85](https://github.com/quintype/quintype-node-components/commit/7105b85215c61cdd1e025cf2fe15a7627bccd064))
+
+### [3.0.2](https://github.com/quintype/quintype-node-components/compare/v2.33.0...v3.0.2) (2022-07-26)
+
+### [3.0.1](https://github.com/quintype/quintype-node-components/compare/v3.0.0...v3.0.1) (2022-05-16)
+
 ## [3.0.0](https://github.com/quintype/quintype-node-components/compare/v2.33.0...v3.0.0) (2021-11-30)
 
 ## [2.33.0](https://github.com/quintype/quintype-node-components/compare/v2.31.3...v2.33.0) (2021-10-28)
