@@ -5,6 +5,7 @@ import { getQliticsSchema } from "../utils";
 import { Link } from "./link";
 import { ResponsiveImage } from "./responsive-image";
 import StoryElementDailyMotion from "./story-elements/dailymotion";
+import DailyMotionEmbedScript from "./story-elements/dailymotion-embed-script";
 import JSEmbed from "./story-elements/jsembed";
 import Polltype from "./story-elements/polltype";
 import { Table } from "./story-elements/table";
@@ -173,6 +174,7 @@ const DEFAULT_TEMPLATES = {
   image: StoryElementImage,
   title: StoryElementTitle,
   "dailymotion-video": StoryElementDailyMotion,
+  "dailymotion-embed-script": DailyMotionEmbedScript,
   "youtube-video": StoryElementYoutube,
   "soundcloud-audio": StoryElementSoundCloud,
   jsembed: StoryElementJsembed,
