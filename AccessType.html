@@ -185,6 +185,11 @@
 <td>Initialize Adyen Payment</td>
 </tr>
 <tr>
+<td>initPaytrailPayment</td>
+<td>selectedPlan(object), ptions={selectedPlan: selectedPlanObj,planType: planType,couponCode: &quot;&quot;, recipientSubscriber: {}, returnUrl: &quot;&quot;,cancelUrl:&quot;&quot;}</td>
+<td>Initialize the Paytrail payment</td>
+</tr>
+<tr>
 <td>getAssetPlans</td>
 <td>storyId(string)</td>
 <td>Get Asset Subscription Plans</td>
@@ -251,7 +256,7 @@ render() {
                  stagingHost=&quot;https://staging.accesstype.com&quot;
                  accessTypeBkIntegrationId={accessTypeBkIntegrationId}
                >
-                 {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, getSubscriptionForUser, getSubscriberMetadata, setSubscriberMetadata }) => (
+                 {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, initPaytrailPayment,  getSubscriptionForUser, getSubscriberMetadata, setSubscriberMetadata }) => (
                    &lt;div>
                      &lt;PaymentCheckoutLayout
                        accessIsLoading={accessIsLoading}
@@ -261,6 +266,7 @@ render() {
                        initRazorPayPayment={initRazorPayPayment}
                        initStripePayment={initStripePayment}
                        initPaypalPayment={initPaypalPayment}
+                       initPaytrailPayment={initPaytrailPayment}
                        getSubscriptionForUser={getSubscriptionForUser}
                        getgetSubscriberMetadata={getgetSubscriberMetadata}
                        setSubscriberMetadata={setSubscriberMetadata}
@@ -297,6 +303,16 @@ const PaymentCheckoutLayout = (props) => {
       cancelUrl: `${document.location.origin}/paypal-cancel-url`
     };
     return props.initPaypalPayment(options);
+  }
+
+ if (paymentGateway === &quot;paytrail&quot;) {
+    const options = {
+      selectedPlan: plan,
+      planType: &quot;standard&quot;,
+      returnUrl: `${document.location.origin}/paytrail-success.html`,
+      cancelUrl: `${document.location.origin}/paytrail-cancel.html`
+    };
+    return props.initPaytrailPayment(options);
   }
 
   if (paymentGateway === &quot;omise&quot;) {
@@ -503,7 +519,7 @@ const PaymentCheckoutLayout = (props) => {
         <p class="tag-source">
             <a href="components_access-type.js.html" class="button">View Source</a>
             <span>
-                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line677">line 677</a>
+                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line704">line 704</a>
             </span>
         </p>
     
