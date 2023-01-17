@@ -2,7 +2,7 @@ import omit from "@babel/runtime/helpers/objectWithoutProperties";
 import emptyWebGif from "empty-web-gif";
 import { FocusedImage } from "quintype-js";
 import React, { useEffect } from "react";
-import { hashString, USED_PARAMS } from "./image-utils";
+import { USED_PARAMS, hashString } from "./image-utils";
 
 let forceLoadingGumlet = false;
 function loadGumlet() {
@@ -16,7 +16,7 @@ function loadGumlet() {
   }
   forceLoadingGumlet = true;
   window.GUMLET_CONFIG = window.GUMLET_CONFIG || {
-    hosts: []
+    hosts: [],
   };
   const script = document.createElement("script");
   script.type = "text/javascript";
@@ -27,12 +27,13 @@ function loadGumlet() {
 export function GumletImage(props) {
   const { slug, metadata, aspectRatio, imageCDN, imgParams, reactTag, className, imgLazy = "true" } = props;
   const image = new FocusedImage(slug, metadata);
-
+  const fetchpriority = imgLazy ? "low" : "high";
   const imageProps = {
     src: emptyWebGif,
     "data-src": "https://" + imageCDN + "/" + image.path(aspectRatio, imgParams),
     key: hashString(slug),
-    "data-gmlazy": imgLazy
+    "data-gmlazy": imgLazy,
+    fetchpriority: fetchpriority,
   };
 
   const Tag = reactTag || "img";
