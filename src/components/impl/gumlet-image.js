@@ -27,13 +27,13 @@ function loadGumlet() {
 export function GumletImage(props) {
   const { slug, metadata, aspectRatio, imageCDN, imgParams, reactTag, className, imgLazy = "true" } = props;
   const image = new FocusedImage(slug, metadata);
-  const fetchpriority = imgLazy ? "low" : "high";
+
   const imageProps = {
     src: emptyWebGif,
     "data-src": "https://" + imageCDN + "/" + image.path(aspectRatio, imgParams),
     key: hashString(slug),
     "data-gmlazy": imgLazy,
-    fetchpriority: fetchpriority,
+    fetchpriority: imgLazy === "true" ? "low" : "high",
   };
 
   const Tag = reactTag || "img";
