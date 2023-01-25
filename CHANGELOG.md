@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/quintype/quintype-node-components/compare/v3.1.1...v3.3.0) (2023-01-25)
+
+
+### Features
+
+* **paytrail:** Integrate Paytrail payment gateway ([#206](https://github.com/quintype/quintype-node-components/issues/206)) ([5d972fc](https://github.com/quintype/quintype-node-components/commit/5d972fc12efe08e98a8e7dee5124b753061819d9))
+
+
+### Bug Fixes
+
+* **atob:** Fix decode url of embedjs ([65796bb](https://github.com/quintype/quintype-node-components/commit/65796bb281081f7596c07e9bfb97f4c98e7d5555))
+* **decoding:** Decode base64 embed using utf 8 ([#208](https://github.com/quintype/quintype-node-components/issues/208)) ([7e663ad](https://github.com/quintype/quintype-node-components/commit/7e663ada5e68aeddc7b702ca59bf3fd3cbf34be5))
+* **youtube:** use mqdefault image format ([#214](https://github.com/quintype/quintype-node-components/issues/214)) ([123f756](https://github.com/quintype/quintype-node-components/commit/123f7564686f2716d4dfc36d276f6ca93dd8b391))
+* **youtube:** yt video ipad issue ([#216](https://github.com/quintype/quintype-node-components/issues/216)) ([bcbdbd4](https://github.com/quintype/quintype-node-components/commit/bcbdbd4e93419ac21fb043456d89b348314474b3))
+
 ## [3.2.0](https://github.com/quintype/quintype-node-components/compare/v3.1.4...v3.2.0) (2023-01-09)
 
 
