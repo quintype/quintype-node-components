@@ -76,7 +76,7 @@ class AccessTypeBase extends React.Component {
     if (!global.AccessType) {
       return {};
     }
-
+    console.log("Inside Components selectedPlanId, couponCode is --->", selectedPlanId, couponCode);
     const { error, data } = await awaitHelper(
       global.AccessType.validateCoupon({
         subscriptionPlanId: selectedPlanId,
@@ -188,6 +188,7 @@ class AccessTypeBase extends React.Component {
             this.props.assetPlanLoaded(assetPlans);
             this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups);
           });
+          console.log("Inside the runSequential Calls function [before returning] --->", JSON.stringify(jwtResponse));
           callback();
         });
       } catch (e) {
@@ -214,7 +215,6 @@ class AccessTypeBase extends React.Component {
       this.loadScript(() => {
         // dont try to initialize accessType if integration id is not available
         if (accessTypeBkIntegrationId === undefined) {
-          console.warn("AccessType: Integration Id is undefined");
           return false;
         }
         this.runSequentialCalls(callback);
