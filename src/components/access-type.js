@@ -257,7 +257,7 @@ class AccessTypeBase extends React.Component {
         duration_length: duration_length,
         duration_unit: duration_unit,
       },
-      coupon_code: couponCode,
+      ...(couponCode && { coupon_code: couponCode }),
       payment: {
         payment_type: paymentType,
         amount_cents: price_cents,
