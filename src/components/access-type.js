@@ -245,6 +245,7 @@ class AccessTypeBase extends React.Component {
       price_currency: price_currency,
       duration_length: duration_length,
       duration_unit: duration_unit,
+      metadata,
     } = selectedPlan;
     const paymentObject = {
       type: planType,
@@ -257,6 +258,7 @@ class AccessTypeBase extends React.Component {
         duration_length: duration_length,
         duration_unit: duration_unit,
       },
+      metadata,
       coupon_code: couponCode,
       payment: {
         payment_type: paymentType,
