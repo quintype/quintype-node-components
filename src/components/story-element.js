@@ -4,6 +4,7 @@ import React from "react";
 import { getQliticsSchema } from "../utils";
 import { Link } from "./link";
 import { ResponsiveImage } from "./responsive-image";
+import StoryElementBrightcove from "./story-elements/brightcove";
 import StoryElementDailyMotion from "./story-elements/dailymotion";
 import DailyMotionEmbedScript from "./story-elements/dailymotion-embed-script";
 import JSEmbed from "./story-elements/jsembed";
@@ -181,7 +182,8 @@ const DEFAULT_TEMPLATES = {
   polltype: StoryElementPolltype,
   table: StoryElementTable,
   "also-read": StoryElementAlsoRead,
-  file: StoryElementFile
+  file: StoryElementFile,
+  "brightcove-video": StoryElementBrightcove,
 };
 
 class StoryElementBase extends React.Component {
