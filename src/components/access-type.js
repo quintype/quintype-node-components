@@ -65,8 +65,10 @@ class AccessTypeBase extends React.Component {
           isLoggedIn: false,
         };
     const { error, data: user } = await awaitHelper(global.AccessType.setUser(userObj));
+
     if (error) {
-      console.warn(`User context setting failed --> `, error);
+      console.warn(`User context setting failed  --> `, error);
+      console.log(" setuser failed")
       return error;
     }
     return user;
@@ -174,6 +176,9 @@ class AccessTypeBase extends React.Component {
         !!jwtResponse.headers.get("x-integration-token")
       )
     );
+    if(error) {
+      console.log("error happened in set user ")
+    }
     if (!error) {
       try {
         Promise.all([
@@ -214,7 +219,7 @@ class AccessTypeBase extends React.Component {
       this.loadScript(() => {
         // dont try to initialize accessType if integration id is not available
         if (accessTypeBkIntegrationId === undefined) {
-          console.warn("AccessType: Integration Id is undefined");
+          console.log("AccessType: Integration Id is undefined");
           return false;
         }
         this.runSequentialCalls(callback);
