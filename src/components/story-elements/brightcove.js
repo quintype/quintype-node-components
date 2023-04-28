@@ -1,5 +1,5 @@
 import { bool, func, object } from 'prop-types'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { WithLazy } from '../with-lazy'
 
 let Brightcove = null
@@ -90,26 +90,27 @@ const CustomElementBrightcove = props => {
     loadLibrary()
     handleVideoDisplay(true)
   }
-  if (loadIframeOnClick) {
-    return (
-      <div className='thumbnail-wrapper'>
-        {!showVideo && (
-          <>
-            <button className='youtube-playBtn' onClick={renderVideo} aria-label='Play Video' />
-            <img
-              className='youtube-thumbnail'
-              onClick={renderVideo}
-              src={`https://i.ytimg.com/vi/${getYouTubeID(this.props.element.url)}/hqdefault.jpg`}
-              alt='video'
-            />
-          </>
-        )}
-        {showVideo && isLibraryLoaded && <div className='youtube-iframe-wrapper'>{brightcoveIframe()}</div>}
-      </div>
-    )
-  } else if (!loadIframeOnClick && isLibraryLoaded) {
-    return brightcoveIframe()
-  } else return <></>
+  // if (loadIframeOnClick) {
+  //   return (
+  //     <div className='thumbnail-wrapper'>
+  //       {!showVideo && (
+  //         <>
+  //           <button className='youtube-playBtn' onClick={renderVideo} aria-label='Play Video' />
+  //           <img
+  //             className='youtube-thumbnail'
+  //             onClick={renderVideo}
+  //             src={`https://i.ytimg.com/vi/${getYouTubeID(this.props.element.url)}/hqdefault.jpg`}
+  //             alt='video'
+  //           />
+  //         </>
+  //       )}
+  //       {showVideo && isLibraryLoaded && <div className='youtube-iframe-wrapper'>{brightcoveIframe()}</div>}
+  //     </div>
+  //   )
+  // } else if (!loadIframeOnClick && isLibraryLoaded) {
+  //   return brightcoveIframe()
+  // } else return <></>
+  return (<div>sdfadgs</div>)
 }
 
 CustomElementBrightcove.propTypes = {
