@@ -40,11 +40,15 @@ class AccessTypeBase extends React.Component {
     if (accessTypeKey && !isATScriptAlreadyPresent && !global.AccessType && global.document) {
       console.log("enetred load script if block ");
       const accessTypeScript = document.createElement("script");
+      accessTypeScript.onload = () => {
+        this.props.onATGlobalSet && this.props.onATGlobalSet();
+        callback();
+      };
       accessTypeScript.setAttribute("src", accessTypeHost);
       accessTypeScript.setAttribute("id", "AccessTypeScript");
       accessTypeScript.setAttribute("data-accessType-script", "1");
       accessTypeScript.async = 1;
-      accessTypeScript.onload = () => callback();
+
       accessTypeScript.onerror = () => {
         callback();
         console.log(" load s cript failed");
@@ -516,6 +520,7 @@ class AccessTypeBase extends React.Component {
       cancelSubscription: this.cancelSubscription,
       getSubscriberMetadata: this.getSubscriberMetadata,
       setSubscriberMetadata: this.setSubscriberMetadata,
+      isAccessTypeObjectAVailable: this.state.isAccessTypeObjectAVailable,
     });
   }
 }
@@ -546,6 +551,8 @@ AccessTypeBase.propTypes = {
 
   /** AccessType staging host url. Default value is "https://staging.accesstype.com" */
   stagingHost: string,
+
+  onATGlobalSet: func,
 };
 
 const mapStateToProps = (state) => ({
