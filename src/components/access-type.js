@@ -520,7 +520,6 @@ class AccessTypeBase extends React.Component {
       cancelSubscription: this.cancelSubscription,
       getSubscriberMetadata: this.getSubscriberMetadata,
       setSubscriberMetadata: this.setSubscriberMetadata,
-      isAccessTypeObjectAVailable: this.state.isAccessTypeObjectAVailable,
     });
   }
 }
