@@ -66,6 +66,8 @@ class AccessTypeBase extends React.Component {
         };
     const { error, data: user } = await awaitHelper(global.AccessType.setUser(userObj));
 
+    console.log("setuser", user);
+
     if (error) {
       console.warn(`User context setting failed  --> `, error);
       console.log(" setuser failed");
