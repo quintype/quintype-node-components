@@ -202,7 +202,7 @@ class AccessTypeBase extends React.Component {
               this.props.assetPlanLoaded(assetPlans);
               this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups);
             });
-            console.log(" called callback after promise all ");
+            console.log(" called callback after promise all ", callback);
             callback();
           })
           .catch((e) => {
