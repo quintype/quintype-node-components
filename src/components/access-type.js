@@ -54,6 +54,8 @@ class AccessTypeBase extends React.Component {
     }
     console.log("enetred load script else block ");
 
+    console.log("global accesstype", global.AccessType);
+
     global.AccessType && callback();
     return true;
   };
