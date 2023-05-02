@@ -45,6 +45,10 @@ class AccessTypeBase extends React.Component {
       accessTypeScript.setAttribute("data-accessType-script", "1");
       accessTypeScript.async = 1;
       accessTypeScript.onload = () => callback();
+      accessTypeScript.onerror = () => {
+        callback();
+        console.log(" load s cript failed");
+      };
       document.body.appendChild(accessTypeScript);
       return true;
     }
@@ -698,7 +702,7 @@ const mapDispatchToProps = (dispatch) => ({
  *   if (paymentGateway === "stripe") {
  *     const options = {
  *       selectedPlan: plan,
- *       planType: "standard",
+ *       planType: x"standard",
  *       successUrl: `${document.location.origin}/paypal-return-url`,
  *       cancelUrl: `${document.location.origin}/paypal-cancel-url`
  *     };
@@ -727,4 +731,4 @@ const mapDispatchToProps = (dispatch) => ({
  * @component
  * @category Subscription
  */
-export const AccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase);
+export const xAccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase);
