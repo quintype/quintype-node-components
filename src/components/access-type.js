@@ -193,15 +193,21 @@ class AccessTypeBase extends React.Component {
           this.getPaymentOptions(),
           this.getAssetPlans(),
           this.getCampaignSubscription(),
-        ]).then(([subscriptionGroups, paymentOptions, assetPlans, campaignSubscriptionGroups]) => {
-          batch(() => {
-            this.props.subscriptionGroupLoaded(subscriptionGroups);
-            this.props.paymentOptionsLoaded(paymentOptions);
-            this.props.assetPlanLoaded(assetPlans);
-            this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups);
+        ])
+          .then(([subscriptionGroups, paymentOptions, assetPlans, campaignSubscriptionGroups]) => {
+            console.log("entered then inside promise all  ");
+            batch(() => {
+              this.props.subscriptionGroupLoaded(subscriptionGroups);
+              this.props.paymentOptionsLoaded(paymentOptions);
+              this.props.assetPlanLoaded(assetPlans);
+              this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups);
+            });
+            console.log(" called callback after promise all ");
+            callback();
+          })
+          .catch((e) => {
+            console.log("some promise all error", e);
           });
-          callback();
-        });
       } catch (e) {
         console.log(`Subscription / payments failed`, e);
       }
@@ -233,6 +239,7 @@ class AccessTypeBase extends React.Component {
       });
     } catch (e) {
       console.warn(`Accesstype load fail`, e);
+      console.log("AT load fail");
     }
   };
 
