@@ -38,6 +38,7 @@ class AccessTypeBase extends React.Component {
     const accessTypeHost = `${HOST}/frontend/v2/accesstype.js?key=${accessTypeKey}${environment}`;
     const isATScriptAlreadyPresent = document.querySelector(`script[src="${accessTypeHost}"]`);
     if (accessTypeKey && !isATScriptAlreadyPresent && !global.AccessType && global.document) {
+      console.log("enetred load script if block ");
       const accessTypeScript = document.createElement("script");
       accessTypeScript.setAttribute("src", accessTypeHost);
       accessTypeScript.setAttribute("id", "AccessTypeScript");
@@ -47,6 +48,8 @@ class AccessTypeBase extends React.Component {
       document.body.appendChild(accessTypeScript);
       return true;
     }
+    console.log("enetred load script else block ");
+
     global.AccessType && callback();
     return true;
   };
