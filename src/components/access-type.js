@@ -733,4 +733,4 @@ const mapDispatchToProps = (dispatch) => ({
  * @component
  * @category Subscription
  */
-export const xAccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase);
+export const AccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase);
