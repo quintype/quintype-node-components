@@ -68,7 +68,7 @@ class AccessTypeBase extends React.Component {
 
     if (error) {
       console.warn(`User context setting failed  --> `, error);
-      console.log(" setuser failed")
+      console.log(" setuser failed");
       return error;
     }
     return user;
@@ -167,7 +167,14 @@ class AccessTypeBase extends React.Component {
   };
 
   runSequentialCalls = async (callback = () => null) => {
-    let jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
+    let jwtResponse;
+    try {
+      jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
+    } catch (e) {
+      console.log("jet resposne error ", e);
+    }
+
+    console.log("jwtresponse", jwtResponse);
     const { error } = await awaitHelper(
       this.setUser(
         this.props.email,
@@ -176,8 +183,8 @@ class AccessTypeBase extends React.Component {
         !!jwtResponse.headers.get("x-integration-token")
       )
     );
-    if(error) {
-      console.log("error happened in set user ")
+    if (error) {
+      console.log("error happened in set user ");
     }
     if (!error) {
       try {
