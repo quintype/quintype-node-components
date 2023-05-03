@@ -38,7 +38,6 @@ class AccessTypeBase extends React.Component {
     const accessTypeHost = `${HOST}/frontend/v2/accesstype.js?key=${accessTypeKey}${environment}`;
     const isATScriptAlreadyPresent = document.querySelector(`script[src="${accessTypeHost}"]`);
     if (accessTypeKey && !isATScriptAlreadyPresent && !global.AccessType && global.document) {
-      console.log("enetred load script if block ");
       const accessTypeScript = document.createElement("script");
       accessTypeScript.onload = () => {
         this.props.onATGlobalSet && this.props.onATGlobalSet();
@@ -48,17 +47,9 @@ class AccessTypeBase extends React.Component {
       accessTypeScript.setAttribute("id", "AccessTypeScript");
       accessTypeScript.setAttribute("data-accessType-script", "1");
       accessTypeScript.async = 1;
-
-      accessTypeScript.onerror = () => {
-        callback();
-        console.log(" load s cript failed");
-      };
       document.body.appendChild(accessTypeScript);
       return true;
     }
-    console.log("enetred load script else block ");
-
-    console.log("global accesstype", global.AccessType);
 
     global.AccessType && callback();
     return true;
@@ -79,11 +70,8 @@ class AccessTypeBase extends React.Component {
         };
     const { error, data: user } = await awaitHelper(global.AccessType.setUser(userObj));
 
-    console.log("setuser", user);
-
     if (error) {
       console.warn(`User context setting failed  --> `, error);
-      console.log(" setuser failed");
       return error;
     }
     return user;
@@ -183,13 +171,9 @@ class AccessTypeBase extends React.Component {
 
   runSequentialCalls = async (callback = () => null) => {
     let jwtResponse;
-    try {
-      jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
-    } catch (e) {
-      console.log("jet resposne error ", e);
-    }
 
-    console.log("jwtresponse", jwtResponse);
+    jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
+
     const { error } = await awaitHelper(
       this.setUser(
         this.props.email,
@@ -198,9 +182,7 @@ class AccessTypeBase extends React.Component {
         !!jwtResponse.headers.get("x-integration-token")
       )
     );
-    if (error) {
-      console.log("error happened in set user ");
-    }
+
     if (!error) {
       try {
         Promise.all([
@@ -208,21 +190,15 @@ class AccessTypeBase extends React.Component {
           this.getPaymentOptions(),
           this.getAssetPlans(),
           this.getCampaignSubscription(),
-        ])
-          .then(([subscriptionGroups, paymentOptions, assetPlans, campaignSubscriptionGroups]) => {
-            console.log("entered then inside promise all  ");
-            batch(() => {
-              this.props.subscriptionGroupLoaded(subscriptionGroups);
-              this.props.paymentOptionsLoaded(paymentOptions);
-              this.props.assetPlanLoaded(assetPlans);
-              this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups);
-            });
-            console.log(" called callback after promise all ", callback);
-            callback();
-          })
-          .catch((e) => {
-            console.log("some promise all error", e);
+        ]).then(([subscriptionGroups, paymentOptions, assetPlans, campaignSubscriptionGroups]) => {
+          batch(() => {
+            this.props.subscriptionGroupLoaded(subscriptionGroups);
+            this.props.paymentOptionsLoaded(paymentOptions);
+            this.props.assetPlanLoaded(assetPlans);
+            this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups);
           });
+          callback();
+        });
       } catch (e) {
         console.log(`Subscription / payments failed`, e);
       }
@@ -247,14 +223,13 @@ class AccessTypeBase extends React.Component {
       this.loadScript(() => {
         // dont try to initialize accessType if integration id is not available
         if (accessTypeBkIntegrationId === undefined) {
-          console.log("AccessType: Integration Id is undefined");
+          console.warn("AccessType: Integration Id is undefined");
           return false;
         }
         this.runSequentialCalls(callback);
       });
     } catch (e) {
       console.warn(`Accesstype load fail`, e);
-      console.log("AT load fail");
     }
   };
 
