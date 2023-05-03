@@ -170,9 +170,7 @@ class AccessTypeBase extends React.Component {
   };
 
   runSequentialCalls = async (callback = () => null) => {
-    let jwtResponse;
-
-    jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
+    const jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
 
     const { error } = await awaitHelper(
       this.setUser(
@@ -685,7 +683,7 @@ const mapDispatchToProps = (dispatch) => ({
  *   if (paymentGateway === "stripe") {
  *     const options = {
  *       selectedPlan: plan,
- *       planType: x"standard",
+ *       planType: "standard",
  *       successUrl: `${document.location.origin}/paypal-return-url`,
  *       cancelUrl: `${document.location.origin}/paypal-cancel-url`
  *     };
