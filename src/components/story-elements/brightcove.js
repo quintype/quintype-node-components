@@ -63,7 +63,7 @@ const CustomElementBrightcove = (props) => {
     handleVideoDisplay(true);
   };
 
-  const getThumbnail = async () => {
+  const getPoster = async () => {
     // need to update header policykey once the referenced ticket hits prod
     if (!posterImage) {
       const { videos } = await (
@@ -80,7 +80,7 @@ const CustomElementBrightcove = (props) => {
 
   if (loadIframeOnClick) {
     if (!showVideo) {
-      getThumbnail();
+      getPoster();
     }
     return (
       <div className="brightcove-wrapper">
