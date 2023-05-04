@@ -110,17 +110,19 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 function LoadingIndicatorBase(props) {
-  return &lt;div className={`loading-indicator ${props.loading ? 'loading-indicator-loading' : ''}`}>
-    {props.loading &amp;&amp; props.children}
-  &lt;/div>
+  return (
+    &lt;div className={`loading-indicator ${props.loading ? "loading-indicator-loading" : ""}`}>
+      {props.loading &amp;&amp; props.children}
+    &lt;/div>
+  );
 }
 
 function mapStateToProps(state) {
   return {
-    loading: state.pageLoading
+    loading: state.pageLoading,
   };
 }
 
