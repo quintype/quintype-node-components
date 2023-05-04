@@ -64,6 +64,7 @@ const CustomElementBrightcove = (props) => {
   };
 
   const getThumbnail = async () => {
+    // need to update header policykey once the referenced ticket hits prod
     if (!posterImage) {
       const { videos } = await (
         await fetch(`https://edge.api.brightcove.com/playback/v1/accounts/${accountId}/videos?q=id:${videoId}`, {
