@@ -1,131 +1,111 @@
-import { bool, func, object } from 'prop-types'
-import React, { useEffect, useState } from 'react'
-import { WithLazy } from '../with-lazy'
+import get from "lodash/get";
+import { bool, object } from "prop-types";
+import React, { useEffect, useState } from "react";
+import { WithLazy } from "../with-lazy";
 
-let Brightcove = null
-let loaderPromise = null
+let BrightcovePlayerLoader = null;
+let loaderPromise;
 
-const loadLibrary = () => {
-  if (!loaderPromise) {
-    loaderPromise = import(/* webpackChunkName: "qtc-react-brightcove" */ '@brightcove/react-player-loader')
-      .then(Bc => {
-        Brightcove = Bc.default
-      })
-      .catch(err => {
-        console.log('Failed to load @brightcove/react-player-loader', err)
-        return Promise.reject()
-      })
-  }
+const CustomElementBrightcove = (props) => {
+  const { element = {}, loadIframeOnClick } = props;
+  const { "account-id": accountId, "video-id": videoId, "player-id": playerId } = get(element, ["metadata"], {});
+  const [showVideo, handleVideoDisplay] = useState(false);
+  const [isLibraryLoaded, handleLibrary] = useState(false);
+  const [posterImage, handlePosterImage] = useState("");
 
-  return loaderPromise
-}
-
-const isLibraryLoaded = Brightcove !== null
-
-const CustomElementBrightcove = props => {
-  const { element = {}, card = {}, story = {}, disableAnalytics, loadIframeOnClick } = props
-  const [showVideo, handleVideoDisplay] = useState(false)
+  const loadLibrary = () => {
+    if (!window?.BrightcovePlayerLoader) {
+      if (!loaderPromise && !isLibraryLoaded) {
+        return (loaderPromise = import(/* webpackChunkName: "qtc-react-brightcove" */ "@brightcove/react-player-loader")
+          .then((module) => {
+            BrightcovePlayerLoader = module.default;
+            window.BrightcovePlayerLoader = BrightcovePlayerLoader;
+            handleLibrary(true);
+          })
+          .catch((err) => {
+            console.log("Failed to load @brightcove/react-player-loader", err);
+            return Promise.reject();
+          }));
+      }
+    }
+    if (window.BrightcovePlayerLoader) {
+      handleLibrary(true);
+    }
+    return loaderPromise;
+  };
 
   useEffect(() => {
     if (!loadIframeOnClick) {
-      loadLibrary()
+      loadLibrary();
     }
-  }, [loadIframeOnClick])
-
-  // const triggerQlitics = action => {
-  //   if (disableAnalytics) return false
-
-  //   const qliticsData = {
-  //     ...getQliticsSchema(story, card, element),
-  //     ...{ 'story-element-action': action }
-  //   }
-  //   if (global.qlitics) {
-  //     global.qlitics('track', 'story-element-action', qliticsData)
-  //   } else {
-  //     global.qlitics =
-  //       global.qlitics ||
-  //       function () {
-  //         ;(qlitics.q = qlitics.q || []).push(arguments)
-  //       }
-  //     qlitics.qlitics.q.push('track', 'story-element-action', qliticsData)
-  //   }
-  // }
-
-  // onPlayCallback = (event) => {
-  //   this.triggerQlitics("play");
-  //   this.props.onPlay === "function" && this.props.onPlay(event);
-  // };
-
-  // onPauseCallback = (event) => {
-  //   this.triggerQlitics("pause");
-  //   this.props.onPause === "function" && this.props.onPause(event);
-  // };
-
-  // onEndCallback = (event) => {
-  //   this.triggerQlitics("end");
-  //   this.props.onEnd === "function" && this.props.onEnd(event);
-  // };
-
-  // onPlayerReady = (event) => {
-  //   event.target.setVolume(100);
-  //   event.target.playVideo();
-  // };
+  }, [loadIframeOnClick]);
 
   const brightcoveIframe = () => {
-    const updatedOpts = { aspectRatio: '16:9', autoplay: true, muted: true, responsive: true }
     return (
-      <Brightcove
-        accountId={get(element, ['metadata', 'account-id'])}
-        videoId={get(element, ['metadata', 'video-id'])}
-        playerId={get(element, ['metadata', 'player-id'])}
-        opts={updatedOpts}
-        // onPlay={ this.onPlayCallback}
-        // onPause: this.onPauseCallback,
-        // onEnd: this.onEndCallback,
-        // onReady: this.onPlayerReady,
+      <BrightcovePlayerLoader
+        accountId={accountId}
+        videoId={videoId}
+        playerId={playerId}
+        attrs={{ className: "brightcove-player" }}
+        onSuccess={(success) => {
+          var myPlayer = success.ref;
+          myPlayer.ready(function () {
+            myPlayer.muted(true);
+            myPlayer.play();
+          });
+        }}
+        onFailure={() => console.log("brightcove failed to load")}
       />
-    )
-  }
+    );
+  };
   const renderVideo = () => {
-    loadLibrary()
-    handleVideoDisplay(true)
+    loadLibrary();
+    handleVideoDisplay(true);
+  };
+
+  const getThumbnail = async () => {
+    if (!posterImage) {
+      const { videos } = await (
+        await fetch(`https://edge.api.brightcove.com/playback/v1/accounts/${accountId}/videos?q=id:${videoId}`, {
+          headers: {
+            "BCOV-Policy":
+              "BCpkADawqM3CNfUEBYGvWS8QqHHg-g5kzNt63RmoOyVlrIL4zT67_KKSzlaI5TGMXIZZ4Yrtz28v7EcHTsTWAiOolxok8ZNqFrkNGru9OOumeQ8wX5csvYqx7zl468WgbhqDnpePPhQVpQfr",
+          },
+        })
+      ).json();
+      handlePosterImage(videos[0].poster || "");
+    }
+  };
+
+  if (loadIframeOnClick) {
+    if (!showVideo) {
+      getThumbnail();
+    }
+    return (
+      <div className="brightcove-wrapper">
+        {!showVideo && (
+          <>
+            <button className="brightcove-playBtn" onClick={renderVideo} aria-label="Play Video" />
+            <img className="brightcove-poster" onClick={renderVideo} src={posterImage} alt="video" />
+          </>
+        )}
+        {showVideo && isLibraryLoaded && brightcoveIframe()}
+      </div>
+    );
+  } else if (!loadIframeOnClick && isLibraryLoaded) {
+    return <div className="brightcove-wrapper">{brightcoveIframe()}</div>;
+  } else {
+    return <></>;
   }
-  // if (loadIframeOnClick) {
-  //   return (
-  //     <div className='thumbnail-wrapper'>
-  //       {!showVideo && (
-  //         <>
-  //           <button className='youtube-playBtn' onClick={renderVideo} aria-label='Play Video' />
-  //           <img
-  //             className='youtube-thumbnail'
-  //             onClick={renderVideo}
-  //             src={`https://i.ytimg.com/vi/${getYouTubeID(this.props.element.url)}/hqdefault.jpg`}
-  //             alt='video'
-  //           />
-  //         </>
-  //       )}
-  //       {showVideo && isLibraryLoaded && <div className='youtube-iframe-wrapper'>{brightcoveIframe()}</div>}
-  //     </div>
-  //   )
-  // } else if (!loadIframeOnClick && isLibraryLoaded) {
-  //   return brightcoveIframe()
-  // } else return <></>
-  return (<div>sdfadgs</div>)
-}
+};
 
 CustomElementBrightcove.propTypes = {
   loadIframeOnClick: bool,
-  disableAnalytics: bool,
-  story: object,
-  card: object,
   element: object,
-  onPlay: func,
-  onPause: func,
-  onEnd: func
-}
+};
 
-const StoryElementBrightcove = props => {
-  return <WithLazy margin='0px'>{() => <CustomElementBrightcove {...props} />}</WithLazy>
-}
+const StoryElementBrightcove = (props) => {
+  return <WithLazy margin="0px">{() => <CustomElementBrightcove {...props} />}</WithLazy>;
+};
 
-export default StoryElementBrightcove
+export default StoryElementBrightcove;
