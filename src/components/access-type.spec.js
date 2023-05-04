@@ -18,22 +18,23 @@ describe("AccessType", () => {
     recurring: true,
     enabled: true,
     trial_period_enabled: false,
-    supported_payment_providers: ["omise"]
+    supported_payment_providers: ["omise"],
+    metadata: {},
   };
   let instance;
   // adding accessTypeKey as "dummykey" to avoid making calls to accesstype
   it("Successful omise recurring payment", async () => {
     const container = render(
       <Provider
-        store={createStore(store => store, {
+        store={createStore((store) => store, {
           paymentOptions: {
             omise: {
               action: "pay",
-              proceed: async paymentOptions => {
-                return { proceed: paymentObject => paymentObject };
-              }
-            }
-          }
+              proceed: async (paymentOptions) => {
+                return { proceed: (paymentObject) => paymentObject };
+              },
+            },
+          },
         })}
       >
         <AccessType
@@ -62,30 +63,31 @@ describe("AccessType", () => {
         price_cents: 3000,
         price_currency: "THB",
         duration_length: 5,
-        duration_unit: "days"
+        duration_unit: "days",
       },
       coupon_code: "",
+      metadata: {},
       payment: {
         payment_type: "omise_recurring",
         amount_cents: 3000,
-        amount_currency: "THB"
+        amount_currency: "THB",
       },
       assets: [{ id: "", title: "", slug: "" }],
-      recipient_subscriber: {}
+      recipient_subscriber: {},
     });
   });
   it("Successful omise one-time payment", async () => {
     const container = render(
       <Provider
-        store={createStore(store => store, {
+        store={createStore((store) => store, {
           paymentOptions: {
             omise: {
               action: "pay",
-              proceed: async paymentOptions => {
-                return { proceed: paymentObject => paymentObject };
-              }
-            }
-          }
+              proceed: async (paymentOptions) => {
+                return { proceed: (paymentObject) => paymentObject };
+              },
+            },
+          },
         })}
       >
         <AccessType
@@ -114,21 +116,22 @@ describe("AccessType", () => {
         price_cents: 3000,
         price_currency: "THB",
         duration_length: 5,
-        duration_unit: "days"
+        duration_unit: "days",
       },
       coupon_code: "",
+      metadata: {},
       payment: {
         payment_type: "omise",
         amount_cents: 3000,
-        amount_currency: "THB"
+        amount_currency: "THB",
       },
       assets: [{ id: "", title: "", slug: "" }],
-      recipient_subscriber: {}
+      recipient_subscriber: {},
     });
   });
   it("Failed omise payment when the payment options are not passed", async () => {
     const container = render(
-      <Provider store={createStore(store => store, {})}>
+      <Provider store={createStore((store) => store, {})}>
         <AccessType
           isStaging={true}
           enableAccesstype={true}
@@ -148,19 +151,19 @@ describe("AccessType", () => {
     );
 
     await expect(instance(selectedPlan, "standard")).rejects.toEqual({
-      message: "Payment option is loading..."
+      message: "Payment option is loading...",
     });
   });
   it("Successful razorpay recurring payment", async () => {
     const container = render(
       <Provider
-        store={createStore(store => store, {
+        store={createStore((store) => store, {
           paymentOptions: {
             razorpay: {
               action: "pay",
-              proceed: async paymentObject => paymentObject
-            }
-          }
+              proceed: async (paymentObject) => paymentObject,
+            },
+          },
         })}
       >
         <AccessType
@@ -189,28 +192,29 @@ describe("AccessType", () => {
         price_cents: 3000,
         price_currency: "THB",
         duration_length: 5,
-        duration_unit: "days"
+        duration_unit: "days",
       },
       coupon_code: "",
+      metadata: {},
       payment: {
         payment_type: "razorpay_recurring",
         amount_cents: 3000,
-        amount_currency: "THB"
+        amount_currency: "THB",
       },
       assets: [{ id: "", title: "", slug: "" }],
-      recipient_subscriber: {}
+      recipient_subscriber: {},
     });
   });
   it("Successful razorpay one-time payment", async () => {
     const container = render(
       <Provider
-        store={createStore(store => store, {
+        store={createStore((store) => store, {
           paymentOptions: {
             razorpay: {
               action: "pay",
-              proceed: async paymentObject => paymentObject
-            }
-          }
+              proceed: async (paymentObject) => paymentObject,
+            },
+          },
         })}
       >
         <AccessType
@@ -239,16 +243,17 @@ describe("AccessType", () => {
         price_cents: 3000,
         price_currency: "THB",
         duration_length: 5,
-        duration_unit: "days"
+        duration_unit: "days",
       },
       coupon_code: "",
+      metadata: {},
       payment: {
         payment_type: "razorpay",
         amount_cents: 3000,
-        amount_currency: "THB"
+        amount_currency: "THB",
       },
       assets: [{ id: "", title: "", slug: "" }],
-      recipient_subscriber: {}
+      recipient_subscriber: {},
     });
   });
 });
