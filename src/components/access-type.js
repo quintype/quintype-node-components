@@ -39,14 +39,18 @@ class AccessTypeBase extends React.Component {
     const isATScriptAlreadyPresent = document.querySelector(`script[src="${accessTypeHost}"]`);
     if (accessTypeKey && !isATScriptAlreadyPresent && !global.AccessType && global.document) {
       const accessTypeScript = document.createElement("script");
+      accessTypeScript.onload = () => {
+        this.props.onATGlobalSet && this.props.onATGlobalSet();
+        callback();
+      };
       accessTypeScript.setAttribute("src", accessTypeHost);
       accessTypeScript.setAttribute("id", "AccessTypeScript");
       accessTypeScript.setAttribute("data-accessType-script", "1");
       accessTypeScript.async = 1;
-      accessTypeScript.onload = () => callback();
       document.body.appendChild(accessTypeScript);
       return true;
     }
+
     global.AccessType && callback();
     return true;
   };
@@ -65,8 +69,9 @@ class AccessTypeBase extends React.Component {
           isLoggedIn: false,
         };
     const { error, data: user } = await awaitHelper(global.AccessType.setUser(userObj));
+
     if (error) {
-      console.warn(`User context setting failed --> `, error);
+      console.warn(`User context setting failed  --> `, error);
       return error;
     }
     return user;
@@ -165,7 +170,8 @@ class AccessTypeBase extends React.Component {
   };
 
   runSequentialCalls = async (callback = () => null) => {
-    let jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
+    const jwtResponse = await fetch(`/api/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
+
     const { error } = await awaitHelper(
       this.setUser(
         this.props.email,
@@ -174,6 +180,7 @@ class AccessTypeBase extends React.Component {
         !!jwtResponse.headers.get("x-integration-token")
       )
     );
+
     if (!error) {
       try {
         Promise.all([
@@ -516,6 +523,8 @@ AccessTypeBase.propTypes = {
 
   /** AccessType staging host url. Default value is "https://staging.accesstype.com" */
   stagingHost: string,
+
+  onATGlobalSet: func,
 };
 
 const mapStateToProps = (state) => ({
