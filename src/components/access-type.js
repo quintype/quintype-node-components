@@ -445,7 +445,7 @@ class AccessTypeBase extends React.Component {
       global.AccessType.isAssetAccessible(asset, this.props.disableMetering)
     );
 
-    console.log(" check access at internal", error, data);
+    console.log(" check access at internal", error, accessData);
 
     const accessById = { [assetId]: accessData };
 
