@@ -3,35 +3,25 @@ import { bool, object } from "prop-types";
 import React, { useEffect, useState } from "react";
 import { WithLazy } from "../with-lazy";
 
-let BrightcovePlayerLoader = null;
-let loaderPromise;
-
-const CustomElementBrightcove = (props) => {
+const BrightcoveElement = (props) => {
   const { element = {}, loadIframeOnClick } = props;
   const { "account-id": accountId, "video-id": videoId, "player-id": playerId } = get(element, ["metadata"], {});
-  const [showVideo, handleVideoDisplay] = useState(false);
-  const [isLibraryLoaded, handleLibrary] = useState(false);
-  const [posterImage, handlePosterImage] = useState("");
+  const [showVideo, setVideoToggle] = useState(false);
+  const [posterImage, setPosterImage] = useState("");
 
   const loadLibrary = () => {
     if (!window?.BrightcovePlayerLoader) {
-      if (!loaderPromise && !isLibraryLoaded) {
-        return (loaderPromise = import(/* webpackChunkName: "qtc-react-brightcove" */ "@brightcove/react-player-loader")
-          .then((module) => {
-            BrightcovePlayerLoader = module.default;
-            window.BrightcovePlayerLoader = BrightcovePlayerLoader;
-            handleLibrary(true);
-          })
-          .catch((err) => {
-            console.log("Failed to load @brightcove/react-player-loader", err);
-            return Promise.reject();
-          }));
-      }
+      return import(/* webpackChunkName: "qtc-react-brightcove" */ "@brightcove/react-player-loader")
+        .then((module) => {
+          window.BrightcovePlayerLoader = module.default;
+          setVideoToggle(true);
+        })
+        .catch((err) => {
+          console.log("Failed to load @brightcove/react-player-loader", err);
+          return Promise.reject();
+        });
     }
-    if (window.BrightcovePlayerLoader) {
-      handleLibrary(true);
-    }
-    return loaderPromise;
+    setVideoToggle(true);
   };
 
   useEffect(() => {
@@ -41,6 +31,7 @@ const CustomElementBrightcove = (props) => {
   }, [loadIframeOnClick]);
 
   const brightcoveIframe = () => {
+    const BrightcovePlayerLoader = window?.BrightcovePlayerLoader;
     return (
       <BrightcovePlayerLoader
         accountId={accountId}
@@ -58,10 +49,6 @@ const CustomElementBrightcove = (props) => {
       />
     );
   };
-  const renderVideo = () => {
-    loadLibrary();
-    handleVideoDisplay(true);
-  };
 
   const getPoster = async () => {
     // need to update header policykey once the referenced ticket hits prod
@@ -74,7 +61,7 @@ const CustomElementBrightcove = (props) => {
           },
         })
       ).json();
-      handlePosterImage(videos[0].poster || "");
+      setPosterImage(videos[0].poster || "");
     }
   };
 
@@ -86,27 +73,27 @@ const CustomElementBrightcove = (props) => {
       <div className="brightcove-wrapper">
         {!showVideo && (
           <>
-            <button className="brightcove-playBtn" onClick={renderVideo} aria-label="Play Video" />
-            <img className="brightcove-poster" onClick={renderVideo} src={posterImage} alt="video" />
+            <button className="brightcove-playBtn" onClick={() => loadLibrary()} aria-label="Play Video" />
+            <img className="brightcove-poster" onClick={() => loadLibrary()} src={posterImage} alt="video" />
           </>
         )}
-        {showVideo && isLibraryLoaded && brightcoveIframe()}
+        {showVideo && window?.BrightcovePlayerLoader && brightcoveIframe()}
       </div>
     );
-  } else if (!loadIframeOnClick && isLibraryLoaded) {
+  } else if (!loadIframeOnClick && window?.BrightcovePlayerLoader) {
     return <div className="brightcove-wrapper">{brightcoveIframe()}</div>;
   } else {
-    return <></>;
+    return null;
   }
 };
 
-CustomElementBrightcove.propTypes = {
+BrightcoveElement.propTypes = {
   loadIframeOnClick: bool,
   element: object,
 };
 
-const StoryElementBrightcove = (props) => {
-  return <WithLazy margin="0px">{() => <CustomElementBrightcove {...props} />}</WithLazy>;
+const LazyBrightcove = (props) => {
+  return <WithLazy margin="0px">{() => <BrightcoveElement {...props} />}</WithLazy>;
 };
 
-export default StoryElementBrightcove;
+export default LazyBrightcove;
