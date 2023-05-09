@@ -30,7 +30,7 @@ const BrightcoveElement = (props) => {
     }
   }, [loadIframeOnClick]);
 
-  const brightcoveIframe = () => {
+  const brightcoveIframe = (autoplay = false) => {
     const BrightcovePlayerLoader = window?.BrightcovePlayerLoader;
     return (
       <BrightcovePlayerLoader
@@ -39,11 +39,13 @@ const BrightcoveElement = (props) => {
         playerId={playerId}
         attrs={{ className: "brightcove-player" }}
         onSuccess={(success) => {
-          var myPlayer = success.ref;
-          myPlayer.ready(function () {
-            myPlayer.muted(true);
-            myPlayer.play();
-          });
+          if (autoplay) {
+            let myPlayer = success.ref;
+            myPlayer.ready(function () {
+              myPlayer.muted(true);
+              myPlayer.play();
+            });
+          }
         }}
         onFailure={() => console.log("brightcove failed to load")}
       />
@@ -81,7 +83,7 @@ const BrightcoveElement = (props) => {
       </div>
     );
   } else if (!loadIframeOnClick && window?.BrightcovePlayerLoader) {
-    return <div className="brightcove-wrapper">{brightcoveIframe()}</div>;
+    return <div className="brightcove-wrapper">{brightcoveIframe(true)}</div>;
   } else {
     return null;
   }
@@ -92,8 +94,8 @@ BrightcoveElement.propTypes = {
   element: object,
 };
 
-const LazyBrightcove = (props) => {
+const StoryElementBrightcove = (props) => {
   return <WithLazy margin="0px">{() => <BrightcoveElement {...props} />}</WithLazy>;
 };
 
-export default LazyBrightcove;
+export default StoryElementBrightcove;

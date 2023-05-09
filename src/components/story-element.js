@@ -4,7 +4,7 @@ import React from "react";
 import { getQliticsSchema } from "../utils";
 import { Link } from "./link";
 import { ResponsiveImage } from "./responsive-image";
-import LazyBrightcove from "./story-elements/brightcove";
+import StoryElementBrightcove from "./story-elements/brightcove";
 import StoryElementDailyMotion from "./story-elements/dailymotion";
 import DailyMotionEmbedScript from "./story-elements/dailymotion-embed-script";
 import JSEmbed from "./story-elements/jsembed";
@@ -183,7 +183,7 @@ const DEFAULT_TEMPLATES = {
   table: StoryElementTable,
   "also-read": StoryElementAlsoRead,
   file: StoryElementFile,
-  "brightcove-video": LazyBrightcove,
+  "brightcove-video": StoryElementBrightcove,
 };
 
 class StoryElementBase extends React.Component {
