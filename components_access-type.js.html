@@ -162,7 +162,11 @@ class AccessTypeBase extends React.Component {
       return true;
     }
 
-    global.AccessType &amp;&amp; callback();
+    if (global.AccessType) {
+      this.props.onATGlobalSet &amp;&amp; this.props.onATGlobalSet();
+      callback();
+    }
+
     return true;
   };
 
