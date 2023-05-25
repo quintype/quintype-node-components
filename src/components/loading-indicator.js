@@ -1,15 +1,17 @@
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 function LoadingIndicatorBase(props) {
-  return <div className={`loading-indicator ${props.loading ? 'loading-indicator-loading' : ''}`}>
-    {props.loading && props.children}
-  </div>
+  return (
+    <div className={`loading-indicator ${props.loading ? "loading-indicator-loading" : ""}`}>
+      {props.loading && props.children}
+    </div>
+  );
 }
 
 function mapStateToProps(state) {
   return {
-    loading: state.pageLoading
+    loading: state.pageLoading,
   };
 }
 
