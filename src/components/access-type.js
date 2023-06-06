@@ -273,7 +273,7 @@ class AccessTypeBase extends React.Component {
       coupon_code: couponCode,
       payment: {
         payment_type: paymentType,
-        amount_cents: discounted_price_cents || price_cents,
+        amount_cents: discounted_price_cents === undefined ? price_cents : discounted_price_cents,
         amount_currency: price_currency,
       },
       assets: [
