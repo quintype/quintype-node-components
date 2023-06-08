@@ -79,11 +79,11 @@ const BrightcoveElement = (props) => {
             )}
           </>
         )}
-        {showVideo && window?.BrightcovePlayerLoader && brightcoveIframe()}
+        {showVideo && window?.BrightcovePlayerLoader && brightcoveIframe(true)}
       </div>
     );
   } else if (!loadIframeOnClick && window?.BrightcovePlayerLoader) {
-    return <div className="brightcove-wrapper">{brightcoveIframe(true)}</div>;
+    return <div className="brightcove-wrapper">{brightcoveIframe()}</div>;
   } else {
     return null;
   }
