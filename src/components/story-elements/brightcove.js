@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { WithLazy } from "../with-lazy";
 
 const BrightcoveElement = (props) => {
-  const { element = {}, loadIframeOnClick } = props;
+  const { element = {}, loadIframeOnClick, policyKey = "" } = props;
   const { "account-id": accountId, "video-id": videoId, "player-id": playerId } = get(element, ["metadata"], {});
   const [showVideo, setVideoToggle] = useState(false);
   const [posterImage, setPosterImage] = useState("");
@@ -53,14 +53,10 @@ const BrightcoveElement = (props) => {
   };
 
   const getPoster = async () => {
-    // need to update header policykey once the referenced ticket hits prod
     if (!posterImage) {
       const { videos } = await (
         await fetch(`https://edge.api.brightcove.com/playback/v1/accounts/${accountId}/videos?q=id:${videoId}`, {
-          headers: {
-            "BCOV-Policy":
-              "BCpkADawqM3CNfUEBYGvWS8QqHHg-g5kzNt63RmoOyVlrIL4zT67_KKSzlaI5TGMXIZZ4Yrtz28v7EcHTsTWAiOolxok8ZNqFrkNGru9OOumeQ8wX5csvYqx7zl468WgbhqDnpePPhQVpQfr",
-          },
+          headers: { "BCOV-Policy": policyKey },
         })
       ).json();
       setPosterImage(videos[0].poster || "");
@@ -76,7 +72,11 @@ const BrightcoveElement = (props) => {
         {!showVideo && (
           <>
             <button className="brightcove-playBtn" onClick={() => loadLibrary()} aria-label="Play Video" />
-            <img className="brightcove-poster" onClick={() => loadLibrary()} src={posterImage} alt="video" />
+            {posterImage ? (
+              <img className="brightcove-poster" onClick={() => loadLibrary()} src={posterImage} alt="video" />
+            ) : (
+              <div className="brightcove-poster-fallback" />
+            )}
           </>
         )}
         {showVideo && window?.BrightcovePlayerLoader && brightcoveIframe()}
