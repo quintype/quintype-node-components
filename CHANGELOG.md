@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.3](https://github.com/quintype/quintype-node-components/compare/v3.3.0...v3.3.3) (2023-05-17)
+
+
+### Bug Fixes
+
+* call callback if at script already available ([#221](https://github.com/quintype/quintype-node-components/issues/221)) ([cadf489](https://github.com/quintype/quintype-node-components/commit/cadf48932acc279f12dde7f1530b62512fe536d6))
+* introduce new prop to know AT has loaded ([#219](https://github.com/quintype/quintype-node-components/issues/219)) ([8746fc6](https://github.com/quintype/quintype-node-components/commit/8746fc6ffd3085ff7fdfc4888b8d00dc4c7d7b38))
+
 ### [3.3.2](https://github.com/quintype/quintype-node-components/compare/v3.3.1...v3.3.2) (2023-05-04)
 
 
