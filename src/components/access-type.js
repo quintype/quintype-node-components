@@ -336,7 +336,7 @@ class AccessTypeBase extends React.Component {
     const planObject = this.makePlanObject(selectedPlanObj, planType, storyId, storyHeadline, storySlug); //we are doing this to sake of backward compatibility and will be refactored later.
     const { paymentOptions } = this.props;
     planObject["paymentType"] =
-      paymentType || get(planObject.selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay";
+      paymentType || (get(planObject.selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay");
     const paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code });
     return paymentOptions.razorpay.proceed(paymentObject);
   };
