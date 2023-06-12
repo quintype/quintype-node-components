@@ -320,7 +320,14 @@ class AccessTypeBase extends React.Component {
         };
   }
   //TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
-  initRazorPayPayment = (selectedPlanObj = {}, planType = "", storyId = "", storyHeadline = "", storySlug = "") => {
+  initRazorPayPayment = (
+    selectedPlanObj = {},
+    planType = "",
+    storyId = "",
+    storyHeadline = "",
+    storySlug = "",
+    paymentType = ""
+  ) => {
     if (!selectedPlanObj) {
       console.warn("Razor pay needs a plan");
       return false;
@@ -328,7 +335,8 @@ class AccessTypeBase extends React.Component {
 
     const planObject = this.makePlanObject(selectedPlanObj, planType, storyId, storyHeadline, storySlug); //we are doing this to sake of backward compatibility and will be refactored later.
     const { paymentOptions } = this.props;
-    planObject["paymentType"] = get(planObject.selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay";
+    planObject["paymentType"] =
+      paymentType || get(planObject.selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay";
     const paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code });
     return paymentOptions.razorpay.proceed(paymentObject);
   };
