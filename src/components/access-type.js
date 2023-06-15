@@ -338,8 +338,8 @@ class AccessTypeBase extends React.Component {
     const { discounted_price_cents, price_cents } = planObject.selectedPlan;
 
     if (discounted_price_cents === 0 || price_cents === 0) {
-      const data = await awaitHelper(global.AccessType.getPaymentOptions());
-      paymentOptions = data.paymentOptions;
+      const { data } = await awaitHelper(global.AccessType.getPaymentOptions(0));
+      paymentOptions = data;
     }
 
     planObject["paymentType"] =
