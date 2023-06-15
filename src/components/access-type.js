@@ -320,7 +320,7 @@ class AccessTypeBase extends React.Component {
         };
   }
   //TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
-  initRazorPayPayment = (
+  initRazorPayPayment = async (
     selectedPlanObj = {},
     planType = "",
     storyId = "",
@@ -338,6 +338,11 @@ class AccessTypeBase extends React.Component {
     planObject["paymentType"] =
       paymentType || (get(planObject.selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay");
     const paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code });
+
+    if (paymentObject.payment.amount_cents === 0) {
+      return global.AccessType.getPaymentOptions(0).then((provider) => provider.proceed(paymentObject));
+    }
+
     return paymentOptions.razorpay.proceed(paymentObject);
   };
 
