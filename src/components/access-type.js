@@ -347,7 +347,7 @@ class AccessTypeBase extends React.Component {
     const paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code });
 
     if (paymentObject.payment.amount_cents === 0) {
-      return global.AccessType.getPaymentOptions(0).then((provider) => provider.proceed(paymentObject));
+      return global.AccessType.getPaymentOptions(0).then((provider) => provider.razorpay.proceed(paymentObject));
     }
 
     return paymentOptions.razorpay.proceed(paymentObject);
