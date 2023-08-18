@@ -256,6 +256,7 @@ class AccessTypeBase extends React.Component {
       price_currency: price_currency,
       duration_length: duration_length,
       duration_unit: duration_unit,
+      discounted_price_cents,
       metadata,
     } = selectedPlan;
     const paymentObject = {
@@ -268,12 +269,13 @@ class AccessTypeBase extends React.Component {
         price_currency: price_currency,
         duration_length: duration_length,
         duration_unit: duration_unit,
+        discounted_price_cents,
       },
       metadata,
       coupon_code: couponCode,
       payment: {
         payment_type: paymentType,
-        amount_cents: price_cents,
+        amount_cents: discounted_price_cents === undefined ? price_cents : discounted_price_cents,
         amount_currency: price_currency,
       },
       assets: [
@@ -320,16 +322,36 @@ class AccessTypeBase extends React.Component {
         };
   }
   //TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
-  initRazorPayPayment = (selectedPlanObj = {}, planType = "", storyId = "", storyHeadline = "", storySlug = "") => {
+  initRazorPayPayment = async (
+    selectedPlanObj = {},
+    planType = "",
+    storyId = "",
+    storyHeadline = "",
+    storySlug = "",
+    paymentType = ""
+  ) => {
     if (!selectedPlanObj) {
       console.warn("Razor pay needs a plan");
       return false;
     }
 
     const planObject = this.makePlanObject(selectedPlanObj, planType, storyId, storyHeadline, storySlug); //we are doing this to sake of backward compatibility and will be refactored later.
-    const { paymentOptions } = this.props;
-    planObject["paymentType"] = get(planObject.selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay";
-    const paymentObject = this.makePaymentObject(planObject);
+    let { paymentOptions } = this.props;
+    const { discounted_price_cents, price_cents } = planObject.selectedPlan;
+
+    if (discounted_price_cents === 0 || price_cents === 0) {
+      const { data } = await awaitHelper(global.AccessType.getPaymentOptions(0));
+      paymentOptions = data;
+    }
+
+    planObject["paymentType"] =
+      paymentType || (get(planObject, ["selectedPlan", "recurring"]) ? "razorpay_recurring" : "razorpay");
+    const paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code });
+
+    if (paymentObject.payment.amount_cents === 0) {
+      return global.AccessType.getPaymentOptions(0).then((provider) => provider.razorpay.proceed(paymentObject));
+    }
+
     return paymentOptions.razorpay.proceed(paymentObject);
   };
 
@@ -489,6 +511,7 @@ class AccessTypeBase extends React.Component {
       initAdyenPayment: this.initAdyenPayment,
       initPaytrailPayment: this.initPaytrailPayment,
       checkAccess: this.checkAccess,
+      getSubscription: this.getSubscription,
       getSubscriptionForUser: this.getSubscriptionForUser,
       accessUpdated: this.props.accessUpdated,
       accessIsLoading: this.props.accessIsLoading,
@@ -575,6 +598,7 @@ const mapDispatchToProps = (dispatch) => ({
   "phone_number": "007"}}  | Update the Subscriber Metadata
  *  validateCoupon|  selectedPlan(object), couponCode (string)  | Validate coupon with plan
  *  cancelSubscription| subscriptionId(number) | Cancel a subscription
+ *  getSubscription | -NA- | Gets the subscription groups provided by the publisher
  *  getSubscriptionForUser | -NA- | Gets the subscriptions of the current logged in user
  *  accessUpdated| accessObject(object) | Sets the current story access to redux store
  *  accessIsLoading| loading(boolean) | A boolean which holds true between the request for access of a story and its response
