@@ -345,7 +345,7 @@ class AccessTypeBase extends React.Component {
     }
 
     planObject["paymentType"] =
-      paymentType || (get(planObject.selectedPlan, ["recurring"]) ? "razorpay_recurring" : "razorpay");
+      paymentType || (get(planObject, ["selectedPlan", "recurring"]) ? "razorpay_recurring" : "razorpay");
     const paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code });
 
     if (paymentObject.payment.amount_cents === 0) {
