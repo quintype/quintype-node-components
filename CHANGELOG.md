@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.1](https://github.com/quintype/quintype-node-components/compare/v3.4.0...v3.4.1) (2023-07-18)
+
+
+### Bug Fixes
+
+* **omise:** support navigation after subscription purchase ([#222](https://github.com/quintype/quintype-node-components/issues/222)) ([cd91506](https://github.com/quintype/quintype-node-components/commit/cd915065e76a64f248952ff8d9c2f9bca599c14e))
+
+## [3.4.0](https://github.com/quintype/quintype-node-components/compare/v3.3.3...v3.4.0) (2023-06-14)
+
+
+### Features
+
+* **story element:** support brightcove ([#220](https://github.com/quintype/quintype-node-components/issues/220)) ([d4e1efc](https://github.com/quintype/quintype-node-components/commit/d4e1efc1e4c67f757dbb7f6629b0088b19e19b9e))
+
 ### [3.3.3](https://github.com/quintype/quintype-node-components/compare/v3.3.0...v3.3.3) (2023-05-17)
 
 

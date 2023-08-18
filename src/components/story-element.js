@@ -4,6 +4,7 @@ import React from "react";
 import { getQliticsSchema } from "../utils";
 import { Link } from "./link";
 import { ResponsiveImage } from "./responsive-image";
+import StoryElementBrightcove from "./story-elements/brightcove";
 import StoryElementDailyMotion from "./story-elements/dailymotion";
 import DailyMotionEmbedScript from "./story-elements/dailymotion-embed-script";
 import JSEmbed from "./story-elements/jsembed";
@@ -44,7 +45,7 @@ export class StoryElement extends React.Component {
   componentDidCatch(error, stack) {
     this.setState({
       crashed: true,
-      error: error
+      error: error,
     });
     console && console.error(`Caught Exception: ${error && error.message}`);
   }
@@ -64,7 +65,7 @@ function StoryElementText({ element = {}, externalLink }) {
     text = element.text.replace(/<a/g, '<a target="_blank"');
   }
   return React.createElement("div", {
-    dangerouslySetInnerHTML: { __html: text }
+    dangerouslySetInnerHTML: { __html: text },
   });
 }
 
@@ -75,7 +76,7 @@ function StoryElementAlsoRead({ element, story, alsoreadText = "Also Read: " }) 
   const storyUrl = `/${linkedStorySlug}`;
   const linkProps = {
     className: "story-element-text-also-read__link",
-    href: storyUrl
+    href: storyUrl,
   };
 
   return React.createElement(
@@ -98,7 +99,7 @@ function StoryElementImage({ element, story = {}, imageWidths, imageDefaultWidth
       widths: imageWidths || [360, 640, 1200],
       imgParams: { auto: ["format", "compress"] },
       alt: element.title || story.headline,
-      onClick
+      onClick,
     }),
     React.createElement(
       "div",
@@ -106,13 +107,13 @@ function StoryElementImage({ element, story = {}, imageWidths, imageDefaultWidth
       element.title
         ? React.createElement("figcaption", {
             dangerouslySetInnerHTML: { __html: element.title },
-            className: "story-element-image-title"
+            className: "story-element-image-title",
           })
         : undefined,
       element["image-attribution"]
         ? React.createElement("figcaption", {
             dangerouslySetInnerHTML: { __html: element["image-attribution"] },
-            className: "story-element-image-attribution"
+            className: "story-element-image-attribution",
           })
         : undefined
     )
@@ -126,14 +127,14 @@ function StoryElementTitle({ element }) {
 function StoryElementSoundCloud({ element }) {
   return React.createElement("iframe", {
     src: element["embed-url"],
-    width: "100%"
+    width: "100%",
   });
 }
 
 function StoryElementJsembed({ element }) {
   return React.createElement(JSEmbed, {
     embedJS: element["embed-js"],
-    id: element["id"]
+    id: element["id"],
   });
 }
 
@@ -145,7 +146,7 @@ function StoryElementTable({ element }) {
   return React.createElement(Table, {
     id: element.id,
     data: element.data,
-    hasHeader: element.metadata["has-header"]
+    hasHeader: element.metadata["has-header"],
   });
 }
 
@@ -159,7 +160,7 @@ function StoryElementFile({ element }) {
       {
         className: "story-element-file__link",
         href: element.url,
-        download: true
+        download: true,
       },
       "download"
     )
@@ -181,7 +182,8 @@ const DEFAULT_TEMPLATES = {
   polltype: StoryElementPolltype,
   table: StoryElementTable,
   "also-read": StoryElementAlsoRead,
-  file: StoryElementFile
+  file: StoryElementFile,
+  "brightcove-video": StoryElementBrightcove,
 };
 
 class StoryElementBase extends React.Component {
@@ -205,7 +207,7 @@ class StoryElementBase extends React.Component {
     const options = {
       root: null,
       rootMargin: "0px",
-      threshold: 1.0
+      threshold: 1.0,
     };
     this.observer = new IntersectionObserver(this.observerCallback, options);
     this.observer.observe(this.storyElementRef);
@@ -215,8 +217,8 @@ class StoryElementBase extends React.Component {
     this.observer && this.observer.disconnect();
   };
 
-  observerCallback = entries => {
-    entries.forEach(entry => {
+  observerCallback = (entries) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         this.emitElementQlitics();
       }
@@ -236,7 +238,7 @@ class StoryElementBase extends React.Component {
     } else {
       global.qlitics =
         global.qlitics ||
-        function() {
+        function () {
           (qlitics.q = qlitics.q || []).push(arguments);
         };
       global.qlitics("track", "story-element-view", getQliticsSchema(story, card, element));
@@ -263,9 +265,9 @@ class StoryElementBase extends React.Component {
         className: classNames({
           "story-element": true,
           [typeClassName]: true,
-          [subtypeClassName]: !!storyElement.subtype
+          [subtypeClassName]: !!storyElement.subtype,
         }),
-        ref: ref => (this.storyElementRef = ref)
+        ref: (ref) => (this.storyElementRef = ref),
       },
       renderTemplate
         ? React.createElement(
