@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.2](https://github.com/quintype/quintype-node-components/compare/v3.4.1...v3.4.2) (2023-08-18)
+
+
+### Bug Fixes
+
+* coupon code functionality when discounted price is zero ([#223](https://github.com/quintype/quintype-node-components/issues/223)) ([3d509c0](https://github.com/quintype/quintype-node-components/commit/3d509c09734a70b645984e32a4f3083e460c22fb))
+
 ### [3.4.1](https://github.com/quintype/quintype-node-components/compare/v3.4.0...v3.4.1) (2023-07-18)
 
 
