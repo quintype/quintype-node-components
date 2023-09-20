@@ -467,20 +467,21 @@ class AccessTypeBase extends React.Component {
       global.AccessType.isAssetAccessible(asset, this.props.disableMetering)
     );
 
+    if (error) {
+      return error;
+    }
+
     const accessById = { [assetId]: accessData };
 
     this.props.accessUpdated(accessById);
     this.props.accessIsLoading(false);
 
-    const { granted, grantReason, data = {} } = accessData;
+    const { granted, grantReason, data = {} } = accessData || {};
     if (!this.props.disableMetering && granted && grantReason === "METERING") {
       this.pingBackMeteredStory(asset, accessData);
       this.props.meterUpdated(data.numberRemaining || -1);
     }
 
-    if (error) {
-      return error;
-    }
     return accessById;
   };
 
