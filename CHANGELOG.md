@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.3](https://github.com/quintype/quintype-node-components/compare/v3.4.2...v3.4.3) (2023-09-20)
+
+
+### Bug Fixes
+
+* **paywall-loader:** avoid reading properties from null error ([#225](https://github.com/quintype/quintype-node-components/issues/225)) ([7e59f23](https://github.com/quintype/quintype-node-components/commit/7e59f238d1f9d2372da109ee51087613b86879ca))
+
 ### [3.4.2](https://github.com/quintype/quintype-node-components/compare/v3.4.1...v3.4.2) (2023-08-18)
 
 
