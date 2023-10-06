@@ -53,6 +53,8 @@ const BrightcoveElement = (props) => {
   };
 
   const getPoster = async () => {
+    console.log("accountId", accountId, videoId);
+    console.log("policyKey", policyKey);
     if (!posterImage) {
       const { videos } = await (
         await fetch(`https://edge.api.brightcove.com/playback/v1/accounts/${accountId}/videos?q=id:${videoId}`, {
@@ -64,6 +66,7 @@ const BrightcoveElement = (props) => {
   };
 
   if (loadIframeOnClick) {
+    console.log("coming in if");
     if (!showVideo) {
       getPoster();
     }
@@ -83,8 +86,10 @@ const BrightcoveElement = (props) => {
       </div>
     );
   } else if (!loadIframeOnClick && window?.BrightcovePlayerLoader) {
+    console.log("coming in else if");
     return <div className="brightcove-wrapper">{brightcoveIframe()}</div>;
   } else {
+    console.log("coming in else");
     return null;
   }
 };

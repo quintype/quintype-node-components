@@ -208,14 +208,18 @@ class AccessTypeBase extends React.Component {
   };
 
   getSubscriptionForUser = async () => {
+    console.log("getSubscriptionForUser");
     if (!global.AccessType) {
       return {};
     }
-
+    console.log("accesstype available");
     const { error, data: subscriptions = [] } = await awaitHelper(global.AccessType.getSubscriptions());
+
     if (error) {
+      console.log("coming in error", error);
       return error;
     }
+    console.log("coming in subscriptions", subscriptions);
     return subscriptions;
   };
 
