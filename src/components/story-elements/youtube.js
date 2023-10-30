@@ -37,6 +37,7 @@ class CustomStoryElementYoutube extends React.Component {
         autoplay: 0,
       },
     };
+    this.videoRef = React.createRef();
   }
 
   componentDidMount() {
@@ -47,6 +48,9 @@ class CustomStoryElementYoutube extends React.Component {
 
   componentWillUnmount() {
     this._isMounted = false;
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
+    }
   }
 
   triggerQlitics = (action) => {
@@ -92,6 +96,18 @@ class CustomStoryElementYoutube extends React.Component {
   onPlayerReady = (event) => {
     event.target.setVolume(100);
     event.target.playVideo();
+
+    this.videoRef.current = event.target;
+    this.intersectionObserver = new IntersectionObserver(this.handleIntersection, {
+      threshold: 0.75,
+    });
+    this.intersectionObserver.observe(this.videoRef.current.getIframe());
+  };
+
+  handleIntersection = (entries) => {
+    if (!this.videoRef?.current) return;
+    if (entries?.[0].isIntersecting) this.videoRef.current.playVideo();
+    else this.videoRef.current.pauseVideo();
   };
 
   renderVideo = () => {
@@ -108,6 +124,7 @@ class CustomStoryElementYoutube extends React.Component {
         onPause: this.onPauseCallback,
         onEnd: this.onEndCallback,
         onReady: this.onPlayerReady,
+        ref: this.videoRef,
       });
     };
 
@@ -135,6 +152,7 @@ class CustomStoryElementYoutube extends React.Component {
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
         onEnd: this.onEndCallback,
+        ref: this.videoRef,
       });
     } else return <div />;
   }

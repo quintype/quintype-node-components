@@ -9,10 +9,10 @@ let loaderPromise = null;
 function loadLibrary() {
   if (loaderPromise === null) {
     loaderPromise = import(/* webpackChunkName: "qtc-react-dailymotion" */ "react-dailymotion")
-      .then(DM => {
+      .then((DM) => {
         DailyMotion = DM.default;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Failed to load react-dailymotion", err);
         return Promise.reject();
       });
@@ -29,13 +29,15 @@ class CustomStoryElementDailyMotion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showVideo: false
+      showVideo: false,
+      observerInitialized: false,
     };
     this.opts = {
       playerVars: {
-        autoplay: 0
-      }
+        autoplay: 0,
+      },
     };
+    this.videoRef = React.createRef();
   }
 
   componentDidMount() {
@@ -46,17 +48,43 @@ class CustomStoryElementDailyMotion extends React.Component {
 
   componentWillUnmount() {
     this._isMounted = false;
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
+    }
   }
 
-  onPlayCallback = event => {
-    this.props.onPlay === "function" && this.props.onPlay(event);
+  startObserver(event) {
+    this.videoRef.current = event.target;
+
+    this.intersectionObserver = new IntersectionObserver(this.handleIntersection, {
+      threshold: 0.75,
+    });
+    this.intersectionObserver.observe(this.videoRef.current);
+    this.state.observerInitialized = true;
+  }
+
+  onAdStart = (event) => {
+    this.startObserver(event);
   };
 
-  onPauseCallback = event => {
+  onPlayCallback = (event) => {
+    this.props.onPlay === "function" && this.props.onPlay(event);
+    if (!this.state.observerInitialized) {
+      this.startObserver(event);
+    }
+  };
+
+  handleIntersection = (entries) => {
+    if (!this.videoRef?.current) return;
+    if (entries?.[0].isIntersecting) this.videoRef.current.play();
+    else this.videoRef.current.pause();
+  };
+
+  onPauseCallback = (event) => {
     this.props.onPause === "function" && this.props.onPause(event);
   };
 
-  onEndCallback = event => {
+  onEndCallback = (event) => {
     this.props.onEnd === "function" && this.props.onEnd(event);
   };
 
@@ -65,7 +93,7 @@ class CustomStoryElementDailyMotion extends React.Component {
     loadLibrary().then(() => this._isMounted && this.forceUpdate());
   };
 
-  onPlayerReady = event => {
+  onPlayerReady = (event) => {
     event.target.setVolume(100);
     event.target.playVideo();
   };
@@ -77,7 +105,6 @@ class CustomStoryElementDailyMotion extends React.Component {
 
   render() {
     const { id: videoId } = getVideoID(this.props.element.metadata["dailymotion-url"]);
-
     const dailymotionIframe = () => {
       return React.createElement(DailyMotion, {
         video: videoId,
@@ -85,7 +112,9 @@ class CustomStoryElementDailyMotion extends React.Component {
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
         onEnd: this.onEndCallback,
-        autoplay: true
+        onAdStart: this.onAdStart,
+        autoplay: true,
+        ref: this.videoRef,
       });
     };
 
@@ -114,7 +143,10 @@ class CustomStoryElementDailyMotion extends React.Component {
         opts: this.opts,
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
-        onEnd: this.onEndCallback
+        onEnd: this.onEndCallback,
+        onAdStart: this.onAdStart,
+        autoplay: false,
+        ref: this.videoRef,
       });
     } else return <div />;
   }
@@ -128,10 +160,10 @@ CustomStoryElementDailyMotion.propTypes = {
   element: object,
   onPlay: func,
   onPause: func,
-  onEnd: func
+  onEnd: func,
 };
 
-const StoryElementDailyMotion = props => {
+const StoryElementDailyMotion = (props) => {
   return <WithLazy margin="0px">{() => <CustomStoryElementDailyMotion {...props} />}</WithLazy>;
 };
 

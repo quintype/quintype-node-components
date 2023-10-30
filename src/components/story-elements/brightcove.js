@@ -1,6 +1,6 @@
 import get from "lodash/get";
 import { bool, object } from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { WithLazy } from "../with-lazy";
 
 const BrightcoveElement = (props) => {
@@ -8,6 +8,10 @@ const BrightcoveElement = (props) => {
   const { "account-id": accountId, "video-id": videoId, "player-id": playerId } = get(element, ["metadata"], {});
   const [showVideo, setVideoToggle] = useState(false);
   const [posterImage, setPosterImage] = useState("");
+  const [myPlayer, setMyPlayer] = useState(null);
+  const [observer, setObserver] = useState(null);
+  const [thumbnailClicked, setThumbnailClicked] = useState(false);
+  const videoRef = useRef();
 
   const loadLibrary = () => {
     if (!window?.BrightcovePlayerLoader) {
@@ -30,7 +34,33 @@ const BrightcoveElement = (props) => {
     }
   }, [loadIframeOnClick]);
 
-  const brightcoveIframe = (autoplay = false) => {
+  useEffect(() => {
+    if (!myPlayer) return;
+    myPlayer.on("play", startObserver);
+    if (thumbnailClicked) myPlayer.play();
+
+    return () => {
+      myPlayer && myPlayer.off("play");
+      observer && observer.disconnect();
+    };
+  }, [myPlayer, thumbnailClicked]);
+
+  function handleIntersection(entries) {
+    if (!entries?.[0]) return;
+    if (entries[0].isIntersecting) myPlayer.play();
+    else myPlayer.pause();
+  }
+
+  function startObserver() {
+    const intersectionObserver = new IntersectionObserver((entries) => handleIntersection(entries), {
+      threshold: 0.75,
+    });
+
+    intersectionObserver.observe(videoRef.current);
+    setObserver(intersectionObserver);
+  }
+
+  const brightcoveIframe = () => {
     const BrightcovePlayerLoader = window?.BrightcovePlayerLoader;
     return (
       <BrightcovePlayerLoader
@@ -38,15 +68,7 @@ const BrightcoveElement = (props) => {
         videoId={videoId}
         playerId={playerId}
         attrs={{ className: "brightcove-player" }}
-        onSuccess={(success) => {
-          if (autoplay) {
-            let myPlayer = success.ref;
-            myPlayer.ready(function () {
-              myPlayer.muted(true);
-              myPlayer.play();
-            });
-          }
-        }}
+        onSuccess={(success) => setMyPlayer(success.ref)}
         onFailure={() => console.log("brightcove failed to load")}
       />
     );
@@ -68,12 +90,27 @@ const BrightcoveElement = (props) => {
       getPoster();
     }
     return (
-      <div className="brightcove-wrapper">
+      <div className="brightcove-wrapper" ref={videoRef}>
         {!showVideo && (
           <>
-            <button className="brightcove-playBtn" onClick={() => loadLibrary()} aria-label="Play Video" />
+            <button
+              className="brightcove-playBtn"
+              onClick={() => {
+                loadLibrary();
+                setThumbnailClicked(true);
+              }}
+              aria-label="Play Video"
+            />
             {posterImage ? (
-              <img className="brightcove-poster" onClick={() => loadLibrary()} src={posterImage} alt="video" />
+              <img
+                className="brightcove-poster"
+                onClick={() => {
+                  loadLibrary();
+                  setThumbnailClicked(true);
+                }}
+                src={posterImage}
+                alt="video"
+              />
             ) : (
               <div className="brightcove-poster-fallback" />
             )}
@@ -83,7 +120,11 @@ const BrightcoveElement = (props) => {
       </div>
     );
   } else if (!loadIframeOnClick && window?.BrightcovePlayerLoader) {
-    return <div className="brightcove-wrapper">{brightcoveIframe()}</div>;
+    return (
+      <div className="brightcove-wrapper" ref={videoRef}>
+        {brightcoveIframe()}
+      </div>
+    );
   } else {
     return null;
   }
