@@ -92,29 +92,19 @@ const BrightcoveElement = (props) => {
     return (
       <div className="brightcove-wrapper" ref={videoRef}>
         {!showVideo && (
-          <>
-            <button
-              className="brightcove-playBtn"
-              onClick={() => {
-                loadLibrary();
-                setThumbnailClicked(true);
-              }}
-              aria-label="Play Video"
-            />
+          <div
+            onClick={() => {
+              loadLibrary();
+              setThumbnailClicked(true);
+            }}
+          >
+            <button className="brightcove-playBtn" aria-label="Play Video" />
             {posterImage ? (
-              <img
-                className="brightcove-poster"
-                onClick={() => {
-                  loadLibrary();
-                  setThumbnailClicked(true);
-                }}
-                src={posterImage}
-                alt="video"
-              />
+              <img className="brightcove-poster" src={posterImage} alt="video" />
             ) : (
               <div className="brightcove-poster-fallback" />
             )}
-          </>
+          </div>
         )}
         {showVideo && window?.BrightcovePlayerLoader && brightcoveIframe(true)}
       </div>
