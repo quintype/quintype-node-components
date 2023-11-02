@@ -93,8 +93,8 @@ const BrightcoveElement = (props) => {
       <div className="brightcove-wrapper" ref={videoRef}>
         {!showVideo && (
           <div
-            onClick={() => {
-              loadLibrary();
+            onClick={async () => {
+              await loadLibrary();
               setThumbnailClicked(true);
             }}
           >
