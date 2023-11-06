@@ -1,6 +1,7 @@
 import getVideoID from "get-video-id";
 import { bool, func, object } from "prop-types";
 import React from "react";
+import { disconnectObserver, initiateNewObserver } from "../../utils";
 import { WithLazy } from "../with-lazy";
 
 let DailyMotion = null;
@@ -30,7 +31,6 @@ class CustomStoryElementDailyMotion extends React.Component {
     super(props);
     this.state = {
       showVideo: false,
-      observerInitialized: false,
     };
     this.opts = {
       playerVars: {
@@ -38,6 +38,7 @@ class CustomStoryElementDailyMotion extends React.Component {
       },
     };
     this.videoRef = React.createRef();
+    this.videoPausedByObserver = React.createRef();
   }
 
   componentDidMount() {
@@ -48,40 +49,58 @@ class CustomStoryElementDailyMotion extends React.Component {
 
   componentWillUnmount() {
     this._isMounted = false;
+    disconnectObserver(this.intersectionObserver);
+  }
+
+  startObserver = (targetElement) => {
     if (this.intersectionObserver) {
-      this.intersectionObserver.disconnect();
+      this.intersectionObserver.observe(targetElement);
+    } else {
+      this.intersectionObserver = initiateNewObserver(targetElement, this.intersectionCallback);
     }
-  }
+  };
 
-  startObserver(event) {
-    this.videoRef.current = event.target;
-
-    this.intersectionObserver = new IntersectionObserver(this.handleIntersection, {
-      threshold: 0.75,
-    });
-    this.intersectionObserver.observe(this.videoRef.current);
-    this.state.observerInitialized = true;
-  }
-
-  onAdStart = (event) => {
-    this.startObserver(event);
+  onAdPlayCallback = (event) => {
+    const targetElement = event.target;
+    this.videoRef.current = targetElement;
+    this.startObserver(targetElement);
   };
 
   onPlayCallback = (event) => {
     this.props.onPlay === "function" && this.props.onPlay(event);
-    if (!this.state.observerInitialized) {
-      this.startObserver(event);
+
+    const targetElement = event.target;
+    this.videoRef.current = targetElement;
+    this.startObserver(targetElement);
+  };
+
+  handleVideoPause = () => {
+    const videoPausedByObserver = this.videoPausedByObserver.current;
+    if (videoPausedByObserver) {
+      this.videoPausedByObserver.current = false;
+    } else {
+      disconnectObserver(this.intersectionObserver);
     }
   };
 
-  handleIntersection = (entries) => {
-    if (!this.videoRef?.current) return;
-    if (entries?.[0].isIntersecting) this.videoRef.current.play();
-    else this.videoRef.current.pause();
+  intersectionCallback = (entries) => {
+    const player = this.videoRef.current;
+    const videoInVewPort = entries?.[0].isIntersecting;
+
+    if (videoInVewPort) player.play();
+    else {
+      this.videoPausedByObserver.current = true;
+      player.pause();
+    }
   };
 
   onPauseCallback = (event) => {
     this.props.onPause === "function" && this.props.onPause(event);
+    this.handleVideoPause();
+  };
+
+  onAdPauseCallback = () => {
+    this.handleVideoPause();
   };
 
   onEndCallback = (event) => {
@@ -93,11 +112,6 @@ class CustomStoryElementDailyMotion extends React.Component {
     loadLibrary().then(() => this._isMounted && this.forceUpdate());
   };
 
-  onPlayerReady = (event) => {
-    event.target.setVolume(100);
-    event.target.playVideo();
-  };
-
   renderVideo = () => {
     this.triggerIframe();
     this.setState({ showVideo: true });
@@ -105,15 +119,16 @@ class CustomStoryElementDailyMotion extends React.Component {
 
   render() {
     const { id: videoId } = getVideoID(this.props.element.metadata["dailymotion-url"]);
-    const dailymotionIframe = () => {
+    const dailymotionIframe = ({ autoplay } = false) => {
       return React.createElement(DailyMotion, {
         video: videoId,
         opts: this.opts,
         onPlay: this.onPlayCallback,
         onPause: this.onPauseCallback,
         onEnd: this.onEndCallback,
-        onAdStart: this.onAdStart,
-        autoplay: true,
+        onAdPlay: this.onAdPlayCallback,
+        onAdPause: this.onAdPauseCallback,
+        autoplay: autoplay,
         ref: this.videoRef,
       });
     };
@@ -138,16 +153,7 @@ class CustomStoryElementDailyMotion extends React.Component {
         </div>
       );
     } else if (!this.props.loadIframeOnClick && isLibraryLoaded()) {
-      return React.createElement(DailyMotion, {
-        video: videoId,
-        opts: this.opts,
-        onPlay: this.onPlayCallback,
-        onPause: this.onPauseCallback,
-        onEnd: this.onEndCallback,
-        onAdStart: this.onAdStart,
-        autoplay: false,
-        ref: this.videoRef,
-      });
+      return dailymotionIframe();
     } else return <div />;
   }
 }

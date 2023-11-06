@@ -1,7 +1,7 @@
 import getYouTubeID from "get-youtube-id";
 import { bool, func, object } from "prop-types";
 import React from "react";
-import { getQliticsSchema } from "../../utils";
+import { disconnectObserver, getQliticsSchema, initiateNewObserver } from "../../utils";
 import { WithLazy } from "../with-lazy";
 
 let YouTube = null;
@@ -38,6 +38,7 @@ class CustomStoryElementYoutube extends React.Component {
       },
     };
     this.videoRef = React.createRef();
+    this.videoPausedByObserver = React.createRef();
   }
 
   componentDidMount() {
@@ -48,10 +49,16 @@ class CustomStoryElementYoutube extends React.Component {
 
   componentWillUnmount() {
     this._isMounted = false;
-    if (this.intersectionObserver) {
-      this.intersectionObserver.disconnect();
-    }
+    disconnectObserver(this.intersectionObserver);
   }
+
+  initiateObserver = (targetElement) => {
+    this.removeObserverIfExists();
+    this.intersectionObserver = new IntersectionObserver(this.intersectionCallback, {
+      threshold: 0.75,
+    });
+    this.intersectionObserver.observe(targetElement);
+  };
 
   triggerQlitics = (action) => {
     if (this.props.disableAnalytics === true) return false;
@@ -76,11 +83,37 @@ class CustomStoryElementYoutube extends React.Component {
   onPlayCallback = (event) => {
     this.triggerQlitics("play");
     this.props.onPlay === "function" && this.props.onPlay(event);
+
+    this.videoRef.current = event.target;
+    const targetElement = this.videoRef.current.getIframe();
+
+    if (this.intersectionObserver) {
+      this.intersectionObserver.observe(targetElement);
+    } else {
+      this.intersectionObserver = initiateNewObserver(targetElement, this.intersectionCallback);
+    }
+  };
+
+  intersectionCallback = (entries) => {
+    const videoInVewPort = entries?.[0].isIntersecting;
+    const player = this.videoRef.current;
+    if (videoInVewPort) player.playVideo();
+    else {
+      this.videoPausedByObserver.current = true;
+      player.pauseVideo();
+    }
   };
 
   onPauseCallback = (event) => {
     this.triggerQlitics("pause");
     this.props.onPause === "function" && this.props.onPause(event);
+
+    const videoPausedByObserver = this.videoPausedByObserver.current;
+    if (videoPausedByObserver) {
+      this.videoPausedByObserver.current = false;
+    } else {
+      disconnectObserver(this.intersectionObserver);
+    }
   };
 
   onEndCallback = (event) => {
@@ -96,18 +129,6 @@ class CustomStoryElementYoutube extends React.Component {
   onPlayerReady = (event) => {
     event.target.setVolume(100);
     event.target.playVideo();
-
-    this.videoRef.current = event.target;
-    this.intersectionObserver = new IntersectionObserver(this.handleIntersection, {
-      threshold: 0.75,
-    });
-    this.intersectionObserver.observe(this.videoRef.current.getIframe());
-  };
-
-  handleIntersection = (entries) => {
-    if (!this.videoRef?.current) return;
-    if (entries?.[0].isIntersecting) this.videoRef.current.playVideo();
-    else this.videoRef.current.pauseVideo();
   };
 
   renderVideo = () => {
@@ -146,14 +167,7 @@ class CustomStoryElementYoutube extends React.Component {
         </div>
       );
     } else if (!this.props.loadIframeOnClick && isLibraryLoaded()) {
-      return React.createElement(YouTube, {
-        videoId: getYouTubeID(this.props.element.url),
-        opts: this.opts,
-        onPlay: this.onPlayCallback,
-        onPause: this.onPauseCallback,
-        onEnd: this.onEndCallback,
-        ref: this.videoRef,
-      });
+      return <>{youtubeIframe()}</>;
     } else return <div />;
   }
 }

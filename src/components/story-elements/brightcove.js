@@ -1,6 +1,7 @@
 import get from "lodash/get";
 import { bool, object } from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
+import { disconnectObserver, initiateNewObserver } from "../../utils";
 import { WithLazy } from "../with-lazy";
 
 const BrightcoveElement = (props) => {
@@ -9,9 +10,11 @@ const BrightcoveElement = (props) => {
   const [showVideo, setVideoToggle] = useState(false);
   const [posterImage, setPosterImage] = useState("");
   const [myPlayer, setMyPlayer] = useState(null);
-  const [observer, setObserver] = useState(null);
   const [thumbnailClicked, setThumbnailClicked] = useState(false);
+
   const videoRef = useRef();
+  const videoPausedByObserver = useRef();
+  const observerRef = useRef();
 
   const loadLibrary = () => {
     if (!window?.BrightcovePlayerLoader) {
@@ -37,27 +40,45 @@ const BrightcoveElement = (props) => {
   useEffect(() => {
     if (!myPlayer) return;
     myPlayer.on("play", startObserver);
+    myPlayer.on("pause", handleVideoPause);
+
     if (thumbnailClicked) myPlayer.play();
 
     return () => {
       myPlayer && myPlayer.off("play");
-      observer && observer.disconnect();
+      myPlayer && myPlayer.off("pause");
+      observerRef.current && disconnectObserver(observerRef.current);
     };
   }, [myPlayer, thumbnailClicked]);
 
-  function handleIntersection(entries) {
-    if (!entries?.[0]) return;
-    if (entries[0].isIntersecting) myPlayer.play();
-    else myPlayer.pause();
+  function intersectionCallback(entries) {
+    const videoInViewPort = entries?.[0].isIntersecting;
+    if (videoInViewPort) myPlayer.play();
+    else {
+      videoPausedByObserver.current = true;
+      myPlayer.pause();
+    }
   }
 
   function startObserver() {
-    const intersectionObserver = new IntersectionObserver((entries) => handleIntersection(entries), {
-      threshold: 0.75,
-    });
+    const targetElement = videoRef.current;
+    const observer = observerRef.current;
+    if (observer) {
+      observer.observe(targetElement);
+    } else {
+      const intersectionObserver = initiateNewObserver(targetElement, intersectionCallback);
+      observerRef.current = intersectionObserver;
+    }
+  }
 
-    intersectionObserver.observe(videoRef.current);
-    setObserver(intersectionObserver);
+  function handleVideoPause() {
+    const observer = observerRef.current;
+    const isVideoPausedByObserver = videoPausedByObserver.current;
+    if (isVideoPausedByObserver) {
+      videoPausedByObserver.current = false;
+    } else {
+      disconnectObserver(observer);
+    }
   }
 
   const brightcoveIframe = () => {

@@ -1,4 +1,5 @@
 import React from "react";
+import { disconnectObserver, initiateNewObserver } from "../../utils";
 import { WithLazy } from "../with-lazy";
 
 class DailyMotion extends React.Component {
@@ -6,9 +7,10 @@ class DailyMotion extends React.Component {
     super(props);
     this.containerRef = React.createRef();
     this.observerRef = React.createRef();
+    this.videoPausedByObserver = React.createRef();
+
     this.state = {
       showVideo: false,
-      scriptLoaded: false,
       dmPlayer: null,
     };
   }
@@ -25,27 +27,46 @@ class DailyMotion extends React.Component {
     });
   };
 
-  handleIntersection = (entries) => {
-    if (entries?.[0].isIntersecting) this.state.dmPlayer.play();
-    else this.state.dmPlayer.pause();
+  intersectionCallback = (entries) => {
+    const videoInVewPort = entries?.[0].isIntersecting;
+    const player = this.state.dmPlayer;
+    if (videoInVewPort) player.play();
+    else {
+      this.videoPausedByObserver.current = true;
+      player.pause();
+    }
   };
 
-  startObserver() {
-    this.intersectionObserver = new IntersectionObserver(this.handleIntersection, {
-      threshold: 0.75,
-    });
-    this.intersectionObserver.observe(this.observerRef.current);
-  }
+  startObserver = () => {
+    const targetElement = this.observerRef.current;
+    if (this.intersectionObserver) {
+      this.intersectionObserver.observe(targetElement);
+    } else {
+      this.intersectionObserver = initiateNewObserver(targetElement, this.intersectionCallback);
+    }
+  };
+
+  handleVideoPause = () => {
+    const isVideoPausedByObserver = this.videoPausedByObserver.current;
+    if (isVideoPausedByObserver) {
+      this.videoPausedByObserver.current = false;
+    } else {
+      disconnectObserver(this.intersectionObserver);
+    }
+  };
 
   componentDidUpdate() {
+    const player = this.state.dmPlayer;
+    if (!player) return;
     if (!this.observerRef.current) return;
-    if (!this.state.dmPlayer) return;
-    if (!this.state.scriptLoaded) return;
-    this.state.dmPlayer.on("start", () => this.startObserver());
+    player.on("ad_play", this.startObserver);
+    player.on("ad_pause", this.handleVideoPause);
+    player.on("play", this.startObserver);
+    player.on("pause", this.handleVideoPause);
   }
 
   componentWillUnmount() {
-    if (this.observerRef.current) this.intersectionObserver.disconnect();
+    disconnectObserver(this.intersectionObserver);
   }
 
   addScript = () => {
@@ -56,7 +77,6 @@ class DailyMotion extends React.Component {
     this.containerRef.current.appendChild(script);
 
     script.onload = () => {
-      this.setState({ scriptLoaded: true });
       window.dailymotion
         .createPlayer(this.containerRef.current.id, {
           video: videoId,
