@@ -13,8 +13,8 @@ const BrightcoveElement = (props) => {
   const [thumbnailClicked, setThumbnailClicked] = useState(false);
 
   const videoRef = useRef();
-  const videoPausedByObserver = useRef();
-  const observerRef = useRef();
+  const videoPausedByObserver = useRef(); // To check if the video is not click paused by user but paused by intersection observer, Its implemented this way because we cannot capture the click-pause event as videos are playing in iframe
+  const observerRef = useRef(); // To Observe video element for intersection
 
   const loadLibrary = () => {
     if (!window?.BrightcovePlayerLoader) {
@@ -75,7 +75,7 @@ const BrightcoveElement = (props) => {
     const observer = observerRef.current;
     const isVideoPausedByObserver = videoPausedByObserver.current;
     if (isVideoPausedByObserver) {
-      videoPausedByObserver.current = false;
+      videoPausedByObserver.current = false; // This is a clean up to set videoPausedByObserver back to false
     } else {
       disconnectObserver(observer);
     }
