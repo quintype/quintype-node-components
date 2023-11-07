@@ -55,7 +55,7 @@ const BrightcoveElement = (props) => {
     const videoInViewPort = entries?.[0].isIntersecting;
     if (videoInViewPort) myPlayer.play();
     else {
-      videoPausedByObserver.current = true;
+      videoPausedByObserver.current = true; // before the below line fires the pause event we set the videoPausedByObserver Ref to true, this lets the pause events callback to know that the video is not click-paused by the user by by the intersection observer
       myPlayer.pause();
     }
   }

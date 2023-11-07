@@ -99,7 +99,7 @@ class CustomStoryElementYoutube extends React.Component {
     const player = this.videoRef.current;
     if (videoInVewPort) player.playVideo();
     else {
-      this.videoPausedByObserver.current = true;
+      this.videoPausedByObserver.current = true; // before the below line fires the pause event we set the videoPausedByObserver Ref to true, this lets the pause events callback to know that the video is not click-paused by the user by by the intersection observer
       player.pauseVideo();
     }
   };
