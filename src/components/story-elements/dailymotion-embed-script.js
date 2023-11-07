@@ -7,7 +7,7 @@ class DailyMotion extends React.Component {
     super(props);
     this.containerRef = React.createRef();
     this.observerRef = React.createRef();
-    this.videoPausedByObserver = React.createRef();
+    this.videoPausedByObserver = React.createRef(); // To check if the video is not click paused by user but paused by intersection observer, Its implemented this way because we cannot capture the click-pause event as videos are playing in iframe
 
     this.state = {
       showVideo: false,
@@ -49,7 +49,7 @@ class DailyMotion extends React.Component {
   handleVideoPause = () => {
     const isVideoPausedByObserver = this.videoPausedByObserver.current;
     if (isVideoPausedByObserver) {
-      this.videoPausedByObserver.current = false;
+      this.videoPausedByObserver.current = false; // This is a clean up to set videoPausedByObserver back to false
     } else {
       disconnectObserver(this.intersectionObserver);
     }

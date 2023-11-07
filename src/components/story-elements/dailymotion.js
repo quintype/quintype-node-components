@@ -38,7 +38,7 @@ class CustomStoryElementDailyMotion extends React.Component {
       },
     };
     this.videoRef = React.createRef();
-    this.videoPausedByObserver = React.createRef();
+    this.videoPausedByObserver = React.createRef(); // To check if the video is not click paused by user but paused by intersection observer, Its implemented this way because we cannot capture the click-pause event as videos are playing in iframe
   }
 
   componentDidMount() {
@@ -77,7 +77,7 @@ class CustomStoryElementDailyMotion extends React.Component {
   handleVideoPause = () => {
     const videoPausedByObserver = this.videoPausedByObserver.current;
     if (videoPausedByObserver) {
-      this.videoPausedByObserver.current = false;
+      this.videoPausedByObserver.current = false; // This is a clean up to set videoPausedByObserver back to false
     } else {
       disconnectObserver(this.intersectionObserver);
     }
