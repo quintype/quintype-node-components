@@ -89,7 +89,7 @@ class CustomStoryElementDailyMotion extends React.Component {
 
     if (videoInVewPort) player.play();
     else {
-      this.videoPausedByObserver.current = true; // before the below line fires the pause event we set the videoPausedByObserver Ref to true, this lets the pause events callback to know that the video is not click-paused by the user by by the intersection observer
+      this.videoPausedByObserver.current = true; // before the below line fires the pause event we set the videoPausedByObserver Ref to true, this lets the pause events callback to know that the video is not click-paused by the user but paused by the intersection observer
       player.pause();
     }
   };
