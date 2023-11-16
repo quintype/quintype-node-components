@@ -1,6 +1,7 @@
 import get from "lodash/get";
 import { bool, object } from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { disconnectObserver, initiateNewObserver } from "../../utils";
 import { WithLazy } from "../with-lazy";
 
 const BrightcoveElement = (props) => {
@@ -8,6 +9,12 @@ const BrightcoveElement = (props) => {
   const { "account-id": accountId, "video-id": videoId, "player-id": playerId } = get(element, ["metadata"], {});
   const [showVideo, setVideoToggle] = useState(false);
   const [posterImage, setPosterImage] = useState("");
+  const [myPlayer, setMyPlayer] = useState(null);
+  const [thumbnailClicked, setThumbnailClicked] = useState(false);
+
+  const videoRef = useRef();
+  const videoPausedByObserver = useRef(); // To check if the video is not click paused by user but paused by intersection observer, Its implemented this way because we cannot capture the click-pause event as videos are playing in iframe
+  const observerRef = useRef(); // To Observe video element for intersection
 
   const loadLibrary = () => {
     if (!window?.BrightcovePlayerLoader) {
@@ -30,7 +37,51 @@ const BrightcoveElement = (props) => {
     }
   }, [loadIframeOnClick]);
 
-  const brightcoveIframe = (autoplay = false) => {
+  useEffect(() => {
+    if (!myPlayer) return;
+    myPlayer.on("play", startObserver);
+    myPlayer.on("pause", handleVideoPause);
+
+    if (thumbnailClicked) myPlayer.play();
+
+    return () => {
+      myPlayer && myPlayer.off("play");
+      myPlayer && myPlayer.off("pause");
+      observerRef.current && disconnectObserver(observerRef.current);
+    };
+  }, [myPlayer, thumbnailClicked]);
+
+  function intersectionCallback(entries) {
+    const videoInViewPort = entries?.[0].isIntersecting;
+    if (videoInViewPort) myPlayer.play();
+    else {
+      videoPausedByObserver.current = true; // before the below line fires the pause event we set the videoPausedByObserver Ref to true, this lets the pause events callback to know that the video is not click-paused by the user but paused by the intersection observer
+      myPlayer.pause();
+    }
+  }
+
+  function startObserver() {
+    const targetElement = videoRef.current;
+    const observer = observerRef.current;
+    if (observer) {
+      observer.observe(targetElement);
+    } else {
+      const intersectionObserver = initiateNewObserver(targetElement, intersectionCallback);
+      observerRef.current = intersectionObserver;
+    }
+  }
+
+  function handleVideoPause() {
+    const observer = observerRef.current;
+    const isVideoPausedByObserver = videoPausedByObserver.current;
+    if (isVideoPausedByObserver) {
+      videoPausedByObserver.current = false; // This is a clean up to set videoPausedByObserver back to false
+    } else {
+      disconnectObserver(observer);
+    }
+  }
+
+  const brightcoveIframe = () => {
     const BrightcovePlayerLoader = window?.BrightcovePlayerLoader;
     return (
       <BrightcovePlayerLoader
@@ -38,15 +89,7 @@ const BrightcoveElement = (props) => {
         videoId={videoId}
         playerId={playerId}
         attrs={{ className: "brightcove-player" }}
-        onSuccess={(success) => {
-          if (autoplay) {
-            let myPlayer = success.ref;
-            myPlayer.ready(function () {
-              myPlayer.muted(true);
-              myPlayer.play();
-            });
-          }
-        }}
+        onSuccess={(success) => setMyPlayer(success.ref)}
         onFailure={() => console.log("brightcove failed to load")}
       />
     );
@@ -68,22 +111,31 @@ const BrightcoveElement = (props) => {
       getPoster();
     }
     return (
-      <div className="brightcove-wrapper">
+      <div className="brightcove-wrapper" ref={videoRef}>
         {!showVideo && (
-          <>
-            <button className="brightcove-playBtn" onClick={() => loadLibrary()} aria-label="Play Video" />
+          <div
+            onClick={async () => {
+              await loadLibrary();
+              setThumbnailClicked(true);
+            }}
+          >
+            <button className="brightcove-playBtn" aria-label="Play Video" />
             {posterImage ? (
-              <img className="brightcove-poster" onClick={() => loadLibrary()} src={posterImage} alt="video" />
+              <img className="brightcove-poster" src={posterImage} alt="video" />
             ) : (
               <div className="brightcove-poster-fallback" />
             )}
-          </>
+          </div>
         )}
         {showVideo && window?.BrightcovePlayerLoader && brightcoveIframe(true)}
       </div>
     );
   } else if (!loadIframeOnClick && window?.BrightcovePlayerLoader) {
-    return <div className="brightcove-wrapper">{brightcoveIframe()}</div>;
+    return (
+      <div className="brightcove-wrapper" ref={videoRef}>
+        {brightcoveIframe()}
+      </div>
+    );
   } else {
     return null;
   }
