@@ -1,7 +1,7 @@
 import getYouTubeID from "get-youtube-id";
 import { bool, func, object } from "prop-types";
 import React from "react";
-import { getQliticsSchema } from "../../utils";
+import { disconnectObserver, getQliticsSchema, initiateNewObserver } from "../../utils";
 import { WithLazy } from "../with-lazy";
 
 let YouTube = null;
@@ -37,6 +37,8 @@ class CustomStoryElementYoutube extends React.Component {
         autoplay: 0,
       },
     };
+    this.videoRef = React.createRef();
+    this.videoPausedByObserver = React.createRef(); // To check if the video is not click paused by user but paused by intersection observer, Its implemented this way because we cannot capture the click-pause event as videos are playing in iframe
   }
 
   componentDidMount() {
@@ -47,7 +49,16 @@ class CustomStoryElementYoutube extends React.Component {
 
   componentWillUnmount() {
     this._isMounted = false;
+    disconnectObserver(this.intersectionObserver);
   }
+
+  initiateObserver = (targetElement) => {
+    this.removeObserverIfExists();
+    this.intersectionObserver = new IntersectionObserver(this.intersectionCallback, {
+      threshold: 0.75,
+    });
+    this.intersectionObserver.observe(targetElement);
+  };
 
   triggerQlitics = (action) => {
     if (this.props.disableAnalytics === true) return false;
@@ -72,11 +83,37 @@ class CustomStoryElementYoutube extends React.Component {
   onPlayCallback = (event) => {
     this.triggerQlitics("play");
     this.props.onPlay === "function" && this.props.onPlay(event);
+
+    this.videoRef.current = event.target;
+    const targetElement = this.videoRef.current.getIframe();
+
+    if (this.intersectionObserver) {
+      this.intersectionObserver.observe(targetElement);
+    } else {
+      this.intersectionObserver = initiateNewObserver(targetElement, this.intersectionCallback);
+    }
+  };
+
+  intersectionCallback = (entries) => {
+    const videoInVewPort = entries?.[0].isIntersecting;
+    const player = this.videoRef.current;
+    if (videoInVewPort) player.playVideo();
+    else {
+      this.videoPausedByObserver.current = true; // before the below line fires the pause event we set the videoPausedByObserver Ref to true, this lets the pause events callback to know that the video is not click-paused by the user but paused by the intersection observer
+      player.pauseVideo();
+    }
   };
 
   onPauseCallback = (event) => {
     this.triggerQlitics("pause");
     this.props.onPause === "function" && this.props.onPause(event);
+
+    const videoPausedByObserver = this.videoPausedByObserver.current;
+    if (videoPausedByObserver) {
+      this.videoPausedByObserver.current = false; // This is a clean up to set videoPausedByObserver back to false
+    } else {
+      disconnectObserver(this.intersectionObserver);
+    }
   };
 
   onEndCallback = (event) => {
@@ -108,6 +145,7 @@ class CustomStoryElementYoutube extends React.Component {
         onPause: this.onPauseCallback,
         onEnd: this.onEndCallback,
         onReady: this.onPlayerReady,
+        ref: this.videoRef,
       });
     };
 
@@ -129,13 +167,7 @@ class CustomStoryElementYoutube extends React.Component {
         </div>
       );
     } else if (!this.props.loadIframeOnClick && isLibraryLoaded()) {
-      return React.createElement(YouTube, {
-        videoId: getYouTubeID(this.props.element.url),
-        opts: this.opts,
-        onPlay: this.onPlayCallback,
-        onPause: this.onPauseCallback,
-        onEnd: this.onEndCallback,
-      });
+      return <>{youtubeIframe()}</>;
     } else return <div />;
   }
 }
