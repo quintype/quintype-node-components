@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.5](https://github.com/quintype/quintype-node-components/compare/v3.4.4...v3.4.5) (2023-11-27)
+
+
+### Bug Fixes
+
+* update access-token api ([#224](https://github.com/quintype/quintype-node-components/issues/224)) ([afd55d4](https://github.com/quintype/quintype-node-components/commit/afd55d4ca9f4bcddd6d1baf1784767f0066cac01))
+
 ### [3.4.4](https://github.com/quintype/quintype-node-components/compare/v3.4.3...v3.4.4) (2023-11-16)
 
 ### [3.4.3](https://github.com/quintype/quintype-node-components/compare/v3.4.2...v3.4.3) (2023-09-20)
