@@ -51,14 +51,22 @@ export default class JSEmbed extends React.Component {
     return Buffer.from(embedJs, "base64").toString("utf-8");
   }
 
+  // Method to check the innerHTMLEmbedFile is from Facebook or not
+  checkFacebookURL(innerHTMLEmbedFile) {
+    return innerHTMLEmbedFile?.includes("https://www.facebook.com") || false;
+  }
+
   render() {
+    const innerHTMLEmbedFile = this.getEmbedJS();
+    // isFacebookFileEmbedded will add a new className for changing the iframe style only for facebook
+    const isFacebookFileEmbedded = this.checkFacebookURL(innerHTMLEmbedFile);
     return (
       <div
-        className="jsembed-wrapper"
+        className={`jsembed-wrapper ${isFacebookFileEmbedded ? 'facebook-jsembed' : ''}`}
         ref={(jsembed) => {
           this.JSEmbed = jsembed;
         }}
-        dangerouslySetInnerHTML={{ __html: this.getEmbedJS() }}
+        dangerouslySetInnerHTML={{ __html: innerHTMLEmbedFile }}
       />
     );
   }
