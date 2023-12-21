@@ -1,7 +1,7 @@
-import React from "react";
 import get from "lodash/get";
+import React from "react";
+import { removeDuplicateStories } from "../utils";
 import { InfiniteScroll } from "./infinite-scroll.js";
-import { removeDuplicateStories } from '../utils';
 
 /**
  * This component can be used to implement InfiniteScroll on the story page. You will need to specify the function which renders the story (which will recieve props.index and props.story), and functions for triggering analytics.
@@ -57,8 +57,8 @@ export class InfiniteStoryBase extends React.Component {
       moreItems: [],
       loading: false,
       pageNumber: 0,
-      seenStoryIds: [props.data.story.id]
-    }
+      seenStoryIds: [props.data.story.id],
+    };
   }
 
   allItems() {
@@ -67,45 +67,51 @@ export class InfiniteStoryBase extends React.Component {
 
   onFocus(index) {
     const item = this.allItems()[index];
-    if(!this.props.doNotChangeUrl) {
+    if (!this.props.doNotChangeUrl) {
       const storyPath = item.story.url ? new URL(item.story.url).pathname : "/" + item.story.slug;
-      const metaTitle = get(item, ['story', 'seo', 'meta-title'], item.story.headline);
-      const title = get(item, ["customSeo","title"], metaTitle);
-      global.app.maybeSetUrl(storyPath, title);
+      const metaTitle = get(item, ["story", "seo", "meta-title"], item.story.headline);
+      const title = get(item, ["customSeo", "title"], metaTitle);
+      const path = this.props.changeUrlTo && this.props.changeUrlTo(item);
+      global.app.maybeSetUrl(path || storyPath, title);
     }
 
     this.props.onItemFocus && this.props.onItemFocus(item, index);
 
-    if(!this.state.seenStoryIds.includes(item.story.id)) {
-      this.setState({seenStoryIds: this.state.seenStoryIds.concat([item.story.id])}, () => {
+    if (!this.state.seenStoryIds.includes(item.story.id)) {
+      this.setState({ seenStoryIds: this.state.seenStoryIds.concat([item.story.id]) }, () => {
         this.props.onInitialItemFocus && this.props.onInitialItemFocus(item, index);
-      })
+      });
     }
   }
 
   loadMore() {
-    if(this.state.loading)
-      return;
+    if (this.state.loading) return;
     const pageNumber = this.state.pageNumber;
-    const story = get(this.props.data, ['story'], {});
+    const story = get(this.props.data, ["story"], {});
 
-    this.setState({loading: true, pageNumber: pageNumber + 1}, () => {
+    this.setState({ loading: true, pageNumber: pageNumber + 1 }, () => {
       this.props.loadItems(pageNumber, story, this.props.config).then((items) => {
         this.setState({
           loading: false,
-          moreItems: this.state.moreItems.concat(removeDuplicateStories(this.allItems(), items, item => item.story.id))
-        })
-      })
-    })
+          moreItems: this.state.moreItems.concat(
+            removeDuplicateStories(this.allItems(), items, (item) => item.story.id)
+          ),
+        });
+      });
+    });
   }
 
   render() {
-    return <InfiniteScroll render={this.props.render}
-                           items={this.allItems()}
-                           loadNext={() => this.loadMore()}
-                           loadMargin={this.props.loadMargin}
-                           focusCallbackAt={this.props.focusCallbackAt || 20}
-                           onFocus={(index) => this.onFocus(index)}
-                           neverHideItem={this.props.neverHideItem}/>
+    return (
+      <InfiniteScroll
+        render={this.props.render}
+        items={this.allItems()}
+        loadNext={() => this.loadMore()}
+        loadMargin={this.props.loadMargin}
+        focusCallbackAt={this.props.focusCallbackAt || 20}
+        onFocus={(index) => this.onFocus(index)}
+        neverHideItem={this.props.neverHideItem}
+      />
+    );
   }
 }
