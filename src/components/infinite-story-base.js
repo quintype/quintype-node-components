@@ -47,6 +47,21 @@ import { removeDuplicateStories } from '../utils';
  *                      onItemFocus={(item) => console.log(`Story In View: ${item.story.headline}`)}
  *                      doNotChangeUrl={true} />
  * ```
+ *
+ * #### Configuring the the url to change
+ * When a story is focussed, the url is changed to the original slug of the story by default. To configure this, pass a prop called changeUrlTo as a function which returns the desired url.
+ * This is typically used when you want to change the url but not to the original slug.
+ *
+ * Example:
+ * ```javascript
+ *   <InfiniteStoryBase {...props}
+ *                      render={StoryPageBase}
+ *                      loadItems={storyPageLoadItems}
+ *                      onItemFocus={(item) => console.log(`Story In View: ${item.story.headline}`)}
+                        changeUrlTo={(item) => item.currentPath || props.currentPath}
+ *                      doNotChangeUrl={true} />
+ * ```
+ *
  * @component
  * @category Story Page
  */
