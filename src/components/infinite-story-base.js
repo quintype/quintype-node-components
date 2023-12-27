@@ -86,8 +86,8 @@ export class InfiniteStoryBase extends React.Component {
       const storyPath = item.story.url ? new URL(item.story.url).pathname : "/" + item.story.slug;
       const metaTitle = get(item, ['story', 'seo', 'meta-title'], item.story.headline);
       const title = get(item, ["customSeo","title"], metaTitle);
-      const path = this.props.changeUrlTo && this.props.changeUrlTo(item);
-      global.app.maybeSetUrl(path || storyPath, title);
+      const path = this.props.changeUrlTo ? this.props.changeUrlTo(item) : storyPath;
+      global.app.maybeSetUrl(path, title);
     }
 
     this.props.onItemFocus && this.props.onItemFocus(item, index);
