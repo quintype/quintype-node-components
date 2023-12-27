@@ -1,6 +1,6 @@
 {
   "name": "@quintype/components",
-  "version": "3.4.6",
+  "version": "3.4.7-stories-by-external-id.0",
   "description": "Components to help build Quintype Node.js apps",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
