@@ -150,6 +150,17 @@ This is typically used when showing the original story, followed by previews of 
                      loadItems={storyPageLoadItems}
                      onItemFocus={(item) => console.log(`Story In View: ${item.story.headline}`)}
                      doNotChangeUrl={true} />
+</code></pre>
+<h4>Configuring the the url to change</h4>
+<p>When a story is focussed, the url is changed to the original slug of the story by default. To configure this, pass a prop called changeUrlTo as a function which returns the desired url.
+This is typically used when you want to change the url but not to the original slug.</p>
+<p>Example:</p>
+<pre class="prettyprint source lang-javascript"><code>  &lt;InfiniteStoryBase {...props}
+                     render={StoryPageBase}
+                     loadItems={storyPageLoadItems}
+                     onItemFocus={(item) => console.log(`Story In View: ${item.story.headline}`)}
+                        changeUrlTo={(item) => item.currentPath || props.currentPath}
+                     doNotChangeUrl={true} />
 </code></pre></div>
         
     
@@ -232,7 +243,7 @@ This is typically used when showing the original story, followed by previews of 
         <p class="tag-source">
             <a href="components_infinite-story-base.js.html" class="button">View Source</a>
             <span>
-                <a href="components_infinite-story-base.js.html">components/infinite-story-base.js</a>, <a href="components_infinite-story-base.js.html#line53">line 53</a>
+                <a href="components_infinite-story-base.js.html">components/infinite-story-base.js</a>, <a href="components_infinite-story-base.js.html#line68">line 68</a>
             </span>
         </p>
     
