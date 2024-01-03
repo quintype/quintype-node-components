@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.0](https://github.com/quintype/quintype-node-components/compare/v3.4.6...v3.5.0) (2024-01-03)
+
+
+### Features
+
+* **infinite-story-base:** add support to configure url to change inside infinite-story-base ([#229](https://github.com/quintype/quintype-node-components/issues/229)) ([2d99306](https://github.com/quintype/quintype-node-components/commit/2d99306b360dd53072582088902f26a6d2636ccf))
+
 ### [3.4.6](https://github.com/quintype/quintype-node-components/compare/v3.4.5...v3.4.6) (2023-11-27)
 
 ### [3.4.5](https://github.com/quintype/quintype-node-components/compare/v3.4.4...v3.4.5) (2023-11-27)
