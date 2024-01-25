@@ -37,6 +37,7 @@ class AccessTypeBase extends React.Component {
     const environment = isStaging ? "&env=sandbox" : "";
     const accessTypeHost = `${HOST}/frontend/v2/accesstype.js?key=${accessTypeKey}${environment}`;
     const isATScriptAlreadyPresent = document.querySelector(`script[src="${accessTypeHost}"]`);
+    console.log("");
     if (accessTypeKey && !isATScriptAlreadyPresent && !global.AccessType && global.document) {
       const accessTypeScript = document.createElement("script");
       accessTypeScript.onload = () => {
@@ -184,7 +185,7 @@ class AccessTypeBase extends React.Component {
         !!jwtResponse.headers.get("x-integration-token")
       )
     );
-
+    console.log("error---------", error);
     if (!error) {
       try {
         Promise.all([
@@ -455,33 +456,36 @@ class AccessTypeBase extends React.Component {
   };
 
   checkAccess = async (assetId) => {
+    console.log("check access--------");
     if (!assetId) {
       console.warn("AssetId is required");
       return false;
     }
-
+    console.log("check access--------", assetId);
     this.props.accessIsLoading(true);
 
     const asset = { id: assetId, type: "story" };
+
     const { error, data: accessData } = await awaitHelper(
       global.AccessType.isAssetAccessible(asset, this.props.disableMetering)
     );
-
+    console.log("error-----------", error);
     if (error) {
       return error;
     }
-
+    console.log("accessData-----------", accessData);
     const accessById = { [assetId]: accessData };
-
+    console.log("accessbyid------------", accessById);
     this.props.accessUpdated(accessById);
     this.props.accessIsLoading(false);
-
+    console.log("accessbyid------------ after updated", accessById);
     const { granted, grantReason, data = {} } = accessData || {};
     if (!this.props.disableMetering && granted && grantReason === "METERING") {
+      console.log("granted condition----------");
       this.pingBackMeteredStory(asset, accessData);
       this.props.meterUpdated(data.numberRemaining || -1);
     }
-
+    console.log("accessbyid------------ last one", accessById);
     return accessById;
   };
 
