@@ -26,10 +26,11 @@ class AccessTypeBase extends React.Component {
   }
 
   loadScript = (callback) => {
+    console.log("callback------------", callback);
     const accessTypeKey = get(this.props, ["accessTypeKey"]);
     const isStaging = get(this.props, ["isStaging"]);
     const enableAccesstype = get(this.props, ["enableAccesstype"]);
-
+    console.log("enableAccesstype", enableAccesstype);
     if (!enableAccesstype) {
       return false;
     }
@@ -37,7 +38,7 @@ class AccessTypeBase extends React.Component {
     const environment = isStaging ? "&env=sandbox" : "";
     const accessTypeHost = `${HOST}/frontend/v2/accesstype.js?key=${accessTypeKey}${environment}`;
     const isATScriptAlreadyPresent = document.querySelector(`script[src="${accessTypeHost}"]`);
-    console.log("");
+    console.log("condition-----------", accessTypeKey, isATScriptAlreadyPresent, global.AccessType, global.document);
     if (accessTypeKey && !isATScriptAlreadyPresent && !global.AccessType && global.document) {
       const accessTypeScript = document.createElement("script");
       accessTypeScript.onload = () => {
