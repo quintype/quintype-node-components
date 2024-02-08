@@ -117,6 +117,7 @@ class AccessTypeBase extends React.Component {
 
     const { error, data: subscriptions } = await awaitHelper((await global.fetch(accessTypeHost)).json());
     if (error) {
+      console.log("getSubscription---------", error);
       return {
         error: "subscriptions fetch failed",
       };
@@ -130,6 +131,7 @@ class AccessTypeBase extends React.Component {
     }
     const { error, data: paymentOptions } = await awaitHelper(global.AccessType.getPaymentOptions());
     if (error) {
+      console.log("error---------------getPaymentOptions", error);
       return {
         error: "payment options fetch failed",
       };
@@ -145,11 +147,11 @@ class AccessTypeBase extends React.Component {
       global.AccessType.getAssetPlans({ id: storyId, type: "story" })
     );
     if (error) {
+      console.log("error---------------getAssetPlans", error);
       return {
         error: "asset plan fetch failed",
       };
     }
-
     return assetPlans;
   };
 
@@ -165,6 +167,7 @@ class AccessTypeBase extends React.Component {
       const { error, data: campaignSubscriptions } = await awaitHelper((await global.fetch(accessTypeHost)).json());
 
       if (error) {
+        console.log("error---------------getCampaignSubscription", error);
         return {
           error: "subscriptions fetch failed",
         };
@@ -195,6 +198,11 @@ class AccessTypeBase extends React.Component {
           this.getCampaignSubscription(),
         ]).then(([subscriptionGroups, paymentOptions, assetPlans, campaignSubscriptionGroups]) => {
           batch(() => {
+            console.log("subscriptionGroups----------", subscriptionGroups);
+            console.log("paymentOptions----------", paymentOptions);
+            console.log("assetPlans----------", assetPlans);
+            console.log("campaignSubscriptionGroups----------", campaignSubscriptionGroups);
+
             this.props.subscriptionGroupLoaded(subscriptionGroups);
             this.props.paymentOptionsLoaded(paymentOptions);
             this.props.assetPlanLoaded(assetPlans);
