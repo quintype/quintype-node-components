@@ -219,6 +219,20 @@ class AccessTypeBase extends React.Component {
     return subscriptions;
   };
 
+  getSubscriptionsWithSwitchablePlans = async (planId) => {
+    if (!global.AccessType) {
+      return {};
+    }
+    if (!planId) throw new Error("planId is mandatory");
+    const { error, data: subscription = {} } = await awaitHelper(
+      global.AccessType.getSubscriptionWithSwitchablePlans(planId, "switch")
+    );
+    if (error) {
+      return error;
+    }
+    return subscription;
+  };
+
   initAccessType = (callback) => {
     const { accessTypeBkIntegrationId } = this.props;
     try {
@@ -513,6 +527,7 @@ class AccessTypeBase extends React.Component {
       initPaytrailPayment: this.initPaytrailPayment,
       checkAccess: this.checkAccess,
       getSubscription: this.getSubscription,
+      getSubscriptionsWithSwitchablePlans: this.getSubscriptionsWithSwitchablePlans,
       getSubscriptionForUser: this.getSubscriptionForUser,
       accessUpdated: this.props.accessUpdated,
       accessIsLoading: this.props.accessIsLoading,
