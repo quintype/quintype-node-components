@@ -335,14 +335,15 @@ class AccessTypeBase extends React.Component {
           storySlug,
         };
   }
-  //TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
+
   initRazorPayPayment = async (
     selectedPlanObj = {},
     planType = "",
     storyId = "",
     storyHeadline = "",
     storySlug = "",
-    paymentType = ""
+    paymentType = "",
+    intent = "default"
   ) => {
     if (!selectedPlanObj) {
       console.warn("Razor pay needs a plan");
@@ -353,23 +354,47 @@ class AccessTypeBase extends React.Component {
     let { paymentOptions } = this.props;
     const { discounted_price_cents, price_cents } = planObject.selectedPlan;
 
+    let paymentOptionPromise;
+    let paymentObject;
+    switch (intent) {
+      case "switch":
+        paymentOptionPromise = global.AccessType.getPaymentOptions(null, selectedPlanObj, "switch");
+        paymentObject = this.makePaymentObject({
+          ...planObject,
+          couponCode: selectedPlanObj.coupon_code,
+          paymentType,
+        });
+        break;
+
+      default:
+        paymentOptionPromise = global.AccessType.getPaymentOptions(0);
+        paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code, intent });
+    }
     if (discounted_price_cents === 0 || price_cents === 0) {
-      const { data } = await awaitHelper(global.AccessType.getPaymentOptions(0));
+      const { data } = await awaitHelper(paymentOptionPromise);
       paymentOptions = data;
     }
 
     planObject["paymentType"] =
       paymentType || (get(planObject, ["selectedPlan", "recurring"]) ? "razorpay_recurring" : "razorpay");
-    const paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code });
 
     if (paymentObject.payment.amount_cents === 0) {
-      return global.AccessType.getPaymentOptions(0).then((provider) => provider.razorpay.proceed(paymentObject));
+      return paymentOptionPromise.then((provider) => provider.razorpay.proceed(paymentObject));
     }
 
+    if (intent === "switch") {
+      const temp = {
+        ...paymentObject,
+        switch_type: "upgrade",
+        subscription_plan_id: selectedPlanObj.id,
+        subscriptionId: selectedPlanObj.subscriptionId,
+      };
+      console.log("** calling proceed with >> ", temp);
+      return paymentOptions.razorpay.proceed(temp);
+    }
     return paymentOptions.razorpay.proceed(paymentObject);
   };
 
-  //TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
   initStripePayment = (options = {}) => {
     if (!options.selectedPlan) {
       console.warn("Stripe pay needs a plan");
@@ -384,7 +409,6 @@ class AccessTypeBase extends React.Component {
       : Promise.reject({ message: "Payment option is loading..." });
   };
 
-  //TODO -> need to write test cases to cover all scenarios , selectedPlan, planType , coupon, urls, story details etc.
   initPaypalPayment = (options = {}) => {
     if (!options.selectedPlan) {
       console.warn("Paypal pay needs a plan");
