@@ -343,35 +343,21 @@ class AccessTypeBase extends React.Component {
     storyHeadline = "",
     storySlug = "",
     paymentType = "",
-    intent = "default"
+    opts
   ) => {
     if (!selectedPlanObj) {
       console.warn("Razor pay needs a plan");
       return false;
     }
-
+    const intent = get(opts, ["intent"], "default");
+    const switchType = get(opts, ["switchType"]);
     const planObject = this.makePlanObject(selectedPlanObj, planType, storyId, storyHeadline, storySlug); //we are doing this to sake of backward compatibility and will be refactored later.
     let { paymentOptions } = this.props;
     const { discounted_price_cents, price_cents } = planObject.selectedPlan;
+    const paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code });
 
-    let paymentOptionPromise;
-    let paymentObject;
-    switch (intent) {
-      case "switch":
-        paymentOptionPromise = global.AccessType.getPaymentOptions(null, selectedPlanObj, "switch");
-        paymentObject = this.makePaymentObject({
-          ...planObject,
-          couponCode: selectedPlanObj.coupon_code,
-          paymentType,
-        });
-        break;
-
-      default:
-        paymentOptionPromise = global.AccessType.getPaymentOptions(0);
-        paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code, intent });
-    }
     if (discounted_price_cents === 0 || price_cents === 0) {
-      const { data } = await awaitHelper(paymentOptionPromise);
+      const { data } = await awaitHelper(global.AccessType.getPaymentOptions(0));
       paymentOptions = data;
     }
 
@@ -379,18 +365,20 @@ class AccessTypeBase extends React.Component {
       paymentType || (get(planObject, ["selectedPlan", "recurring"]) ? "razorpay_recurring" : "razorpay");
 
     if (paymentObject.payment.amount_cents === 0) {
-      return paymentOptionPromise.then((provider) => provider.razorpay.proceed(paymentObject));
+      return global.AccessType.getPaymentOptions(0).then((provider) => provider.razorpay.proceed(paymentObject));
     }
 
     if (intent === "switch") {
-      const temp = {
+      const { error, data: switchPaymentOptions } = await awaitHelper(
+        global.AccessType.getPaymentOptions(null, null, "switch")
+      );
+      if (error) throw new Error("payment options fetch failed");
+      return switchPaymentOptions.razorpay.proceed({
         ...paymentObject,
-        switch_type: "upgrade",
+        switch_type: switchType,
         subscription_plan_id: selectedPlanObj.id,
         subscriptionId: selectedPlanObj.subscriptionId,
-      };
-      console.log("** calling proceed with >> ", temp);
-      return paymentOptions.razorpay.proceed(temp);
+      });
     }
     return paymentOptions.razorpay.proceed(paymentObject);
   };
