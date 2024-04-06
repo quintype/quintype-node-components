@@ -120,7 +120,6 @@ class CustomStoryElementDailyMotion extends React.Component {
 
   getEmbedJS() {
     const embedJs = this.props.element["embed-js"];
-    console.log("Embed JS Logs 555: ", embedJs);
     if (!embedJs) return null;
     if (global) {
       return decodeURIComponent(escape(global.atob(embedJs)));
