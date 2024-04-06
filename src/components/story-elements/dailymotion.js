@@ -42,7 +42,8 @@ class CustomStoryElementDailyMotion extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.loadIframeOnClick) {
+    const metadata = this.props?.element?.metadata || {};
+    if (!this.props.loadIframeOnClick && metadata["player-id"]) {
       this.triggerIframe();
     }
   }
@@ -117,6 +118,16 @@ class CustomStoryElementDailyMotion extends React.Component {
     this.setState({ showVideo: true });
   };
 
+  getEmbedJS() {
+    const embedJs = this.props.element["embed-js"];
+    console.log("Embed JS Logs 555: ", embedJs);
+    if (!embedJs) return null;
+    if (global) {
+      return decodeURIComponent(escape(global.atob(embedJs)));
+    }
+    return Buffer.from(embedJs, "base64").toString("utf-8");
+  }
+
   render() {
     const { id: videoId } = getVideoID(this.props.element.metadata["dailymotion-url"]);
     const dailymotionIframe = ({ autoplay } = false) => {
@@ -154,7 +165,10 @@ class CustomStoryElementDailyMotion extends React.Component {
       );
     } else if (!this.props.loadIframeOnClick && isLibraryLoaded()) {
       return dailymotionIframe();
-    } else return <div />;
+    } else {
+      const embedJs = this.getEmbedJS();
+      return <div dangerouslySetInnerHTML={{ __html: embedJs }} />;
+    }
   }
 }
 
