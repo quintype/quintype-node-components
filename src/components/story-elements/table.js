@@ -1,31 +1,40 @@
 import React from "react";
 
 function TableHeader(columns) {
-  return <thead>
-    <tr>
-      {columns.map(col => <th>{col.Header}</th>)}
-    </tr>
-  </thead>;
+  return (
+    <thead>
+      <tr>
+        {columns.map((col) => (
+          <th>{col.Header}</th>
+        ))}
+      </tr>
+    </thead>
+  );
 }
 
 export function TableView({ data, columns, className, hasHeader }) {
-  return <table className={className}>
-    {hasHeader && TableHeader(columns)}
-    <tbody>
-      {data.map(row => <tr>
-        {columns.map(col => <td>
-          {row[col.Header]}
-        </td>)}
-      </tr>)}
-    </tbody>
-  </table>;
+  return (
+    <table className={className}>
+      {hasHeader && TableHeader(columns)}
+      <tbody>
+        {data.map((row) => (
+          <tr>
+            {columns.map((col) => (
+              <td>{row[col.Header]}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 }
 
 export class Table extends React.Component {
   constructor(props) {
+    console.log("aa--qc--props", props);
     super(props);
     this.state = {
-      tableData: []
+      tableData: [],
     };
   }
 
@@ -33,14 +42,16 @@ export class Table extends React.Component {
     import(/* webpackChunkName: "qtc-parsecsv" */ "papaparse").then(({ parse }) => {
       parse(content, {
         header: this.props.hasHeader,
-        complete: results => this._isMounted && this.setState({ tableData: results.data })
+        complete: (results) => this._isMounted && this.setState({ tableData: results.data }),
       });
-    })
+    });
   }
 
   componentDidMount() {
     this._isMounted = true;
+    console.log("aa--qc--this.props.data.content", this.props.data.content);
     this.parseCSVToJson(this.props.data.content);
+    console.log("aa--qc--parseCSVToJson", this.parseCSVToJson(this.props.data.content));
   }
 
   componentWillUnmount() {
@@ -58,10 +69,10 @@ export class Table extends React.Component {
       return null;
     }
 
-    const columns = Object.keys(this.state.tableData[0]).map(header => ({
+    const columns = Object.keys(this.state.tableData[0]).map((header) => ({
       Header: header,
       accessor: header,
-      headerStyle: !this.props.hasHeader ? { display: "none" } : {}
+      headerStyle: !this.props.hasHeader ? { display: "none" } : {},
     }));
 
     const className = `story-element-table-${this.props.id}`;
