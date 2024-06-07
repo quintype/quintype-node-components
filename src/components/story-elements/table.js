@@ -1,41 +1,49 @@
 import React from "react";
 
-function TableHeader(columns) {
-  return <thead>
-    <tr>
-      {columns.map(col => <th>{col.Header}</th>)}
-    </tr>
-  </thead>;
+function TableHeader(columns = []) {
+  return (
+    <thead>
+      <tr>
+        {columns.map((col) => (
+          <th>{col}</th>
+        ))}
+      </tr>
+    </thead>
+  );
 }
 
 export function TableView({ data, columns, className, hasHeader }) {
-  return <table className={className}>
-    {hasHeader && TableHeader(columns)}
-    <tbody>
-      {data.map(row => <tr>
-        {columns.map(col => <td>
-          {row[col.Header]}
-        </td>)}
-      </tr>)}
-    </tbody>
-  </table>;
+  return (
+    <table className={className}>
+      {hasHeader && TableHeader(columns)}
+      <tbody>
+        {data.map((row) => (
+          <tr>
+            {row.map((item) => (
+              <td>{item}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 }
 
 export class Table extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableData: []
+      tableData: [],
     };
   }
 
   parseCSVToJson(content) {
     import(/* webpackChunkName: "qtc-parsecsv" */ "papaparse").then(({ parse }) => {
       parse(content, {
-        header: this.props.hasHeader,
-        complete: results => this._isMounted && this.setState({ tableData: results.data })
+        header: false, // with header true, the order of columns in table is not guaranteed, so we will handle the case
+        complete: (results) => this._isMounted && this.setState({ tableData: results.data }),
       });
-    })
+    });
   }
 
   componentDidMount() {
@@ -58,17 +66,15 @@ export class Table extends React.Component {
       return null;
     }
 
-    const columns = Object.keys(this.state.tableData[0]).map(header => ({
-      Header: header,
-      accessor: header,
-      headerStyle: !this.props.hasHeader ? { display: "none" } : {}
-    }));
+    const [columns, tableData] = this.props.hasHeader
+      ? [this.state.tableData[0], this.state.tableData.slice(1)]
+      : [[], this.state.tableData];
 
     const className = `story-element-table-${this.props.id}`;
 
     return React.createElement(this.props.tableComponent || TableView, {
       hasHeader: this.props.hasHeader,
-      data: this.state.tableData,
+      data: tableData,
       columns: columns,
       showPageSizeOptions: false,
       showPageJump: false,
