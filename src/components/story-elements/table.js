@@ -1,6 +1,6 @@
 import React from "react";
 
-function TableHeader(columns = []) {
+function TableHeader(columns) {
   return (
     <thead>
       <tr>
@@ -12,7 +12,7 @@ function TableHeader(columns = []) {
   );
 }
 
-export function TableView({ data, columns, className, hasHeader }) {
+export function TableView({ data, columns = [], className, hasHeader }) {
   return (
     <table className={className}>
       {hasHeader && TableHeader(columns)}
@@ -30,7 +30,7 @@ export function TableView({ data, columns, className, hasHeader }) {
 }
 
 export class Table extends React.Component {
-  constructor(props) { // props.data = {content: '', content-type: 'csv'}
+  constructor(props) {
     super(props);
     this.state = {
       tableData: [],
@@ -40,16 +40,16 @@ export class Table extends React.Component {
   parseCSVToJson(content) {
     import(/* webpackChunkName: "qtc-parsecsv" */ "papaparse").then(({ parse }) => {
       parse(content, {
-        header: false, // with header true, the order of columns in table is not guaranteed, so we will handle the case
+        header: false,
         complete: (results) => this._isMounted && this.setState({ tableData: results.data }),
+        // with header true, the order of columns in table is not guaranteed by papaparse library, so we will parse including the header as table data and handle it after.
       });
     });
   }
 
   componentDidMount() {
     this._isMounted = true;
-    this.parseCSVToJson(this.props.data.content); // csv string
-    console.log("aa--qc-tableData", this.state.tableData)
+    this.parseCSVToJson(this.props.data.content);
   }
 
   componentWillUnmount() {
@@ -57,14 +57,12 @@ export class Table extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("aa--qc-nextProps", nextProps)
     if (this.props.data.content !== nextProps.data.content) {
       this.parseCSVToJson(nextProps.data.content);
     }
   }
 
   render() {
-    console.log("aa--qc-tableLength", this.state.tableData.length)
     if (!this.state.tableData.length > 0) {
       return null;
     }
