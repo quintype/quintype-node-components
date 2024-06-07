@@ -30,7 +30,7 @@ export function TableView({ data, columns, className, hasHeader }) {
 }
 
 export class Table extends React.Component {
-  constructor(props) {
+  constructor(props) { // props.data = {content: '', content-type: 'csv'}
     super(props);
     this.state = {
       tableData: [],
@@ -48,7 +48,8 @@ export class Table extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    this.parseCSVToJson(this.props.data.content);
+    this.parseCSVToJson(this.props.data.content); // csv string
+    console.log("aa--qc-tableData", this.state.tableData)
   }
 
   componentWillUnmount() {
@@ -56,12 +57,14 @@ export class Table extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("aa--qc-nextProps", nextProps)
     if (this.props.data.content !== nextProps.data.content) {
       this.parseCSVToJson(nextProps.data.content);
     }
   }
 
   render() {
+    console.log("aa--qc-tableLength", this.state.tableData.length)
     if (!this.state.tableData.length > 0) {
       return null;
     }
