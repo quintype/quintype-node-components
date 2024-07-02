@@ -43,6 +43,13 @@ export function GumletImage(props) {
   console.log("aa--USED_PARAMS", USED_PARAMS);
   console.log("aa--omit(props, USED_PARAMS)", omit(props, USED_PARAMS));
 
+  useEffect(() => {
+    console.log("aa--imageProps", imageProps);
+    console.log("aa--props", props);
+    console.log("aa--USED_PARAMS", USED_PARAMS);
+    console.log("aa--omit(props, USED_PARAMS)", omit(props, USED_PARAMS));
+  }, []);
+
   return (
     <React.Fragment>
       <Tag {...imageProps} {...omit(props, USED_PARAMS)} className={className ? `qt-image ${className}` : "qt-image"} />

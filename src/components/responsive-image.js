@@ -1,22 +1,23 @@
-import {connect} from "react-redux";
+import { arrayOf, number, object, string } from "prop-types";
 import React from "react";
-import { ThumborImage } from "./impl/thumbor-image";
-import { string, arrayOf, number, object } from 'prop-types';
+import { connect } from "react-redux";
 import { GumletImage } from "./impl/gumlet-image";
+import { ThumborImage } from "./impl/thumbor-image";
 
 function mapStateToProps(state) {
   return {
     imageCDN: state.qt.config["cdn-image"],
-    imageCDNFormat: state.qt.config["image-cdn-format"] || "thumbor"
+    imageCDNFormat: state.qt.config["image-cdn-format"] || "thumbor",
   };
 }
 
 function ResponsiveImageBase(props) {
-  if (process.env.NODE_ENV == 'development' && !props.alt && !props.reactTag) {
+  console.log("aa--ResponsiveImageBase-Props", props);
+  if (process.env.NODE_ENV == "development" && !props.alt && !props.reactTag) {
     global.console && global.console.warn(`Image Found without an alt attribute: ${props.slug}`);
   }
 
-  if(props.imageCDNFormat === "gumlet") {
+  if (props.imageCDNFormat === "gumlet") {
     return React.createElement(GumletImage, props);
   }
   return React.createElement(ThumborImage, props);
@@ -51,7 +52,7 @@ ResponsiveImageBase.propTypes = {
   imageCDN: string,
 
   /** The Image CDN Format. This comes automatically from redux store, <em>config["image-cdn-format"]</em> (default: <em>"thumbor"</em>) */
-  imageCDNFormat: string
+  imageCDNFormat: string,
 };
 
 /**
