@@ -25,7 +25,7 @@ export class ThumborImage extends React.Component {
     this.state = {
       showImage: !this.shouldLazyLoad(),
     };
-    console.log("aa--this.props", this.props);
+    console.log("bb--this.props", this.props);
   }
   shouldLazyLoad() {
     if (this.props.eager === true) {
@@ -41,15 +41,19 @@ export class ThumborImage extends React.Component {
   }
   render() {
     const imageProps = this.state.showImage ? responsiveProps(this.props) : { src: emptyWebGif };
-    console.log("aa--imageProps", imageProps);
+    console.log("bb--imageProps", imageProps);
 
     const imageData = responsiveProps(this.props);
-    console.log("aa--imageData", imageData);
+    console.log("bb--imageData", imageData);
 
     return (
       <>
         <noscript>
-          <img src={imageProps?.src} srcSet={imageProps.srcSet} />
+          <img
+            src={imageProps?.src}
+            srcSet={imageProps.srcSet}
+            className={this.props.className ? `qt-image ${this.props.className}` : "qt-image"}
+          />
         </noscript>
         {React.createElement(
           this.props.reactTag || "img",

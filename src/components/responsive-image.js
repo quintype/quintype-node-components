@@ -17,6 +17,8 @@ function ResponsiveImageBase(props) {
     global.console && global.console.warn(`Image Found without an alt attribute: ${props.slug}`);
   }
 
+  console.log("aa--bb--props.imageCDNFormat", props.imageCDNFormat);
+
   if (props.imageCDNFormat === "gumlet") {
     return React.createElement(GumletImage, props);
   }
