@@ -50,9 +50,10 @@ export class ThumborImage extends React.Component {
       <>
         <noscript>
           <img
-            src={imageProps?.src}
-            srcSet={imageProps.srcSet}
+            src={imageData?.src}
+            srcSet={imageData?.srcSet}
             className={this.props.className ? `qt-image ${this.props.className}` : "qt-image"}
+            alt={this.props?.alt}
           />
         </noscript>
         {React.createElement(
