@@ -1,4 +1,4 @@
-import { func, string } from 'prop-types';
+import { func, string } from "prop-types";
 import React from "react";
 
 class IntersectionObserverWrapper {
@@ -17,13 +17,13 @@ class IntersectionObserverWrapper {
 
   onObservation(entries) {
     entries
-      .filter(entry => {
-        return (entry.isIntersecting === undefined || entry.isIntersecting)
+      .filter((entry) => {
+        return entry.isIntersecting === undefined || entry.isIntersecting;
       })
-      .map(entry => entry.target)
-      .forEach(dom => {
-        const index = this.observedItems.findIndex(x => x[0] === dom);
-        if(index > -1) {
+      .map((entry) => entry.target)
+      .forEach((dom) => {
+        const index = this.observedItems.findIndex((x) => x[0] === dom);
+        if (index > -1) {
           const component = this.observedItems[index][1];
           this.callback(component);
           this.unregister(dom, component);
@@ -37,7 +37,7 @@ class IntersectionObserverWrapper {
   }
 
   unregister(dom, component) {
-    const index = this.observedItems.findIndex(x => x[0] === dom);
+    const index = this.observedItems.findIndex((x) => x[0] === dom);
 
     if (index > -1) {
       this.observedItems.splice(index, 1);
@@ -53,6 +53,7 @@ class IntersectionObserverWrapper {
 class StubObserverWrapper {
   constructor(callback) {
     this.callback = callback;
+    console.log("aa--inside-StubObserverWrapper");
   }
 
   register(dom, component) {
@@ -101,12 +102,14 @@ class StubObserverWrapper {
 export class LazyLoadImages extends React.Component {
   constructor(props) {
     super(props);
-    const callback = component => component.showImage()
-    this.observerWrapper = global.IntersectionObserver ? new IntersectionObserverWrapper(callback) : new StubObserverWrapper(callback);
+    const callback = (component) => component.showImage();
+    this.observerWrapper = global.IntersectionObserver
+      ? new IntersectionObserverWrapper(callback)
+      : new StubObserverWrapper(callback);
   }
 
   componentDidMount() {
-    this.observerWrapper.start(this.props.margin || "500px")
+    this.observerWrapper.start(this.props.margin || "500px");
   }
 
   componentWillUnmount() {
@@ -116,8 +119,8 @@ export class LazyLoadImages extends React.Component {
   getChildContext() {
     return {
       lazyLoadObserveImage: (dom, component) => dom && this.observerWrapper.register(dom, component),
-      lazyLoadUnobserveImage: (dom, component) => dom && this.observerWrapper.unregister(dom, component)
-    }
+      lazyLoadUnobserveImage: (dom, component) => dom && this.observerWrapper.unregister(dom, component),
+    };
   }
 
   render() {
@@ -127,9 +130,9 @@ export class LazyLoadImages extends React.Component {
 
 LazyLoadImages.childContextTypes = {
   lazyLoadObserveImage: func,
-  lazyLoadUnobserveImage: func
+  lazyLoadUnobserveImage: func,
 };
 
 LazyLoadImages.propTypes = {
-  margin: string
-}
+  margin: string,
+};
