@@ -42,12 +42,23 @@ export class ThumborImage extends React.Component {
   render() {
     const imageProps = this.state.showImage ? responsiveProps(this.props) : { src: emptyWebGif };
     console.log("aa--imageProps", imageProps);
-    return React.createElement(
-      this.props.reactTag || "img",
-      Object.assign(imageProps, omit(this.props, USED_PARAMS), {
-        ref: (dom) => (this.dom = dom),
-        className: this.props.className ? `qt-image ${this.props.className}` : "qt-image",
-      })
+
+    const imageData = responsiveProps(this.props);
+    console.log("aa--imageData", imageData);
+
+    return (
+      <>
+        <noscript>
+          <img src={imageProps?.src} srcSet={imageProps.srcSet} />
+        </noscript>
+        {React.createElement(
+          this.props.reactTag || "img",
+          Object.assign(imageProps, omit(this.props, USED_PARAMS), {
+            ref: (dom) => (this.dom = dom),
+            className: this.props.className ? `qt-image ${this.props.className}` : "qt-image",
+          })
+        )}
+      </>
     );
   }
   componentDidMount() {
