@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.5.2](https://github.com/quintype/quintype-node-components/compare/v3.5.1...v3.5.2) (2024-07-24)
+
+
+### Bug Fixes
+
+* **table element:** fix table elements column order ([#232](https://github.com/quintype/quintype-node-components/issues/232)) ([e68486b](https://github.com/quintype/quintype-node-components/commit/e68486b5ff7d826d9d8a2ad64d30609500264537))
+
 ### [3.5.1](https://github.com/quintype/quintype-node-components/compare/v3.5.0...v3.5.1) (2024-07-16)
 
 ## [3.5.0](https://github.com/quintype/quintype-node-components/compare/v3.4.6...v3.5.0) (2024-01-03)
