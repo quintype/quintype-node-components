@@ -1,9 +1,9 @@
-import React from "react";
-import emptyWebGif from 'empty-web-gif';
-import omit from '@babel/runtime/helpers/objectWithoutProperties';
-import { func } from 'prop-types';
+import omit from "@babel/runtime/helpers/objectWithoutProperties";
+import emptyWebGif from "empty-web-gif";
+import { func } from "prop-types";
 import { FocusedImage } from "quintype-js";
-import { USED_PARAMS, hashString } from './image-utils';
+import React from "react";
+import { USED_PARAMS, hashString } from "./image-utils";
 
 export function responsiveProps(props) {
   const image = new FocusedImage(props.slug, props.metadata);
@@ -12,18 +12,32 @@ export function responsiveProps(props) {
     return "//" + props.imageCDN + "/" + image.path(props.aspectRatio, Object.assign({ w: size }, props.imgParams));
   }
 
+  function generateSizes() {
+    // return "(max-width: 600px) 100vw, (max-width: 900px) 50vw, (max-width: 1240px) 33vw, 11.13vw";
+    const sizes = props.widths.map((size) => {
+      if (size === 250) {
+        return "(max-width: 600px) 250px";
+      } else if (size === 480) {
+        return "(max-width: 900px) 480px";
+      }
+      return "640px";
+    });
+    return sizes.join(",");
+  }
+
   return {
     src: generatePath(props.defaultWidth),
     srcSet: props.widths ? props.widths.map((size) => `${generatePath(size)} ${size}w`).join(",") : undefined,
+    sizes: generateSizes(),
     key: hashString(props.slug),
-  }
+  };
 }
 
 export class ThumborImage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      showImage: !this.shouldLazyLoad()
+      showImage: !this.shouldLazyLoad(),
     };
   }
   shouldLazyLoad() {
@@ -40,10 +54,13 @@ export class ThumborImage extends React.Component {
   }
   render() {
     const imageProps = this.state.showImage ? responsiveProps(this.props) : { src: emptyWebGif };
-    return React.createElement(this.props.reactTag || "img", Object.assign(imageProps, omit(this.props, USED_PARAMS), {
-      ref: dom => this.dom = dom,
-      className: this.props.className ? `qt-image ${this.props.className}` : 'qt-image'
-    }));
+    return React.createElement(
+      this.props.reactTag || "img",
+      Object.assign(imageProps, omit(this.props, USED_PARAMS), {
+        ref: (dom) => (this.dom = dom),
+        className: this.props.className ? `qt-image ${this.props.className}` : "qt-image",
+      })
+    );
   }
   componentDidMount() {
     this.shouldLazyLoad() && this.context.lazyLoadObserveImage(this.dom, this);
@@ -59,5 +76,5 @@ export class ThumborImage extends React.Component {
 ThumborImage.contextTypes = {
   lazyLoadObserveImage: func,
   lazyLoadUnobserveImage: func,
-  lazyLoadEagerPredicate: func
-}
+  lazyLoadEagerPredicate: func,
+};
