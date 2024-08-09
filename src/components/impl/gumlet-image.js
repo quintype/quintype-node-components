@@ -33,16 +33,7 @@ export function GumletImage(props) {
   }
 
   function generateSizes() {
-    // return "(max-width: 600px) 100vw, (max-width: 900px) 50vw, (max-width: 1240px) 33vw, 11.13vw";
-    const sizes = props.widths.map((size) => {
-      if (size === 250) {
-        return "(max-width: 600px) 250px";
-      } else if (size === 480) {
-        return "(max-width: 900px) 480px";
-      }
-      return "640px";
-    });
-    return sizes.join(",");
+    return "(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw";
   }
 
   const imageProps = {
