@@ -13,7 +13,7 @@ export function responsiveProps(props) {
   }
 
   function generateSizes() {
-    return "(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw";
+    return "(max-width: 480px) 100vw, (max-width: 768px) 75vw, (max-width: 1024px) 50vw, 33vw";
   }
 
   return {
