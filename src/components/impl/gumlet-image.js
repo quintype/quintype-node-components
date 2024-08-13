@@ -27,6 +27,7 @@ function loadGumlet() {
 export function GumletImage(props) {
   const { slug, metadata, aspectRatio, imageCDN, imgParams, reactTag, className } = props;
   const image = new FocusedImage(slug, metadata);
+  const imageWidths = [250, 480, 640];
 
   function generatePath(size) {
     return "//" + imageCDN + "/" + image.path(aspectRatio, Object.assign({ w: size }, imgParams));
@@ -39,7 +40,7 @@ export function GumletImage(props) {
   const imageProps = {
     src: emptyWebGif,
     "data-src": "https://" + imageCDN + "/" + image.path(aspectRatio, imgParams),
-    srcSet: props.widths ? props.widths.map((size) => `${generatePath(size)} ${size}w`).join(",") : undefined,
+    srcSet: imageWidths ? imageWidths.map((size) => `${generatePath(size)} ${size}w`).join(",") : undefined,
     sizes: generateSizes(),
     key: hashString(slug),
   };
