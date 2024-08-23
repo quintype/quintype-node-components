@@ -32,7 +32,7 @@ export function GumletImage(props) {
     src: emptyWebGif,
     "data-src": "https://" + imageCDN + "/" + image.path(aspectRatio, imgParams),
     key: hashString(slug),
-    sizes: props.sizes ? sizes : undefined,
+    sizes: props?.sizes,
   };
 
   const Tag = reactTag || "img";

@@ -16,7 +16,7 @@ export function responsiveProps(props) {
     src: generatePath(props.defaultWidth),
     srcSet: props.widths ? props.widths.map((size) => `${generatePath(size)} ${size}w`).join(",") : undefined,
     key: hashString(props.slug),
-    sizes: props.sizes ? sizes : undefined,
+    sizes: props?.sizes,
   };
 }
 
