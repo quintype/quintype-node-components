@@ -1,52 +1,67 @@
-import React from "react";
-import {connect} from "react-redux";
-import {withError} from './with-error';
+import React from 'react'
+import { connect } from 'react-redux'
+import { withError } from './with-error'
 
-function getNativeShareHandler(canNativeShare, title, fullUrl) {
+function getNativeShareHandler (canNativeShare, title, fullUrl) {
   if (!canNativeShare) {
-    return null;
+    return null
   }
 
-  return function handleShare() {
-    window.navigator.share({
-      title: title,
-      url: fullUrl,
-    }).catch(console.error);
+  return function handleShare () {
+    window.navigator
+      .share({
+        title: title,
+        url: fullUrl
+      })
+      .catch(console.error)
   }
 }
 
 class SocialShareBase extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       canNativeShare: false
     }
   }
 
-  componentDidMount() {
-    this.setState({canNativeShare: global && global.navigator && global.navigator.share})
+  componentDidMount () {
+    this.setState({ canNativeShare: global && global.navigator && global.navigator.share })
   }
 
-  render() {
-    const fullUrl = this.props.fullUrl || `${this.props.publisherUrl}/${this.props.url}`;
-    const hashtags = this.props.hashtags ? this.props.hashtags : '';
+  render () {
+    const fullUrl = this.props.fullUrl || `${this.props.publisherUrl}/${this.props.url}`
+    const hashtags = this.props.hashtags ? this.props.hashtags : ''
 
-    return React.createElement(this.props.template, Object.assign({
-      fbUrl: `https://www.facebook.com/sharer.php?u=${encodeURIComponent(fullUrl)}`,
-      twitterUrl: `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(this.props.title)}&hashtags=${hashtags}`,
-      gplusUrl: `https://plus.google.com/share?url=${encodeURIComponent(fullUrl)}`,
-      linkedinUrl: `https://www.linkedin.com/shareArticle?url=${encodeURIComponent(fullUrl)}&title=${encodeURIComponent(this.props.title)}`,
-      whatsappUrl: `https://api.whatsapp.com/send?text=${encodeURIComponent(fullUrl)}`,
-      mailtoUrl: `mailto:${''}?subject=${encodeURIComponent(this.props.title)}&body=${encodeURIComponent(fullUrl)}`,
-      handleNativeShare: getNativeShareHandler(this.state.canNativeShare, this.props.title, fullUrl)
-    }, this.props));
+    return React.createElement(
+      this.props.template,
+      Object.assign(
+        {
+          fbUrl: `https://www.facebook.com/sharer.php?u=${encodeURIComponent(fullUrl)}`,
+          twitterUrl: `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(
+            this.props.title
+          )}&hashtags=${hashtags}`,
+          gplusUrl: `https://plus.google.com/share?url=${encodeURIComponent(fullUrl)}`,
+          linkedinUrl: `https://www.linkedin.com/shareArticle?url=${encodeURIComponent(
+            fullUrl
+          )}&title=${encodeURIComponent(this.props.title)}`,
+          whatsappUrl: `https://api.whatsapp.com/send?text=${encodeURIComponent(fullUrl)}`,
+          mailtoUrl: `mailto:${''}?subject=${encodeURIComponent(this.props.title)}&body=${encodeURIComponent(fullUrl)}`,
+          redditUrl: `https://www.reddit.com/submit?url=${encodeURIComponent(fullUrl)}&title=${encodeURIComponent(
+            this.props.title
+          )}&type=LINK`,
+          handleNativeShare: getNativeShareHandler(this.state.canNativeShare, this.props.title, fullUrl)
+        },
+        this.props
+      )
+    )
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
-    publisherUrl: state.qt.config["sketches-host"]
-  };
+    publisherUrl: state.qt.config['sketches-host']
+  }
 }
 
 /**
@@ -59,17 +74,17 @@ function mapStateToProps(state) {
  * class CustomComponent extends React.Component {
  *   getSocialCardsTemplate({fbUrl, twitterUrl, gplusUrl, linkedinUrl, handleNativeShare}) {
  *     return <ul className="social-share-icons">
-*        <li className="social-share-icon">
-*          <a href={fbUrl} target="_blank">
-*            <img src={fbIcon} alt="fb icon"/>
-*          </a>
-*        </li>
-*        {handleNativeShare && <li className="social-share-icon">
-*          <button onClick={handleNativeShare}>
-*            <img src={fbIcon} alt="share icon"/>
-*          </button>
-*        </li>}
-*      </ul>
+ *        <li className="social-share-icon">
+ *          <a href={fbUrl} target="_blank">
+ *            <img src={fbIcon} alt="fb icon"/>
+ *          </a>
+ *        </li>
+ *        {handleNativeShare && <li className="social-share-icon">
+ *          <button onClick={handleNativeShare}>
+ *            <img src={fbIcon} alt="share icon"/>
+ *          </button>
+ *        </li>}
+ *      </ul>
  *   }
  *
  *   render() {
@@ -86,4 +101,4 @@ function mapStateToProps(state) {
  * @component
  * @category Story Page
  */
-export const SocialShare = connect(mapStateToProps, {})(withError(SocialShareBase));
+export const SocialShare = connect(mapStateToProps, {})(withError(SocialShareBase))

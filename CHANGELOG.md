@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.0](https://github.com/quintype/quintype-node-components/compare/v3.5.2...v3.6.0) (2024-08-22)
+
+
+### Features
+
+* **Social Share:** support reddit share ([#235](https://github.com/quintype/quintype-node-components/issues/235)) ([f286c63](https://github.com/quintype/quintype-node-components/commit/f286c63f97504276a8de42629a4153ad2e13c4e8))
+
 ### [3.5.2](https://github.com/quintype/quintype-node-components/compare/v3.5.1...v3.5.2) (2024-07-24)
 
 
