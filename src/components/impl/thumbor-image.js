@@ -7,16 +7,27 @@ import { USED_PARAMS, hashString } from './image-utils';
 
 export function responsiveProps(props) {
   const image = new FocusedImage(props.slug, props.metadata);
+  const { priority = false } = props;
 
   function generatePath(size) {
     return "//" + props.imageCDN + "/" + image.path(props.aspectRatio, Object.assign({ w: size }, props.imgParams));
   }
 
-  return {
+  const imageProps = {
     src: generatePath(props.defaultWidth),
     srcSet: props.widths ? props.widths.map((size) => `${generatePath(size)} ${size}w`).join(",") : undefined,
     key: hashString(props.slug),
+  };
+
+  if (priority) {
+    return {
+      ...imageProps,
+      fetchPriority: "high",
+    };
   }
+  return {
+    ...imageProps,
+  };
 }
 
 export class ThumborImage extends React.Component {
