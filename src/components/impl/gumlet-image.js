@@ -28,8 +28,6 @@ export function GumletImage(props) {
   const { slug, metadata, aspectRatio, imageCDN, imgParams, reactTag, className, sizes } = props;
   const image = new FocusedImage(slug, metadata);
 
-  console.log("aa--sizes", sizes);
-
   const imageProps = {
     src: emptyWebGif,
     "data-src": "https://" + imageCDN + "/" + image.path(aspectRatio, imgParams),

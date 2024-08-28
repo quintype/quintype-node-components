@@ -12,8 +12,6 @@ export function responsiveProps(props) {
     return "//" + props.imageCDN + "/" + image.path(props.aspectRatio, Object.assign({ w: size }, props.imgParams));
   }
 
-  console.log("aa--sizes", props?.sizes);
-
   return {
     src: generatePath(props.defaultWidth),
     srcSet: props.widths ? props.widths.map((size) => `${generatePath(size)} ${size}w`).join(",") : undefined,
