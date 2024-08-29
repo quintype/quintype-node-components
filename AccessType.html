@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-66074042-1', 'auto');ga('send', 'pageview');</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> AccessType</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+             
+                <a class="image" href="index.html">
+                    <img src="https://images.assettype.com/quintype-website/2018-10/013e8cbe-92b4-435f-bbbb-3e101efbc99a/quintype_logo.png?w=180" alt="logo">
+                </a>
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">@quintype/components</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                <div class="dropdown is-hoverable is-right">
+                    <a class="dropdown-trigger link">
+                        Tutorials
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                        
+                            <a class="dropdown-item" href="tutorial-using-responsive-image.html">
+                                Using ResponsiveImage
+                            </a>
+                        
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Reducers.html">Reducers</a></li></ul></div><div class="category"><h2>Ads</h2><h3>Components</h3><ul><li><a href="AdbutlerAd.html">AdbutlerAd</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createDfpAdComponent">createDfpAdComponent</a></li></ul></div><div class="category"><h2>Collection Page</h2><h3>Components</h3><ul><li><a href="Collection.html">Collection</a></li><li><a href="LazyCollection.html">LazyCollection</a></li><li><a href="LoadMoreCollectionStories.html">LoadMoreCollectionStories</a></li><li><a href="LoadMoreStoriesBase.html">LoadMoreStoriesBase</a></li></ul><h3>Global</h3><ul><li><a href="global.html#collectionToStories">collectionToStories</a></li><li><a href="global.html#wrapCollectionLayout">wrapCollectionLayout</a></li></ul></div><div class="category"><h2>Header</h2><h3>Components</h3><ul><li><a href="BreakingNews.html">BreakingNews</a></li><li><a href="BreakingNewsItem.html">BreakingNewsItem</a></li><li><a href="HamburgerButton.html">HamburgerButton</a></li><li><a href="Menu.html">Menu</a></li><li><a href="MenuItem.html">MenuItem</a></li><li><a href="SearchBox.html">SearchBox</a></li></ul></div><div class="category"><h2>Images</h2><h3>Components</h3><ul><li><a href="EagerLoadImages.html">EagerLoadImages</a></li><li><a href="LazyLoadImages.html">LazyLoadImages</a></li><li><a href="ResponsiveHeroImage.html">ResponsiveHeroImage</a></li><li><a href="ResponsiveImage.html">ResponsiveImage</a></li><li><a href="ResponsiveSource.html">ResponsiveSource</a></li></ul></div><div class="category"><h2>Login</h2><h3>Components</h3><ul><li><a href="WithFacebookLogin.html">WithFacebookLogin</a></li><li><a href="WithGoogleLogin.html">WithGoogleLogin</a></li><li><a href="WithLinkedInLogin.html">WithLinkedInLogin</a></li><li><a href="WithMember.html">WithMember</a></li><li><a href="WithSocialLogin.html">WithSocialLogin</a></li><li><a href="WithTwitterLogin.html">WithTwitterLogin</a></li></ul></div><div class="category"><h2>Other</h2><h3>Components</h3><ul><li><a href="ClientSideOnly.html">ClientSideOnly</a></li><li><a href="Link.html">Link</a></li><li><a href="LinkBase.html">LinkBase</a></li><li><a href="LoadingIndicator.html">LoadingIndicator</a></li><li><a href="SearchPageBase.html">SearchPageBase</a></li><li><a href="UpdateOnInterval.html">UpdateOnInterval</a></li><li><a href="WithClientSideOnly.html">WithClientSideOnly</a></li><li><a href="WithHostUrl.html">WithHostUrl</a></li><li><a href="WithLazy.html">WithLazy</a></li></ul><h3>Global</h3><ul><li><a href="global.html#withError">withError</a></li><li><a href="global.html#WithPreview">WithPreview</a></li></ul></div><div class="category"><h2>Story Page</h2><h3>Components</h3><ul><li><a href="ImageGalleryElement.html">ImageGalleryElement</a></li><li><a href="InfiniteStoryBase.html">InfiniteStoryBase</a></li><li><a href="ReviewRating.html">ReviewRating</a></li><li><a href="SocialShare.html">SocialShare</a></li><li><a href="StoryElement.html">StoryElement</a></li></ul></div><div class="category"><h2>Subscription</h2><h3>Components</h3><ul><li><a href="AccessType.html">AccessType</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Components</p>
+                    <h1>AccessType</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+            &ltAccessType <i>children</i> <i>email</i> <i>phone</i> <i>isStaging</i> <i>enableAccesstype</i> <i>accessTypeKey</i> <i>accessTypeBkIntegrationId</i> <i>prodHost</i> <i>stagingHost</i> <i>onATGlobalSet</i> /&gt
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
+
+
+    
+    <h4 class="name" id="AccessType">
+        <a class="href-link" href="#AccessType">#</a>
+        
+        <span class="code-name">
+            
+                &ltAccessType <i>children</i> <i>email</i> <i>phone</i> <i>isStaging</i> <i>enableAccesstype</i> <i>accessTypeKey</i> <i>accessTypeBkIntegrationId</i> <i>prodHost</i> <i>stagingHost</i> <i>onATGlobalSet</i> /&gt
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p><code>AccessType</code> is a generic connected render prop which exposes methods to handle access to stories / assets and initialize AccessTypeJS.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>arguments</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>initAccessType</td>
+<td>-NA-</td>
+<td>Initializes accesstype, checks for existance of accesstype before requesting for AT js</td>
+</tr>
+<tr>
+<td>initRazorPayPayment</td>
+<td>selectedPlan(object), planType(string)</td>
+<td>Executes accesstype js method to bring forth RP payment gateway</td>
+</tr>
+<tr>
+<td>initStripePayment</td>
+<td>options(object), options={ argType: &quot;options&quot;,selectedPlan: selectedPlanObj, planType:&quot;&quot;,couponCode: &quot;&quot;, successUrl:&quot;&quot;, cancelUrl:&quot;&quot;, recipientSubscriber: {}}</td>
+<td>Initialize the Stripe payment</td>
+</tr>
+<tr>
+<td>initPaypalPayment</td>
+<td>options(object), options={argType: &quot;options&quot;,selectedPlan: selectedPlanObj,planType: planType,couponCode: &quot;&quot;, recipientSubscriber: {}, returnUrl: &quot;&quot;,cancelUrl:&quot;&quot;}</td>
+<td>Initialize the PayPal payment</td>
+</tr>
+<tr>
+<td>initOmisePayment</td>
+<td>selectedPlan(object), planType(string)</td>
+<td>Initialize the Omise payment</td>
+</tr>
+<tr>
+<td>initAdyenPayment</td>
+<td>selectedPlan(object), planType(string), AdyenModal(React Component), locale(string)</td>
+<td>Initialize Adyen Payment</td>
+</tr>
+<tr>
+<td>initPaytrailPayment</td>
+<td>selectedPlan(object), ptions={selectedPlan: selectedPlanObj,planType: planType,couponCode: &quot;&quot;, recipientSubscriber: {}, returnUrl: &quot;&quot;,cancelUrl:&quot;&quot;}</td>
+<td>Initialize the Paytrail payment</td>
+</tr>
+<tr>
+<td>getAssetPlans</td>
+<td>storyId(string)</td>
+<td>Get Asset Subscription Plans</td>
+</tr>
+<tr>
+<td>getSubscriberMetadata</td>
+<td>Get the Subscriber Metadata</td>
+<td></td>
+</tr>
+<tr>
+<td>setSubscriberMetadata</td>
+<td>subscriberMetadata(object), subscriberMetadata={&quot;address&quot;: {</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<pre><code>  &quot;line1&quot;: &quot;221B Bakers Street&quot;,
+  &quot;line2&quot;: &quot;Near Watson Library&quot;,
+  &quot;city&quot;: &quot;London&quot;,
+  &quot;state&quot;: &quot;&quot;,
+</code></pre>
+<p>},
+&quot;phone_number&quot;: &quot;007&quot;}}  | Update the Subscriber Metadata
+validateCoupon|  selectedPlan(object), couponCode (string)  | Validate coupon with plan
+cancelSubscription| subscriptionId(number) | Cancel a subscription
+getSubscription | -NA- | Gets the subscription groups provided by the publisher
+getSubscriptionForUser | -NA- | Gets the subscriptions of the current logged in user
+accessUpdated| accessObject(object) | Sets the current story access to redux store
+accessIsLoading| loading(boolean) | A boolean which holds true between the request for access of a story and its response</p>
+<h6>Notes :</h6>
+<ul>
+<li>This component uses AccessType Js internally</li>
+<li>It uses the Access API from subtype for metering, the API works on firebase which uses <code>thinmint</code> cookie (set by qlitics) of the user to verify and keep track of visits</li>
+<li>This component  supports Razorpay, Stripe, PayPal and Omise payment options for now</li>
+<li>It communicates to sketches where routes are in pattern <code>/api/access/v1/*</code></li>
+<li>Metered story has a pingback which is achieved by the use of <code>navigator.sendBeacon</code> if available or falls back to fetch, this is needed to update the count of the visited stories for a user</li>
+<li>Access to story/asset is saved on the redux store under the keyword access which holds keys as story asset id and the access returned from the API as its value</li>
+<li><code>subscriptions</code> is the key in the store under which all the subscription groups created for the specified account are maintained</li>
+<li><code>paymentOptions</code> is the key under the store which has all the payment options created for the current AT account</li>
+</ul>
+<pre class="prettyprint source lang-javascript"><code>//access object on store
+
+access : {
+  'c1f6c0d7-2829-4d31-b673-58728f944f82': {
+        'data': {
+          'isLoggedIn':true,
+          'granted': false
+          'grantReason': &quot;SUBSCRIBER&quot;
+        }
+    }
+}
+</code></pre>
+<p>Example</p>
+<pre class="prettyprint source lang-javascript"><code>import { AccessType } from &quot;@quintype/components&quot;;
+
+render() {
+  return  &lt;AccessType
+                 enableAccesstype={enableAccesstype}
+                 isStaging={isStaging}
+                 accessTypeKey={accessTypeKey}
+                 email={email}
+                 phone={phone}
+                 disableMetering={disableMetering}
+                 prodHost=&quot;https://www.accesstype.com&quot;
+                 stagingHost=&quot;https://staging.accesstype.com&quot;
+                 accessTypeBkIntegrationId={accessTypeBkIntegrationId}
+               >
+                 {({ initAccessType, checkAccess, accessUpdated, accessIsLoading, validateCoupon, initRazorPayPayment, initStripePayment, initPaypalPayment, initPaytrailPayment,  getSubscriptionForUser, getSubscriberMetadata, setSubscriberMetadata }) => (
+                   &lt;div>
+                     &lt;PaymentCheckoutLayout
+                       accessIsLoading={accessIsLoading}
+                       accessUpdated={accessUpdated}
+                       initAccessType={initAccessType}
+                       checkAccess={checkAccess}
+                       initRazorPayPayment={initRazorPayPayment}
+                       initStripePayment={initStripePayment}
+                       initPaypalPayment={initPaypalPayment}
+                       initPaytrailPayment={initPaytrailPayment}
+                       getSubscriptionForUser={getSubscriptionForUser}
+                       getgetSubscriberMetadata={getgetSubscriberMetadata}
+                       setSubscriberMetadata={setSubscriberMetadata}
+
+                       {...this.props}
+                     />
+                   &lt;/div>
+                 )}
+               &lt;/AccessType>
+}
+
+...
+
+const PaymentCheckoutLayout = (props) => {
+
+ useEffect(() => {
+    !global.AccessType && initAccessType(); // initialize accesstype
+  }, []);
+
+  ....
+
+ checkout(plan = {}) {
+  const paymentGateway = get(plan, [&quot;supported_payment_providers&quot;, 0], &quot;razorpay&quot;);
+
+  if (paymentGateway === &quot;razorpay&quot;) {
+    return props.initRazorPayPayment(plan, &quot;standard&quot;);
+  }
+
+  if (paymentGateway === &quot;paypal&quot;) {
+    const options = {
+      selectedPlan: plan,
+      planType: &quot;standard&quot;,
+      returnUrl: `${document.location.origin}/paypal-return-url`,
+      cancelUrl: `${document.location.origin}/paypal-cancel-url`
+    };
+    return props.initPaypalPayment(options);
+  }
+
+ if (paymentGateway === &quot;paytrail&quot;) {
+    const options = {
+      selectedPlan: plan,
+      planType: &quot;standard&quot;,
+      returnUrl: `${document.location.origin}/paytrail-success.html`,
+      cancelUrl: `${document.location.origin}/paytrail-cancel.html`
+    };
+    return props.initPaytrailPayment(options);
+  }
+
+  if (paymentGateway === &quot;omise&quot;) {
+    return props.initOmisePayment(plan, &quot;standard&quot;);
+  }
+
+  if (paymentGateway === &quot;stripe&quot;) {
+    const options = {
+      selectedPlan: plan,
+      planType: &quot;standard&quot;,
+      successUrl: `${document.location.origin}/paypal-return-url`,
+      cancelUrl: `${document.location.origin}/paypal-cancel-url`
+    };
+    return props.initPaypalPayment(options);
+  }
+
+  if (paymentGateway === &quot;adyen&quot;) {
+    const locale = get(this.props, [&quot;config&quot;, &quot;pagebuilder-config&quot;, &quot;general&quot;, &quot;accesstypeIntegration&quot;]);
+    // The AdyenModal component should accept two functions as props: `afterOpen` and `afterClose`
+    // `afterOpen` will trigger the adyen payment.
+    return this.props.initAdyenPayment(plan, &quot;standard&quot;, AdyenModal, locale);
+  }
+
+....
+
+ return (){
+
+   &lt;Button onClick={() => checkout(plan)}  disabled={isLoading}>
+     {isLoading ? &lt;Loader /> : &quot;SUBSCRIBE&quot;}
+   &lt;/Button>
+ }
+}
+
+
+</code></pre>
+    </div>
+    
+
+
+
+
+
+
+
+    
+        <h5>PropTypes:</h5>
+        
+<div class="table-container">
+  <table class="params table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th class="last">Default</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+          <tr class="deep-level-0">
+            <td class="name"><code>children</code></td>
+            <td>
+              func
+            </td>
+            <td>Yes</td>
+            <td></td>
+            <td></td>
+          </tr>
+          
+    
+          <tr class="deep-level-0">
+            <td class="name"><code>email</code></td>
+            <td>
+              string
+            </td>
+            <td>No</td>
+            <td>Email address of the user</td>
+            <td></td>
+          </tr>
+          
+    
+          <tr class="deep-level-0">
+            <td class="name"><code>phone</code></td>
+            <td>
+              number
+            </td>
+            <td>No</td>
+            <td>Phone number of the user</td>
+            <td></td>
+          </tr>
+          
+    
+          <tr class="deep-level-0">
+            <td class="name"><code>isStaging</code></td>
+            <td>
+              bool
+            </td>
+            <td>No</td>
+            <td>Specify if you are using the AccessType Staging</td>
+            <td></td>
+          </tr>
+          
+    
+          <tr class="deep-level-0">
+            <td class="name"><code>enableAccesstype</code></td>
+            <td>
+              bool
+            </td>
+            <td>Yes</td>
+            <td>Load AccessType Script</td>
+            <td></td>
+          </tr>
+          
+    
+          <tr class="deep-level-0">
+            <td class="name"><code>accessTypeKey</code></td>
+            <td>
+              string
+            </td>
+            <td>Yes</td>
+            <td>AccessType ACCOUNT_KEY</td>
+            <td></td>
+          </tr>
+          
+    
+          <tr class="deep-level-0">
+            <td class="name"><code>accessTypeBkIntegrationId</code></td>
+            <td>
+              string
+            </td>
+            <td>Yes</td>
+            <td>AccessType BK_Integration_Id</td>
+            <td></td>
+          </tr>
+          
+    
+          <tr class="deep-level-0">
+            <td class="name"><code>prodHost</code></td>
+            <td>
+              string
+            </td>
+            <td>No</td>
+            <td>AccessType production host url. Default value is "https://www.accesstype.com"</td>
+            <td></td>
+          </tr>
+          
+    
+          <tr class="deep-level-0">
+            <td class="name"><code>stagingHost</code></td>
+            <td>
+              string
+            </td>
+            <td>No</td>
+            <td>AccessType staging host url. Default value is "https://staging.accesstype.com"</td>
+            <td></td>
+          </tr>
+          
+    
+          <tr class="deep-level-0">
+            <td class="name"><code>onATGlobalSet</code></td>
+            <td>
+              func
+            </td>
+            <td>No</td>
+            <td></td>
+            <td></td>
+          </tr>
+          
+    
+    </tbody>
+  </table>
+</div>
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_access-type.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_access-type.js.html">components/access-type.js</a>, <a href="components_access-type.js.html#line771">line 771</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+        
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>
