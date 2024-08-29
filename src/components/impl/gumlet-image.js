@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import omit from '@babel/runtime/helpers/objectWithoutProperties';
 import emptyWebGif from 'empty-web-gif';
 import { FocusedImage } from "quintype-js";
+import React, { useEffect } from "react";
 import { hashString, USED_PARAMS } from "./image-utils";
-import omit from '@babel/runtime/helpers/objectWithoutProperties';
 
 let forceLoadingGumlet = false;
 function loadGumlet() {
@@ -23,7 +23,7 @@ function loadGumlet() {
 }
 
 export function GumletImage(props) {
-  const { slug, metadata, aspectRatio, imageCDN, imgParams, reactTag, className } = props;
+  const { slug, metadata, aspectRatio, imageCDN, imgParams, reactTag, className, priority } = props;
   const image = new FocusedImage(slug, metadata);
 
   const imageProps = {
@@ -31,6 +31,11 @@ export function GumletImage(props) {
     "data-src": "https://" + imageCDN + "/" + image.path(aspectRatio, imgParams),
     key: hashString(slug)
   };
+
+  if (priority) {
+    imageProps.fetchPriority = "high";
+  }
+
 
   const Tag = reactTag || "img";
 
