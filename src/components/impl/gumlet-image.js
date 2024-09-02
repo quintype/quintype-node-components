@@ -1,5 +1,5 @@
-import omit from "@babel/runtime/helpers/objectWithoutProperties";
-import emptyWebGif from "empty-web-gif";
+import omit from '@babel/runtime/helpers/objectWithoutProperties';
+import emptyWebGif from 'empty-web-gif';
 import { FocusedImage } from "quintype-js";
 import React, { useEffect } from "react";
 import { hashString, USED_PARAMS } from "./image-utils";
@@ -25,7 +25,7 @@ function loadGumlet() {
 }
 
 export function GumletImage(props) {
-  const { slug, metadata, aspectRatio, imageCDN, imgParams, reactTag, className, sizes } = props;
+  const { slug, metadata, aspectRatio, imageCDN, imgParams, reactTag, className, priority, sizes } = props;
   const image = new FocusedImage(slug, metadata);
 
   const imageProps = {
@@ -34,6 +34,11 @@ export function GumletImage(props) {
     key: hashString(slug),
     sizes,
   };
+
+  if (priority) {
+    imageProps.fetchPriority = "high";
+  }
+
 
   const Tag = reactTag || "img";
 
