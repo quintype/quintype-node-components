@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.0](https://github.com/quintype/quintype-node-components/compare/v3.6.3...v3.7.0) (2024-09-10)
+
+
+### Features
+
+* **Image sizes:** add sizes attribute to story page images ([#236](https://github.com/quintype/quintype-node-components/issues/236)) ([b54f254](https://github.com/quintype/quintype-node-components/commit/b54f25412d4b2903b4dfa4a4d54066d98636799d))
+
 ### [3.6.3](https://github.com/quintype/quintype-node-components/compare/v3.6.0...v3.6.3) (2024-08-29)
 
 ### [3.6.2](https://github.com/quintype/quintype-node-components/compare/v3.6.0...v3.6.2) (2024-08-29)
