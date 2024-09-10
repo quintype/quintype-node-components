@@ -34,6 +34,7 @@
     "react": "^16.14.0",
     "react-dailymotion": "^0.4.1",
     "react-dfp": "quintype/react-dfp",
+    "react-helmet": "^6.1.0",
     "react-redux": "^7.2.6",
     "react-youtube": "^7.13.1",
     "redux": "^4.1.2",
