@@ -2,6 +2,7 @@ import omit from '@babel/runtime/helpers/objectWithoutProperties';
 import emptyWebGif from 'empty-web-gif';
 import { FocusedImage } from 'quintype-js';
 import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { hashString, USED_PARAMS } from './image-utils';
 
 let forceLoadingGumlet = false;
@@ -43,8 +44,14 @@ export function GumletImage(props) {
 
   useEffect(loadGumlet);
 
+  const dummyImg =
+    'https://qtstage-01.gumlet.io/pbahead%2F2024-03%2F015c38b6-340d-487a-964d-38eb3b9300dc%2Fcb70d9483ca4884a146c4edee29a7b7f.jpg?w=1200&auto=format%2Ccompress&fit=max';
+
   return (
     <React.Fragment>
+      <Helmet>
+        <link rel="preload" href={dummyImg} as="image" />
+      </Helmet>
       <Tag {...imageProps} {...omit(props, USED_PARAMS)} className={className ? `qt-image ${className}` : 'qt-image'} />
       <noscript>
         <img src={`https://${imageCDN}/${image.path(aspectRatio, { ...imgParams, w: 1200 })}`} alt={props.alt || ''} />
