@@ -53,13 +53,13 @@ export class ThumborImage extends React.Component {
   }
   render() {
     const imageProps = this.state.showImage ? responsiveProps(this.props) : { src: emptyWebGif };
-    const dummyImg =
-      'https://qtstage-01.gumlet.io/pbahead%2F2024-03%2F015c38b6-340d-487a-964d-38eb3b9300dc%2Fcb70d9483ca4884a146c4edee29a7b7f.jpg?w=1200&auto=format%2Ccompress&fit=max';
     return (
       <>
-        <Helmet>
-          <link rel="preload" href={dummyImg} as="image" />
-        </Helmet>
+        {this.props?.priority && (
+          <Helmet>
+            <link rel="preload" as="image" imagesrcset={imageProps?.srcSet} imagesizes={imageProps?.sizes} />
+          </Helmet>
+        )}
         {React.createElement(
           this.props.reactTag || 'img',
           Object.assign(imageProps, omit(this.props, USED_PARAMS), {
