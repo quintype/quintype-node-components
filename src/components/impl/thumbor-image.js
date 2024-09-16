@@ -3,6 +3,7 @@ import emptyWebGif from 'empty-web-gif';
 import { func } from 'prop-types';
 import { FocusedImage } from 'quintype-js';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { USED_PARAMS, hashString } from './image-utils';
 
 export function responsiveProps(props) {
@@ -52,12 +53,21 @@ export class ThumborImage extends React.Component {
   }
   render() {
     const imageProps = this.state.showImage ? responsiveProps(this.props) : { src: emptyWebGif };
-    return React.createElement(
-      this.props.reactTag || 'img',
-      Object.assign(imageProps, omit(this.props, USED_PARAMS), {
-        ref: (dom) => (this.dom = dom),
-        className: this.props.className ? `qt-image ${this.props.className}` : 'qt-image'
-      })
+    return (
+      <>
+        {this.props?.priority && (
+          <Helmet>
+            <link rel="preload" as="image" imagesrcset={imageProps?.srcSet} imagesizes={imageProps?.sizes} />
+          </Helmet>
+        )}
+        {React.createElement(
+          this.props.reactTag || 'img',
+          Object.assign(imageProps, omit(this.props, USED_PARAMS), {
+            ref: (dom) => (this.dom = dom),
+            className: this.props.className ? `qt-image ${this.props.className}` : 'qt-image'
+          })
+        )}
+      </>
     );
   }
   componentDidMount() {
