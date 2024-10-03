@@ -106,6 +106,19 @@ class AccessTypeBase extends React.Component {
     return global.AccessType.cancelSubscription(subscriptionId);
   };
 
+  getPath = (sketchesHost, relativePath) => {
+    try {
+      const { pathname } = new URL(sketchesHost);
+      if (pathname && pathname !== '/') {
+        return `${sketchesHost}${relativePath}`;
+      }
+      return relativePath;
+    } catch (err) {
+      console.log('Sketches host path error ---> ', err);
+      return relativePath;
+    }
+  };
+
   getSubscription = async () => {
     const accessTypeKey = get(this.props, ["accessTypeKey"]);
     const isStaging = get(this.props, ["isStaging"]);
@@ -174,7 +187,9 @@ class AccessTypeBase extends React.Component {
   };
 
   runSequentialCalls = async (callback = () => null) => {
-    const jwtResponse = await fetch(`/anything/api/auth/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
+
+    const url = this.getPath(this.props?.sketchesHost, `/api/auth/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`)
+    const jwtResponse = await fetch(url);
 
     const { error } = await awaitHelper(
       this.setUser(
