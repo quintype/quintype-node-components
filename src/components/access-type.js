@@ -290,7 +290,6 @@ class AccessTypeBase extends React.Component {
       discounted_price_cents,
       metadata
     } = selectedPlan
-    console.log('makePaymentObject 1')
     const paymentObject = {
       type: planType,
       plan: {
@@ -331,7 +330,6 @@ class AccessTypeBase extends React.Component {
         paymentObject.options.urls['success_url'] = successUrl
       }
     }
-    console.log('makePaymentObject 2')
     return paymentObject
   }
   makePlanObject (selectedPlanObj = {}, planType = '', storyId = '', storyHeadline = '', storySlug = '') {
@@ -479,12 +477,9 @@ class AccessTypeBase extends React.Component {
       console.warn('Paytrail needs a plan')
       return false
     }
-    console.log('initPaytrailPayment  1')
     const { paymentOptions } = this.props
     const paymentType = get(options.selectedPlan, ['recurring']) ? 'paytrail_recurring' : 'paytrail'
-    console.log('initPaytrailPayment  2')
     const paymentObject = this.makePaymentObject({ paymentType, ...options })
-    console.log('initPaytrailPayment  3')
     return paymentOptions.paytrail
       ? paymentOptions.paytrail.proceed(paymentObject).then(response => response.proceed(paymentObject))
       : Promise.reject({ message: 'Payment option is loading...' })
