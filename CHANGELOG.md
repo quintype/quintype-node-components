@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.8.1](https://github.com/quintype/quintype-node-components/compare/v3.8.0...v3.8.1) (2024-10-10)
+
+
+### Bug Fixes
+
+* **Subdirectory:** support paywall ([#239](https://github.com/quintype/quintype-node-components/issues/239)) ([09951c9](https://github.com/quintype/quintype-node-components/commit/09951c9429c8410ce6984c88dd1e42df0a7af957))
+
 ## [3.8.0](https://github.com/quintype/quintype-node-components/compare/v3.7.0...v3.8.0) (2024-09-16)
 
 
