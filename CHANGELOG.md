@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.8.3](https://github.com/quintype/quintype-node-components/compare/v3.8.2...v3.8.3) (2024-12-17)
+
+
+### Bug Fixes
+
+* **Youtube button:** update icon according to youtube polocies ([#240](https://github.com/quintype/quintype-node-components/issues/240)) ([87ef6fb](https://github.com/quintype/quintype-node-components/commit/87ef6fb5eb1fe11f2a0bdd8b798df4bf386c1804))
+
 ### [3.8.2](https://github.com/quintype/quintype-node-components/compare/v3.8.1...v3.8.2) (2024-10-10)
 
 ### [3.8.1](https://github.com/quintype/quintype-node-components/compare/v3.8.0...v3.8.1) (2024-10-10)
