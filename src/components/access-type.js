@@ -29,7 +29,7 @@ class AccessTypeBase extends React.Component {
     const accessTypeKey = get(this.props, ["accessTypeKey"]);
     const isStaging = get(this.props, ["isStaging"]);
     const enableAccesstype = get(this.props, ["enableAccesstype"]);
-
+    console.log("loadscript===============", this.props);
     if (!enableAccesstype) {
       return false;
     }
@@ -38,6 +38,7 @@ class AccessTypeBase extends React.Component {
     const accessTypeHost = `${HOST}/frontend/v2/accesstype.js?key=${accessTypeKey}${environment}`;
     const isATScriptAlreadyPresent = document.querySelector(`script[src="${accessTypeHost}"]`);
     if (accessTypeKey && !isATScriptAlreadyPresent && !global.AccessType && global.document) {
+      console.log("coming in creating the script---------");
       const accessTypeScript = document.createElement("script");
       accessTypeScript.onload = () => {
         this.props.onATGlobalSet && this.props.onATGlobalSet();
@@ -208,14 +209,28 @@ class AccessTypeBase extends React.Component {
   };
 
   getSubscriptionForUser = async () => {
+    console.log(typeof global !== 'undefined' ? 'Node.js' : 'Browser');
+    console.log("global.Accesstype---------", global?.AccessType);
+    console.log("window.Accesstype---------", window?.AccessType);
+    console.log("global---------", global);
+    console.log("object keys----", Object.keys(global));
+    console.log("object keys global.window----", Object.keys(global.window));
+    console.log("global window enumerable",Object.getOwnPropertyDescriptor(global.window, 'Accesstype'));
+    console.log("window----------", window);
+    console.log("global?.get?.('Accesstype')----", global?.get?.('Accesstype'));
+    setTimeout(() => {
+      console.log("settimeout---------", global.Accesstype); // Check if it exists after some time
+    }, 1000);
+
     if (!global.AccessType) {
       return {};
     }
-
     const { error, data: subscriptions = [] } = await awaitHelper(global.AccessType.getSubscriptions());
     if (error) {
+      console.log("user subscription error-------", error);
       return error;
     }
+    console.log("subscription----------", subscriptions);
     return subscriptions;
   };
 
@@ -235,6 +250,7 @@ class AccessTypeBase extends React.Component {
 
   initAccessType = (callback) => {
     const { accessTypeBkIntegrationId } = this.props;
+    console.log("init accesstype-----");
     try {
       this.loadScript(() => {
         // dont try to initialize accessType if integration id is not available
