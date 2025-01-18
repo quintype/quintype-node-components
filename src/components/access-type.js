@@ -61,6 +61,8 @@ class AccessTypeBase extends React.Component {
   };
 
   setUser = async (emailAddress, mobileNumber, accesstypeJwt, isLoggedIn = true) => {
+    console.log("set user global.AccessType--", global.AccessType);
+    console.log("set user props-------", emailAddress, mobileNumber, accesstypeJwt, isLoggedIn);
     if (!global.AccessType) {
       return null;
     }
@@ -74,7 +76,8 @@ class AccessTypeBase extends React.Component {
           isLoggedIn: false,
         };
     const { error, data: user } = await awaitHelper(global.AccessType.setUser(userObj));
-
+    console.log("set user error-------", error);
+    console.log("set user user-------", user);
     if (error) {
       console.warn(`User context setting failed  --> `, error);
       return error;
@@ -176,7 +179,7 @@ class AccessTypeBase extends React.Component {
 
   runSequentialCalls = async (callback = () => null) => {
     const jwtResponse = await fetch(`/api/auth/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`);
-
+    console.log("jwtresponse--------", jwtResponse);
     const { error } = await awaitHelper(
       this.setUser(
         this.props.email,
@@ -185,7 +188,7 @@ class AccessTypeBase extends React.Component {
         !!jwtResponse.headers.get("x-integration-token")
       )
     );
-
+    console.log("error run sequencial calls------ ", error);
     if (!error) {
       try {
         Promise.all([
