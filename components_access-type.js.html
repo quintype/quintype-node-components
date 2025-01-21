@@ -298,37 +298,36 @@ class AccessTypeBase extends React.Component {
   }
 
   runSequentialCalls = async (callback = () => null) => {
-    const url = this.getPath(
-      this.props?.sketchesHost,
-      `/api/auth/v1/access-token/integrations/${this.props.accessTypeBkIntegrationId}`
-    )
-    const jwtResponse = await fetch(url)
-
+    const { email, phone, accessTypeBkIntegrationId, executeSequentialCalls = true } = this.props || {};
+    const jwtResponse = await fetch(`/api/auth/v1/access-token/integrations/${accessTypeBkIntegrationId}`);
     const { error } = await awaitHelper(
       this.setUser(
-        this.props.email,
-        this.props.phone,
+        email,
+        phone,
         jwtResponse.headers.get('x-integration-token'),
         !!jwtResponse.headers.get('x-integration-token')
       )
-    )
-
+    );
     if (!error) {
       try {
-        Promise.all([
-          this.getSubscription(),
-          this.getPaymentOptions(),
-          this.getAssetPlans(),
-          this.getCampaignSubscription()
-        ]).then(([subscriptionGroups, paymentOptions, assetPlans, campaignSubscriptionGroups]) => {
-          batch(() => {
-            this.props.subscriptionGroupLoaded(subscriptionGroups)
-            this.props.paymentOptionsLoaded(paymentOptions)
-            this.props.assetPlanLoaded(assetPlans)
-            this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups)
-          })
-          callback()
-        })
+        if (executeSequentialCalls) {
+          Promise.all([
+            this.getSubscription(),
+            this.getPaymentOptions(),
+            this.getAssetPlans(),
+            this.getCampaignSubscription()
+          ]).then(([subscriptionGroups, paymentOptions, assetPlans, campaignSubscriptionGroups]) => {
+            batch(() => {
+              this.props.subscriptionGroupLoaded(subscriptionGroups);
+              this.props.paymentOptionsLoaded(paymentOptions);
+              this.props.assetPlanLoaded(assetPlans);
+              this.props.campaignSubscriptionGroupLoaded(campaignSubscriptionGroups);
+            });
+            callback();
+          });
+        } else {
+          callback();
+        }
       } catch (e) {
         console.log(`Subscription / payments failed`, e)
       }
