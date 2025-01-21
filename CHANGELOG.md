@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.8.4](https://github.com/quintype/quintype-node-components/compare/v3.8.3...v3.8.4) (2025-01-21)
+
+
+### Bug Fixes
+
+* **AT:** execute subscription sequential calls based on prop ([#241](https://github.com/quintype/quintype-node-components/issues/241)) ([7068435](https://github.com/quintype/quintype-node-components/commit/70684355d49ba8e10b3f3d6541473c8596a50189))
+
 ### [3.8.3](https://github.com/quintype/quintype-node-components/compare/v3.8.2...v3.8.3) (2024-12-17)
 
 
