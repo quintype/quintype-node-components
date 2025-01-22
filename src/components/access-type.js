@@ -1,8 +1,8 @@
-import get from 'lodash/get'
-import { bool, func, number, string } from 'prop-types'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { batch, connect } from 'react-redux'
+import get from 'lodash/get';
+import { bool, func, number, string } from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { batch, connect } from 'react-redux';
 import {
   ACCESS_BEING_LOADED,
   ACCESS_UPDATED,
@@ -11,57 +11,59 @@ import {
   METER_UPDATED,
   PAYMENT_OPTIONS_UPDATED,
   SUBSCRIPTION_GROUP_UPDATED
-} from '../store/actions'
-import { awaitHelper } from '../utils'
+} from '../store/actions';
+import { awaitHelper } from '../utils';
 
 class AccessTypeBase extends React.Component {
   constructor (props) {
-    super(props)
-    this.prodHost = props.prodHost || 'https://www.accesstype.com'
-    this.stagingHost = props.stagingHost || 'https://staging.accesstype.com'
+    super(props);
+    this.prodHost = props.prodHost || 'https://www.accesstype.com';
+    this.stagingHost = props.stagingHost || 'https://staging.accesstype.com';
   }
 
   componentDidMount () {
-    this.initAccessType()
+    this.initAccessType();
   }
 
   loadScript = callback => {
-    const accessTypeKey = get(this.props, ['accessTypeKey'])
-    const isStaging = get(this.props, ['isStaging'])
-    const enableAccesstype = get(this.props, ['enableAccesstype'])
+    const accessTypeKey = get(this.props, ['accessTypeKey']);
+    const isStaging = get(this.props, ['isStaging']);
+    const enableAccesstype = get(this.props, ['enableAccesstype']);
 
     if (!enableAccesstype) {
-      return false
+      return false;
     }
-    const HOST = isStaging ? this.stagingHost : this.prodHost
-    const environment = isStaging ? '&env=sandbox' : ''
-    const accessTypeHost = `${HOST}/frontend/v2/accesstype.js?key=${accessTypeKey}${environment}`
-    const isATScriptAlreadyPresent = document.querySelector(`script[src="${accessTypeHost}"]`)
+    const HOST = isStaging ? this.stagingHost : this.prodHost;
+    const environment = isStaging ? '&env=sandbox' : '';
+    const accessTypeHost = `${HOST}/frontend/v2/accesstype.js?key=${accessTypeKey}${environment}`;
+    const isATScriptAlreadyPresent = document.querySelector(`script[src="${accessTypeHost}"]`);
     if (accessTypeKey && !isATScriptAlreadyPresent && !global.AccessType && global.document) {
-      const accessTypeScript = document.createElement('script')
+      const accessTypeScript = document.createElement('script');
       accessTypeScript.onload = () => {
-        this.props.onATGlobalSet && this.props.onATGlobalSet()
-        callback()
-      }
-      accessTypeScript.setAttribute('src', accessTypeHost)
-      accessTypeScript.setAttribute('id', 'AccessTypeScript')
-      accessTypeScript.setAttribute('data-accessType-script', '1')
-      accessTypeScript.async = 1
-      document.body.appendChild(accessTypeScript)
-      return true
+        this.props.onATGlobalSet && this.props.onATGlobalSet();
+        callback();
+      };
+      accessTypeScript.setAttribute('src', accessTypeHost);
+      accessTypeScript.setAttribute('id', 'AccessTypeScript');
+      accessTypeScript.setAttribute('data-accessType-script', '1');
+      accessTypeScript.async = 1;
+      document.body.appendChild(accessTypeScript);
+      console.log('scription loaded----1');
+      return true;
     }
 
     if (global.AccessType) {
-      this.props.onATGlobalSet && this.props.onATGlobalSet()
-      callback()
+      this.props.onATGlobalSet && this.props.onATGlobalSet();
+      callback();
     }
-
-    return true
-  }
+    console.log('scription loaded----2');
+    return true;
+  };
 
   setUser = async (emailAddress, mobileNumber, accesstypeJwt, isLoggedIn = true) => {
+    console.log('set user-----', global.AccessType);
     if (!global.AccessType) {
-      return null
+      return null;
     }
     const userObj = isLoggedIn
       ? {
@@ -71,19 +73,21 @@ class AccessTypeBase extends React.Component {
         }
       : {
           isLoggedIn: false
-        }
-    const { error, data: user } = await awaitHelper(global.AccessType.setUser(userObj))
+        };
+    console.log('user object------', userObj);
+    const { error, data: user } = await awaitHelper(global.AccessType.setUser(userObj));
 
     if (error) {
-      console.warn(`User context setting failed  --> `, error)
-      return error
+      console.warn(`User context setting failed  --> `, error);
+      return error;
     }
-    return user
-  }
+    console.log('user----', user);
+    return user;
+  };
 
   validateCoupon = async (selectedPlanId, couponCode) => {
     if (!global.AccessType) {
-      return {}
+      return {};
     }
 
     const { error, data } = await awaitHelper(
@@ -91,104 +95,106 @@ class AccessTypeBase extends React.Component {
         subscriptionPlanId: selectedPlanId,
         couponCode
       })
-    )
+    );
     if (error) {
-      console.warn(`Error --> `, error)
-      return error
+      console.warn(`Error --> `, error);
+      return error;
     }
-    return data
-  }
+    return data;
+  };
 
   cancelSubscription = async (subscriptionId = null) => {
     if (!subscriptionId) {
-      return Promise.reject('Subscription id is not defined')
+      return Promise.reject('Subscription id is not defined');
     }
-    return global.AccessType.cancelSubscription(subscriptionId)
-  }
+    return global.AccessType.cancelSubscription(subscriptionId);
+  };
 
   getPath = (sketchesHost, relativePath) => {
     try {
-      const { pathname } = new URL(sketchesHost)
+      const { pathname } = new URL(sketchesHost);
       if (pathname && pathname !== '/') {
-        return `${sketchesHost}${relativePath}`
+        return `${sketchesHost}${relativePath}`;
       }
-      return relativePath
+      return relativePath;
     } catch (err) {
-      console.log('Sketches host path error ---> ', err)
-      return relativePath
+      console.log('Sketches host path error ---> ', err);
+      return relativePath;
     }
-  }
+  };
 
   getSubscription = async () => {
-    const accessTypeKey = get(this.props, ['accessTypeKey'])
-    const isStaging = get(this.props, ['isStaging'])
-    const HOST = isStaging ? this.stagingHost : this.prodHost
+    const accessTypeKey = get(this.props, ['accessTypeKey']);
+    const isStaging = get(this.props, ['isStaging']);
+    const HOST = isStaging ? this.stagingHost : this.prodHost;
 
     // TODO: use AccesstypeJS method insead of direct api call
-    const accessTypeHost = `${HOST}/api/v1/subscription_groups.json?key=${accessTypeKey}`
+    const accessTypeHost = `${HOST}/api/v1/subscription_groups.json?key=${accessTypeKey}`;
 
-    const { error, data: subscriptions } = await awaitHelper((await global.fetch(accessTypeHost)).json())
+    const { error, data: subscriptions } = await awaitHelper((await global.fetch(accessTypeHost)).json());
     if (error) {
       return {
         error: 'subscriptions fetch failed'
-      }
+      };
     }
-    return subscriptions['subscription_groups'] || []
-  }
+    return subscriptions['subscription_groups'] || [];
+  };
 
   getPaymentOptions = async () => {
     if (!global.AccessType) {
-      return []
+      return [];
     }
-    const { error, data: paymentOptions } = await awaitHelper(global.AccessType.getPaymentOptions())
+    const { error, data: paymentOptions } = await awaitHelper(global.AccessType.getPaymentOptions());
     if (error) {
       return {
         error: 'payment options fetch failed'
-      }
+      };
     }
-    return paymentOptions
-  }
+    return paymentOptions;
+  };
 
   getAssetPlans = async (storyId = '') => {
     if (!global.AccessType) {
-      return []
+      return [];
     }
     const { error, data: assetPlans = {} } = await awaitHelper(
       global.AccessType.getAssetPlans({ id: storyId, type: 'story' })
-    )
+    );
     if (error) {
       return {
         error: 'asset plan fetch failed'
-      }
+      };
     }
 
-    return assetPlans
-  }
+    return assetPlans;
+  };
 
   getCampaignSubscription = async () => {
-    const isAccessTypeCampaignEnabled = get(this.props, ['isAccessTypeCampaignEnabled'], false)
+    const isAccessTypeCampaignEnabled = get(this.props, ['isAccessTypeCampaignEnabled'], false);
     if (isAccessTypeCampaignEnabled) {
-      const accessTypeKey = get(this.props, ['accessTypeKey'])
-      const isStaging = get(this.props, ['isStaging'])
-      const HOST = isStaging ? this.stagingHost : this.prodHost
+      const accessTypeKey = get(this.props, ['accessTypeKey']);
+      const isStaging = get(this.props, ['isStaging']);
+      const HOST = isStaging ? this.stagingHost : this.prodHost;
 
-      const accessTypeHost = `${HOST}/api/v1/campaigns.json?key=${accessTypeKey}`
+      const accessTypeHost = `${HOST}/api/v1/campaigns.json?key=${accessTypeKey}`;
 
-      const { error, data: campaignSubscriptions } = await awaitHelper((await global.fetch(accessTypeHost)).json())
+      const { error, data: campaignSubscriptions } = await awaitHelper((await global.fetch(accessTypeHost)).json());
 
       if (error) {
         return {
           error: 'subscriptions fetch failed'
-        }
+        };
       }
-      return campaignSubscriptions['subscription_groups'] || []
+      return campaignSubscriptions['subscription_groups'] || [];
     }
-    return []
-  }
+    return [];
+  };
 
   runSequentialCalls = async (callback = () => null) => {
+    console.log('run sequencial=====');
     const { email, phone, accessTypeBkIntegrationId, executeSequentialCalls = true } = this.props || {};
     const jwtResponse = await fetch(`/api/auth/v1/access-token/integrations/${accessTypeBkIntegrationId}`);
+    console.log('jwt response-----', jwtResponse);
     const { error } = await awaitHelper(
       this.setUser(
         email,
@@ -197,6 +203,8 @@ class AccessTypeBase extends React.Component {
         !!jwtResponse.headers.get('x-integration-token')
       )
     );
+    console.log('error====', error);
+    console.log('executeSequentialCalls======', executeSequentialCalls);
     if (!error) {
       try {
         if (executeSequentialCalls) {
@@ -218,52 +226,53 @@ class AccessTypeBase extends React.Component {
           callback();
         }
       } catch (e) {
-        console.log(`Subscription / payments failed`, e)
+        console.log(`Subscription / payments failed`, e);
       }
     }
-  }
+  };
 
   getSubscriptionForUser = async () => {
     if (!global.AccessType) {
-      return {}
+      return {};
     }
 
-    const { error, data: subscriptions = [] } = await awaitHelper(global.AccessType.getSubscriptions())
+    const { error, data: subscriptions = [] } = await awaitHelper(global.AccessType.getSubscriptions());
     if (error) {
-      return error
+      return error;
     }
-    return subscriptions
-  }
+    return subscriptions;
+  };
 
   getSubscriptionsWithSwitchablePlans = async planId => {
     if (!global.AccessType) {
-      return {}
+      return {};
     }
-    if (!planId) throw new Error('planId is mandatory')
+    if (!planId) throw new Error('planId is mandatory');
     const { error, data: subscription = {} } = await awaitHelper(
       global.AccessType.getSubscriptionWithSwitchablePlans(planId, 'switch')
-    )
+    );
     if (error) {
-      return error
+      return error;
     }
-    return subscription
-  }
+    return subscription;
+  };
 
   initAccessType = callback => {
-    const { accessTypeBkIntegrationId } = this.props
+    const { accessTypeBkIntegrationId } = this.props;
+    console.log('init at');
     try {
       this.loadScript(() => {
         // dont try to initialize accessType if integration id is not available
         if (accessTypeBkIntegrationId === undefined) {
-          console.warn('AccessType: Integration Id is undefined')
-          return false
+          console.warn('AccessType: Integration Id is undefined');
+          return false;
         }
-        this.runSequentialCalls(callback)
-      })
+        this.runSequentialCalls(callback);
+      });
     } catch (e) {
-      console.warn(`Accesstype load fail`, e)
+      console.warn(`Accesstype load fail`, e);
     }
-  }
+  };
 
   makePaymentObject ({
     selectedPlan = {},
@@ -288,7 +297,7 @@ class AccessTypeBase extends React.Component {
       duration_unit: duration_unit,
       discounted_price_cents,
       metadata
-    } = selectedPlan
+    } = selectedPlan;
     const paymentObject = {
       type: planType,
       plan: {
@@ -316,20 +325,20 @@ class AccessTypeBase extends React.Component {
         }
       ],
       recipient_subscriber: recipientSubscriber //for gift subscription
-    }
+    };
     if ((successUrl || returnUrl) && cancelUrl) {
-      paymentObject.options = {}
+      paymentObject.options = {};
 
       paymentObject.options.urls = {
         cancel_url: cancelUrl
-      }
+      };
       if (returnUrl) {
-        paymentObject.options.urls['return_url'] = returnUrl
+        paymentObject.options.urls['return_url'] = returnUrl;
       } else {
-        paymentObject.options.urls['success_url'] = successUrl
+        paymentObject.options.urls['success_url'] = successUrl;
       }
     }
-    return paymentObject
+    return paymentObject;
   }
   makePlanObject (selectedPlanObj = {}, planType = '', storyId = '', storyHeadline = '', storySlug = '') {
     return selectedPlanObj.argType && selectedPlanObj.argType === 'options'
@@ -348,7 +357,7 @@ class AccessTypeBase extends React.Component {
           storyId,
           storyHeadline,
           storySlug
-        }
+        };
   }
 
   initRazorPayPayment = async (
@@ -361,188 +370,188 @@ class AccessTypeBase extends React.Component {
     opts
   ) => {
     if (!selectedPlanObj) {
-      console.warn('Razor pay needs a plan')
-      return false
+      console.warn('Razor pay needs a plan');
+      return false;
     }
-    const intent = get(opts, ['intent'], 'default')
-    const switchType = get(opts, ['switchType'])
-    const planObject = this.makePlanObject(selectedPlanObj, planType, storyId, storyHeadline, storySlug) //we are doing this to sake of backward compatibility and will be refactored later.
+    const intent = get(opts, ['intent'], 'default');
+    const switchType = get(opts, ['switchType']);
+    const planObject = this.makePlanObject(selectedPlanObj, planType, storyId, storyHeadline, storySlug); //we are doing this to sake of backward compatibility and will be refactored later.
     planObject['paymentType'] =
-      paymentType || (get(planObject, ['selectedPlan', 'recurring']) ? 'razorpay_recurring' : 'razorpay')
+      paymentType || (get(planObject, ['selectedPlan', 'recurring']) ? 'razorpay_recurring' : 'razorpay');
 
-    let { paymentOptions } = this.props
-    const { discounted_price_cents, price_cents } = planObject.selectedPlan
-    const paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code })
+    let { paymentOptions } = this.props;
+    const { discounted_price_cents, price_cents } = planObject.selectedPlan;
+    const paymentObject = this.makePaymentObject({ ...planObject, couponCode: selectedPlanObj.coupon_code });
 
     if (discounted_price_cents === 0 || price_cents === 0) {
-      const { data } = await awaitHelper(global.AccessType.getPaymentOptions(0))
-      paymentOptions = data
+      const { data } = await awaitHelper(global.AccessType.getPaymentOptions(0));
+      paymentOptions = data;
     }
 
     if (paymentObject.payment.amount_cents === 0) {
-      return global.AccessType.getPaymentOptions(0).then(provider => provider.razorpay.proceed(paymentObject))
+      return global.AccessType.getPaymentOptions(0).then(provider => provider.razorpay.proceed(paymentObject));
     }
 
     if (intent === 'switch') {
       const { error, data: switchPaymentOptions } = await awaitHelper(
         global.AccessType.getPaymentOptions(null, null, 'switch')
-      )
-      if (error) throw new Error('payment options fetch failed')
+      );
+      if (error) throw new Error('payment options fetch failed');
       return switchPaymentOptions.razorpay.proceed({
         ...paymentObject,
         switch_type: switchType,
         subscription_plan_id: selectedPlanObj.id,
         subscriptionId: selectedPlanObj.subscriptionId
-      })
+      });
     }
-    return paymentOptions.razorpay.proceed(paymentObject)
-  }
+    return paymentOptions.razorpay.proceed(paymentObject);
+  };
 
   initStripePayment = (options = {}) => {
     if (!options.selectedPlan) {
-      console.warn('Stripe pay needs a plan')
-      return false
+      console.warn('Stripe pay needs a plan');
+      return false;
     }
 
-    const { paymentOptions } = this.props
-    const paymentType = get(options.selectedPlan, ['recurring']) ? 'stripe_recurring' : 'stripe'
-    const paymentObject = this.makePaymentObject({ paymentType, ...options })
+    const { paymentOptions } = this.props;
+    const paymentType = get(options.selectedPlan, ['recurring']) ? 'stripe_recurring' : 'stripe';
+    const paymentObject = this.makePaymentObject({ paymentType, ...options });
     return paymentOptions.stripe
       ? paymentOptions.stripe.proceed(paymentObject)
-      : Promise.reject({ message: 'Payment option is loading...' })
-  }
+      : Promise.reject({ message: 'Payment option is loading...' });
+  };
 
   initPaypalPayment = (options = {}) => {
     if (!options.selectedPlan) {
-      console.warn('Paypal pay needs a plan')
-      return false
+      console.warn('Paypal pay needs a plan');
+      return false;
     }
 
-    const { paymentOptions } = this.props
-    const paymentType = get(options.selectedPlan, ['recurring']) ? 'paypal_recurring' : 'paypal'
-    const paymentObject = this.makePaymentObject({ paymentType, ...options })
+    const { paymentOptions } = this.props;
+    const paymentType = get(options.selectedPlan, ['recurring']) ? 'paypal_recurring' : 'paypal';
+    const paymentObject = this.makePaymentObject({ paymentType, ...options });
     return paymentOptions.paypal
       ? paymentOptions.paypal.proceed(paymentObject).then(response => response.proceed(paymentObject))
-      : Promise.reject({ message: 'Payment option is loading...' })
-  }
+      : Promise.reject({ message: 'Payment option is loading...' });
+  };
 
   initOmisePayment = (selectedPlanObj = {}, planType = '') => {
     if (!selectedPlanObj) {
-      console.warn('Omise pay needs a plan')
-      return false
+      console.warn('Omise pay needs a plan');
+      return false;
     }
-    const planObject = this.makePlanObject(selectedPlanObj, planType)
-    planObject['paymentType'] = get(planObject, ['selectedPlan', 'recurring']) ? 'omise_recurring' : 'omise'
-    const paymentObject = this.makePaymentObject(planObject)
-    const omise = get(this.props, ['paymentOptions', 'omise'])
+    const planObject = this.makePlanObject(selectedPlanObj, planType);
+    planObject['paymentType'] = get(planObject, ['selectedPlan', 'recurring']) ? 'omise_recurring' : 'omise';
+    const paymentObject = this.makePaymentObject(planObject);
+    const omise = get(this.props, ['paymentOptions', 'omise']);
     if (!omise) {
-      return Promise.reject({ message: 'Payment option is loading...' })
+      return Promise.reject({ message: 'Payment option is loading...' });
     }
-    return omise.proceed(paymentObject).then(response => response)
-  }
+    return omise.proceed(paymentObject).then(response => response);
+  };
 
   initAdyenPayment = (selectedPlanObj = {}, planType = '', AdyenModal, locale) => {
     const adyenExecutor = (resolve, reject) => {
       if (!document.getElementById('adyen-modal')) {
-        const modalElement = document.createElement('div')
-        modalElement.setAttribute('id', 'adyen-modal')
-        document.body.appendChild(modalElement)
+        const modalElement = document.createElement('div');
+        modalElement.setAttribute('id', 'adyen-modal');
+        document.body.appendChild(modalElement);
       }
 
       const afterOpen = () => {
-        const planObject = this.makePlanObject(selectedPlanObj, planType)
-        const isRecurring = get(planObject, ['selectedPlan', 'recurring'])
-        const paymentType = isRecurring ? 'adyen_recurring' : 'adyen'
-        let paymentObject = this.makePaymentObject({ ...planObject, paymentType })
-        const adyen = get(this.props, ['paymentOptions', 'adyen'])
+        const planObject = this.makePlanObject(selectedPlanObj, planType);
+        const isRecurring = get(planObject, ['selectedPlan', 'recurring']);
+        const paymentType = isRecurring ? 'adyen_recurring' : 'adyen';
+        let paymentObject = this.makePaymentObject({ ...planObject, paymentType });
+        const adyen = get(this.props, ['paymentOptions', 'adyen']);
         paymentObject = {
           ...paymentObject,
           options: { ...paymentObject['options'], dropin_container_id: 'dropin-adyen', locale },
           additional_data: {
             publisher_return_url: `${document.location.origin}/user-details`
           }
-        }
+        };
 
-        return resolve(adyen.proceed(paymentObject).then(response => response.proceed(paymentObject)))
-      }
+        return resolve(adyen.proceed(paymentObject).then(response => response.proceed(paymentObject)));
+      };
 
-      ReactDOM.render(<AdyenModal afterOpen={afterOpen} afterClose={reject} />, document.getElementById('adyen-modal'))
-    }
-    return new Promise(adyenExecutor)
-  }
+      ReactDOM.render(<AdyenModal afterOpen={afterOpen} afterClose={reject} />, document.getElementById('adyen-modal'));
+    };
+    return new Promise(adyenExecutor);
+  };
 
   initPaytrailPayment = (options = {}) => {
     if (!options.selectedPlan) {
-      console.warn('Paytrail needs a plan')
-      return false
+      console.warn('Paytrail needs a plan');
+      return false;
     }
-    const { paymentOptions } = this.props
-    const paymentType = get(options.selectedPlan, ['recurring']) ? 'paytrail_recurring' : 'paytrail'
-    const paymentObject = this.makePaymentObject({ paymentType, ...options })
+    const { paymentOptions } = this.props;
+    const paymentType = get(options.selectedPlan, ['recurring']) ? 'paytrail_recurring' : 'paytrail';
+    const paymentObject = this.makePaymentObject({ paymentType, ...options });
     return paymentOptions.paytrail
       ? paymentOptions.paytrail.proceed(paymentObject).then(response => response.proceed(paymentObject))
-      : Promise.reject({ message: 'Payment option is loading...' })
-  }
+      : Promise.reject({ message: 'Payment option is loading...' });
+  };
 
   pingBackMeteredStory = async (asset, accessData) => {
     try {
-      global.AccessType.pingbackAssetAccess(asset, accessData)
+      global.AccessType.pingbackAssetAccess(asset, accessData);
     } catch (e) {
-      console.log('error in pingbackAssetAccess', e)
+      console.log('error in pingbackAssetAccess', e);
     }
 
-    return true
-  }
+    return true;
+  };
 
   checkAccess = async assetId => {
     if (!assetId) {
-      console.warn('AssetId is required')
-      return false
+      console.warn('AssetId is required');
+      return false;
     }
 
-    this.props.accessIsLoading(true)
+    this.props.accessIsLoading(true);
 
-    const asset = { id: assetId, type: 'story' }
+    const asset = { id: assetId, type: 'story' };
     const { error, data: accessData } = await awaitHelper(
       global.AccessType.isAssetAccessible(asset, this.props.disableMetering)
-    )
+    );
 
     if (error) {
-      return error
+      return error;
     }
 
-    const accessById = { [assetId]: accessData }
+    const accessById = { [assetId]: accessData };
 
-    this.props.accessUpdated(accessById)
-    this.props.accessIsLoading(false)
+    this.props.accessUpdated(accessById);
+    this.props.accessIsLoading(false);
 
-    const { granted, grantReason, data = {} } = accessData || {}
+    const { granted, grantReason, data = {} } = accessData || {};
     if (!this.props.disableMetering && granted && grantReason === 'METERING') {
-      this.pingBackMeteredStory(asset, accessData)
-      this.props.meterUpdated(data.numberRemaining || -1)
+      this.pingBackMeteredStory(asset, accessData);
+      this.props.meterUpdated(data.numberRemaining || -1);
     }
 
-    return accessById
-  }
+    return accessById;
+  };
 
   getSubscriberMetadata = async () => {
     if (!global.AccessType) {
-      return {}
+      return {};
     }
-    const metadata = await awaitHelper(global.AccessType.getSubscriberMetadata())
-    return metadata
-  }
+    const metadata = await awaitHelper(global.AccessType.getSubscriberMetadata());
+    return metadata;
+  };
 
   setSubscriberMetadata = async subscriberMetadata => {
     if (!global.AccessType || !subscriberMetadata) {
-      return {}
+      return {};
     }
-    const response = await awaitHelper(global.AccessType.setSubscriberMetadata(subscriberMetadata))
-    return response
-  }
+    const response = await awaitHelper(global.AccessType.setSubscriberMetadata(subscriberMetadata));
+    return response;
+  };
 
   render () {
-    const { children } = this.props
+    const { children } = this.props;
     return children({
       initAccessType: this.initAccessType,
       initRazorPayPayment: this.initRazorPayPayment,
@@ -562,7 +571,7 @@ class AccessTypeBase extends React.Component {
       cancelSubscription: this.cancelSubscription,
       getSubscriberMetadata: this.getSubscriberMetadata,
       setSubscriberMetadata: this.setSubscriberMetadata
-    })
+    });
   }
 }
 
@@ -594,13 +603,13 @@ AccessTypeBase.propTypes = {
   stagingHost: string,
 
   onATGlobalSet: func
-}
+};
 
 const mapStateToProps = state => ({
   subscriptions: state.subscriptions || null,
   paymentOptions: state.paymentOptions || null,
   assetPlans: state.assetPlans || null
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   subscriptionGroupLoaded: subscriptions => dispatch({ type: SUBSCRIPTION_GROUP_UPDATED, subscriptions }),
@@ -614,7 +623,7 @@ const mapDispatchToProps = dispatch => ({
       type: CAMPAIGN_SUBSCRIPTION_GROUP_UPDATED,
       campaignSubscriptions
     })
-})
+});
 
 /**
  * `AccessType` is a generic connected render prop which exposes methods to handle access to stories / assets and initialize AccessTypeJS.
@@ -782,4 +791,4 @@ const mapDispatchToProps = dispatch => ({
  * @component
  * @category Subscription
  */
-export const AccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase)
+export const AccessType = connect(mapStateToProps, mapDispatchToProps)(AccessTypeBase);
