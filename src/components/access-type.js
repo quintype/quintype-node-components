@@ -78,6 +78,7 @@ class AccessTypeBase extends React.Component {
       console.warn(`User context setting failed  --> `, error)
       return error
     }
+     this.props.onUserSet && this.props.onUserSet();
     return user
   }
 
