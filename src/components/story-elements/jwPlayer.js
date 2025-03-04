@@ -9,11 +9,9 @@ class StoryElementJwPlayer extends React.Component {
     const { url = '' } = element || {}
     if (!url) return null
     const srcUrl = url.startsWith("//") ? `https:${url}` : url
-    return <div>
-      <video controls width="600">
-        <source src={`${srcUrl}`} type="video/mp4" />
-      </video>
-    </div>
+    return <video controls className='jw-player'>
+      <source src={`${srcUrl}`} type="video/mp4" />
+    </video>
   }
 }
 
