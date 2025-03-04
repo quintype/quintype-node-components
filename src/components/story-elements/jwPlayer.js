@@ -1,18 +1,32 @@
 import React from 'react';
 
-class StoryElementJwPlayer extends React.Component {
+class JWPlayerComponent extends React.Component {
   constructor(props) {
     super(props)
   }
+
   render() {
-    const { loadIframeOnClick, element } = this.props || {}
-    const { url = '' } = element || {}
-    if (!url) return null
-    const srcUrl = url.startsWith("//") ? `https:${url}` : url
-    return <video controls className='jw-player'>
-      <source src={`${srcUrl}`} type="video/mp4" />
-    </video>
+    const { element, loadIframeOnClick } = this.props || {}
+    const { metadata } = element || {}
+    const { "player-id": playerId, "video-id": videoId, "player-url": playerUrl } = metadata || {}
+
+    return (
+      <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}>
+        <iframe
+          src={playerUrl}
+          allowFullScreen
+          frameBorder="0"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+          }}
+        />
+      </div>
+    );
   }
 }
 
-export default StoryElementJwPlayer;
+export default JWPlayerComponent;
