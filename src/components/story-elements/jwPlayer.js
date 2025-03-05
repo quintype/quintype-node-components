@@ -16,6 +16,7 @@ class JWPlayerComponent extends React.Component {
           className='jw-player'
           src={playerUrl}
           allowFullScreen
+          frameBorder="0"
         />
       </div>
     );
