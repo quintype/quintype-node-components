@@ -6,23 +6,16 @@ class JWPlayerComponent extends React.Component {
   }
 
   render() {
-    const { element, loadIframeOnClick } = this.props || {}
+    const { element } = this.props || {}
     const { metadata } = element || {}
-    const { "player-id": playerId, "video-id": videoId, "player-url": playerUrl } = metadata || {}
+    const { "player-url": playerUrl } = metadata || {}
 
     return (
-      <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}>
+      <div className='jw-player-container'>
         <iframe
+          className='jw-player'
           src={playerUrl}
           allowFullScreen
-          frameBorder="0"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-          }}
         />
       </div>
     );
