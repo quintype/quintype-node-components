@@ -1,6 +1,6 @@
 {
   "name": "@quintype/components",
-  "version": "3.8.6-jw-player-integration.1",
+  "version": "3.8.6-jw-player-integration.2",
   "description": "Components to help build Quintype Node.js apps",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
