@@ -8,6 +8,7 @@ import StoryElementBrightcove from "./story-elements/brightcove";
 import StoryElementDailyMotion from "./story-elements/dailymotion";
 import DailyMotionEmbedScript from "./story-elements/dailymotion-embed-script";
 import JSEmbed from "./story-elements/jsembed";
+import StoryElementJwPlayer from "./story-elements/jwPlayer";
 import Polltype from "./story-elements/polltype";
 import { Table } from "./story-elements/table";
 import StoryElementYoutube from "./story-elements/youtube";
@@ -87,7 +88,7 @@ function StoryElementAlsoRead({ element, story, alsoreadText = "Also Read: " }) 
   );
 }
 
-function StoryElementImage({ element, story = {}, imageWidths, imageDefaultWidth, onClick = () => {} }) {
+function StoryElementImage({ element, story = {}, imageWidths, imageDefaultWidth, onClick = () => { } }) {
   return React.createElement(
     "figure",
     {},
@@ -106,15 +107,15 @@ function StoryElementImage({ element, story = {}, imageWidths, imageDefaultWidth
       { className: "story-element-caption-attribution-wrapper" },
       element.title
         ? React.createElement("figcaption", {
-            dangerouslySetInnerHTML: { __html: element.title },
-            className: "story-element-image-title",
-          })
+          dangerouslySetInnerHTML: { __html: element.title },
+          className: "story-element-image-title",
+        })
         : undefined,
       element["image-attribution"]
         ? React.createElement("figcaption", {
-            dangerouslySetInnerHTML: { __html: element["image-attribution"] },
-            className: "story-element-image-attribution",
-          })
+          dangerouslySetInnerHTML: { __html: element["image-attribution"] },
+          className: "story-element-image-attribution",
+        })
         : undefined
     )
   );
@@ -184,6 +185,7 @@ const DEFAULT_TEMPLATES = {
   "also-read": StoryElementAlsoRead,
   file: StoryElementFile,
   "brightcove-video": StoryElementBrightcove,
+  "jwplayer": StoryElementJwPlayer
 };
 
 class StoryElementBase extends React.Component {
@@ -271,10 +273,10 @@ class StoryElementBase extends React.Component {
       },
       renderTemplate
         ? React.createElement(
-            renderTemplate,
-            { ...elementProps },
-            React.createElement(storyElementTemplate, Object.assign({}, elementProps))
-          )
+          renderTemplate,
+          { ...elementProps },
+          React.createElement(storyElementTemplate, Object.assign({}, elementProps))
+        )
         : React.createElement(storyElementTemplate, Object.assign({}, elementProps))
     );
   }
