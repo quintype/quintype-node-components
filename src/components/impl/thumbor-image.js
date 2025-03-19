@@ -14,8 +14,7 @@ export function responsiveProps(props) {
     return '//' + props.imageCDN + '/' + image.path(props.aspectRatio, Object.assign({ w: size }, props.imgParams));
   }
 
-  const resolvePath = (size) =>
-  props.shouldDecode ? decodeURIComponent(generatePath(size)) : generatePath(size);
+  const resolvePath = (size) => (props.shouldDecodeImage ? decodeURIComponent(generatePath(size)) : generatePath(size));
 
   const imageProps = {
     src: resolvePath(props.defaultWidth),
