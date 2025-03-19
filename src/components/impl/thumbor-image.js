@@ -14,9 +14,12 @@ export function responsiveProps(props) {
     return '//' + props.imageCDN + '/' + image.path(props.aspectRatio, Object.assign({ w: size }, props.imgParams));
   }
 
+  const resolvePath = (size) =>
+  props.shouldDecode ? decodeURIComponent(generatePath(size)) : generatePath(size);
+
   const imageProps = {
-    src: generatePath(props.defaultWidth),
-    srcSet: props.widths ? props.widths.map((size) => `${generatePath(size)} ${size}w`).join(',') : undefined,
+    src: resolvePath(props.defaultWidth),
+    srcSet: props.widths ? props.widths.map((size) => `${resolvePath(size)} ${size}w`).join(',') : undefined,
     key: hashString(props.slug),
     sizes: props?.sizes
   };
