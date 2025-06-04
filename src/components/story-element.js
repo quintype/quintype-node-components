@@ -195,37 +195,37 @@ class StoryElementBase extends React.Component {
     this.storyElementRef = null;
   }
 
-  componentDidMount() {
-    this.initiateObserver();
-  }
+  // componentDidMount() {
+  //   this.initiateObserver();
+  // }
 
-  componentWillUnmount() {
-    this.destroyObserver();
-  }
+  // componentWillUnmount() {
+  //   this.destroyObserver();
+  // }
 
-  initiateObserver = () => {
-    if (this.props.disableAnalytics === true) return false;
+  // initiateObserver = () => {
+  //   if (this.props.disableAnalytics === true) return false;
 
-    const options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 1.0,
-    };
-    this.observer = new IntersectionObserver(this.observerCallback, options);
-    this.observer.observe(this.storyElementRef);
-  };
+  //   const options = {
+  //     root: null,
+  //     rootMargin: "200px",
+  //     threshold: 1.0,
+  //   };
+  //   this.observer = new IntersectionObserver(this.observerCallback, options);
+  //   this.observer.observe(this.storyElementRef);
+  // };
 
-  destroyObserver = () => {
-    this.observer && this.observer.disconnect();
-  };
+  // destroyObserver = () => {
+  //   this.observer && this.observer.disconnect();
+  // };
 
-  observerCallback = (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        this.emitElementQlitics();
-      }
-    });
-  };
+  // observerCallback = (entries) => {
+  //   entries.forEach((entry) => {
+  //     if (entry.isIntersecting) {
+  //       this.emitElementQlitics();
+  //     }
+  //   });
+  // };
 
   template() {
     const storyElement = this.props.element;
