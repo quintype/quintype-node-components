@@ -1,6 +1,5 @@
-import React from 'react';
+import { render } from "@testing-library/react";
 import { Provider } from 'react-redux';
-import { cleanup, render } from 'react-testing-library';
 import { createStore } from 'redux';
 import { ResponsiveImage } from '..';
 

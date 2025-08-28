@@ -1,9 +1,8 @@
-import { ResponsiveHeroImage } from "..";
+import { render } from "@testing-library/react";
+import cloneDeep from "lodash/cloneDeep";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import { render, cleanup } from "react-testing-library";
-import React from "react";
-import cloneDeep from "lodash/cloneDeep";
+import { ResponsiveHeroImage } from "..";
 
 afterEach(cleanup);
 

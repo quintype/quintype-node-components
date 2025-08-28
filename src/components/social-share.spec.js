@@ -1,9 +1,8 @@
-import { SocialShare } from '..';
+import { render } from "@testing-library/react";
+import 'jest-dom/extend-expect';
 import { Provider } from 'react-redux';
-import { render, cleanup } from 'react-testing-library';
-import 'jest-dom/extend-expect'
 import { createStore } from 'redux';
-import React from 'react';
+import { SocialShare } from '..';
 
 afterEach(cleanup);
 

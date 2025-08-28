@@ -1,6 +1,6 @@
-import React from "react";
+import { render } from "@testing-library/react";
+console.log("imported render:",render);
 import { Provider } from "react-redux";
-import { cleanup, render } from "react-testing-library";
 import { createStore } from "redux";
 import { AccessType } from "./access-type";
 afterEach(cleanup);

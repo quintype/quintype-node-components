@@ -1,8 +1,7 @@
-import { ResponsiveSource } from '..';
+import { render } from "@testing-library/react";
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import { render, cleanup } from 'react-testing-library';
-import React from 'react';
+import { ResponsiveSource } from '..';
 
 afterEach(cleanup);
 

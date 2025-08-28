@@ -1,7 +1,7 @@
 import { WithHostUrl } from '..';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import { render, cleanup } from 'react-testing-library';
+import { render, screen } from "@testing-library/react";
 import React from 'react';
 
 afterEach(cleanup);
