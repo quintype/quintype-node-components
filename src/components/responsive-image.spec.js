@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { cleanup, render } from 'react-testing-library';
+import { render, cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { createStore } from 'redux';
 import { ResponsiveImage } from '..';
 
