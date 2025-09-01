@@ -58,7 +58,7 @@
     "babel-plugin-annotate-pure-calls": "^0.4.0",
     "babel-plugin-quintype-assets": "^1.1.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "better-docs": "^2.3.2",
+    "better-docs": "^2.7.3",
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
