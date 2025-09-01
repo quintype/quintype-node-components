@@ -1,13 +1,9 @@
 import React from "react";
-import '@testing-library/jest-dom';
-import { render, cleanup } from "@testing-library/react";
 import { Provider } from "react-redux";
+import { cleanup, render } from "react-testing-library";
 import { createStore } from "redux";
-
 import { AccessType } from "./access-type";
-
 afterEach(cleanup);
-
 describe("AccessType", () => {
   let selectedPlan = {
     id: 47742,
@@ -25,24 +21,25 @@ describe("AccessType", () => {
     supported_payment_providers: ["omise"],
     metadata: {},
   };
-
   let instance;
-
+  // adding accessTypeKey as "dummykey" to avoid making calls to accesstype
   it("Successful omise recurring payment", async () => {
-    render(
+    const container = render(
       <Provider
         store={createStore((store) => store, {
           paymentOptions: {
             omise: {
               action: "pay",
-              proceed: async (paymentObject) => paymentObject,
+              proceed: async (paymentOptions) => {
+                return { proceed: (paymentObject) => paymentObject };
+              },
             },
           },
         })}
       >
         <AccessType
-          isStaging
-          enableAccesstype
+          isStaging={true}
+          enableAccesstype={true}
           accessTypeKey="dummyKey"
           email="r@gmail.com"
           phone="9900990099"
@@ -57,7 +54,6 @@ describe("AccessType", () => {
         </AccessType>
       </Provider>
     );
-
     expect(await instance(selectedPlan, "standard")).toStrictEqual({
       type: "standard",
       plan: {
@@ -80,22 +76,23 @@ describe("AccessType", () => {
       recipient_subscriber: {},
     });
   });
-
   it("Successful omise one-time payment", async () => {
-    render(
+    const container = render(
       <Provider
         store={createStore((store) => store, {
           paymentOptions: {
             omise: {
               action: "pay",
-              proceed: async (paymentObject) => paymentObject,
+              proceed: async (paymentOptions) => {
+                return { proceed: (paymentObject) => paymentObject };
+              },
             },
           },
         })}
       >
         <AccessType
-          isStaging
-          enableAccesstype
+          isStaging={true}
+          enableAccesstype={true}
           accessTypeKey="dummyKey"
           email="r@gmail.com"
           phone="9900990099"
@@ -110,13 +107,11 @@ describe("AccessType", () => {
         </AccessType>
       </Provider>
     );
-
     expect(await instance({ ...selectedPlan, recurring: false }, "standard")).toStrictEqual({
       type: "standard",
       plan: {
         id: 47742,
         title: "Selected Plan",
-        discounted_price_cents:"undefined",
         description: "Selected Plan",
         price_cents: 3000,
         price_currency: "THB",
@@ -134,13 +129,12 @@ describe("AccessType", () => {
       recipient_subscriber: {},
     });
   });
-
   it("Failed omise payment when the payment options are not passed", async () => {
-    render(
+    const container = render(
       <Provider store={createStore((store) => store, {})}>
         <AccessType
-          isStaging
-          enableAccesstype
+          isStaging={true}
+          enableAccesstype={true}
           accessTypeKey="dummyKey"
           email="r@gmail.com"
           phone="9900990099"
@@ -160,9 +154,8 @@ describe("AccessType", () => {
       message: "Payment option is loading...",
     });
   });
-
   it("Successful razorpay recurring payment", async () => {
-    render(
+    const container = render(
       <Provider
         store={createStore((store) => store, {
           paymentOptions: {
@@ -174,8 +167,8 @@ describe("AccessType", () => {
         })}
       >
         <AccessType
-          isStaging
-          enableAccesstype
+          isStaging={true}
+          enableAccesstype={true}
           accessTypeKey="dummyKey"
           email="r@gmail.com"
           phone="9900990099"
@@ -190,7 +183,6 @@ describe("AccessType", () => {
         </AccessType>
       </Provider>
     );
-
     expect(await instance(selectedPlan, "standard")).toStrictEqual({
       type: "standard",
       plan: {
@@ -214,9 +206,8 @@ describe("AccessType", () => {
       recipient_subscriber: {},
     });
   });
-
   it("Successful razorpay one-time payment", async () => {
-    render(
+    const container = render(
       <Provider
         store={createStore((store) => store, {
           paymentOptions: {
@@ -228,8 +219,8 @@ describe("AccessType", () => {
         })}
       >
         <AccessType
-          isStaging
-          enableAccesstype
+          isStaging={true}
+          enableAccesstype={true}
           accessTypeKey="dummyKey"
           email="r@gmail.com"
           phone="9900990099"
@@ -244,7 +235,6 @@ describe("AccessType", () => {
         </AccessType>
       </Provider>
     );
-
     expect(await instance({ ...selectedPlan, recurring: false }, "standard")).toStrictEqual({
       type: "standard",
       plan: {
