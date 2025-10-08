@@ -1,6 +1,6 @@
-import React from "react";
 import '@testing-library/jest-dom';
-import { render, cleanup } from "@testing-library/react";
+import { cleanup, render } from "@testing-library/react";
+import React from "react";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 
@@ -64,6 +64,7 @@ describe("AccessType", () => {
         id: 47742,
         title: "Selected Plan",
         description: "Selected Plan",
+        discounted_price_cents: undefined,
         price_cents: 3000,
         price_currency: "THB",
         duration_length: 5,
@@ -116,7 +117,7 @@ describe("AccessType", () => {
       plan: {
         id: 47742,
         title: "Selected Plan",
-        discounted_price_cents:"undefined",
+        discounted_price_cents: undefined,
         description: "Selected Plan",
         price_cents: 3000,
         price_currency: "THB",
