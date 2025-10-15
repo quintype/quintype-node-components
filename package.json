@@ -1,6 +1,6 @@
 {
   "name": "@quintype/components",
-  "version": "3.8.8-only-react-v19.1",
+  "version": "3.8.8-only-react-v19.2",
   "description": "Components to help build Quintype Node.js apps",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
