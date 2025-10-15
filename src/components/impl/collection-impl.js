@@ -17,6 +17,7 @@ export function renderCollectionItem(collectionItem, index, collectionTemplates,
         index: index,
         collection: collectionItem,
         metadata: collectionItem["associated-metadata"] || {},
+        collectionIndex: collectionItem?.["collectionIndex"],
         ...otherProps
       });
 
