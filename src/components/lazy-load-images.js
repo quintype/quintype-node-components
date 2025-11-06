@@ -1,5 +1,5 @@
-import { func, string } from 'prop-types';
-import React from "react";
+import { string } from 'prop-types';
+import React, { createContext } from "react";
 
 class IntersectionObserverWrapper {
   constructor(callback) {
@@ -64,6 +64,12 @@ class StubObserverWrapper {
   disconnect() {}
 }
 
+// React 19 compatible context to replace legacy childContextTypes API
+export const LazyLoadImagesContext = createContext({
+  lazyLoadObserveImage: null,
+  lazyLoadUnobserveImage: null
+});
+
 /**
  * This component will ensure all {@link ResponsiveImages} that are in its descendent path will be loaded async. By default, the image is loaded with an empty gif, and the image becomes visible when the image scrolls 250 from the edge of the screen.
  *
@@ -113,22 +119,19 @@ export class LazyLoadImages extends React.Component {
     this.observerWrapper.disconnect();
   }
 
-  getChildContext() {
-    return {
+  render() {
+    const contextValue = {
       lazyLoadObserveImage: (dom, component) => dom && this.observerWrapper.register(dom, component),
       lazyLoadUnobserveImage: (dom, component) => dom && this.observerWrapper.unregister(dom, component)
-    }
-  }
+    };
 
-  render() {
-    return this.props.children;
+    return (
+      <LazyLoadImagesContext.Provider value={contextValue}>
+        {this.props.children}
+      </LazyLoadImagesContext.Provider>
+    );
   }
 }
-
-LazyLoadImages.childContextTypes = {
-  lazyLoadObserveImage: func,
-  lazyLoadUnobserveImage: func
-};
 
 LazyLoadImages.propTypes = {
   margin: string
