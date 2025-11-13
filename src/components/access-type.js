@@ -396,6 +396,7 @@ class AccessTypeBase extends React.Component {
         subscriptionId: selectedPlanObj.subscriptionId
       })
     }
+    console.log('paymentOptions', paymentOptions.razorpay.proceed(paymentObject))
     return paymentOptions.razorpay.proceed(paymentObject)
   }
 
