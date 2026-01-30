@@ -410,19 +410,27 @@ class AccessTypeBase extends React.Component {
     const paymentObject = this.makePaymentObject({ paymentType, ...options })
     const intent = get(options, ['intent'], 'default')
     const switchType = get(options, ['switchType'])
-    console.log("------- initStripePayment PROPS--------->",this.props,{ intent, switchType });
 
-    if (intent === "switch") {
+    if (intent === 'switch') {
       const { error, data: switchPaymentOptions } = await awaitHelper(
         global.AccessType.getPaymentOptions(null, null, "switch")
       );
+
+      console.log("------- initStripePayment 111--------->",options?.successUrl,options?.cancelUrl, JSON.stringify(paymentObject));
+
       if (error) throw new Error("payment options fetch failed");
-      return switchPaymentOptions.stripe.proceed({
+      const payload = {
         ...paymentObject,
         switch_type: switchType,
         subscription_plan_id: options?.selectedPlan?.id,
         subscriptionId: options?.selectedPlan?.subscriptionId,
-      });
+        urls : {
+          success_url: options?.successUrl,
+          cancel_url: options?.cancelUrl
+        }
+      };
+      console.log("PAYLOAD----------", {payload})
+      return switchPaymentOptions.stripe.proceed(payload);
     }
     return paymentOptions.stripe
       ? paymentOptions.stripe.proceed(paymentObject)
