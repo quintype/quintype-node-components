@@ -429,7 +429,7 @@ class AccessTypeBase extends React.Component {
           cancel_url: options?.cancelUrl
         }
       };
-      console.log("PAYLOAD----------", {payload})
+      console.log("PAYLOAD----------", JSON.stringify(paymentObject))
       return switchPaymentOptions.stripe.proceed(payload);
     }
     return paymentOptions.stripe
