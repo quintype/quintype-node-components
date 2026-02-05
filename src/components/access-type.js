@@ -416,8 +416,6 @@ class AccessTypeBase extends React.Component {
         global.AccessType.getPaymentOptions(null, null, "switch")
       );
 
-      console.log("------- initStripePayment 111--------->",options?.successUrl,options?.cancelUrl, JSON.stringify(paymentObject));
-
       if (error) throw new Error("payment options fetch failed");
       const payload = {
         ...paymentObject,
@@ -429,7 +427,6 @@ class AccessTypeBase extends React.Component {
           cancel_url: options?.cancelUrl
         }
       };
-      console.log("PAYLOAD----------", JSON.stringify(paymentObject))
       return switchPaymentOptions.stripe.proceed(payload);
     }
     return paymentOptions.stripe
