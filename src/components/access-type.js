@@ -427,10 +427,7 @@ class AccessTypeBase extends React.Component {
           cancel_url: options?.cancelUrl
         }
       };
-      // return switchPaymentOptions.stripe.proceed(payload);
-      const response = await switchPaymentOptions.stripe.proceed(payload);
-      console.log("FROM COMPONENTS--------", {response});
-      return response;
+      return switchPaymentOptions.stripe.proceed(payload);
     }
     return paymentOptions.stripe
       ? paymentOptions.stripe.proceed(paymentObject)
