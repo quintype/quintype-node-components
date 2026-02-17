@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.8.9](https://github.com/quintype/quintype-node-components/compare/v3.8.2...v3.8.9) (2026-02-17)
+
+
+### Features
+
+*  upgrade, downgrade, and cross-grade functionality for the Stripe payment gateway. ([#247](https://github.com/quintype/quintype-node-components/issues/247)) ([a3bc7d3](https://github.com/quintype/quintype-node-components/commit/a3bc7d36719b5fe9a9abf464dea50629a2758a1e))
+
+
+### Bug Fixes
+
+* **AT:** execute subscription sequential calls based on prop ([#241](https://github.com/quintype/quintype-node-components/issues/241)) ([7068435](https://github.com/quintype/quintype-node-components/commit/70684355d49ba8e10b3f3d6541473c8596a50189))
+* **Youtube button:** update icon according to youtube polocies ([#240](https://github.com/quintype/quintype-node-components/issues/240)) ([87ef6fb](https://github.com/quintype/quintype-node-components/commit/87ef6fb5eb1fe11f2a0bdd8b798df4bf386c1804))
+
 ### [3.8.8](https://github.com/quintype/quintype-node-components/compare/v3.8.7...v3.8.8) (2025-10-15)
 
 ### [3.8.7](https://github.com/quintype/quintype-node-components/compare/v3.8.6...v3.8.7) (2025-03-20)
