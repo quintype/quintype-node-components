@@ -399,7 +399,7 @@ class AccessTypeBase extends React.Component {
     return paymentOptions.razorpay.proceed(paymentObject)
   }
 
-  initStripePayment = (options = {}) => {
+  initStripePayment = async (options = {}) => {
     if (!options.selectedPlan) {
       console.warn('Stripe pay needs a plan')
       return false
@@ -408,6 +408,27 @@ class AccessTypeBase extends React.Component {
     const { paymentOptions } = this.props
     const paymentType = get(options.selectedPlan, ['recurring']) ? 'stripe_recurring' : 'stripe'
     const paymentObject = this.makePaymentObject({ paymentType, ...options })
+    const intent = get(options, ['intent'], 'default')
+    const switchType = get(options, ['switchType'])
+
+    if (intent === 'switch') {
+      const { error, data: switchPaymentOptions } = await awaitHelper(
+        global.AccessType.getPaymentOptions(null, null, "switch")
+      );
+
+      if (error) throw new Error("payment options fetch failed");
+      const payload = {
+        ...paymentObject,
+        switch_type: switchType,
+        subscription_plan_id: options?.selectedPlan?.id,
+        subscriptionId: options?.selectedPlan?.subscriptionId,
+        urls : {
+          success_url: options?.successUrl,
+          cancel_url: options?.cancelUrl
+        }
+      };
+      return switchPaymentOptions.stripe.proceed(payload);
+    }
     return paymentOptions.stripe
       ? paymentOptions.stripe.proceed(paymentObject)
       : Promise.reject({ message: 'Payment option is loading...' })
