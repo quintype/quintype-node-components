@@ -1,9 +1,10 @@
 import omit from '@babel/runtime/helpers/objectWithoutProperties';
 import emptyWebGif from 'empty-web-gif';
-import { func } from 'prop-types';
 import { FocusedImage } from 'quintype-js';
-import React from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Helmet } from 'react-helmet';
+import { LazyLoadImagesContext } from '../lazy-load-images';
+import { EagerLoadImagesContext } from '../eager-load-images';
 import { USED_PARAMS, hashString } from './image-utils';
 
 export function responsiveProps(props) {
@@ -34,57 +35,57 @@ export function responsiveProps(props) {
   };
 }
 
-export class ThumborImage extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      showImage: !this.shouldLazyLoad()
-    };
-  }
-  shouldLazyLoad() {
-    if (this.props.eager === true) {
+export function ThumborImage(props) {
+  const lazyLoadContext = useContext(LazyLoadImagesContext);
+  const eagerLoadContext = useContext(EagerLoadImagesContext);
+
+  const shouldLazyLoad = () => {
+    if (props.eager === true) {
       return false;
     }
-    if (this.context.lazyLoadEagerPredicate && this.context.lazyLoadEagerPredicate(this.props.eager)) {
+    if (eagerLoadContext.lazyLoadEagerPredicate && eagerLoadContext.lazyLoadEagerPredicate(props.eager)) {
       return false;
     }
-    if (this.context.lazyLoadObserveImage && this.context.lazyLoadUnobserveImage) {
+    if (lazyLoadContext.lazyLoadObserveImage && lazyLoadContext.lazyLoadUnobserveImage) {
       return true;
     }
     return false;
-  }
-  render() {
-    const imageProps = this.state.showImage ? responsiveProps(this.props) : { src: emptyWebGif };
-    return (
-      <>
-        {this.props?.priority && (
-          <Helmet>
-            <link rel="preload" as="image" imagesrcset={imageProps?.srcSet} imagesizes={imageProps?.sizes} />
-          </Helmet>
-        )}
-        {React.createElement(
-          this.props.reactTag || 'img',
-          Object.assign(imageProps, omit(this.props, USED_PARAMS), {
-            ref: (dom) => (this.dom = dom),
-            className: this.props.className ? `qt-image ${this.props.className}` : 'qt-image'
-          })
-        )}
-      </>
-    );
-  }
-  componentDidMount() {
-    this.shouldLazyLoad() && this.context.lazyLoadObserveImage(this.dom, this);
-  }
-  componentWillUnmount() {
-    this.shouldLazyLoad() && this.context.lazyLoadUnobserveImage(this.dom, this);
-  }
-  showImage() {
-    this.setState({ showImage: true });
-  }
-}
+  };
 
-ThumborImage.contextTypes = {
-  lazyLoadObserveImage: func,
-  lazyLoadUnobserveImage: func,
-  lazyLoadEagerPredicate: func
-};
+  const [showImage, setShowImage] = useState(() => !shouldLazyLoad());
+  const domRef = useRef(null);
+  const componentRef = useRef({
+    showImage: () => setShowImage(true)
+  });
+
+  useEffect(() => {
+    const lazyLoad = shouldLazyLoad();
+    if (lazyLoad && lazyLoadContext.lazyLoadObserveImage && domRef.current) {
+      lazyLoadContext.lazyLoadObserveImage(domRef.current, componentRef.current);
+    }
+
+    return () => {
+      if (lazyLoad && lazyLoadContext.lazyLoadUnobserveImage && domRef.current) {
+        lazyLoadContext.lazyLoadUnobserveImage(domRef.current, componentRef.current);
+      }
+    };
+  }, [props.eager, lazyLoadContext.lazyLoadObserveImage, lazyLoadContext.lazyLoadUnobserveImage, eagerLoadContext.lazyLoadEagerPredicate]);
+
+  const imageProps = showImage ? responsiveProps(props) : { src: emptyWebGif };
+  return (
+    <>
+      {props?.priority && (
+        <Helmet>
+          <link rel="preload" as="image" imagesrcset={imageProps?.srcSet} imagesizes={imageProps?.sizes} />
+        </Helmet>
+      )}
+      {React.createElement(
+        props.reactTag || 'img',
+        Object.assign(imageProps, omit(props, USED_PARAMS), {
+          ref: domRef,
+          className: props.className ? `qt-image ${props.className}` : 'qt-image'
+        })
+      )}
+    </>
+  );
+}
