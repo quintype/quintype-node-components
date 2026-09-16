@@ -611,7 +611,7 @@ class AccessTypeBase extends React.Component {
     if (!omise) {
       return Promise.reject({ message: 'Payment option is loading...' })
     }
-    return omise.proceed(paymentObject).then(response => response)
+    return omise.proceed(paymentObject).then(response => response.proceed(paymentObject))
   }
 
   initAdyenPayment = (selectedPlanObj = {}, planType = '', AdyenModal, locale) => {
