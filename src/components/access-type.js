@@ -352,6 +352,107 @@ class AccessTypeBase extends React.Component {
         }
   }
 
+  previewSubscriptionWithoutLogin = async ({
+    emailAddress,
+    name,
+    phoneNumber,
+    subscriptionRequest
+  }) => {
+    const { accessTypeKey, isStaging } = this.props;
+    const HOST = isStaging ? this.stagingHost : this.prodHost;
+
+    const response = await global.fetch(
+      `${HOST}/api/access/v1/subscription-without-login/preview?key=${accessTypeKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          emailAddress,
+          ...(name ? { name } : {}),
+          ...(phoneNumber ? { phoneNumber } : {}),
+          subscription: subscriptionRequest
+        })
+      }
+    );
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      console.error('[AccessType] previewSubscriptionWithoutLogin failed:', {
+        status: response.status,
+        error: json
+      });
+      throw json;
+    }
+
+    return json;
+  };
+
+  initLoginlessSubscription = async ({
+    emailAddress,
+    name = '',
+    phoneNumber = '',
+    selectedPlan,
+    planType = 'standard',
+    couponCode = ''
+  }) => {
+    if (!selectedPlan) {
+      console.warn('[AccessType] initLoginlessSubscription: selectedPlan is required');
+      return false;
+    }
+
+    if (!global.AccessType) {
+      console.error('[AccessType] initLoginlessSubscription: AccessType JS SDK is not available on window');
+      throw new Error('AccessType SDK is not available');
+    }
+
+    // Step 1: Set guest user identity in AccessType SDK
+    await global.AccessType.setUser({
+      isLoggedIn: false,
+      emailAddress,
+      name: name || '',
+      mobileNumber: phoneNumber || ''
+    });
+
+    // Step 2: Fetch payment options for this guest session
+    const paymentOptionsRes = await global.AccessType.getPaymentOptions();
+    const paymentOptions = paymentOptionsRes?.data || paymentOptionsRes;
+
+    if (this.props.paymentOptionsLoaded && paymentOptions) {
+      this.props.paymentOptionsLoaded(paymentOptions);
+    }
+
+    // Step 3: Identify payment gateway handler
+    const rawGateway = get(selectedPlan, ['supported_payment_providers', 0], 'razorpay');
+    const paymentGateway = selectedPlan.recurring ? `${rawGateway}_recurring` : rawGateway;
+
+    const gatewayHandler = paymentOptions && paymentOptions[rawGateway];
+    if (!gatewayHandler || typeof gatewayHandler.proceed !== 'function') {
+      console.error(`[AccessType] Payment provider "${rawGateway}" is not available`, paymentOptions);
+      throw new Error(`Payment provider "${rawGateway}" is not available. Please try again.`);
+    }
+
+    // Step 4: Construct standard payment object
+    const planObject = this.makePlanObject(selectedPlan, planType);
+    planObject['paymentType'] = paymentGateway;
+
+    const paymentObject = this.makePaymentObject({
+      ...planObject,
+      couponCode: selectedPlan.coupon_code || couponCode || ''
+    });
+
+    console.log('[AccessType] initLoginlessSubscription: initiating gateway checkout', {
+      gateway: rawGateway,
+      paymentGateway,
+      planId: selectedPlan.id,
+      email: emailAddress
+    });
+
+    // Step 5: Launch gateway checkout modal (Razorpay / Stripe / Paypal / etc.)
+    return gatewayHandler.proceed(paymentObject);
+  };
+
+
   initRazorPayPayment = async (
     selectedPlanObj = {},
     planType = '',
@@ -460,7 +561,7 @@ class AccessTypeBase extends React.Component {
     if (!omise) {
       return Promise.reject({ message: 'Payment option is loading...' })
     }
-    return omise.proceed(paymentObject).then(response => response)
+    return omise.proceed(paymentObject).then(response => response.proceed(paymentObject))
   }
 
   initAdyenPayment = (selectedPlanObj = {}, planType = '', AdyenModal, locale) => {
@@ -573,6 +674,7 @@ class AccessTypeBase extends React.Component {
       initOmisePayment: this.initOmisePayment,
       initAdyenPayment: this.initAdyenPayment,
       initPaytrailPayment: this.initPaytrailPayment,
+      initLoginlessSubscription: this.initLoginlessSubscription,
       checkAccess: this.checkAccess,
       getSubscription: this.getSubscription,
       getSubscriptionsWithSwitchablePlans: this.getSubscriptionsWithSwitchablePlans,
@@ -651,6 +753,7 @@ const mapDispatchToProps = dispatch => ({
  *  initOmisePayment| selectedPlan(object), planType(string)  | Initialize the Omise payment
  *  initAdyenPayment| selectedPlan(object), planType(string), AdyenModal(React Component), locale(string) | Initialize Adyen Payment
  *  initPaytrailPayment| selectedPlan(object), ptions={selectedPlan: selectedPlanObj,planType: planType,couponCode: "", recipientSubscriber: {}, returnUrl: "",cancelUrl:""} | Initialize the Paytrail payment
+ *  initLoginlessSubscription| options(object), options={ emailAddress: string, name: string, phoneNumber: string, selectedPlan: object, planType: string, couponCode: string } | Calls the AccessType subscription-without-login preview API to obtain an attempt_token, then delegates to the appropriate payment gateway (razorpay/stripe/paypal/omise/adyen/paytrail). Use this for guest/anonymous user subscriptions that do not require login before payment.
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
  *  getSubscriberMetadata| Get the Subscriber Metadata
  *  setSubscriberMetadata| subscriberMetadata(object), subscriberMetadata={"address": {
