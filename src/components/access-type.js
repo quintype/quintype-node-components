@@ -352,6 +352,157 @@ class AccessTypeBase extends React.Component {
         }
   }
 
+  previewSubscriptionWithoutLogin = async ({
+    emailAddress,
+    name,
+    phoneNumber,
+    subscriptionRequest
+  }) => {
+    const { accessTypeKey, isStaging } = this.props;
+    const HOST = isStaging ? this.stagingHost : this.prodHost;
+
+    const response = await global.fetch(
+      `${HOST}/api/access/v1/subscription-without-login/preview?key=${accessTypeKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          emailAddress,
+          ...(name ? { name } : {}),
+          ...(phoneNumber ? { phoneNumber } : {}),
+          subscription: subscriptionRequest
+        })
+      }
+    );
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      console.error('[AccessType] previewSubscriptionWithoutLogin failed:', {
+        status: response.status,
+        error: json
+      });
+      throw json;
+    }
+
+    return json;
+  };
+
+  initLoginlessSubscription = async ({
+    emailAddress,
+    name = '',
+    phoneNumber = '',
+    selectedPlan,
+    planType = 'standard',
+    couponCode = ''
+  }) => {
+    if (!selectedPlan) {
+      console.warn('[AccessType] initLoginlessSubscription: selectedPlan is required');
+      return false;
+    }
+
+    const rawGateway = get(selectedPlan, ['supported_payment_providers', 0], 'razorpay');
+    const paymentGateway = selectedPlan.recurring
+      ? `${rawGateway}_recurring`
+      : rawGateway;
+    const priceCents =
+      selectedPlan.discounted_price_cents != null
+        ? selectedPlan.discounted_price_cents
+        : get(selectedPlan, ['price_cents'], 0);
+    const priceCurrency = get(selectedPlan, ['price_currency'], 'INR');
+
+    // Build the AT-compliant subscription request body
+    const subscriptionRequest = {
+      subscription_plan_id: selectedPlan.id,
+      ...(couponCode ? { coupon_code: couponCode } : {}),
+      payment: {
+        payment_type: paymentGateway,
+        amount_cents: priceCents,
+        amount_currency: priceCurrency
+      },
+      ...(phoneNumber
+        ? { metadata: { mobile_number: phoneNumber, phone_number: phoneNumber } }
+        : {})
+    };
+
+    // Step 1: Call the preview API to obtain the attempt_token
+    const previewRes = await this.previewSubscriptionWithoutLogin({
+      emailAddress,
+      name,
+      phoneNumber,
+      subscriptionRequest
+    });
+
+    const attemptToken =
+      previewRes.attempt_token || previewRes.attemptToken || '';
+
+    if (!attemptToken) {
+      throw new Error(
+        '[AccessType] initLoginlessSubscription: no attempt_token returned from preview API'
+      );
+    }
+
+    // Step 2: Enrich the plan object so existing init*Payment methods work unchanged
+    const enrichedPlan = {
+      ...selectedPlan,
+      emailAddress,
+      email: emailAddress,
+      attempt_token: attemptToken,
+      attemptToken,
+      subscriber: {
+        email: emailAddress,
+        emailAddress,
+        phone_number: phoneNumber || ''
+      },
+      metadata: {
+        ...get(selectedPlan, ['metadata'], {}),
+        email: emailAddress,
+        ...(phoneNumber
+          ? { mobile_number: phoneNumber, phone_number: phoneNumber }
+          : {})
+      }
+    };
+
+    console.log('[AccessType] initLoginlessSubscription: preview successful, delegating to gateway', {
+      gateway: rawGateway,
+      planId: selectedPlan.id,
+      attemptToken
+    });
+
+    // Step 3: Delegate to the appropriate existing payment gateway method
+    switch (rawGateway) {
+      case 'razorpay':
+        return this.initRazorPayPayment(enrichedPlan, planType);
+      case 'paypal':
+        return this.initPaypalPayment({
+          argType: 'options',
+          selectedPlan: enrichedPlan,
+          planType
+        });
+      case 'omise':
+        return this.initOmisePayment(enrichedPlan, planType);
+      case 'adyen':
+        return this.initAdyenPayment(enrichedPlan, planType);
+      case 'paytrail':
+        return this.initPaytrailPayment({
+          argType: 'options',
+          selectedPlan: enrichedPlan,
+          planType
+        });
+      case 'stripe':
+        return this.initStripePayment({
+          argType: 'options',
+          selectedPlan: enrichedPlan,
+          planType
+        });
+      default:
+        console.error(
+          `[AccessType] initLoginlessSubscription: unsupported gateway "${rawGateway}"`
+        );
+        return null;
+    }
+  };
+
   initRazorPayPayment = async (
     selectedPlanObj = {},
     planType = '',
@@ -573,6 +724,7 @@ class AccessTypeBase extends React.Component {
       initOmisePayment: this.initOmisePayment,
       initAdyenPayment: this.initAdyenPayment,
       initPaytrailPayment: this.initPaytrailPayment,
+      initLoginlessSubscription: this.initLoginlessSubscription,
       checkAccess: this.checkAccess,
       getSubscription: this.getSubscription,
       getSubscriptionsWithSwitchablePlans: this.getSubscriptionsWithSwitchablePlans,
@@ -651,6 +803,7 @@ const mapDispatchToProps = dispatch => ({
  *  initOmisePayment| selectedPlan(object), planType(string)  | Initialize the Omise payment
  *  initAdyenPayment| selectedPlan(object), planType(string), AdyenModal(React Component), locale(string) | Initialize Adyen Payment
  *  initPaytrailPayment| selectedPlan(object), ptions={selectedPlan: selectedPlanObj,planType: planType,couponCode: "", recipientSubscriber: {}, returnUrl: "",cancelUrl:""} | Initialize the Paytrail payment
+ *  initLoginlessSubscription| options(object), options={ emailAddress: string, name: string, phoneNumber: string, selectedPlan: object, planType: string, couponCode: string } | Calls the AccessType subscription-without-login preview API to obtain an attempt_token, then delegates to the appropriate payment gateway (razorpay/stripe/paypal/omise/adyen/paytrail). Use this for guest/anonymous user subscriptions that do not require login before payment.
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
  *  getSubscriberMetadata| Get the Subscriber Metadata
  *  setSubscriberMetadata| subscriberMetadata(object), subscriberMetadata={"address": {
