@@ -401,107 +401,57 @@ class AccessTypeBase extends React.Component {
       return false;
     }
 
+    if (!global.AccessType) {
+      console.error('[AccessType] initLoginlessSubscription: AccessType JS SDK is not available on window');
+      throw new Error('AccessType SDK is not available');
+    }
+
+    // Step 1: Set guest user identity in AccessType SDK
+    await global.AccessType.setUser({
+      isLoggedIn: false,
+      emailAddress,
+      name: name || '',
+      mobileNumber: phoneNumber || ''
+    });
+
+    // Step 2: Fetch payment options for this guest session
+    const paymentOptionsRes = await global.AccessType.getPaymentOptions();
+    const paymentOptions = paymentOptionsRes?.data || paymentOptionsRes;
+
+    if (this.props.paymentOptionsLoaded && paymentOptions) {
+      this.props.paymentOptionsLoaded(paymentOptions);
+    }
+
+    // Step 3: Identify payment gateway handler
     const rawGateway = get(selectedPlan, ['supported_payment_providers', 0], 'razorpay');
-    const paymentGateway = selectedPlan.recurring
-      ? `${rawGateway}_recurring`
-      : rawGateway;
-    const priceCents =
-      selectedPlan.discounted_price_cents != null
-        ? selectedPlan.discounted_price_cents
-        : get(selectedPlan, ['price_cents'], 0);
-    const priceCurrency = get(selectedPlan, ['price_currency'], 'INR');
+    const paymentGateway = selectedPlan.recurring ? `${rawGateway}_recurring` : rawGateway;
 
-    // Build the AT-compliant subscription request body
-    const subscriptionRequest = {
-      subscription_plan_id: selectedPlan.id,
-      ...(couponCode ? { coupon_code: couponCode } : {}),
-      payment: {
-        payment_type: paymentGateway,
-        amount_cents: priceCents,
-        amount_currency: priceCurrency
-      },
-      ...(phoneNumber
-        ? { metadata: { mobile_number: phoneNumber, phone_number: phoneNumber } }
-        : {})
-    };
-
-    // Step 1: Call the preview API to obtain the attempt_token
-    const previewRes = await this.previewSubscriptionWithoutLogin({
-      emailAddress,
-      name,
-      phoneNumber,
-      subscriptionRequest
-    });
-
-    const attemptToken =
-      previewRes.attempt_token || previewRes.attemptToken || '';
-
-    if (!attemptToken) {
-      throw new Error(
-        '[AccessType] initLoginlessSubscription: no attempt_token returned from preview API'
-      );
+    const gatewayHandler = paymentOptions && paymentOptions[rawGateway];
+    if (!gatewayHandler || typeof gatewayHandler.proceed !== 'function') {
+      console.error(`[AccessType] Payment provider "${rawGateway}" is not available`, paymentOptions);
+      throw new Error(`Payment provider "${rawGateway}" is not available. Please try again.`);
     }
 
-    // Step 2: Enrich the plan object so existing init*Payment methods work unchanged
-    const enrichedPlan = {
-      ...selectedPlan,
-      emailAddress,
-      email: emailAddress,
-      attempt_token: attemptToken,
-      attemptToken,
-      subscriber: {
-        email: emailAddress,
-        emailAddress,
-        phone_number: phoneNumber || ''
-      },
-      metadata: {
-        ...get(selectedPlan, ['metadata'], {}),
-        email: emailAddress,
-        ...(phoneNumber
-          ? { mobile_number: phoneNumber, phone_number: phoneNumber }
-          : {})
-      }
-    };
+    // Step 4: Construct standard payment object
+    const planObject = this.makePlanObject(selectedPlan, planType);
+    planObject['paymentType'] = paymentGateway;
 
-    console.log('[AccessType] initLoginlessSubscription: preview successful, delegating to gateway', {
+    const paymentObject = this.makePaymentObject({
+      ...planObject,
+      couponCode: selectedPlan.coupon_code || couponCode || ''
+    });
+
+    console.log('[AccessType] initLoginlessSubscription: initiating gateway checkout', {
       gateway: rawGateway,
+      paymentGateway,
       planId: selectedPlan.id,
-      attemptToken
+      email: emailAddress
     });
 
-    // Step 3: Delegate to the appropriate existing payment gateway method
-    switch (rawGateway) {
-      case 'razorpay':
-        return this.initRazorPayPayment(enrichedPlan, planType);
-      case 'paypal':
-        return this.initPaypalPayment({
-          argType: 'options',
-          selectedPlan: enrichedPlan,
-          planType
-        });
-      case 'omise':
-        return this.initOmisePayment(enrichedPlan, planType);
-      case 'adyen':
-        return this.initAdyenPayment(enrichedPlan, planType);
-      case 'paytrail':
-        return this.initPaytrailPayment({
-          argType: 'options',
-          selectedPlan: enrichedPlan,
-          planType
-        });
-      case 'stripe':
-        return this.initStripePayment({
-          argType: 'options',
-          selectedPlan: enrichedPlan,
-          planType
-        });
-      default:
-        console.error(
-          `[AccessType] initLoginlessSubscription: unsupported gateway "${rawGateway}"`
-        );
-        return null;
-    }
+    // Step 5: Launch gateway checkout modal (Razorpay / Stripe / Paypal / etc.)
+    return gatewayHandler.proceed(paymentObject);
   };
+
 
   initRazorPayPayment = async (
     selectedPlanObj = {},
