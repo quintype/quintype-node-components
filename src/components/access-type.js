@@ -392,9 +392,17 @@ class AccessTypeBase extends React.Component {
     emailAddress,
     name = '',
     phoneNumber = '',
+    address = '',
+    city = '',
+    state = '',
+    country = '',
+    pin = '',
+    pinCode = '',
+    postCode = '',
     selectedPlan,
     planType = 'standard',
-    couponCode = ''
+    couponCode = '',
+    metadata = {}
   }) => {
     if (!selectedPlan) {
       console.warn('[AccessType] initLoginlessSubscription: selectedPlan is required');
@@ -406,12 +414,17 @@ class AccessTypeBase extends React.Component {
       throw new Error('AccessType SDK is not available');
     }
 
+    const userEmail = emailAddress || get(selectedPlan, ['email'], '') || get(selectedPlan, ['emailAddress'], '');
+    const userName = name || get(selectedPlan, ['name'], '');
+    const userPhone = phoneNumber || get(selectedPlan, ['phoneNumber'], '') || get(selectedPlan, ['mobileNumber'], '') || get(selectedPlan, ['phone'], '');
+    const userAddress = address || get(selectedPlan, ['address'], '');
+
     // Step 1: Set guest user identity in AccessType SDK
     await global.AccessType.setUser({
       isLoggedIn: false,
-      emailAddress,
-      name: name || '',
-      mobileNumber: phoneNumber || ''
+      emailAddress: userEmail,
+      name: userName,
+      mobileNumber: userPhone
     });
 
     // Step 2: Fetch payment options for this guest session
@@ -432,8 +445,54 @@ class AccessTypeBase extends React.Component {
       throw new Error(`Payment provider "${rawGateway}" is not available. Please try again.`);
     }
 
-    // Step 4: Construct standard payment object
-    const planObject = this.makePlanObject(selectedPlan, planType);
+    // Step 4: Construct standard payment object with guest metadata
+    const addressMetadata = {};
+    if (userAddress) {
+      if (typeof userAddress === 'string') {
+        addressMetadata.address_line1 = userAddress;
+      } else if (typeof userAddress === 'object') {
+        if (userAddress.address_line1 || userAddress.line1) {
+          addressMetadata.address_line1 = userAddress.address_line1 || userAddress.line1;
+        }
+        if (userAddress.address_line2 || userAddress.line2) {
+          addressMetadata.address_line2 = userAddress.address_line2 || userAddress.line2;
+        }
+        if (userAddress.city) addressMetadata.city = userAddress.city;
+        if (userAddress.state) addressMetadata.state = userAddress.state;
+        if (userAddress.country) addressMetadata.country = userAddress.country;
+        if (userAddress.pin_code || userAddress.pin || userAddress.postCode) {
+          addressMetadata.pin_code = userAddress.pin_code || userAddress.pin || userAddress.postCode;
+        }
+      }
+    }
+    if (city) addressMetadata.city = city;
+    if (state) addressMetadata.state = state;
+    if (country) addressMetadata.country = country;
+    if (pin || pinCode || postCode) addressMetadata.pin_code = pin || pinCode || postCode;
+
+    const guestMetadata = {
+      ...get(selectedPlan, ['metadata'], {}),
+      ...(metadata || {}),
+      ...(userEmail ? { email: userEmail, emailAddress: userEmail } : {}),
+      ...(userName ? { name: userName } : {}),
+      ...(userPhone
+        ? { mobile_number: userPhone, phone_number: userPhone }
+        : {}),
+      ...addressMetadata
+    };
+
+    const enrichedPlan = {
+      ...selectedPlan,
+      emailAddress: userEmail,
+      subscriber: {
+        emailAddress: userEmail,
+        phone_number: userPhone,
+        name: userName
+      },
+      metadata: guestMetadata
+    };
+
+    const planObject = this.makePlanObject(enrichedPlan, planType);
     planObject['paymentType'] = paymentGateway;
 
     const paymentObject = this.makePaymentObject({
@@ -445,7 +504,8 @@ class AccessTypeBase extends React.Component {
       gateway: rawGateway,
       paymentGateway,
       planId: selectedPlan.id,
-      email: emailAddress
+      emailAddress: userEmail,
+      metadata: guestMetadata
     });
 
     // Step 5: Launch gateway checkout modal (Razorpay / Stripe / Paypal / etc.)
@@ -753,7 +813,7 @@ const mapDispatchToProps = dispatch => ({
  *  initOmisePayment| selectedPlan(object), planType(string)  | Initialize the Omise payment
  *  initAdyenPayment| selectedPlan(object), planType(string), AdyenModal(React Component), locale(string) | Initialize Adyen Payment
  *  initPaytrailPayment| selectedPlan(object), ptions={selectedPlan: selectedPlanObj,planType: planType,couponCode: "", recipientSubscriber: {}, returnUrl: "",cancelUrl:""} | Initialize the Paytrail payment
- *  initLoginlessSubscription| options(object), options={ emailAddress: string, name: string, phoneNumber: string, selectedPlan: object, planType: string, couponCode: string } | Calls the AccessType subscription-without-login preview API to obtain an attempt_token, then delegates to the appropriate payment gateway (razorpay/stripe/paypal/omise/adyen/paytrail). Use this for guest/anonymous user subscriptions that do not require login before payment.
+ *  initLoginlessSubscription| options(object), options={ emailAddress: string, name: string, phoneNumber: string, address: string|object, metadata: object, selectedPlan: object, planType: string, couponCode: string } | Sets guest identity, enriches plan with metadata (phone, email, name, address), and delegates to the appropriate payment gateway (razorpay/stripe/paypal/omise/adyen/paytrail). Use this for guest/anonymous user subscriptions that do not require login before payment.
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
  *  getSubscriberMetadata| Get the Subscriber Metadata
  *  setSubscriberMetadata| subscriberMetadata(object), subscriberMetadata={"address": {
