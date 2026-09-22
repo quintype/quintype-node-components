@@ -420,12 +420,13 @@ class AccessTypeBase extends React.Component {
     const userAddress = address || get(selectedPlan, ['address'], '');
 
     // Step 1: Set guest user identity in AccessType SDK
-    await global.AccessType.setUser({
+    const userPayload = {
       isLoggedIn: false,
-      emailAddress: userEmail,
-      name: userName,
-      mobileNumber: userPhone
-    });
+      ...(userEmail ? { emailAddress: userEmail } : {}),
+      ...(userPhone ? { mobileNumber: userPhone } : {})
+    };
+
+    await global.AccessType.setUser(userPayload);
 
     // Step 2: Fetch payment options for this guest session
     const paymentOptionsRes = await global.AccessType.getPaymentOptions();
@@ -483,11 +484,11 @@ class AccessTypeBase extends React.Component {
 
     const enrichedPlan = {
       ...selectedPlan,
-      emailAddress: userEmail,
+      ...(userEmail ? { emailAddress: userEmail } : {}),
       subscriber: {
-        emailAddress: userEmail,
-        phone_number: userPhone,
-        name: userName
+        ...(userEmail ? { emailAddress: userEmail } : {}),
+        ...(userPhone ? { phone_number: userPhone } : {}),
+        ...(userName ? { name: userName } : {})
       },
       metadata: guestMetadata
     };
@@ -504,7 +505,8 @@ class AccessTypeBase extends React.Component {
       gateway: rawGateway,
       paymentGateway,
       planId: selectedPlan.id,
-      emailAddress: userEmail,
+      ...(userEmail ? { emailAddress: userEmail } : {}),
+      ...(userPhone ? { phoneNumber: userPhone } : {}),
       metadata: guestMetadata
     });
 
