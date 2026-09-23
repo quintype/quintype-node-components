@@ -30,9 +30,7 @@ describe("AccessType", () => {
           paymentOptions: {
             omise: {
               action: "pay",
-              proceed: async (paymentOptions) => {
-                return { proceed: (paymentObject) => paymentObject };
-              },
+              proceed: async (paymentObject) => paymentObject,
             },
           },
         })}
@@ -84,9 +82,7 @@ describe("AccessType", () => {
           paymentOptions: {
             omise: {
               action: "pay",
-              proceed: async (paymentOptions) => {
-                return { proceed: (paymentObject) => paymentObject };
-              },
+              proceed: async (paymentObject) => paymentObject,
             },
           },
         })}
