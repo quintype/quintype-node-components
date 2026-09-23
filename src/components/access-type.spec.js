@@ -30,9 +30,7 @@ describe("AccessType", () => {
           paymentOptions: {
             omise: {
               action: "pay",
-              proceed: async (paymentOptions) => {
-                return { proceed: (paymentObject) => paymentObject };
-              },
+              proceed: async (paymentObject) => paymentObject,
             },
           },
         })}
@@ -60,6 +58,7 @@ describe("AccessType", () => {
         id: 47742,
         title: "Selected Plan",
         description: "Selected Plan",
+        discounted_price_cents: undefined,
         price_cents: 3000,
         price_currency: "THB",
         duration_length: 5,
@@ -83,9 +82,7 @@ describe("AccessType", () => {
           paymentOptions: {
             omise: {
               action: "pay",
-              proceed: async (paymentOptions) => {
-                return { proceed: (paymentObject) => paymentObject };
-              },
+              proceed: async (paymentObject) => paymentObject,
             },
           },
         })}
@@ -113,6 +110,7 @@ describe("AccessType", () => {
         id: 47742,
         title: "Selected Plan",
         description: "Selected Plan",
+        discounted_price_cents: undefined,
         price_cents: 3000,
         price_currency: "THB",
         duration_length: 5,

@@ -352,6 +352,156 @@ class AccessTypeBase extends React.Component {
         }
   }
 
+  initLoginlessSubscription = async ({
+    emailAddress,
+    name = '',
+    phoneNumber = '',
+    address = '',
+    city = '',
+    state = '',
+    country = '',
+    postCode = '',
+    selectedPlan,
+    planType = 'standard',
+    couponCode = '',
+    metadata = {},
+    paymentProvider = '',
+    paymentType = '',
+    successUrl = '',
+    returnUrl = '',
+    cancelUrl = '',
+    AdyenModal = null,
+    locale = 'en_US'
+  }) => {
+    if (!selectedPlan) {
+      console.warn('[AccessType] initLoginlessSubscription: selectedPlan is required');
+      return false;
+    }
+
+    if (!global.AccessType) {
+      console.error('[AccessType] initLoginlessSubscription: AccessType JS SDK is not available on window');
+      throw new Error('AccessType SDK is not available');
+    }
+
+    // Step 1: Set guest user identity in AccessType SDK
+    const userPayload = {
+      isLoggedIn: false,
+      ...(emailAddress ? { emailAddress } : {}),
+      ...(phoneNumber ? { mobileNumber: phoneNumber } : {})
+    };
+
+    await global.AccessType.setUser(userPayload);
+
+    // Step 2: Fetch payment options for this guest session
+    const isZeroAmount =
+      selectedPlan.discounted_price_cents === 0 ||
+      (selectedPlan.discounted_price_cents === undefined && selectedPlan.price_cents === 0);
+
+    const paymentOptionsRes = await global.AccessType.getPaymentOptions(isZeroAmount ? 0 : undefined);
+    let paymentOptions = paymentOptionsRes?.data || paymentOptionsRes;
+
+    // Step 3: Identify payment gateway handler
+    const rawGateway =
+      paymentProvider ||
+      get(selectedPlan, ['paymentProvider'], '') ||
+      get(selectedPlan, ['supported_payment_providers', 0], 'razorpay');
+    const paymentGateway =
+      paymentType ||
+      (selectedPlan.recurring ? `${rawGateway}_recurring` : rawGateway);
+
+    // Step 4: Construct standard payment object with guest metadata
+    const addressMetadata = {};
+    if (address) {
+      if (typeof address === 'string') {
+        addressMetadata.address_line1 = address;
+      } else if (typeof address === 'object') {
+        const line1 = address.address_line1 || address.line1;
+        const line2 = address.address_line2 || address.line2;
+        const addrPostCode = address.postCode || address.pin_code;
+        if (line1) addressMetadata.address_line1 = line1;
+        if (line2) addressMetadata.address_line2 = line2;
+        if (address.city) addressMetadata.city = address.city;
+        if (address.state) addressMetadata.state = address.state;
+        if (address.country) addressMetadata.country = address.country;
+        if (addrPostCode) addressMetadata.pin_code = addrPostCode;
+      }
+    }
+    if (city) addressMetadata.city = city;
+    if (state) addressMetadata.state = state;
+    if (country) addressMetadata.country = country;
+    if (postCode) addressMetadata.pin_code = postCode;
+
+    const guestMetadata = {
+      ...get(selectedPlan, ['metadata'], {}),
+      ...(metadata || {}),
+      ...(emailAddress ? { email: emailAddress, emailAddress } : {}),
+      ...(name ? { name } : {}),
+      ...(phoneNumber
+        ? { mobile_number: phoneNumber, phone_number: phoneNumber }
+        : {}),
+      ...addressMetadata
+    };
+
+    const enrichedPlan = {
+      ...selectedPlan,
+      ...(emailAddress ? { emailAddress } : {}),
+      subscriber: {
+        ...(emailAddress ? { emailAddress } : {}),
+        ...(phoneNumber ? { phone_number: phoneNumber } : {}),
+        ...(name ? { name } : {})
+      },
+      metadata: guestMetadata
+    };
+
+    // If Adyen is the chosen gateway, use initAdyenPayment which handles the DOM modal lifecycle
+    if (rawGateway === 'adyen') {
+      if (!AdyenModal) {
+        console.error('[AccessType] initLoginlessSubscription: AdyenModal is required for Adyen payment');
+        throw new Error('AdyenModal is required for Adyen payment');
+      }
+      return this.initAdyenPayment(enrichedPlan, planType, AdyenModal, locale);
+    }
+
+    const gatewayHandler = paymentOptions && paymentOptions[rawGateway];
+    if (!gatewayHandler || typeof gatewayHandler.proceed !== 'function') {
+      console.error(`[AccessType] Payment provider "${rawGateway}" is not available`, paymentOptions);
+      throw new Error(`Payment provider "${rawGateway}" is not available. Please try again.`);
+    }
+
+    const planObject = this.makePlanObject(enrichedPlan, planType);
+    planObject['paymentType'] = paymentGateway;
+
+    const resolveUrl = (directUrl, camelKey, snakeKey) =>
+      directUrl || get(selectedPlan, [camelKey], '') || get(selectedPlan, [snakeKey], '');
+
+    const paymentObject = this.makePaymentObject({
+      ...planObject,
+      couponCode: selectedPlan.coupon_code || couponCode || '',
+      successUrl: resolveUrl(successUrl, 'successUrl', 'success_url'),
+      returnUrl: resolveUrl(returnUrl, 'returnUrl', 'return_url'),
+      cancelUrl: resolveUrl(cancelUrl, 'cancelUrl', 'cancel_url')
+    });
+
+    // Check if applied coupon reduced the payment to 0
+    if (paymentObject.payment.amount_cents === 0 && !isZeroAmount) {
+      const { data: zeroOptions } = await awaitHelper(global.AccessType.getPaymentOptions(0));
+      if (zeroOptions && zeroOptions[rawGateway] && typeof zeroOptions[rawGateway].proceed === 'function') {
+        return zeroOptions[rawGateway].proceed(paymentObject);
+      }
+    }
+
+    // Step 5: Launch gateway checkout modal (Razorpay / Stripe / Paypal / etc.)
+    const checkoutResponse = await gatewayHandler.proceed(paymentObject);
+
+    // Two-step proceed execution for gateways like Paypal and Paytrail
+    if (checkoutResponse && typeof checkoutResponse.proceed === 'function') {
+      return checkoutResponse.proceed(paymentObject);
+    }
+
+    return checkoutResponse;
+  };
+
+
   initRazorPayPayment = async (
     selectedPlanObj = {},
     planType = '',
@@ -460,7 +610,12 @@ class AccessTypeBase extends React.Component {
     if (!omise) {
       return Promise.reject({ message: 'Payment option is loading...' })
     }
-    return omise.proceed(paymentObject).then(response => response)
+    return omise.proceed(paymentObject).then(response => {
+      if (response && typeof response.proceed === 'function') {
+        return response.proceed(paymentObject)
+      }
+      return response
+    })
   }
 
   initAdyenPayment = (selectedPlanObj = {}, planType = '', AdyenModal, locale) => {
@@ -573,6 +728,7 @@ class AccessTypeBase extends React.Component {
       initOmisePayment: this.initOmisePayment,
       initAdyenPayment: this.initAdyenPayment,
       initPaytrailPayment: this.initPaytrailPayment,
+      initLoginlessSubscription: this.initLoginlessSubscription,
       checkAccess: this.checkAccess,
       getSubscription: this.getSubscription,
       getSubscriptionsWithSwitchablePlans: this.getSubscriptionsWithSwitchablePlans,
@@ -651,6 +807,7 @@ const mapDispatchToProps = dispatch => ({
  *  initOmisePayment| selectedPlan(object), planType(string)  | Initialize the Omise payment
  *  initAdyenPayment| selectedPlan(object), planType(string), AdyenModal(React Component), locale(string) | Initialize Adyen Payment
  *  initPaytrailPayment| selectedPlan(object), ptions={selectedPlan: selectedPlanObj,planType: planType,couponCode: "", recipientSubscriber: {}, returnUrl: "",cancelUrl:""} | Initialize the Paytrail payment
+ *  initLoginlessSubscription| options(object), options={ emailAddress: string, name: string, phoneNumber: string, address: string|object, city: string, state: string, country: string, postCode: string, metadata: object, selectedPlan: object, planType: string, couponCode: string, paymentProvider: string, paymentType: string, successUrl: string, returnUrl: string, cancelUrl: string, AdyenModal: component, locale: string } | Sets guest identity, enriches plan with metadata (phone, email, name, address, postCode), and delegates to the appropriate payment gateway (razorpay/stripe/paypal/omise/adyen/paytrail). Use this for guest/anonymous user subscriptions that do not require login before payment.
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
  *  getSubscriberMetadata| Get the Subscriber Metadata
  *  setSubscriberMetadata| subscriberMetadata(object), subscriberMetadata={"address": {
