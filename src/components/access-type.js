@@ -352,42 +352,6 @@ class AccessTypeBase extends React.Component {
         }
   }
 
-  previewSubscriptionWithoutLogin = async ({
-    emailAddress,
-    name,
-    phoneNumber,
-    subscriptionRequest
-  }) => {
-    const { accessTypeKey, isStaging } = this.props;
-    const HOST = isStaging ? this.stagingHost : this.prodHost;
-
-    const response = await global.fetch(
-      `${HOST}/api/access/v1/subscription-without-login/preview?key=${accessTypeKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({
-          emailAddress,
-          ...(name ? { name } : {}),
-          ...(phoneNumber ? { phoneNumber } : {}),
-          subscription: subscriptionRequest
-        })
-      }
-    );
-
-    const json = await response.json();
-
-    if (!response.ok) {
-      console.error('[AccessType] previewSubscriptionWithoutLogin failed:', {
-        status: response.status,
-        error: json
-      });
-      throw json;
-    }
-
-    return json;
-  };
-
   initLoginlessSubscription = async ({
     emailAddress,
     name = '',
