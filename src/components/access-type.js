@@ -396,8 +396,6 @@ class AccessTypeBase extends React.Component {
     city = '',
     state = '',
     country = '',
-    pin = '',
-    pinCode = '',
     postCode = '',
     selectedPlan,
     planType = 'standard',
@@ -421,22 +419,21 @@ class AccessTypeBase extends React.Component {
       throw new Error('AccessType SDK is not available');
     }
 
-    const userEmail = emailAddress || get(selectedPlan, ['email'], '') || get(selectedPlan, ['emailAddress'], '');
-    const userName = name || get(selectedPlan, ['name'], '');
-    const userPhone = phoneNumber || get(selectedPlan, ['phoneNumber'], '') || get(selectedPlan, ['mobileNumber'], '') || get(selectedPlan, ['phone'], '');
-    const userAddress = address || get(selectedPlan, ['address'], '');
-
     // Step 1: Set guest user identity in AccessType SDK
     const userPayload = {
       isLoggedIn: false,
-      ...(userEmail ? { emailAddress: userEmail } : {}),
-      ...(userPhone ? { mobileNumber: userPhone } : {})
+      ...(emailAddress ? { emailAddress } : {}),
+      ...(phoneNumber ? { mobileNumber: phoneNumber } : {})
     };
 
     await global.AccessType.setUser(userPayload);
 
     // Step 2: Fetch payment options for this guest session
-    let paymentOptionsRes = await global.AccessType.getPaymentOptions();
+    const isZeroAmount =
+      selectedPlan.discounted_price_cents === 0 ||
+      (selectedPlan.discounted_price_cents === undefined && selectedPlan.price_cents === 0);
+
+    const paymentOptionsRes = await global.AccessType.getPaymentOptions(isZeroAmount ? 0 : undefined);
     let paymentOptions = paymentOptionsRes?.data || paymentOptionsRes;
 
     // Step 3: Identify payment gateway handler
@@ -448,65 +445,46 @@ class AccessTypeBase extends React.Component {
       paymentType ||
       (selectedPlan.recurring ? `${rawGateway}_recurring` : rawGateway);
 
-    // If plan price or discounted price is 0, fetch 0-amount payment options
-    const isZeroAmount =
-      selectedPlan.discounted_price_cents === 0 ||
-      (selectedPlan.discounted_price_cents === undefined && selectedPlan.price_cents === 0);
-
-    if (isZeroAmount) {
-      const { data: zeroOptions } = await awaitHelper(global.AccessType.getPaymentOptions(0));
-      if (zeroOptions) {
-        paymentOptions = zeroOptions;
-      }
-    }
-
-    if (this.props.paymentOptionsLoaded && paymentOptions) {
-      this.props.paymentOptionsLoaded(paymentOptions);
-    }
-
     // Step 4: Construct standard payment object with guest metadata
     const addressMetadata = {};
-    if (userAddress) {
-      if (typeof userAddress === 'string') {
-        addressMetadata.address_line1 = userAddress;
-      } else if (typeof userAddress === 'object') {
-        if (userAddress.address_line1 || userAddress.line1) {
-          addressMetadata.address_line1 = userAddress.address_line1 || userAddress.line1;
-        }
-        if (userAddress.address_line2 || userAddress.line2) {
-          addressMetadata.address_line2 = userAddress.address_line2 || userAddress.line2;
-        }
-        if (userAddress.city) addressMetadata.city = userAddress.city;
-        if (userAddress.state) addressMetadata.state = userAddress.state;
-        if (userAddress.country) addressMetadata.country = userAddress.country;
-        if (userAddress.pin_code || userAddress.pin || userAddress.postCode) {
-          addressMetadata.pin_code = userAddress.pin_code || userAddress.pin || userAddress.postCode;
-        }
+    if (address) {
+      if (typeof address === 'string') {
+        addressMetadata.address_line1 = address;
+      } else if (typeof address === 'object') {
+        const line1 = address.address_line1 || address.line1;
+        const line2 = address.address_line2 || address.line2;
+        const addrPostCode = address.postCode || address.pin_code;
+        if (line1) addressMetadata.address_line1 = line1;
+        if (line2) addressMetadata.address_line2 = line2;
+        if (address.city) addressMetadata.city = address.city;
+        if (address.state) addressMetadata.state = address.state;
+        if (address.country) addressMetadata.country = address.country;
+        if (addrPostCode) addressMetadata.pin_code = addrPostCode;
       }
     }
     if (city) addressMetadata.city = city;
     if (state) addressMetadata.state = state;
     if (country) addressMetadata.country = country;
-    if (pin || pinCode || postCode) addressMetadata.pin_code = pin || pinCode || postCode;
+    if (postCode) addressMetadata.pin_code = postCode;
 
     const guestMetadata = {
       ...get(selectedPlan, ['metadata'], {}),
       ...(metadata || {}),
-      ...(userEmail ? { email: userEmail, emailAddress: userEmail } : {}),
-      ...(userName ? { name: userName } : {}),
-      ...(userPhone
-        ? { mobile_number: userPhone, phone_number: userPhone }
+      ...(emailAddress ? { email: emailAddress, emailAddress } : {}),
+      ...(name ? { name } : {}),
+      ...(phoneNumber
+        ? { mobile_number: phoneNumber, phone_number: phoneNumber }
         : {}),
       ...addressMetadata
     };
 
     const enrichedPlan = {
       ...selectedPlan,
-      ...(userEmail ? { emailAddress: userEmail } : {}),
+      ...(emailAddress ? { emailAddress } : {}),
       subscriber: {
-        ...(userEmail ? { emailAddress: userEmail } : {}),
-        ...(userPhone ? { phone_number: userPhone } : {}),
-        ...(userName ? { name: userName } : {})
+        ...(emailAddress ? { emailAddress } : {}),
+        ...(phoneNumber ? { phone_number: phoneNumber } : {}),
+        ...(name ? { name } : {})
       },
       metadata: guestMetadata
     };
@@ -529,25 +507,15 @@ class AccessTypeBase extends React.Component {
     const planObject = this.makePlanObject(enrichedPlan, planType);
     planObject['paymentType'] = paymentGateway;
 
-    const effectiveSuccessUrl =
-      successUrl ||
-      get(selectedPlan, ['successUrl'], '') ||
-      get(selectedPlan, ['success_url'], '');
-    const effectiveReturnUrl =
-      returnUrl ||
-      get(selectedPlan, ['returnUrl'], '') ||
-      get(selectedPlan, ['return_url'], '');
-    const effectiveCancelUrl =
-      cancelUrl ||
-      get(selectedPlan, ['cancelUrl'], '') ||
-      get(selectedPlan, ['cancel_url'], '');
+    const resolveUrl = (directUrl, camelKey, snakeKey) =>
+      directUrl || get(selectedPlan, [camelKey], '') || get(selectedPlan, [snakeKey], '');
 
     const paymentObject = this.makePaymentObject({
       ...planObject,
       couponCode: selectedPlan.coupon_code || couponCode || '',
-      successUrl: effectiveSuccessUrl,
-      returnUrl: effectiveReturnUrl,
-      cancelUrl: effectiveCancelUrl
+      successUrl: resolveUrl(successUrl, 'successUrl', 'success_url'),
+      returnUrl: resolveUrl(returnUrl, 'returnUrl', 'return_url'),
+      cancelUrl: resolveUrl(cancelUrl, 'cancelUrl', 'cancel_url')
     });
 
     // Check if applied coupon reduced the payment to 0
@@ -557,15 +525,6 @@ class AccessTypeBase extends React.Component {
         return zeroOptions[rawGateway].proceed(paymentObject);
       }
     }
-
-    console.log('[AccessType] initLoginlessSubscription: initiating gateway checkout', {
-      gateway: rawGateway,
-      paymentGateway,
-      planId: selectedPlan.id,
-      ...(userEmail ? { emailAddress: userEmail } : {}),
-      ...(userPhone ? { phoneNumber: userPhone } : {}),
-      metadata: guestMetadata
-    });
 
     // Step 5: Launch gateway checkout modal (Razorpay / Stripe / Paypal / etc.)
     const checkoutResponse = await gatewayHandler.proceed(paymentObject);
@@ -884,7 +843,7 @@ const mapDispatchToProps = dispatch => ({
  *  initOmisePayment| selectedPlan(object), planType(string)  | Initialize the Omise payment
  *  initAdyenPayment| selectedPlan(object), planType(string), AdyenModal(React Component), locale(string) | Initialize Adyen Payment
  *  initPaytrailPayment| selectedPlan(object), ptions={selectedPlan: selectedPlanObj,planType: planType,couponCode: "", recipientSubscriber: {}, returnUrl: "",cancelUrl:""} | Initialize the Paytrail payment
- *  initLoginlessSubscription| options(object), options={ emailAddress: string, name: string, phoneNumber: string, address: string|object, metadata: object, selectedPlan: object, planType: string, couponCode: string, paymentProvider: string, paymentType: string, successUrl: string, returnUrl: string, cancelUrl: string, AdyenModal: component, locale: string } | Sets guest identity, enriches plan with metadata (phone, email, name, address), and delegates to the appropriate payment gateway (razorpay/stripe/paypal/omise/adyen/paytrail). Use this for guest/anonymous user subscriptions that do not require login before payment.
+ *  initLoginlessSubscription| options(object), options={ emailAddress: string, name: string, phoneNumber: string, address: string|object, city: string, state: string, country: string, postCode: string, metadata: object, selectedPlan: object, planType: string, couponCode: string, paymentProvider: string, paymentType: string, successUrl: string, returnUrl: string, cancelUrl: string, AdyenModal: component, locale: string } | Sets guest identity, enriches plan with metadata (phone, email, name, address, postCode), and delegates to the appropriate payment gateway (razorpay/stripe/paypal/omise/adyen/paytrail). Use this for guest/anonymous user subscriptions that do not require login before payment.
  *  getAssetPlans| storyId(string) | Get Asset Subscription Plans
  *  getSubscriberMetadata| Get the Subscriber Metadata
  *  setSubscriberMetadata| subscriberMetadata(object), subscriberMetadata={"address": {
