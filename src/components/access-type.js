@@ -413,33 +413,38 @@ class AccessTypeBase extends React.Component {
     const addressMetadata = {};
     if (address) {
       if (typeof address === 'string') {
-        addressMetadata.address_line1 = address;
+        addressMetadata.line1 = address;
       } else if (typeof address === 'object') {
-        const line1 = address.address_line1 || address.line1;
-        const line2 = address.address_line2 || address.line2;
-        const addrPostCode = address.postCode || address.pin_code;
-        if (line1) addressMetadata.address_line1 = line1;
-        if (line2) addressMetadata.address_line2 = line2;
+        const line1 = address.line1 || address.address_line1;
+        const line2 = address.line2 || address.address_line2;
+        const pincode = address.pincode || address.pin_code || address.postCode || address.pin;
+        if (line1) addressMetadata.line1 = line1;
+        if (line2) addressMetadata.line2 = line2;
         if (address.city) addressMetadata.city = address.city;
         if (address.state) addressMetadata.state = address.state;
         if (address.country) addressMetadata.country = address.country;
-        if (addrPostCode) addressMetadata.pin_code = addrPostCode;
+        if (pincode) addressMetadata.pincode = pincode;
       }
     }
     if (city) addressMetadata.city = city;
     if (state) addressMetadata.state = state;
     if (country) addressMetadata.country = country;
-    if (postCode) addressMetadata.pin_code = postCode;
+    if (postCode) addressMetadata.pincode = postCode;
 
-    const guestMetadata = {
+    const otherMetadata = {
       ...get(selectedPlan, ['metadata'], {}),
       ...(metadata || {}),
-      ...(emailAddress ? { email: emailAddress, emailAddress } : {}),
-      ...(name ? { name } : {}),
-      ...(phoneNumber
-        ? { mobile_number: phoneNumber, phone_number: phoneNumber }
-        : {}),
-      ...addressMetadata
+      ...(emailAddress ? { emailAddress } : {}),
+      ...(name ? { name } : {})
+    };
+
+    const hasAddress = Object.keys(addressMetadata).length > 0;
+    const hasOther = Object.keys(otherMetadata).length > 0;
+
+    const guestMetadata = {
+      ...(hasAddress ? { address: addressMetadata } : {}),
+      ...(phoneNumber ? { phone_number: phoneNumber } : {}),
+      ...(hasOther ? { other: otherMetadata } : {})
     };
 
     const enrichedPlan = {
