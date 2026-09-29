@@ -82,6 +82,30 @@ class AccessTypeBase extends React.Component {
     return user
   }
 
+  resetGuestContext = async () => {
+    if (!global.AccessType) {
+      return null
+    }
+    try {
+      // Clear guest context by setting isLoggedIn: false without any identity
+      const { error, data: user } = await awaitHelper(global.AccessType.setUser({ isLoggedIn: false }))
+      if (error) {
+        console.warn('[AccessType] resetGuestContext: Failed to reset guest context', error)
+        return error
+      }
+      if (typeof window !== 'undefined' && window.qtDebugLogs) {
+        window.qtDebugLogs.push({
+          timestamp: new Date().toISOString(),
+          event: 'resetGuestContext_completed'
+        });
+      }
+      return user
+    } catch (err) {
+      console.warn('[AccessType] resetGuestContext: Error resetting guest context', err)
+      return err
+    }
+  }
+
   validateCoupon = async (selectedPlanId, couponCode) => {
     if (!global.AccessType) {
       return {}
@@ -387,10 +411,41 @@ class AccessTypeBase extends React.Component {
     const userPayload = {
       isLoggedIn: false,
       ...(emailAddress ? { emailAddress } : {}),
-      ...(phoneNumber ? { mobileNumber: phoneNumber } : {})
+      ...(phoneNumber ? { mobileNumber: phoneNumber } : {}),
+      ...(name ? { name } : {})
     };
 
+    // [DEBUG-RECURRING-PLAN] Log identity submission
+    if (typeof window !== 'undefined' && window.qtDebugLogs) {
+      window.qtDebugLogs = window.qtDebugLogs || [];
+      const logEntry = {
+        timestamp: new Date().toISOString(),
+        event: 'initLoginlessSubscription_start',
+        submittedEmail: emailAddress,
+        submittedPhone: phoneNumber,
+        submittedName: name,
+        userPayload: { ...userPayload, mobileNumber: phoneNumber ? `***${String(phoneNumber).slice(-4)}` : undefined },
+        planId: get(selectedPlan, ['id']),
+        planTitle: get(selectedPlan, ['title'])
+      };
+      window.qtDebugLogs.push(logEntry);
+      console.group('[QT-DEBUG] initLoginlessSubscription_start');
+      console.log('Email:', emailAddress);
+      console.log('Phone:', phoneNumber);
+      console.log('Plan:', { id: get(selectedPlan, ['id']), title: get(selectedPlan, ['title']) });
+      console.groupEnd();
+    }
+
     await global.AccessType.setUser(userPayload);
+
+    // [DEBUG-RECURRING-PLAN] Log after setUser
+    if (typeof window !== 'undefined' && window.qtDebugLogs) {
+      window.qtDebugLogs.push({
+        timestamp: new Date().toISOString(),
+        event: 'initLoginlessSubscription_after_setUser',
+        setUserCompleted: true
+      });
+    }
 
     // Step 2: Fetch payment options for this guest session
     const isZeroAmount =
@@ -458,6 +513,18 @@ class AccessTypeBase extends React.Component {
       metadata: guestMetadata
     };
 
+    // [DEBUG-RECURRING-PLAN] Log enriched plan with identity
+    if (typeof window !== 'undefined' && window.qtDebugLogs) {
+      window.qtDebugLogs.push({
+        timestamp: new Date().toISOString(),
+        event: 'initLoginlessSubscription_enriched_plan',
+        enrichedPlanEmail: get(enrichedPlan, ['emailAddress']),
+        enrichedPlanPhone: get(enrichedPlan, ['subscriber', 'phone_number']),
+        enrichedPlanMetadataPhone: get(enrichedPlan, ['metadata', 'phone_number']),
+        enrichedSubscriber: enrichedPlan.subscriber
+      });
+    }
+
     // If Adyen is the chosen gateway, use initAdyenPayment which handles the DOM modal lifecycle
     if (rawGateway === 'adyen') {
       if (!AdyenModal) {
@@ -493,6 +560,20 @@ class AccessTypeBase extends React.Component {
       if (zeroOptions && zeroOptions[rawGateway] && typeof zeroOptions[rawGateway].proceed === 'function') {
         return zeroOptions[rawGateway].proceed(paymentObject);
       }
+    }
+
+    // [DEBUG-RECURRING-PLAN] Log payment object before gateway proceed
+    if (typeof window !== 'undefined' && window.qtDebugLogs) {
+      window.qtDebugLogs.push({
+        timestamp: new Date().toISOString(),
+        event: 'initLoginlessSubscription_before_proceed',
+        gateway: rawGateway,
+        paymentType: paymentGateway,
+        paymentObjectMetadata: paymentObject.metadata,
+        couponCode: paymentObject.coupon_code,
+        planId: get(paymentObject, ['plan', 'id']),
+        amountCents: get(paymentObject, ['payment', 'amount_cents'])
+      });
     }
 
     // Step 5: Launch gateway checkout modal (Razorpay / Stripe / Paypal / etc.)
@@ -734,6 +815,7 @@ class AccessTypeBase extends React.Component {
       initAdyenPayment: this.initAdyenPayment,
       initPaytrailPayment: this.initPaytrailPayment,
       initLoginlessSubscription: this.initLoginlessSubscription,
+      resetGuestContext: this.resetGuestContext,
       checkAccess: this.checkAccess,
       getSubscription: this.getSubscription,
       getSubscriptionsWithSwitchablePlans: this.getSubscriptionsWithSwitchablePlans,
