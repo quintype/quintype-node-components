@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.9.0](https://github.com/quintype/quintype-node-components/compare/v3.8.9...v3.9.0) (2026-10-09)
+
+
+### Features
+
+* add support for loginless subscriptions to access-type component ([#249](https://github.com/quintype/quintype-node-components/issues/249)) ([083890a](https://github.com/quintype/quintype-node-components/commit/083890aa73fd92f1617c86dad513da363879e720))
+
 ### [3.8.9](https://github.com/quintype/quintype-node-components/compare/v3.8.2...v3.8.9) (2026-02-17)
 
 
